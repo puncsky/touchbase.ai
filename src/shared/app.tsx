@@ -45,7 +45,7 @@ export class App extends Component<Props> {
 
 const RootStyle = styled("div", () => ({
   ...fonts.body,
-  backgroundColor: colors.black10,
+  backgroundColor: colors.white,
   color: colors.text01,
   textRendering: "optimizeLegibility"
 }));

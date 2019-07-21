@@ -7,6 +7,7 @@ import { contentPadding } from "./styles/style-padding";
 import { TOP_BAR_HEIGHT } from "./top-bar";
 
 export const FOOTER_HEIGHT = 89;
+export const LINE = "1px #EDEDED solid";
 
 export const FOOTER_ABOVE = {
   minHeight: `calc(100vh - ${FOOTER_HEIGHT + TOP_BAR_HEIGHT}px)`
@@ -23,6 +24,7 @@ export function Footer(): JSX.Element {
 
 const Align = styled("div", (_: React.CSSProperties) => ({
   ...contentPadding,
+  borderTop: LINE,
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
@@ -30,6 +32,5 @@ const Align = styled("div", (_: React.CSSProperties) => ({
   paddingTop: "32px",
   paddingBottom: "32px",
   minHeight: `${FOOTER_HEIGHT}px`,
-  backgroundColor: colors.nav02,
-  color: colors.white
+  color: colors.text01
 }));

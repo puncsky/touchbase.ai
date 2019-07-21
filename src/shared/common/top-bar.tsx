@@ -16,7 +16,7 @@ import { colors } from "./styles/style-color";
 import { media, PALM_WIDTH } from "./styles/style-media";
 import { contentPadding } from "./styles/style-padding";
 
-export const TOP_BAR_HEIGHT = 52;
+export const TOP_BAR_HEIGHT = 50;
 
 type State = {
   displayMobileMenu: boolean;
@@ -121,7 +121,8 @@ const Bar = styled("div", {
   width: "100%",
   "z-index": "70",
   ...contentPadding,
-  boxSizing: "border-box"
+  boxSizing: "border-box",
+  boxShadow: "0 0 4px 0 #c6c6c6ba!important"
 });
 
 const BarPlaceholder = styled("div", (_: React.CSSProperties) => {
@@ -201,7 +202,7 @@ function Logo(): JSX.Element {
 }
 
 const menuItem: StyleObject = {
-  color: colors.white,
+  color: colors.text01,
   marginLeft: "14px",
   textDecoration: "none",
   ":hover": {

@@ -19,7 +19,7 @@ export const colors = {
   warning: "#efc100", //	Warning
   information: "#5aaafa", //	Information
 
-  nav01: "#2E3235", //	Global top bar
+  nav01: "#fff", //	Global top bar
   nav02: "#575a5d", //	CTA footer
   nav03: "#323232" //	Global footer
 };
