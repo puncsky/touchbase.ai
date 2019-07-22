@@ -92,6 +92,13 @@ export class UserModel {
     return new this.Model(hashed).save();
   }
 
+  public async updateAssocProfileId(
+    userId: string,
+    lifetimeHumanId: string
+  ): Promise<TUser> {
+    return this.Model.update({ _id: userId }, { lifetimeHumanId });
+  }
+
   public async updatePassword(
     userId: string,
     password: string

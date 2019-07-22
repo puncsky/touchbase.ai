@@ -4,9 +4,7 @@ import { t } from "onefx/lib/iso-i18n";
 import Helmet from "onefx/lib/react-helmet";
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import { Component } from "react";
-
-import React from "react";
+import React, { Component } from "react";
 import { Button } from "../../../common/button";
 import { Flex } from "../../../common/flex";
 import { fullOnPalm } from "../../../common/styles/style-media";

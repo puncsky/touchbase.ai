@@ -17,9 +17,16 @@
           "file": "src/shared/onefx-auth-provider/email-password-identity-provider/view/sign-up.tsx",
           "method": "render",
           "comment": "Usage has been approved by Tian on 2019-07-17 17:22"
+        },
+        {
+          "file": "src/shared/human/human-profile.tsx",
+          "method": "<unknown>",
+          "comment": "Usage has been approved by Tian on 2019-07-22 24:46"
         }
       ]
     ],
+    "no-any": false,
+    "use-simple-attributes": false,
     "no-null-keyword": false,
     "no-for-in-array": [false],
     "restrict-plus-operands": [false],

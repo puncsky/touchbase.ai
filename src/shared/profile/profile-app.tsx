@@ -17,7 +17,7 @@ import { ContentPadding } from "../common/styles/style-padding";
 import { TOP_BAR_HEIGHT, TopBar } from "../common/top-bar";
 import { Settings } from "./settings";
 
-// $FlowFixMe
+// @ts-ignore
 const { Footer } = Layout;
 
 type Props = {

@@ -1,8 +1,7 @@
 import { t } from "onefx/lib/iso-i18n";
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import { Component } from "react";
-import React from "react";
+import React, { Component } from "react";
 import { Switch } from "react-router";
 import { Link, Route } from "react-router-dom";
 import { Flex } from "../../../common/flex";

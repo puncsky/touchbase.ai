@@ -4,12 +4,11 @@ import { t } from "onefx/lib/iso-i18n";
 import Helmet from "onefx/lib/react-helmet";
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import { Component } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import Button from "antd/lib/button";
-import React from "react";
 import { colorHover } from "../../../common/color-hover";
 import { Flex } from "../../../common/flex";
 import { transition } from "../../../common/styles/style-animation";

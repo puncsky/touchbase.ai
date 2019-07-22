@@ -16,7 +16,7 @@ export class PersonalNoteModel {
   constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
     const schema = new Schema({
       ownerId: { type: "ObjectId", ref: "User" },
-      relatedHumans: [{ type: "ObjectId", ref: "Contact" }],
+      relatedContacts: [{ type: "ObjectId", ref: "Contact" }],
       content: { type: String },
       timestamp: { type: Date, default: Date.now },
 
@@ -26,7 +26,7 @@ export class PersonalNoteModel {
     });
 
     schema.index({ ownerId: 1 });
-    schema.index({ relatedHumans: 1 });
+    schema.index({ relatedContacts: 1 });
 
     schema.pre("save", function onSave(next: Function): void {
       // @ts-ignore
@@ -50,7 +50,7 @@ export class PersonalNoteModel {
     ownerId: string,
     humanId: string
   ): Promise<Array<TPersonalNoteDoc>> {
-    return this.Model.find({ ownerId, relatedHumans: humanId }).sort({
+    return this.Model.find({ ownerId, relatedContacts: humanId }).sort({
       timestamp: "desc"
     });
   }

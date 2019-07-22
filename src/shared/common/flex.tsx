@@ -14,7 +14,7 @@ type PropTypes = {
   backgroundColor?: string;
   justifyContent?: string;
   height?: string;
-  media?: { [key: string]: string };
+  media?: { [key: string]: { [key: string]: string } };
   alignContent?: string;
 } & React.CSSProperties;
 

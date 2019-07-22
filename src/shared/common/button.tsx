@@ -1,8 +1,7 @@
 // @ts-ignore
 import { styled, StyleObject } from "onefx/lib/styletron-react";
-import { Component } from "react";
+import React, { Component } from "react";
 
-import React from "react";
 import {
   btnStyle,
   disabledBtn,

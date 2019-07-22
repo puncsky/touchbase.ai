@@ -1,4 +1,6 @@
-export type TContact = {
+// @flow
+
+export type THuman = {
   _id: string;
 
   // Name card
@@ -54,10 +56,9 @@ export type TContact = {
   updatedAt: string;
 };
 
-export type TPersonalNote = {
+export type TInteraction = {
   id: string;
-  timestamp: Date;
+  timestamp: string;
   content: string;
   contentHtml: string;
-  relatedContacts: Array<string>;
 };

@@ -12,3 +12,10 @@ export const fullOnPalm = {
     width: "100%"
   }
 };
+
+export const fullOnLap = {
+  ...fullOnPalm,
+  [media.lap]: {
+    width: "100%"
+  }
+};

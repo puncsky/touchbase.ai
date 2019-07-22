@@ -32,7 +32,7 @@ type ConnectProps = {
   csrfToken: string;
 };
 
-// $FlowFixMe
+// @ts-ignore
 export const FormContainer = connect<ConnectProps>(state => ({
   // @ts-ignore
   csrfToken: state.base.csrfToken

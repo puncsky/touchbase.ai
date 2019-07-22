@@ -1,12 +1,11 @@
 // @ts-ignore
 import { styled, StyleObject } from "onefx/lib/styletron-react";
-import { Component } from "react";
+import React, { Component } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { Link } from "react-router-dom";
 
 import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
-import React from "react";
 import { CommonMargin } from "./common-margin";
 import { Icon } from "./icon";
 import { Cross } from "./icons/cross.svg";

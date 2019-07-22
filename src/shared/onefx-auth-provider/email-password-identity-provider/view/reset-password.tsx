@@ -3,9 +3,7 @@ import { t } from "onefx/lib/iso-i18n";
 import Helmet from "onefx/lib/react-helmet";
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import { Component } from "react";
-
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button } from "../../../common/button";
 import { Flex } from "../../../common/flex";
@@ -39,7 +37,7 @@ type ReduxProps = {
   token: string;
 };
 
-// $FlowFixMe
+// @ts-ignore
 export const ResetPasswordContainer = connect<ReduxProps>(state => ({
   // @ts-ignore
   token: state.base.token
