@@ -11,6 +11,12 @@ import { colors } from "./common/styles/style-color";
 import { fonts } from "./common/styles/style-font";
 import { TopBar } from "./common/top-bar";
 import { Home } from "./home/home";
+import { HumanProfileContainer } from "./human/human-profile";
+import {
+  ProfileEditorContainer,
+  ProfileEditorContainer
+} from "./human/profile-editor/profile-editor";
+import { ProfileCreatorContainer } from "./human/profile-creator";
 
 type Props = {
   googleTid: string;
@@ -31,10 +37,17 @@ export class App extends Component<Props> {
           <ScrollToTop>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route
+                exact
+                path="/:nameDash/*"
+                component={HumanProfileContainer}
+              />
               <Route component={NotFound} />
             </Switch>
           </ScrollToTop>
         </div>
+        <Route exact path="*/edit/" component={ProfileEditorContainer} />
+        <Route exact path="*/create/" component={ProfileCreatorContainer} />
         <Footer />
       </RootStyle>
     );
@@ -43,7 +56,7 @@ export class App extends Component<Props> {
 
 const RootStyle = styled("div", () => ({
   ...fonts.body,
-  backgroundColor: colors.white,
+  backgroundColor: colors.black05,
   color: colors.text01,
   textRendering: "optimizeLegibility"
 }));

@@ -1,7 +1,82 @@
-meta.title: Boilerplate
-meta.description: Description
-topbar.brand: OneFx
-topbar.home: HOME
+add_event: Add Event
+add_interaction: Add Interaction
+auth/email-already-in-use: Email is already in use
+auth/forgot_password.back: ← Back to Login
+auth/forgot_password.desc: Enter the email address associated with your account, and we’ll email you a link to reset your password.
+auth/forgot_password.email_content: "Hi, we’ve received a request to reset your password. If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link: ${link}."
+auth/forgot_password.email_title: Reset your Password
+auth/forgot_password.email_token_failure: Your request to reset password has already expired. Please try again.
+auth/forgot_password.send: SEND RESET LINK
+auth/forgot_password.sent: A link to reset your password has been sent to ${email}.
+auth/forgot_password: Forgot Password
+auth/invalid-email: Email is invalid
+auth/reset_password.desc: Your password needs to have at least one symbol or number, and have at least 8 characters.
+auth/reset_password.success: Your password has been updated.
+auth/reset_password: Reset password
+auth/sign_in.forgot_password: Forgot password? Reset
+auth/sign_in.switch_to_sign_up: Don’t have an account? Sign up
+auth/sign_in.title: Sign In
+auth/sign_up.switch_to_sign_in: Already have an account? Log in
+auth/user-disabled: User is banned
+auth/user-not-found: User is not found
+auth/weak-password: Please use at least 8 characters as the password
+auth/wrong-password: Password is incorrect
+bornAddress: From
+bornAt: Birthday
+close: CLOSE
+desire: Desire
+edit_event: Edit Event
+education: Education
+experience: Experience
+extraversionIntroversion: Extroversion vs. Introversion
+home.create_account: CREATE ACCOUNT
+inbound_trust: Inbound Trust
+interactions: Interactions
+intuitingSensing: Intuiting vs. Sensing
+ipq: IPQ
+knownSource: Source
+meta.description: Intelligently engage more in meaningful relationships
+meta.title: Rebinder.co
 not_found.bar: Not Found
-not_found.title: Oops!
 not_found.info: We cannot find the page for you...
+not_found.title: Oops!
+outbound_trust: Outbound Trust
+planingPerceiving: Planing vs. Perceiving
+tdp: Team Dimension Profile
+thinkingFeeling: Thinking vs. Feeling
+topbar.contacts: Contacts
+topbar.brand: Rebinder.co
+topbar.create: ADD
+topbar.edit: EDIT
+topbar.home: HOME
+topbar.login: LOG IN
+topbar.sign_up: SIGN UP
+workingOn: Working on
+years_known: Years Known
+profile.prefill: Prefill other fields
+field.email: Email
+field.name: Name
+field.address: Address
+profile_editor.pii: Personal
+profile_editor.experience: Experience
+profile_editor.observation: Observation
+field.emails: Emails
+field.avatar_url: Avatar
+field.dateOfBirth: Date of Birth
+field.birthplace: Birthplace
+extroversion: Extroversion
+introversion: Introversion
+field.extroversion_introversion: Attitudes
+field.extroversion_introversion.help: Extroverts perfer external people and things and drawing energy from action. Introverts prefer their own thinking and gaining energy from reflection.
+field.intuiting_sensing: Perceiving
+field.intuiting_sensing.help: People who prefer sensing are more likely to trust information that is in the present, tangible, and concrete. Those who prefer intuition tend to trust information that is less dependent upon the senses.
+field.thinking_feeling: Judging
+field.thinking_feeling.help: Those who prefer thinking tend to decide things from a more detached standpoint. Those who prefer feeling tend to come to decisions by associating or empathizing with the situation and the needs of the people involved.
+field.planing_perceiving: Lifestyle
+field.planing_perceiving.help: Those types who prefer perception show the world their preferred perceiving function (sensing or intuition); otherwise, they prefer planing/judging.
+field.tdp: TDP
+field.working_on: Working on
+field.desire: Desire
+field.blurb: Blurb
+field.inbound_trust: Inbound
+field.outbound_trust: Outbound

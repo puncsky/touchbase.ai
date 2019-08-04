@@ -3,6 +3,7 @@ import dateFormat from "dateformat";
 import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
 import React from "react";
+import Icon from "antd/lib/icon";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { THuman, TInteraction } from "../../types/human";
@@ -35,7 +36,7 @@ function currentOrg(human: THuman): string {
 const Padding = styled("div", { padding: "8px" });
 
 const SECTION = {
-  backgroundColor: colors.black10,
+  backgroundColor: colors.white,
   padding: "12px",
   boxShadow: BOX_SHADOW
 };
@@ -70,7 +71,7 @@ export const HumanProfileContainer = connect(
                   src={human.avatarUrl || "/favicon-light.svg"}
                 />
                 <Link to="./edit/">
-                  <Icon className="far fa-edit" />
+                  <Icon1 type="edit" />
                 </Link>
               </div>
             </Flex>
@@ -221,7 +222,7 @@ function TitleContent({ title, human }: any): JSX.Element | null {
   );
 }
 
-const Icon = styled("i", {
+const Icon1 = styled(Icon, {
   ...{
     position: "absolute",
     bottom: "8px",

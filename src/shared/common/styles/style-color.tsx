@@ -9,6 +9,7 @@ export const colors = {
   black40: "#E5E5E5",
   black20: "#F0F0F0",
   black10: "#F7F7F7",
+  black05: "#F2F2F2",
 
   text01: "#333333",
 

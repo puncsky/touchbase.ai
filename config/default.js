@@ -34,18 +34,18 @@ module.exports = {
   analytics: {
     googleTid: "TODO: replace with your googleTid"
   },
-  csp: {
-    "default-src": ["none"],
-    "manifest-src": ["self"],
-    "style-src": ["self", "unsafe-inline", "https://fonts.googleapis.com/css"],
-    "frame-src": [],
-    "connect-src": ["self"],
-    "child-src": ["self"],
-    "font-src": ["self", "data:", "https://fonts.gstatic.com/"],
-    "img-src": ["*"],
-    "media-src": ["self"],
-    "object-src": ["self"],
-    "script-src": ["self", "https://www.google-analytics.com/"]
-  },
+  // csp: {
+  //   "default-src": ["none"],
+  //   "manifest-src": ["self"],
+  //   "style-src": ["self", "unsafe-inline", "https://fonts.googleapis.com/css"],
+  //   "frame-src": [],
+  //   "connect-src": ["self"],
+  //   "child-src": ["self"],
+  //   "font-src": ["self", "data:", "https://fonts.gstatic.com/"],
+  //   "img-src": ["*"],
+  //   "media-src": ["self"],
+  //   "object-src": ["self"],
+  //   "script-src": ["self", "https://www.google-analytics.com/"]
+  // },
   apiGatewayUrl: "http://localhost:5000/api-gateway/"
 };
