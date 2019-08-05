@@ -50,7 +50,7 @@ export const authConfig = {
   emailTokenTtl: 5, // mins
   emailTokenLink:
     String(process.env.NODE_ENV).indexOf("production") === -1
-      ? "http://localhost:5000/email-token/"
+      ? "http://localhost:4103/email-token/"
       : "https://rebinder.co/email-token/",
   mailgun: {
     apiKey: "4ee685b1d4e8f8470ed3e2e0a2aaf1dc-1053eade-3799e99b",

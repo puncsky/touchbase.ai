@@ -61,10 +61,19 @@ export const TopBar = connect((state: any) => ({
     };
 
     public renderMenu = () => {
+      const { loggedIn } = this.props;
+      if (!loggedIn) {
+        return [
+          <A key={0} href="/login" onClick={this.hideMobileMenu}>
+            {t("topbar.login")}
+          </A>
+        ];
+      }
+
       return [
-        <A key={0} href="/" onClick={this.hideMobileMenu}>
-          {t("topbar.home")}
-        </A>
+        <StyledLink key={2} to="./create/" onClick={this.hideMobileMenu}>
+          {t("topbar.create")}
+        </StyledLink>
       ];
     };
 

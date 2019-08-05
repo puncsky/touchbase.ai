@@ -4,7 +4,7 @@ config();
 module.exports = {
   project: "web-onefx-boilerplate",
   server: {
-    port: process.env.PORT || 5000,
+    port: process.env.PORT || 4103,
     staticDir: "./dist",
     delayInitMiddleware: false,
     cookie: {
@@ -48,5 +48,5 @@ module.exports = {
   //   "script-src": ["self", "https://www.google-analytics.com/"]
   // },
   apiGatewayUrl:
-    process.env.API_GATEWAY_URL || "http://localhost:5000/api-gateway/"
+    process.env.API_GATEWAY_URL || "http://localhost:4103/api-gateway/"
 };
