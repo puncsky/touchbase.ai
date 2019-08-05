@@ -1,13 +1,11 @@
 import koa = require("koa");
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import React from "react";
-import { Route } from "react-router";
 import { combineReducers } from "redux";
 import { MyServer } from "../../server/start-server";
 import { TPersonalNote } from "../../types/contact";
 import { AppContainer } from "../app-container";
 import { mdit } from "../common/markdownit";
-import { HumansTableContainer } from "../humans/humans";
 import { humansReducer } from "../humans/humans-reducer";
 import { humanReducer, interactionsReducer } from "./human-reducer";
 import { EMPTY_HUMAN } from "./profile-creator";

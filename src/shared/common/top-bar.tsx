@@ -1,11 +1,11 @@
 // @ts-ignore
+import { assetURL } from "onefx/lib/asset-url";
+import { t } from "onefx/lib/iso-i18n";
 import { styled, StyleObject } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
-import { Link } from "react-router-dom";
-import { assetURL } from "onefx/lib/asset-url";
-import { t } from "onefx/lib/iso-i18n";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { CommonMargin } from "./common-margin";
 import { Icon } from "./icon";
@@ -22,11 +22,13 @@ type State = {
   displayMobileMenu: boolean;
 };
 
-export const TopBar = connect(state => ({
+type Props = { loggedIn: boolean };
+
+export const TopBar = connect((state: any) => ({
   loggedIn: Boolean(state.base.userId)
 }))(
-  class TopBarInner extends Component<{}, State> {
-    constructor(props: {}) {
+  class TopBarInner extends Component<Props, State> {
+    constructor(props: Props) {
       super(props);
       this.state = {
         displayMobileMenu: false
