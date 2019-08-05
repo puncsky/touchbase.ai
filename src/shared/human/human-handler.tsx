@@ -59,12 +59,8 @@ export function setHumanHandlers(server: MyServer): void {
     ctx.setState("humans", humans);
     ctx.setState("base.userId", ctx.state.userId);
     ctx.body = ctx.isoReactRender({
-      VDom: (
-        <AppContainer>
-          <Route exact path="/contacts/*" component={HumansTableContainer} />
-        </AppContainer>
-      ),
-      clientScript: "/all-table-main.js",
+      VDom: <AppContainer />,
+      clientScript: "/main.js",
       reducer: combineReducers({
         base: noopReducer,
         human: humanReducer,

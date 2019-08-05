@@ -14,6 +14,8 @@ import { Home } from "./home/home";
 import { HumanProfileContainer } from "./human/human-profile";
 import { ProfileCreatorContainer } from "./human/profile-creator";
 import { ProfileEditorContainer } from "./human/profile-editor/profile-editor";
+import { HumansTableContainer } from "./humans/humans";
+import { Onboard } from "./onboard";
 
 type Props = {
   googleTid: string;
@@ -33,7 +35,18 @@ export class App extends Component<Props> {
         <div style={FOOTER_ABOVE}>
           <ScrollToTop>
             <Switch>
+              <Route
+                exact
+                path="/contacts/*"
+                component={HumansTableContainer}
+              />
               <Route exact path="/" component={Home} />
+              <Route exact path="/onboard/" component={Onboard} />
+              <Route
+                exact
+                path="/profile/*"
+                component={HumanProfileContainer}
+              />
               <Route
                 exact
                 path="/:nameDash/*"

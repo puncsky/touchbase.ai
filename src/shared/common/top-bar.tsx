@@ -3,9 +3,10 @@ import { styled, StyleObject } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { Link } from "react-router-dom";
-
 import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
+import { connect } from "react-redux";
+
 import { CommonMargin } from "./common-margin";
 import { Icon } from "./icon";
 import { Cross } from "./icons/cross.svg";
@@ -21,89 +22,103 @@ type State = {
   displayMobileMenu: boolean;
 };
 
-export class TopBar extends Component<{}, State> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      displayMobileMenu: false
-    };
-  }
-
-  public componentDidMount(): void {
-    window.addEventListener("resize", () => {
-      if (
-        document.documentElement &&
-        document.documentElement.clientWidth > PALM_WIDTH
-      ) {
-        this.setState({
-          displayMobileMenu: false
-        });
-      }
-    });
-  }
-
-  public displayMobileMenu = () => {
-    this.setState({
-      displayMobileMenu: true
-    });
-  };
-
-  public hideMobileMenu = () => {
-    this.setState({
-      displayMobileMenu: false
-    });
-  };
-
-  public renderMenu = () => {
-    return [
-      <A key={0} href="/" onClick={this.hideMobileMenu}>
-        {t("topbar.home")}
-      </A>
-    ];
-  };
-
-  public renderMobileMenu = () => {
-    if (!this.state.displayMobileMenu) {
-      return null;
+export const TopBar = connect(state => ({
+  loggedIn: Boolean(state.base.userId)
+}))(
+  class TopBarInner extends Component<{}, State> {
+    constructor(props: {}) {
+      super(props);
+      this.state = {
+        displayMobileMenu: false
+      };
     }
 
-    return (
-      <OutsideClickHandler onOutsideClick={this.hideMobileMenu}>
-        <Dropdown>{this.renderMenu()}</Dropdown>
-      </OutsideClickHandler>
-    );
-  };
+    public componentDidMount(): void {
+      window.addEventListener("resize", () => {
+        if (
+          document.documentElement &&
+          document.documentElement.clientWidth > PALM_WIDTH
+        ) {
+          this.setState({
+            displayMobileMenu: false
+          });
+        }
+      });
+    }
 
-  public render(): JSX.Element {
-    const displayMobileMenu = this.state.displayMobileMenu;
+    public displayMobileMenu = () => {
+      this.setState({
+        displayMobileMenu: true
+      });
+    };
 
-    return (
-      <div>
-        <Bar>
-          <Flex>
-            <Logo />
-            <CommonMargin />
-            <BrandText href="/">{t("topbar.brand")}</BrandText>
-          </Flex>
-          <Flex>
-            <Menu>{this.renderMenu()}</Menu>
-          </Flex>
-          <HamburgerBtn
-            onClick={this.displayMobileMenu}
-            displayMobileMenu={displayMobileMenu}
-          >
-            <Hamburger />
-          </HamburgerBtn>
-          <CrossBtn displayMobileMenu={displayMobileMenu}>
-            <Cross />
-          </CrossBtn>
-        </Bar>
-        <BarPlaceholder />
-        {this.renderMobileMenu()}
-      </div>
-    );
+    public hideMobileMenu = () => {
+      this.setState({
+        displayMobileMenu: false
+      });
+    };
+
+    public renderMenu = () => {
+      return [
+        <A key={0} href="/" onClick={this.hideMobileMenu}>
+          {t("topbar.home")}
+        </A>
+      ];
+    };
+
+    public renderMobileMenu = () => {
+      if (!this.state.displayMobileMenu) {
+        return null;
+      }
+
+      return (
+        <OutsideClickHandler onOutsideClick={this.hideMobileMenu}>
+          <Dropdown>{this.renderMenu()}</Dropdown>
+        </OutsideClickHandler>
+      );
+    };
+
+    public render(): JSX.Element {
+      const { loggedIn } = this.props;
+      const displayMobileMenu = this.state.displayMobileMenu;
+
+      return (
+        <div>
+          <Bar>
+            <Flex>
+              <Logo />
+              <CommonMargin />
+              <BrandText href="/">{t("topbar.brand")}</BrandText>
+              {loggedIn && (
+                <BrandText
+                  key={0}
+                  href="/contacts/"
+                  onClick={this.hideMobileMenu}
+                >
+                  {t("topbar.contacts")}
+                </BrandText>
+              )}
+            </Flex>
+            <Flex>
+              <Menu>{this.renderMenu()}</Menu>
+            </Flex>
+            <HamburgerBtn
+              onClick={this.displayMobileMenu}
+              displayMobileMenu={displayMobileMenu}
+            >
+              <Hamburger />
+            </HamburgerBtn>
+            <CrossBtn displayMobileMenu={displayMobileMenu}>
+              <Cross />
+            </CrossBtn>
+          </Bar>
+          <BarPlaceholder />
+          {this.renderMobileMenu()}
+        </div>
+      );
+    }
   }
-}
+);
 
 const Bar = styled("div", {
   display: "flex",
@@ -220,6 +235,7 @@ const A = styled("a", menuItem);
 const BrandText = styled("a", {
   ...menuItem,
   marginLeft: 0,
+  marginRight: "14px",
   [media.palm]: {}
 });
 // @ts-ignore

@@ -52,7 +52,7 @@ export const HumanProfileContainer = connect(
 )(
   // tslint:disable-next-line:max-func-body-length
   function HumanProfile({ human, interactions }: Props): JSX.Element | null {
-    if (!human.name) {
+    if (!human || !human.name) {
       return null;
     }
     return (
