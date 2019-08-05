@@ -36,7 +36,8 @@ export const authConfig = {
     domain:
       String(process.env.NODE_ENV).indexOf("production") === -1
         ? "localhost"
-        : "example.com",
+        : "rebinder.co",
+
     secure: false,
     httpOnly: true,
     signed: false
@@ -50,10 +51,10 @@ export const authConfig = {
   emailTokenLink:
     String(process.env.NODE_ENV).indexOf("production") === -1
       ? "http://localhost:5000/email-token/"
-      : "https://example.com/email-token/",
+      : "https://rebinder.co/email-token/",
   mailgun: {
-    apiKey: "TODO",
-    domain: "mail.example.com",
+    apiKey: "4ee685b1d4e8f8470ed3e2e0a2aaf1dc-1053eade-3799e99b",
+    domain: "mail.rebinder.co",
     retryLimit: 2
   },
   emailTokenNext: "/settings/reset-password/"
