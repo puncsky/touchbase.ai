@@ -46,8 +46,8 @@ export class MdEditor extends Component<Props> {
         <textarea
           style={{ display: "none" }}
           ref={ref => (this.ref = ref)}
-          defaultValue="..."
-          placeholder="..."
+          defaultValue=""
+          placeholder=""
         />
       </div>
     );

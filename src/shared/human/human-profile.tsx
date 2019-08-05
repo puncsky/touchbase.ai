@@ -16,6 +16,7 @@ import { fullOnLap } from "../common/styles/style-media";
 import { ContentPadding } from "../common/styles/style-padding";
 import { UpsertEventContainer } from "./event/upsert-event";
 import { KeyMetrics } from "./key-metrics";
+import { CommonMargin } from "../common/common-margin";
 
 function currentTitle(human: THuman): string {
   return (
@@ -59,50 +60,52 @@ export const HumanProfileContainer = connect(
       <ContentPadding>
         <Padding />
         <Flex alignItems="flex-start">
-          <Flex width="25%" media={fullOnLap} {...SECTION}>
-            <Flex>
-              <div style={{ paddingBottom: "8px" }}>{human.address}</div>
+          <Flex column={true} width="25%" media={fullOnLap}>
+            <Flex {...SECTION}>
+              <Flex>
+                <div style={{ paddingBottom: "8px" }}>{human.address}</div>
+              </Flex>
+              <Flex width="100%" column={true}>
+                <div style={{ position: "relative" }}>
+                  <img
+                    alt="favicon"
+                    style={{ width: "100%", maxWidth: "272px" }}
+                    src={human.avatarUrl || "/favicon-light.svg"}
+                  />
+                  <Link to="./edit/">
+                    <Icon1 type="edit" />
+                  </Link>
+                </div>
+              </Flex>
+
+              <Flex
+                width="100%"
+                center={true}
+                column={true}
+                padding="8px 0 8px 0"
+                textAlign="center"
+              >
+                <h2 style={fonts.h2}>{human.name}</h2>
+                <h3 style={fonts.h5}>{currentTitle(human)}</h3>
+                <h3 style={fonts.h5}>{currentOrg(human)}</h3>
+              </Flex>
+
+              <KeyMetrics
+                metrics={{
+                  interactionsPerQuarter: 0,
+                  interactions: interactions.length,
+                  knownAt: human.knownAt,
+
+                  inboundTrust: human.inboundTrust,
+                  outboundTrust: human.outboundTrust
+                }}
+              />
+
+              <TitleContent title="experience" human={human} />
+              <TitleContent title="education" human={human} />
+              <TitleContent title="bornAt" human={human} />
+              <TitleContent title="bornAddress" human={human} />
             </Flex>
-            <Flex width="100%" column={true}>
-              <div style={{ position: "relative" }}>
-                <img
-                  alt="favicon"
-                  style={{ width: "100%", maxWidth: "272px" }}
-                  src={human.avatarUrl || "/favicon-light.svg"}
-                />
-                <Link to="./edit/">
-                  <Icon1 type="edit" />
-                </Link>
-              </div>
-            </Flex>
-
-            <Flex
-              width="100%"
-              center={true}
-              column={true}
-              padding="8px 0 8px 0"
-              textAlign="center"
-            >
-              <h2 style={fonts.h2}>{human.name}</h2>
-              <h3 style={fonts.h5}>{currentTitle(human)}</h3>
-              <h3 style={fonts.h5}>{currentOrg(human)}</h3>
-            </Flex>
-
-            <KeyMetrics
-              metrics={{
-                interactionsPerQuarter: 0,
-                interactions: interactions.length,
-                knownAt: human.knownAt,
-
-                inboundTrust: human.inboundTrust,
-                outboundTrust: human.outboundTrust
-              }}
-            />
-
-            <TitleContent title="experience" human={human} />
-            <TitleContent title="education" human={human} />
-            <TitleContent title="bornAt" human={human} />
-            <TitleContent title="bornAddress" human={human} />
 
             <Padding />
           </Flex>
@@ -230,8 +233,8 @@ const Icon1 = styled(Icon, {
     fontSize: "18px"
   },
 
-  padding: "8px",
-  fontSize: "14px",
+  padding: "6px",
+  fontSize: "16px",
   width: "30px",
   height: "30px",
   textAlign: "center",
