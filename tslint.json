@@ -22,6 +22,11 @@
           "file": "src/shared/human/human-profile.tsx",
           "method": "<unknown>",
           "comment": "Usage has been approved by Tian on 2019-07-22 24:46"
+        },
+        {
+          "file": "src/shared/article/article.tsx",
+          "method": "render",
+          "comment": "Usage has been approved by Tian on 2019-07-11 10:21"
         }
       ]
     ],

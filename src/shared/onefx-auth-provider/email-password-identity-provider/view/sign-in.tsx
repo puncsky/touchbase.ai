@@ -129,11 +129,11 @@ class SignInInner extends Component<Props, State> {
                 </Button>
               </FieldMargin>
             </Flex>
-            {/*<FieldMargin>*/}
-            {/*  <StyleLink to="/forgot-password">*/}
-            {/*    {t("auth/sign_in.forgot_password")}*/}
-            {/*  </StyleLink>*/}
-            {/*</FieldMargin>*/}
+            <FieldMargin>
+              <StyleLink to="/forgot-password">
+                {t("auth/sign_in.forgot_password")}
+              </StyleLink>
+            </FieldMargin>
             <FieldMargin>
               <StyleLink to="/sign-up">
                 {t("auth/sign_in.switch_to_sign_up")}

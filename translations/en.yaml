@@ -1,5 +1,7 @@
 add_event: Add Event
 add_interaction: Add Interaction
+auth/button_submit: Submit
+auth/consent: By clicking "SUBMIT", you agree to Beancount.io's <a href="${tosUrl}">Terms of Use</a> and acknowledge you have read the <a href="${policyUrl}">Privacy Policy</a>.
 auth/email-already-in-use: Email is already in use
 auth/forgot_password.back: ← Back to Login
 auth/forgot_password.desc: Enter the email address associated with your account, and we’ll email you a link to reset your password.
@@ -81,3 +83,5 @@ topbar.login: LOG IN
 topbar.sign_up: SIGN UP
 workingOn: Working on
 years_known: Years Known
+tos.privacy: Privacy Policy
+tos.tos: Terms of Service

@@ -14,6 +14,15 @@ export function setServerRoutes(server: MyServer): void {
     ctx.body = "OK";
   });
 
+  server.get("legal", "/legal/*", async (ctx: koa.Context) => {
+    // @ts-ignore
+    ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
+      VDom: <AppContainer />,
+      reducer: noopReducer,
+      clientScript: "/main.js"
+    });
+  });
+
   setHumanHandlers(server);
 
   setApiGateway(server);

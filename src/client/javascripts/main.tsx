@@ -19,6 +19,7 @@ clientReactRender({
   reducer: combineReducers({
     base: noopReducer,
     human: humanReducer,
-    interactions: interactionsReducer
+    interactions: interactionsReducer,
+    apolloState: noopReducer
   })
 });

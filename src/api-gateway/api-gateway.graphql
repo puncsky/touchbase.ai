@@ -3,7 +3,22 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type ArticleResponse {
+  contentHTML: String!
+  id: String!
+  published: Boolean!
+  title: String!
+  date: String!
+  references: [String!]!
+  abstract: String!
+  language: String!
+  filename: String!
+}
+
 type Query {
+  # get the article
+  articles(id: String): [ArticleResponse!]
+
   # is the server healthy?
   health: String!
 }

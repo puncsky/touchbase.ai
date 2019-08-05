@@ -2,6 +2,7 @@ import { styled } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import { Switch } from "react-router";
 import { Route } from "react-router-dom";
+import { ArticleFetcher } from "./article/article-fetcher";
 import { Footer, FOOTER_ABOVE } from "./common/footer";
 import initGoogleAnalytics from "./common/google-analytics";
 import { Head } from "./common/head";
@@ -35,6 +36,7 @@ export class App extends Component<Props> {
         <div style={FOOTER_ABOVE}>
           <ScrollToTop>
             <Switch>
+              <Route exact path="/legal/:id" component={ArticleFetcher} />
               <Route
                 exact
                 path="/contacts/*"
