@@ -29,6 +29,7 @@ edit_event: Edit Event
 education: Education
 experience: Experience
 extraversionIntroversion: Extroversion vs. Introversion
+field.note_placeholder: Type your note here...
 home.create_account: CREATE ACCOUNT
 inbound_trust: Inbound Trust
 interactions: Interactions
@@ -45,6 +46,7 @@ planingPerceiving: Planing vs. Perceiving
 tdp: Team Dimension Profile
 thinkingFeeling: Thinking vs. Feeling
 topbar.brand: Rebinder.co
+topbar.contacts: Contacts
 topbar.create: ADD
 topbar.edit: EDIT
 topbar.home: HOME
@@ -52,4 +54,3 @@ topbar.login: LOG IN
 topbar.sign_up: SIGN UP
 workingOn: Working on
 years_known: Years Known
-topbar.contacts: Contacts

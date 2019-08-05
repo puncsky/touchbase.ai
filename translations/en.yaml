@@ -29,9 +29,33 @@ edit_event: Edit Event
 education: Education
 experience: Experience
 extraversionIntroversion: Extroversion vs. Introversion
+extroversion: Extroversion
+field.address: Address
+field.avatar_url: Avatar
+field.birthplace: Birthplace
+field.blurb: Blurb
+field.dateOfBirth: Date of Birth
+field.desire: Desire
+field.email: Email
+field.emails: Emails
+field.extroversion_introversion.help: Extroverts perfer external people and things and drawing energy from action. Introverts prefer their own thinking and gaining energy from reflection.
+field.extroversion_introversion: Attitudes
+field.inbound_trust: Inbound
+field.intuiting_sensing.help: People who prefer sensing are more likely to trust information that is in the present, tangible, and concrete. Those who prefer intuition tend to trust information that is less dependent upon the senses.
+field.intuiting_sensing: Perceiving
+field.name: Name
+field.note_placeholder: Type your note here...
+field.outbound_trust: Outbound
+field.planing_perceiving.help: Those types who prefer perception show the world their preferred perceiving function (sensing or intuition); otherwise, they prefer planing/judging.
+field.planing_perceiving: Lifestyle
+field.tdp: TDP
+field.thinking_feeling.help: Those who prefer thinking tend to decide things from a more detached standpoint. Those who prefer feeling tend to come to decisions by associating or empathizing with the situation and the needs of the people involved.
+field.thinking_feeling: Judging
+field.working_on: Working on
 home.create_account: CREATE ACCOUNT
 inbound_trust: Inbound Trust
 interactions: Interactions
+introversion: Introversion
 intuitingSensing: Intuiting vs. Sensing
 ipq: IPQ
 knownSource: Source
@@ -42,10 +66,14 @@ not_found.info: We cannot find the page for you...
 not_found.title: Oops!
 outbound_trust: Outbound Trust
 planingPerceiving: Planing vs. Perceiving
+profile.prefill: Prefill other fields
+profile_editor.experience: Experience
+profile_editor.observation: Observation
+profile_editor.pii: Personal
 tdp: Team Dimension Profile
 thinkingFeeling: Thinking vs. Feeling
-topbar.contacts: Contacts
 topbar.brand: Rebinder.co
+topbar.contacts: Contacts
 topbar.create: ADD
 topbar.edit: EDIT
 topbar.home: HOME
@@ -53,30 +81,3 @@ topbar.login: LOG IN
 topbar.sign_up: SIGN UP
 workingOn: Working on
 years_known: Years Known
-profile.prefill: Prefill other fields
-field.email: Email
-field.name: Name
-field.address: Address
-profile_editor.pii: Personal
-profile_editor.experience: Experience
-profile_editor.observation: Observation
-field.emails: Emails
-field.avatar_url: Avatar
-field.dateOfBirth: Date of Birth
-field.birthplace: Birthplace
-extroversion: Extroversion
-introversion: Introversion
-field.extroversion_introversion: Attitudes
-field.extroversion_introversion.help: Extroverts perfer external people and things and drawing energy from action. Introverts prefer their own thinking and gaining energy from reflection.
-field.intuiting_sensing: Perceiving
-field.intuiting_sensing.help: People who prefer sensing are more likely to trust information that is in the present, tangible, and concrete. Those who prefer intuition tend to trust information that is less dependent upon the senses.
-field.thinking_feeling: Judging
-field.thinking_feeling.help: Those who prefer thinking tend to decide things from a more detached standpoint. Those who prefer feeling tend to come to decisions by associating or empathizing with the situation and the needs of the people involved.
-field.planing_perceiving: Lifestyle
-field.planing_perceiving.help: Those types who prefer perception show the world their preferred perceiving function (sensing or intuition); otherwise, they prefer planing/judging.
-field.tdp: TDP
-field.working_on: Working on
-field.desire: Desire
-field.blurb: Blurb
-field.inbound_trust: Inbound
-field.outbound_trust: Outbound

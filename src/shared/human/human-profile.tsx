@@ -1,9 +1,9 @@
 import { Button } from "antd";
+import Icon from "antd/lib/icon";
 import dateFormat from "dateformat";
 import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
 import React from "react";
-import Icon from "antd/lib/icon";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { THuman, TInteraction } from "../../types/human";
@@ -16,7 +16,6 @@ import { fullOnLap } from "../common/styles/style-media";
 import { ContentPadding } from "../common/styles/style-padding";
 import { UpsertEventContainer } from "./event/upsert-event";
 import { KeyMetrics } from "./key-metrics";
-import { CommonMargin } from "../common/common-margin";
 
 function currentTitle(human: THuman): string {
   return (

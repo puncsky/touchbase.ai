@@ -47,7 +47,7 @@ export class MdEditor extends Component<Props> {
           style={{ display: "none" }}
           ref={ref => (this.ref = ref)}
           defaultValue=""
-          placeholder=""
+          placeholder="..."
         />
       </div>
     );

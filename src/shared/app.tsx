@@ -12,11 +12,8 @@ import { fonts } from "./common/styles/style-font";
 import { TopBar } from "./common/top-bar";
 import { Home } from "./home/home";
 import { HumanProfileContainer } from "./human/human-profile";
-import {
-  ProfileEditorContainer,
-  ProfileEditorContainer
-} from "./human/profile-editor/profile-editor";
 import { ProfileCreatorContainer } from "./human/profile-creator";
+import { ProfileEditorContainer } from "./human/profile-editor/profile-editor";
 
 type Props = {
   googleTid: string;
