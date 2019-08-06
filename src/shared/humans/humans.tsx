@@ -113,7 +113,7 @@ const updateHumanFromRow = (row, initialHuman) => {
 export const HumansTableContainer = connect(
   (state: { humans: Array<THuman> }) => ({
     humans: state.humans,
-    rows: state.humans.map(rowFromHuman)
+    rows: state.humans && state.humans.map(rowFromHuman)
   }),
   (dispatch: any) => ({
     actionUpdateHuman: (human: THuman) => dispatch(actionUpdateHuman(human))

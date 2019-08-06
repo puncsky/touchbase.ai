@@ -52,7 +52,7 @@ export function setHumanHandlers(server: MyServer): void {
       ctx.redirect(`${selfProfile.name.replace(/ /g, ".")}/`);
     }
   );
-  server.get("contacts", "/contacts", server.auth.authRequired, async ctx => {
+  server.get("contacts", "/contacts/*", server.auth.authRequired, async ctx => {
     const humans = await server.model.human.findById(ctx.state.userId, 0, 1000);
     ctx.setState("humans", humans);
     ctx.setState("base.userId", ctx.state.userId);

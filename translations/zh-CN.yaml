@@ -85,3 +85,14 @@ workingOn: Working on
 years_known: Years Known
 tos.privacy: Privacy Policy
 tos.tos: Terms of Service
+social_network: Social Network
+field.facebook: Facebook
+field.linkedin: Linkedin
+source: Source
+field.known_at: Known at
+field.known_source: via
+field.experience: Experience
+field.education: Education
+field.jane_doe: Jane Doe
+field.error.required.name: Please enter the name of the contact.
+field.error.required: This field is required.

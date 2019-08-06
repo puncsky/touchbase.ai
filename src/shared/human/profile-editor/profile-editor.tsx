@@ -119,7 +119,7 @@ class ProfileEditorContainer extends Component<Props, State> {
 
 export { ProfileEditorContainer };
 
-class ProfileEditorForm extends Component<{
+export class ProfileEditorForm extends Component<{
   form?: WrappedFormUtils;
   human: THuman;
 }> {
@@ -162,7 +162,7 @@ function PersonalForm({
           rules: [
             {
               required: true,
-              message: t("field.error.required")
+              message: t("field.error.required.name")
             }
           ]
         })(<Input placeholder={t("field.jane_doe")} />)}
@@ -203,7 +203,7 @@ function PersonalForm({
 
       <Form.Item {...formItemLayout} label={t("field.dateOfBirth")}>
         {getFieldDecorator("bornAt", {
-          initialValue: moment(human.bornAt),
+          initialValue: human.bornAt && moment(human.bornAt),
           rules: []
         })(<DatePicker placeholder={t("field.dateOfBirth")} />)}
       </Form.Item>

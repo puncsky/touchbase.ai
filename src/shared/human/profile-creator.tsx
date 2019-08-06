@@ -1,5 +1,8 @@
 // @flow
-import { Input, Modal } from "antd";
+import Form from "antd/lib/form/Form";
+import { WrappedFormUtils } from "antd/lib/form/Form";
+import Modal from "antd/lib/Modal";
+import notification from "antd/lib/notification";
 import window from "global/window";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
@@ -8,18 +11,18 @@ import { RouterProps, withRouter } from "react-router";
 import { THuman } from "../../types/human";
 import { TOP_BAR_HEIGHT } from "../common/top-bar";
 import { actionCreateHuman } from "./human-reducer";
+import { ProfileEditorForm } from "./profile-editor/profile-editor";
 
-const { TextArea } = Input;
-
-export const EMPTY_HUMAN = {
+export const EMPTY_HUMAN: THuman = {
   emails: [""],
-  name: "unknown",
+  name: "",
   avatarUrl: "",
   address: "",
   bornAt: "",
   bornAddress: "",
   workingOn: "",
   desire: "",
+  title: "",
   experience: [
     {
       title: "",
@@ -49,72 +52,90 @@ export const EMPTY_HUMAN = {
 type Props = {
   human: THuman;
   actionCreateHuman(payload: any): void;
+  form?: WrappedFormUtils;
 } & RouterProps;
 
 type State = { visible: boolean };
 
-export const ProfileCreatorContainer = withRouter(
+export const ProfileCreatorContainer = Form.create({ name: "profile-creator" })(
   // @ts-ignore
-  connect(
-    (state: { human: THuman }) => ({ human: state.human }),
-    (dispatch: any) => ({
-      actionCreateHuman: payload => dispatch(actionCreateHuman(payload))
-    })
-  )(
-    class ProfileEditor extends Component<Props, State> {
-      public props: Props;
-      public state: State = { visible: false };
-      public ref: any;
+  withRouter(
+    // @ts-ignore
+    connect(
+      () => ({ human: EMPTY_HUMAN }),
+      (dispatch: any) => ({
+        actionCreateHuman: payload => dispatch(actionCreateHuman(payload))
+      })
+    )(
+      class ProfileEditor extends Component<Props, State> {
+        public props: Props;
+        public state: State = { visible: false };
+        public ref: any;
 
-      public componentDidMount(): void {
-        const { history } = this.props;
-        this.setState({
-          visible: history.location.pathname.endsWith("/create/")
-        });
-      }
+        public componentDidMount(): void {
+          const { history } = this.props;
+          this.setState({
+            visible: history.location.pathname.endsWith("/create/")
+          });
+        }
 
-      public close(): void {
-        const { history } = this.props;
+        public close(): void {
+          const { history } = this.props;
 
-        this.setState({ visible: false });
-        window.setTimeout(() => history.push("../"), 200);
-      }
+          this.setState({ visible: false });
+          window.setTimeout(() => history.push("../"), 200);
+        }
 
-      public onOk(): void {
-        const { actionCreateHuman, history } = this.props;
-        const content = this.ref.textAreaRef.value;
-        const humanObj = JSON.parse(content.slice(1, content.length - 1));
+        public onOk(): void {
+          const { form, human, actionCreateHuman, history } = this.props;
 
-        actionCreateHuman(humanObj);
-
-        this.setState({ visible: false });
-        window.setTimeout(() => {
-          if (history.location.pathname === "/contacts/create/") {
-            history.push("../");
-          } else {
-            history.push(`/${humanObj.name.toLowerCase().replace(/ /g, ".")}/`);
+          if (!form) {
+            return;
           }
-        }, 200);
-      }
 
-      public render(): JSX.Element {
-        const { visible } = this.state;
-        return (
-          <Modal
-            style={{ top: TOP_BAR_HEIGHT }}
-            title={t("submit")}
-            visible={visible}
-            onOk={() => this.onOk()}
-            onCancel={() => this.close()}
-          >
-            <TextArea
-              rows={20}
-              ref={ref => (this.ref = ref)}
-              defaultValue={`\`\n${JSON.stringify(EMPTY_HUMAN, null, 2)}\n\``}
-            />
-          </Modal>
-        );
+          form.validateFields((errors: any, result: any) => {
+            if (errors) {
+              notification.error({ message: t("field.error.required.name") });
+              return;
+            }
+
+            const clone = {
+              ...human,
+              ...result,
+              // @ts-ignore
+              emails: result.emails.split(",")
+            };
+            actionCreateHuman(clone);
+
+            this.setState({ visible: false });
+            window.setTimeout(() => {
+              if (history.location.pathname === "/contacts/create/") {
+                history.push("../");
+              } else {
+                history.push(
+                  `/${clone.name.toLowerCase().replace(/ /g, ".")}/`
+                );
+              }
+            }, 200);
+          });
+        }
+
+        public render(): JSX.Element {
+          const { human, form } = this.props;
+          const { visible } = this.state;
+          return (
+            <Modal
+              style={{ top: TOP_BAR_HEIGHT }}
+              title={t("submit")}
+              visible={visible}
+              onOk={() => this.onOk()}
+              onCancel={() => this.close()}
+            >
+              <ProfileEditorForm human={human} form={form} />
+            </Modal>
+          );
+        }
       }
-    }
+    )
   )
 );

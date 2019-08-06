@@ -9,6 +9,7 @@ import {
   humanReducer,
   interactionsReducer
 } from "../../shared/human/human-reducer";
+import { humansReducer } from "../../shared/humans/humans-reducer";
 
 clientReactRender({
   VDom: (
@@ -19,6 +20,7 @@ clientReactRender({
   reducer: combineReducers({
     base: noopReducer,
     human: humanReducer,
+    humans: humansReducer,
     interactions: interactionsReducer,
     apolloState: noopReducer
   })

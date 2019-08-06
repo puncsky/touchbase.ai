@@ -1,7 +1,7 @@
 // @flow
 
 export type THuman = {
-  _id: string;
+  _id?: string;
 
   // Name card
   emails: Array<string>;
@@ -52,8 +52,8 @@ export type THuman = {
   facebook: string;
 
   // meta
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type TInteraction = {

@@ -34,6 +34,7 @@ export const UpsertEventContainer = connect(
     actionUpsertEvent: payload => dispatch(actionUpsertEvent(payload))
   })
 )(
+  // @ts-ignore
   class Edit extends Component<Props, State> {
     public props: Props;
     public getSimpleMde: any = null;

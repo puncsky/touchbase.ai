@@ -1,4 +1,5 @@
 import window from "global/window";
+import { t } from "onefx/lib/iso-i18n";
 import Helmet from "onefx/lib/react-helmet";
 import React, { Component } from "react";
 import { loadScript } from "./load-script";
@@ -47,7 +48,7 @@ export class MdEditor extends Component<Props> {
           style={{ display: "none" }}
           ref={ref => (this.ref = ref)}
           defaultValue=""
-          placeholder="..."
+          placeholder={t("field.note_placeholder")}
         />
       </div>
     );
