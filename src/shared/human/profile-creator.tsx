@@ -1,7 +1,7 @@
 // @flow
 import Form from "antd/lib/form/Form";
 import { WrappedFormUtils } from "antd/lib/form/Form";
-import Modal from "antd/lib/Modal";
+import Modal from "antd/lib/modal";
 import notification from "antd/lib/notification";
 import window from "global/window";
 import { t } from "onefx/lib/iso-i18n";
