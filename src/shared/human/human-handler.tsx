@@ -42,6 +42,7 @@ export function setHumanHandlers(server: MyServer): void {
         // TODO(tian): just create a default one for now. should lead to onboarding steps.
         selfProfile = await server.model.human.newAndSave({
           ...EMPTY_HUMAN,
+          name: "Your Name",
           ownerId: ctx.state.userId
         });
         await server.auth.user.updateAssocProfileId(
