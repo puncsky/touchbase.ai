@@ -6,6 +6,7 @@ import React, { Component } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import AntIcon from "antd/lib/icon";
 
 import { CommonMargin } from "./common-margin";
 import { Icon } from "./icon";
@@ -101,13 +102,14 @@ export const TopBar = connect((state: any) => ({
               <CommonMargin />
               <BrandText href="/">{t("topbar.brand")}</BrandText>
               {loggedIn && (
-                <BrandText
-                  key={0}
-                  href="/contacts/"
-                  onClick={this.hideMobileMenu}
-                >
-                  {t("topbar.contacts")}
-                </BrandText>
+                <>
+                  <BrandText href="/contacts/" onClick={this.hideMobileMenu}>
+                    {t("topbar.contacts")}
+                  </BrandText>
+                  <BrandText href="/settings/" onClick={this.hideMobileMenu}>
+                    <AntIcon type="setting" theme="filled" />
+                  </BrandText>
+                </>
               )}
             </Flex>
             <Flex>
