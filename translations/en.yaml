@@ -61,7 +61,7 @@ introversion: Introversion
 intuitingSensing: Intuiting vs. Sensing
 ipq: IPQ
 knownSource: Source
-meta.description: Intelligently engage more in meaningful relationships
+meta.description: Smartly engage more in meaningful relationships
 meta.title: Rebinder.co
 not_found.bar: Not Found
 not_found.info: We cannot find the page for you...
@@ -99,3 +99,10 @@ field.error.required: This field is required.
 settings.manage_your_account: Manage Your Account
 settings.security: Security
 settings.logout: Logout
+home.title: Smartly engage more in meaningful relationships
+home.desc: Most powerful personal CRM. Empowering relation builders with data and AI. Growing personal network with speed and quality.
+home.get_started: Sign Up to Build Relationships
+home.section1.title: Live a thriving social life
+home.section1.desc:
+  <p>Relationships are like gardening. They grow if you work diligently, starve if they are ignored, and die if they get too much attention.</p>
+  <p>Rebinder.co makes it easy to understand people, grow networks, and engage in meaningful relationships.</p>

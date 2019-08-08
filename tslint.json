@@ -27,6 +27,11 @@
           "file": "src/shared/article/article.tsx",
           "method": "render",
           "comment": "Usage has been approved by Tian on 2019-07-11 10:21"
+        },
+        {
+          "file": "src/shared/home/home.tsx",
+          "method": "render",
+          "comment": "Usage has been approved by Tian on 2019-08-08 03:26"
         }
       ]
     ],

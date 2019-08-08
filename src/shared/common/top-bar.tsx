@@ -141,7 +141,6 @@ const Bar = styled("div", {
   lineHeight: `${TOP_BAR_HEIGHT}px`,
   height: `${TOP_BAR_HEIGHT}px`,
   backgroundColor: colors.nav01,
-  color: colors.white,
   position: "fixed",
   top: "0px",
   left: "0px",

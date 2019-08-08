@@ -1,109 +1,141 @@
+import Button from "antd/lib/button";
+import Col from "antd/lib/grid/col";
 import Row from "antd/lib/grid/row";
 import Icon from "antd/lib/icon";
 import Layout from "antd/lib/layout";
-import gql from "graphql-tag";
+// @ts-ignore
 import { assetURL } from "onefx/lib/asset-url";
 // @ts-ignore
+import { t } from "onefx/lib/iso-i18n";
+// @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import React from "react";
 import { PureComponent } from "react";
-import { Query, QueryResult } from "react-apollo";
+import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { CommonMargin } from "../common/common-margin";
+import { Flex } from "../common/flex";
 import { colors } from "../common/styles/style-color";
+import { media } from "../common/styles/style-media";
 import { ContentPadding } from "../common/styles/style-padding";
 
-const GET_HEALTH = gql`
-  {
-    health
-  }
-`;
-
-export class Home extends PureComponent {
+// @ts-ignore
+@withRouter
+class HomeInner extends PureComponent<{ userId: string }> {
   public render(): JSX.Element {
+    // @ts-ignore
+    const { history } = this.props;
     return (
-      <ContentPadding>
-        <Layout tagName={"main"}>
-          <Layout.Content
-            tagName={"main"}
-            style={{ backgroundColor: "#fff", padding: "32px" }}
-          >
-            <Row type="flex" justify="center">
-              <OneFxIcon src={assetURL("/favicon.svg")} />
-            </Row>
-            <Row type="flex" justify="center">
-              <Title>OneFx</Title>
-            </Row>
-            <Row type="flex" justify="center">
-              <p>Building Web & Mobile Apps with Speed & Quality</p>
-            </Row>
-            <Row type="flex" justify="center">
-              <a
-                href="/api-gateway/"
-                target="_blank"
-                rel="noreferrer nofollow noopener"
-              >
-                GraphQL Endpoint
-              </a>
-            </Row>
-            <Row type="flex" justify="center">
-              <Query query={GET_HEALTH} ssr={false} fetchPolicy="network-only">
-                {({
-                  loading,
-                  error,
-                  data
-                }: QueryResult<{ health: string }>) => {
-                  if (loading) {
-                    return (
-                      <div>
-                        <Icon type="loading" /> Checking Status
-                      </div>
-                    );
-                  }
-                  if (error) {
-                    return (
-                      <div>
-                        <Icon
-                          type="close-circle"
-                          theme="twoTone"
-                          twoToneColor={colors.error}
-                        />{" "}
-                        Not OK
-                      </div>
-                    );
-                  }
+      <Layout tagName={"main"}>
+        <Layout.Content
+          tagName={"main"}
+          style={{ backgroundColor: colors.nav01 }}
+        >
+          <ContentPadding>
+            <Row style={{ margin: "80px 0" }}>
+              <Col md={12} xs={24}>
+                <HeroH1>{t("home.title")}</HeroH1>
+                <HeroP>{t("home.desc")}</HeroP>
+                {this.props.userId ? (
+                  <Button type="primary" size="large" href="/login/">
+                    {t("home.get_started_welcome_back")}
 
-                  return (
-                    <div>
-                      <Icon
-                        type="check-circle"
-                        theme="twoTone"
-                        twoToneColor={colors.success}
-                      />{" "}
-                      {data && data.health}
+                    <div className="bw ns dw nt it">
+                      <svg
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <title>Arrow right (filled)</title>
+                        <path
+                          d="M22.2 12l-6.5 9h-3.5l5.5-7.5H2v-3h15.7L12.2 3h3.5l6.5 9z"
+                          fill="currentColor"
+                        ></path>
+                      </svg>
                     </div>
-                  );
-                }}
-              </Query>
+                  </Button>
+                ) : (
+                  <Button type="primary" size="large" href="/sign-up/">
+                    {t("home.get_started")}
+
+                    <Icon type="arrow-right" />
+                  </Button>
+                )}
+                <CommonMargin />
+              </Col>
+              <Col md={12} xs={24}>
+                <Flex center={true} width="100%">
+                  <Img src={assetURL("/social-media.svg")} alt="social media" />
+                </Flex>
+              </Col>
             </Row>
-          </Layout.Content>
-        </Layout>
-      </ContentPadding>
+          </ContentPadding>
+        </Layout.Content>
+
+        <Layout.Content tagName={"main"}>
+          <ContentPadding>
+            <Row style={{ margin: "80px 0" }}>
+              <Col md={12} xs={24}>
+                <Flex center={true} width="100%">
+                  <Img
+                    src={assetURL("/mission122.svg")}
+                    alt="live a thriving social life"
+                  />
+                </Flex>
+              </Col>
+
+              <Col md={12} xs={24}>
+                <H2>{t("home.section1.title")}</H2>
+                <P
+                  dangerouslySetInnerHTML={{ __html: t("home.section1.desc") }}
+                />
+              </Col>
+            </Row>
+          </ContentPadding>
+        </Layout.Content>
+      </Layout>
     );
   }
 }
 
-const OneFxIcon = styled("img", {
-  width: "150px",
-  height: "150px",
-  boxSizing: "border-box",
-  border: "5px white solid",
-  borderRadius: "50%",
-  overflow: "hidden",
-  boxShadow: "0 5px 15px 0px rgba(0,0,0,0.6)",
-  transform: "translatey(0px)",
-  animation: "float 6s ease-in-out infinite"
+export const Home = connect((state: { base: { userId: string } }) => ({
+  userId: state.base.userId
+}))(HomeInner);
+
+const Img = styled("img", {
+  width: "100%",
+  maxHeight: "400px",
+  margin: "8px"
 });
 
-const Title = styled("h1", {
-  color: colors.secondary,
-  margin: "16px"
+const HeroH1 = styled("h1", {
+  fontSize: "36px",
+  margin: 0,
+  fontWeight: 500,
+  [media.palm]: {
+    fontSize: "24px"
+  }
+});
+
+const HeroP = styled("p", {
+  fontSize: "18px",
+  margin: "36px 0",
+  [media.palm]: {
+    fontSize: "14px"
+  }
+});
+
+const H2 = styled("h2", {
+  fontSize: "34px",
+  [media.palm]: {
+    fontSize: "24px"
+  }
+});
+
+const P = styled("div", {
+  fontSize: "18px",
+  [media.palm]: {
+    fontSize: "14px"
+  }
 });
