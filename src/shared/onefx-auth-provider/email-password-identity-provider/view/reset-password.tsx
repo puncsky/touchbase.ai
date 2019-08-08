@@ -3,9 +3,11 @@ import { t } from "onefx/lib/iso-i18n";
 import Helmet from "onefx/lib/react-helmet";
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import React, { Component } from "react";
+import { Component } from "react";
+
+import Button from "antd/lib/button";
+import React from "react";
 import { connect } from "react-redux";
-import { Button } from "../../../common/button";
 import { Flex } from "../../../common/flex";
 import { colors } from "../../../common/styles/style-color";
 import { fullOnPalm } from "../../../common/styles/style-media";
@@ -22,6 +24,7 @@ const LOGIN_FORM = "reset-password";
 
 type Props = {
   token: string;
+  isEmbedded?: boolean;
 };
 type State = {
   errorPassword: string;
@@ -31,13 +34,15 @@ type State = {
   valueNewPassword: string;
 
   message: string;
+
+  disableButton: boolean;
 };
 
 type ReduxProps = {
   token: string;
 };
 
-// @ts-ignore
+// $FlowFixMe
 export const ResetPasswordContainer = connect<ReduxProps>(state => ({
   // @ts-ignore
   token: state.base.token
@@ -52,7 +57,8 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
         valuePassword: "",
         valueNewPassword: "",
 
-        message: ""
+        message: "",
+        disableButton: false
       };
     }
 
@@ -65,6 +71,11 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
       const { newPassword = "", password = "", token = "" } = serialize(el, {
         hash: true
       }) as { newPassword: string; password: string; token: string };
+      this.setState({
+        disableButton: true,
+        valueNewPassword: newPassword,
+        valuePassword: password
+      });
       axiosInstance
         .post("/api/reset-password/", {
           password,
@@ -78,13 +89,15 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
               errorPassword: "",
               errorNewPassword: "",
               valuePassword: "",
-              valueNewPassword: ""
+              valueNewPassword: "",
+              disableButton: false
             });
             if (r.data.shouldRedirect) {
               window.setInterval(
                 () => (window.location.href = r.data.next),
                 3000
               );
+
               return;
             }
           } else if (r.data.error) {
@@ -94,7 +107,8 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
               valueNewPassword: newPassword,
               errorPassword: "",
               errorNewPassword: "",
-              message: ""
+              message: "",
+              disableButton: false
             };
             if (error.code === "auth/wrong-password") {
               errorState.errorPassword = error.message;
@@ -105,10 +119,13 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
 
             this.setState(errorState);
           }
+        })
+        .catch(err => {
+          window.console.error(`failed to post reset-password: ${err}`);
         });
     }
 
-    public render(): JSX.Element {
+    public renderForm(): JSX.Element {
       const {
         errorPassword,
         errorNewPassword,
@@ -117,65 +134,80 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
         message
       } = this.state;
       const { token } = this.props;
+
+      return (
+        <Form id={LOGIN_FORM}>
+          {message && (
+            <Info>
+              <Flex width="100%">
+                <span>{message}</span>
+                <i
+                  role={"button"}
+                  style={{ color: colors.white, cursor: "pointer" }}
+                  onClick={() => this.setState({ message: "" })}
+                  className="fas fa-times"
+                />
+              </Flex>
+            </Info>
+          )}
+          {token ? (
+            <input
+              placeholder={""}
+              name="token"
+              hidden={true}
+              defaultValue={token}
+            />
+          ) : (
+            <PasswordField defaultValue={valuePassword} error={errorPassword} />
+          )}
+          {(!message || this.props.isEmbedded) && (
+            <FieldMargin>
+              <InputLabel>New Password</InputLabel>
+              <TextInput
+                defaultValue={valueNewPassword}
+                error={errorNewPassword}
+                type="password"
+                aria-label="New Password"
+                name="newPassword"
+                placeholder="New Password"
+              />
+              <InputError>{errorNewPassword || "\u0020"}</InputError>
+            </FieldMargin>
+          )}
+          {(!message || this.props.isEmbedded) && (
+            <FieldMargin>
+              {/*
+                // @ts-ignore */}
+              <Button
+                type={this.props.isEmbedded ? "default" : "primary"}
+                htmlType="submit"
+                // @ts-ignore
+                onClick={(e: Event) => this.onSubmit(e)}
+                style={{ width: "100%" }}
+                size="large"
+                loading={this.state.disableButton}
+              >
+                {t("auth/button_submit")}
+              </Button>
+            </FieldMargin>
+          )}
+        </Form>
+      );
+    }
+
+    public render(): JSX.Element {
+      if (this.props.isEmbedded) {
+        return this.renderForm();
+      }
+
       return (
         <ContentPadding>
           <Flex minHeight="550px" center={true}>
-            <Form id={LOGIN_FORM}>
-              <Helmet title={`login - ${t("topbar.brand")}`} />
-              <Flex column={true}>
-                <h1>{t("auth/reset_password")}</h1>
-                {message && (
-                  <Info>
-                    <Flex width="100%">
-                      <span>{message}</span>
-                      <i
-                        role={"button"}
-                        style={{ color: colors.white, cursor: "pointer" }}
-                        onClick={() => this.setState({ message: "" })}
-                        className="fas fa-times"
-                      />
-                    </Flex>
-                  </Info>
-                )}
-                {token ? (
-                  <input
-                    placeholder={""}
-                    name="token"
-                    hidden={true}
-                    defaultValue={token}
-                  />
-                ) : (
-                  <PasswordField
-                    defaultValue={valuePassword}
-                    error={errorPassword}
-                  />
-                )}
-                {!message && (
-                  <FieldMargin>
-                    <InputLabel>New Password</InputLabel>
-                    <TextInput
-                      defaultValue={valueNewPassword}
-                      error={errorNewPassword}
-                      type="password"
-                      aria-label="New Password"
-                      name="newPassword"
-                      placeholder="New Password"
-                    />
-                    <InputError>{errorNewPassword || "\u0020"}</InputError>
-                  </FieldMargin>
-                )}
-                {!message && (
-                  <FieldMargin>
-                    <Button
-                      onClick={(e: Event) => this.onSubmit(e)}
-                      width="100%"
-                    >
-                      SUBMIT
-                    </Button>
-                  </FieldMargin>
-                )}
-              </Flex>
-            </Form>
+            <Helmet title={`login - ${t("topbar.brand")}`} />
+            <Flex column={true}>
+              <h1>{t("auth/reset_password")}</h1>
+              {this.renderForm()}
+            </Flex>
           </Flex>
         </ContentPadding>
       );

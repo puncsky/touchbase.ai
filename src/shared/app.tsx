@@ -17,6 +17,7 @@ import { ProfileCreatorContainer } from "./human/profile-creator";
 import { ProfileEditorContainer } from "./human/profile-editor/profile-editor";
 import { HumansTableContainer } from "./humans/humans";
 import { Onboard } from "./onboard";
+import { Settings } from "./settings/settings";
 
 type Props = {
   googleTid: string;
@@ -49,6 +50,7 @@ export class App extends Component<Props> {
                 path="/profile/*"
                 component={HumanProfileContainer}
               />
+              <Route exact path="/settings/*" component={Settings} />
               <Route
                 exact
                 path="/:nameDash/*"

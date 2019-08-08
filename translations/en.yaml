@@ -96,3 +96,6 @@ field.education: Education
 field.jane_doe: Jane Doe
 field.error.required.name: Please enter the name of the contact.
 field.error.required: This field is required.
+settings.manage_your_account: Manage Your Account
+settings.security: Security
+settings.logout: Logout

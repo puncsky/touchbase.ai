@@ -1,4 +1,5 @@
 // @ts-ignore
+import AntIcon from "antd/lib/icon";
 import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import { styled, StyleObject } from "onefx/lib/styletron-react";
@@ -6,7 +7,6 @@ import React, { Component } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import AntIcon from "antd/lib/icon";
 
 import { CommonMargin } from "./common-margin";
 import { Icon } from "./icon";

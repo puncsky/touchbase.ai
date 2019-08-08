@@ -78,26 +78,25 @@ export function setHumanHandlers(server: MyServer): void {
       const user = await server.auth.user.getById(ctx.state.userId);
       const name = nameDot.replace(/-/g, " ").replace(/\./g, " ");
       const human = await server.model.human.getByName(user.id, name);
-      if (!human) {
-        return;
-      }
       ctx.setState("human", human);
       ctx.setState("base.ownerHumanId", user.lifetimeHumanId);
       ctx.setState("base.userId", user.id);
-      const interactions =
-        (await server.model.event.getAllByOwnerIdRelatedHumanId(
-          ctx.state.userId,
-          human.id
-        )) || [];
-      ctx.setState(
-        "interactions",
-        interactions.map((iter: TPersonalNote) => ({
-          id: iter.id,
-          timestamp: iter.timestamp,
-          content: iter.content,
-          contentHtml: mdit.render(iter.content)
-        }))
-      );
+      if (human) {
+        const interactions =
+          (await server.model.event.getAllByOwnerIdRelatedHumanId(
+            ctx.state.userId,
+            human.id
+          )) || [];
+        ctx.setState(
+          "interactions",
+          interactions.map((iter: TPersonalNote) => ({
+            id: iter.id,
+            timestamp: iter.timestamp,
+            content: iter.content,
+            contentHtml: mdit.render(iter.content)
+          }))
+        );
+      }
       ctx.body = ctx.isoReactRender({
         VDom: <AppContainer />,
         clientScript: "/main.js",
