@@ -32,7 +32,7 @@ module.exports = {
     }
   },
   analytics: {
-    googleTid: "TODO: replace with your googleTid"
+    googleTid: "G-W01VD4JFJW"
   },
   // csp: {
   //   "default-src": ["none"],

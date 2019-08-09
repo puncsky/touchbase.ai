@@ -4,7 +4,7 @@ import { Switch } from "react-router";
 import { Route } from "react-router-dom";
 import { ArticleFetcher } from "./article/article-fetcher";
 import { Footer, FOOTER_ABOVE } from "./common/footer";
-import initGoogleAnalytics from "./common/google-analytics";
+import initGoogleTagmanager from "./common/google-analytics";
 import { Head } from "./common/head";
 import { NotFound } from "./common/not-found";
 import { ScrollToTop } from "./common/scroll-top";
@@ -26,7 +26,7 @@ type Props = {
 
 export class App extends Component<Props> {
   public componentDidMount(): void {
-    initGoogleAnalytics({ tid: this.props.googleTid });
+    initGoogleTagmanager({ tid: this.props.googleTid });
   }
 
   public render(): JSX.Element {
