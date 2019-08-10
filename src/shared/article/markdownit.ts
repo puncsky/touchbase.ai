@@ -4,7 +4,6 @@ import MarkdownIt from "markdown-it";
 import markMiddleware from "markdown-it-mark";
 // @ts-ignore
 import markdownItTocAndAnchor from "markdown-it-toc-and-anchor";
-import { logger } from "onefx/lib/integrated-gateways/logger";
 
 export const mdit = new MarkdownIt({
   html: true,
@@ -15,7 +14,7 @@ export const mdit = new MarkdownIt({
       try {
         return hljs.highlight(lang, str).value;
       } catch (err) {
-        logger.error("failed to highlight hljs.getLanguage", err);
+        window.console.error("failed to highlight hljs.getLanguage", err);
       }
     }
 

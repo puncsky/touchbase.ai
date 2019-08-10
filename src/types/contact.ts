@@ -1,5 +1,6 @@
-export type TContact = {
-  _id: string;
+export interface TContact {
+  _id?: string;
+  ownerId?: string;
 
   // Name card
   emails: Array<string>;
@@ -50,14 +51,14 @@ export type TContact = {
   facebook: string;
 
   // meta
-  createdAt: string;
-  updatedAt: string;
-};
+  createdAt?: string;
+  updatedAt?: string;
+}
 
-export type TPersonalNote = {
+export interface TPersonalNote {
   id: string;
   timestamp: Date;
   content: string;
   contentHtml: string;
   relatedContacts: Array<string>;
-};
+}

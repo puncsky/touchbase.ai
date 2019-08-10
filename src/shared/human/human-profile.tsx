@@ -1,14 +1,17 @@
 import { Button } from "antd";
 import Icon from "antd/lib/icon";
 import dateFormat from "dateformat";
+import gql from "graphql-tag";
 import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
-import React from "react";
+import React, { Component } from "react";
+import { Query, QueryResult } from "react-apollo";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { THuman, TInteraction } from "../../types/human";
 import { BOX_SHADOW, LINE } from "../common/box-shadow";
 import { Flex } from "../common/flex";
+import { mdit } from "../common/markdownit";
 import { shade } from "../common/styles/shade";
 import { colors } from "../common/styles/style-color";
 import { fonts } from "../common/styles/style-font";
@@ -92,7 +95,7 @@ export const HumanProfileContainer = connect(
               <KeyMetrics
                 metrics={{
                   interactionsPerQuarter: 0,
-                  interactions: interactions.length,
+                  interactions: interactions && interactions.length,
                   knownAt: human.knownAt,
 
                   inboundTrust: human.inboundTrust,
@@ -127,31 +130,7 @@ export const HumanProfileContainer = connect(
                 <Button type="primary">{t("add_event")}</Button>
               </UpsertEventContainer>
 
-              {interactions.map((iter, i) => (
-                <div
-                  key={i}
-                  style={{
-                    width: "100%",
-                    borderTop: LINE,
-                    margin: "12px 0 12px 0",
-                    padding: "12px 0 12px 0",
-                    wordBreak: "break-word"
-                  }}
-                >
-                  <Flex>
-                    <span>
-                      {dateFormat(iter.timestamp, "yyyy-mm-dd HH:MM")}{" "}
-                    </span>
-                    <UpsertEventContainer
-                      eventId={iter.id}
-                      initialValue={iter.content}
-                    >
-                      <div style={{ cursor: "pointer" }}>{t("edit")}</div>
-                    </UpsertEventContainer>
-                  </Flex>
-                  <div dangerouslySetInnerHTML={{ __html: iter.contentHtml }} />
-                </div>
-              ))}
+              <Interactions contactId={String(human._id)} />
             </Flex>
 
             <Padding />
@@ -247,3 +226,114 @@ const Icon1 = styled(Icon, {
   background: colors.primary,
   color: colors.white
 });
+
+const GET_INTERACTIONS = gql`
+  query interactions($contactId: String, $offset: Float, $limit: Float) {
+    interactions(contactId: $contactId, offset: $offset, limit: $limit) {
+      id
+      content
+      timestamp
+    }
+  }
+`;
+
+class Interactions extends Component<{ contactId: string }> {
+  public start: number = 0;
+
+  public static PAGE_SIZE: number = 5;
+
+  public render(): JSX.Element {
+    const { contactId } = this.props;
+
+    return (
+      <Query
+        query={GET_INTERACTIONS}
+        fetchPolicy="network-only"
+        variables={{ contactId, offset: 0, limit: Interactions.PAGE_SIZE }}
+      >
+        {({
+          loading,
+          error,
+          data,
+          fetchMore
+        }: QueryResult<{ interactions: Array<TInteraction> }>) => {
+          if (loading || error || !data) {
+            return <div />;
+          }
+
+          return (
+            <>
+              {data.interactions.map((iter, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: "100%",
+                    borderTop: LINE,
+                    margin: "12px 0 12px 0",
+                    padding: "12px 0 12px 0",
+                    wordBreak: "break-word"
+                  }}
+                >
+                  <Flex>
+                    <span>
+                      {dateFormat(iter.timestamp, "yyyy-mm-dd HH:MM")}{" "}
+                    </span>
+                    <UpsertEventContainer
+                      eventId={iter.id}
+                      initialValue={iter.content}
+                    >
+                      <div style={{ cursor: "pointer" }}>{t("edit")}</div>
+                    </UpsertEventContainer>
+                  </Flex>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: mdit.render(iter.content)
+                    }}
+                  />
+                </div>
+              ))}
+
+              <Button
+                onClick={() => {
+                  fetchMore({
+                    query: GET_INTERACTIONS,
+                    variables: {
+                      contactId,
+                      offset: this.start + Interactions.PAGE_SIZE,
+                      limit: Interactions.PAGE_SIZE
+                    },
+                    updateQuery: (prev, { fetchMoreResult }) => {
+                      if (!fetchMoreResult) {
+                        return prev;
+                      }
+                      this.start += Interactions.PAGE_SIZE;
+                      window.console.log(
+                        JSON.stringify({
+                          prev,
+                          fetchMoreResult
+                        })
+                      );
+                      return {
+                        interactions: [
+                          ...prev.interactions,
+                          ...fetchMoreResult.interactions
+                        ]
+                      };
+                    }
+                  }).catch(err => {
+                    window.console.error(
+                      `failed fetchMore for interactions: ${err}`
+                    );
+                  });
+                }}
+              >
+                <Icon type="down" />
+                {t("fetch_more")}
+              </Button>
+            </>
+          );
+        }}
+      </Query>
+    );
+  }
+}

@@ -15,10 +15,117 @@ type ArticleResponse {
   filename: String!
 }
 
+enum AttitudeType {
+  empty
+  introversion
+  extroversion
+  ambiversion
+}
+
+type Contact {
+  _id: String
+  emails: [String!]!
+  name: String!
+  avatarUrl: String!
+  address: String!
+  bornAt: String!
+  bornAddress: String!
+  knownAt: String!
+  knownSource: String!
+  extraversionIntroversion: AttitudeType!
+  intuitingSensing: PerceivingType!
+  thinkingFeeling: JudgingType!
+  planingPerceiving: LifestyleType!
+  tdp: TdpType!
+  inboundTrust: String!
+  outboundTrust: String!
+  blurb: String!
+  workingOn: String!
+  desire: String!
+  title: String!
+  experience: [String!]!
+  education: [String!]!
+  linkedin: String!
+  facebook: String!
+  createdAt: String
+  updatedAt: String
+}
+
+input CreateContactInput {
+  _id: String
+  emails: [String!]!
+  name: String!
+  avatarUrl: String!
+  address: String!
+  bornAt: String!
+  bornAddress: String!
+  knownAt: String!
+  knownSource: String!
+  extraversionIntroversion: AttitudeType!
+  intuitingSensing: PerceivingType!
+  thinkingFeeling: JudgingType!
+  planingPerceiving: LifestyleType!
+  tdp: TdpType!
+  inboundTrust: String!
+  outboundTrust: String!
+  blurb: String!
+  workingOn: String!
+  desire: String!
+  title: String!
+  experience: [String!]!
+  education: [String!]!
+  linkedin: String!
+  facebook: String!
+  createdAt: String
+  updatedAt: String
+}
+
+# The javascript `Date` as string. Type represents date and time as the ISO Date string.
+scalar DateTime
+
+type Interaction {
+  id: String!
+  timestamp: DateTime!
+  content: String!
+  contentHtml: String
+}
+
+enum JudgingType {
+  empty
+  thinking
+  feeling
+}
+
+enum LifestyleType {
+  empty
+  planing
+  perceiving
+}
+
+type Mutation {
+  createContact(createContactInput: CreateContactInput!): Contact!
+}
+
+enum PerceivingType {
+  empty
+  intuiting
+  sensing
+}
+
 type Query {
   # get the article
   articles(id: String): [ArticleResponse!]
+  interactions(contactId: String, offset: Float, limit: Float): [Interaction!]!
 
   # is the server healthy?
   health: String!
+}
+
+enum TdpType {
+  empty
+  creator
+  refiner
+  advancer
+  executor
+  flexor
 }

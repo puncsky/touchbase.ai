@@ -5,6 +5,7 @@ import { combineReducers } from "redux";
 import { MyServer } from "../../server/start-server";
 import { TPersonalNote } from "../../types/contact";
 import { AppContainer } from "../app-container";
+import { apolloSSR } from "../common/apollo-ssr";
 import { mdit } from "../common/markdownit";
 import { humansReducer } from "../humans/humans-reducer";
 import { humanReducer, interactionsReducer } from "./human-reducer";
@@ -81,30 +82,33 @@ export function setHumanHandlers(server: MyServer): void {
       ctx.setState("human", human);
       ctx.setState("base.ownerHumanId", user.lifetimeHumanId);
       ctx.setState("base.userId", user.id);
-      if (human) {
-        const interactions =
-          (await server.model.event.getAllByOwnerIdRelatedHumanId(
-            ctx.state.userId,
-            human.id
-          )) || [];
-        ctx.setState(
-          "interactions",
-          interactions.map((iter: TPersonalNote) => ({
-            id: iter.id,
-            timestamp: iter.timestamp,
-            content: iter.content,
-            contentHtml: mdit.render(iter.content)
-          }))
-        );
-      }
-      ctx.body = ctx.isoReactRender({
+      // if (human) {
+      //   const interactions =
+      //     (await server.model.event.getAllByOwnerIdRelatedHumanId(
+      //       ctx.state.userId,
+      //       human.id
+      //     )) || [];
+      //   ctx.setState(
+      //     "interactions",
+      //     interactions.map((iter: TPersonalNote) => ({
+      //       id: iter.id,
+      //       timestamp: iter.timestamp,
+      //       content: iter.content,
+      //       contentHtml: mdit.render(iter.content)
+      //     }))
+      //   );
+      // }
+      // @ts-ignore
+      ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
         VDom: <AppContainer />,
-        clientScript: "/main.js",
         reducer: combineReducers({
           base: noopReducer,
           human: humanReducer,
-          interactions: interactionsReducer
-        })
+          humans: humansReducer,
+          interactions: interactionsReducer,
+          apolloState: noopReducer
+        }),
+        clientScript: "/main.js"
       });
     }
   );
@@ -144,6 +148,12 @@ export function setHumanHandlers(server: MyServer): void {
       const item = ctx.request.body;
       const ownerId = ctx.state.userId;
       const event = await upsertEvent(ownerId, item);
+      if (!event) {
+        ctx.response.body = {
+          ok: false
+        };
+        return;
+      }
       ctx.response.body = {
         ok: true,
         result: {
@@ -160,7 +170,7 @@ export function setHumanHandlers(server: MyServer): void {
   async function upsertEvent(
     ownerId: string,
     item: TPersonalNote
-  ): Promise<TPersonalNote> {
+  ): Promise<TPersonalNote | null> {
     const found = item.content.match(/@([a-zA-Z\u4e00-\u9fa5.]+)/g) || [];
     const usernames = found.map(it => it.replace("@", "").replace(".", " "));
     const humans = await server.model.human.findManyIdsByNames(usernames);

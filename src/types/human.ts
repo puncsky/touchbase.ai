@@ -1,6 +1,8 @@
 // @flow
 
-export type THuman = {
+import { TContact } from "./contact";
+
+export interface THuman extends TContact {
   _id?: string;
 
   // Name card
@@ -54,11 +56,11 @@ export type THuman = {
   // meta
   createdAt?: string;
   updatedAt?: string;
-};
+}
 
 export type TInteraction = {
   id: string;
-  timestamp: string;
+  timestamp: Date;
   content: string;
   contentHtml: string;
 };

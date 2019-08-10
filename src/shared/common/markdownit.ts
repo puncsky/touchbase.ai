@@ -1,11 +1,9 @@
 import hljs from "highlight.js";
-// @ts-ignore
 import MarkdownIt from "markdown-it";
 // @ts-ignore
 import markMiddleware from "markdown-it-mark";
 // @ts-ignore
 import markdownItTocAndAnchor from "markdown-it-toc-and-anchor";
-import { logger } from "onefx/lib/integrated-gateways/logger";
 
 export const mdit = new MarkdownIt({
   html: true,
@@ -16,7 +14,7 @@ export const mdit = new MarkdownIt({
       try {
         return hljs.highlight(lang, str).value;
       } catch (err) {
-        logger.error("failed to highlight hljs.getLanguage", err);
+        window.console.error("failed to highlight hljs.getLanguage", err);
       }
     }
 
@@ -27,5 +25,5 @@ export const mdit = new MarkdownIt({
   .use(markdownItTocAndAnchor, {
     anchorLinkBefore: false,
     anchorLinkSymbol: "",
-    anchorLinkSymbolClassName: "fas fa-link"
+    anchorLinkSymbolClassName: "markdownIt-Link-Anchor"
   });

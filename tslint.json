@@ -32,6 +32,11 @@
           "file": "src/shared/home/home.tsx",
           "method": "render",
           "comment": "Usage has been approved by Tian on 2019-08-08 03:26"
+        },
+        {
+          "file": "src/shared/human/human-profile.tsx",
+          "method": "render",
+          "comment": "Usage has been approved by Tian on 2019-08-10 01:54"
         }
       ]
     ],

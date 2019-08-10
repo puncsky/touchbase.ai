@@ -1,6 +1,7 @@
 import { TPersonalNote } from "../types/contact";
 
 import mongoose from "mongoose";
+
 const Schema = mongoose.Schema;
 
 type TPersonalNoteDoc = mongoose.Document &
@@ -46,13 +47,27 @@ export class PersonalNoteModel {
     return this.Model.findOne({ _id: id });
   }
 
-  public async getAllByOwnerIdRelatedHumanId(
-    ownerId: string,
-    humanId: string
-  ): Promise<Array<TPersonalNoteDoc>> {
-    return this.Model.find({ ownerId, relatedHumans: humanId }).sort({
+  public async getAllByOwnerIdRelatedHumanId({
+    ownerId,
+    humanId,
+    skip,
+    limit
+  }: {
+    ownerId: string;
+    humanId: string;
+    skip?: number;
+    limit?: number;
+  }): Promise<Array<TPersonalNoteDoc>> {
+    let resp = this.Model.find({ ownerId, relatedHumans: humanId }).sort({
       timestamp: "desc"
     });
+    if (skip !== undefined) {
+      resp = resp.skip(skip);
+    }
+    if (limit !== undefined) {
+      resp = resp.limit(limit);
+    }
+    return resp;
   }
 
   public async updateOne(
@@ -64,6 +79,10 @@ export class PersonalNoteModel {
   }
 
   public async newAndSave(entry: TPersonalNote): Promise<TPersonalNoteDoc> {
+    return new this.Model(entry).save();
+  }
+
+  public async add(entry: any): Promise<TPersonalNoteDoc> {
     return new this.Model(entry).save();
   }
 }
