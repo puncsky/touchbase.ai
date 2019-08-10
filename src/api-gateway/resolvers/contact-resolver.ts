@@ -1,3 +1,4 @@
+import { AuthenticationError } from "apollo-server-errors";
 import {
   Arg,
   Args,
@@ -12,7 +13,6 @@ import {
 } from "type-graphql";
 import { THuman, TInteraction } from "../../types/human";
 import { Context } from "../api-gateway";
-import { AuthenticationError } from "apollo-server-errors";
 
 export enum AttitudeType {
   empty = "",
