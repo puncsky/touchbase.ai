@@ -60,5 +60,5 @@ export interface TPersonalNote {
   timestamp: Date;
   content: string;
   contentHtml: string;
-  relatedContacts: Array<string>;
+  relatedHumans: Array<string>;
 }

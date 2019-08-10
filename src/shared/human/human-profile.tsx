@@ -293,43 +293,45 @@ class Interactions extends Component<{ contactId: string }> {
                 </div>
               ))}
 
-              <Button
-                onClick={() => {
-                  fetchMore({
-                    query: GET_INTERACTIONS,
-                    variables: {
-                      contactId,
-                      offset: this.start + Interactions.PAGE_SIZE,
-                      limit: Interactions.PAGE_SIZE
-                    },
-                    updateQuery: (prev, { fetchMoreResult }) => {
-                      if (!fetchMoreResult) {
-                        return prev;
+              {Boolean(data.interactions.length) && (
+                <Button
+                  onClick={() => {
+                    fetchMore({
+                      query: GET_INTERACTIONS,
+                      variables: {
+                        contactId,
+                        offset: this.start + Interactions.PAGE_SIZE,
+                        limit: Interactions.PAGE_SIZE
+                      },
+                      updateQuery: (prev, { fetchMoreResult }) => {
+                        if (!fetchMoreResult) {
+                          return prev;
+                        }
+                        this.start += Interactions.PAGE_SIZE;
+                        window.console.log(
+                          JSON.stringify({
+                            prev,
+                            fetchMoreResult
+                          })
+                        );
+                        return {
+                          interactions: [
+                            ...prev.interactions,
+                            ...fetchMoreResult.interactions
+                          ]
+                        };
                       }
-                      this.start += Interactions.PAGE_SIZE;
-                      window.console.log(
-                        JSON.stringify({
-                          prev,
-                          fetchMoreResult
-                        })
+                    }).catch(err => {
+                      window.console.error(
+                        `failed fetchMore for interactions: ${err}`
                       );
-                      return {
-                        interactions: [
-                          ...prev.interactions,
-                          ...fetchMoreResult.interactions
-                        ]
-                      };
-                    }
-                  }).catch(err => {
-                    window.console.error(
-                      `failed fetchMore for interactions: ${err}`
-                    );
-                  });
-                }}
-              >
-                <Icon type="down" />
-                {t("fetch_more")}
-              </Button>
+                    });
+                  }}
+                >
+                  <Icon type="down" />
+                  {t("fetch_more")}
+                </Button>
+              )}
             </>
           );
         }}

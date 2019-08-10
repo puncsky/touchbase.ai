@@ -174,8 +174,8 @@ export function setHumanHandlers(server: MyServer): void {
     const found = item.content.match(/@([a-zA-Z\u4e00-\u9fa5.]+)/g) || [];
     const usernames = found.map(it => it.replace("@", "").replace(".", " "));
     const humans = await server.model.human.findManyIdsByNames(usernames);
-    item.relatedContacts = [
-      ...item.relatedContacts,
+    item.relatedHumans = [
+      ...item.relatedHumans,
       ...humans.map((h: TPersonalNote) => h.id)
     ];
     const ownedItem = { ownerId, ...item };

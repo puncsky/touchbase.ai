@@ -64,7 +64,7 @@ export const UpsertEventContainer = connect(
               actionUpsertEvent({
                 id: eventId,
                 content: this.getSimpleMde().value(),
-                relatedContacts: [ownerHumanId, humanId]
+                relatedHumans: [ownerHumanId, humanId]
               });
               this.setState({ isVisible: false });
             }}
