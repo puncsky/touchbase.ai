@@ -12,6 +12,7 @@ import {
 } from "type-graphql";
 import { THuman, TInteraction } from "../../types/human";
 import { Context } from "../api-gateway";
+import { AuthenticationError } from "apollo-server-errors";
 
 export enum AttitudeType {
   empty = "",
@@ -221,6 +222,10 @@ export class ContactResolver {
     @Arg("createContactInput") createContactInput: CreateContactInput,
     @Ctx() { model, userId }: Context
   ): Promise<Contact> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to fetch personal notes`);
+    }
+
     return model.human.newAndSave({ ...createContactInput, ownerId: userId });
   }
 
@@ -229,6 +234,10 @@ export class ContactResolver {
     @Args() { contactId, offset, limit }: GetInteractions,
     @Ctx() { model, userId }: Context
   ): Promise<Array<Interaction>> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to fetch personal notes`);
+    }
+
     return model.event.getAllByOwnerIdRelatedHumanId({
       ownerId: userId,
       humanId: contactId,
