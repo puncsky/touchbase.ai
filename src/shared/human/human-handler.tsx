@@ -15,14 +15,17 @@ import { humanValidator } from "./validators";
 // tslint:disable-next-line:max-func-body-length
 export function setHumanHandlers(server: MyServer): void {
   server.get("/onboard/", server.auth.authRequired, async ctx => {
-    ctx.body = ctx.isoReactRender({
+    // @ts-ignore
+    ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
       VDom: <AppContainer />,
-      clientScript: "/main.js",
       reducer: combineReducers({
         base: noopReducer,
         human: humanReducer,
-        interactions: interactionsReducer
-      })
+        humans: humansReducer,
+        interactions: interactionsReducer,
+        apolloState: noopReducer
+      }),
+      clientScript: "/main.js"
     });
   });
 
@@ -58,15 +61,17 @@ export function setHumanHandlers(server: MyServer): void {
     const humans = await server.model.human.findById(ctx.state.userId, 0, 1000);
     ctx.setState("humans", humans);
     ctx.setState("base.userId", ctx.state.userId);
-    ctx.body = ctx.isoReactRender({
+    // @ts-ignore
+    ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
       VDom: <AppContainer />,
-      clientScript: "/main.js",
       reducer: combineReducers({
         base: noopReducer,
         human: humanReducer,
+        humans: humansReducer,
         interactions: interactionsReducer,
-        humans: humansReducer
-      })
+        apolloState: noopReducer
+      }),
+      clientScript: "/main.js"
     });
   });
   server.get(
