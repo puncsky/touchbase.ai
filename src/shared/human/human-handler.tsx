@@ -7,7 +7,7 @@ import { TPersonalNote } from "../../types/contact";
 import { AppContainer } from "../app-container";
 import { apolloSSR } from "../common/apollo-ssr";
 import { mdit } from "../common/markdownit";
-import { humansReducer } from "../humans/humans-reducer";
+import { humansReducer } from "../contacts/humans-reducer";
 import { humanReducer, interactionsReducer } from "./human-reducer";
 import { EMPTY_HUMAN } from "./profile-creator";
 import { humanValidator } from "./validators";

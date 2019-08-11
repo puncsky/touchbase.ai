@@ -110,16 +110,17 @@ const updateHumanFromRow = (row, initialHuman) => {
 };
 
 // @ts-ignore
-export const HumansTableContainer = connect(
+export const ContactsTableContainer = connect(
   (state: { humans: Array<THuman> }) => ({
     humans: state.humans,
     rows: state.humans && state.humans.map(rowFromHuman)
   }),
   (dispatch: any) => ({
-    actionUpdateHuman: (human: THuman) => dispatch(actionUpdateHuman(human))
+    actionUpdateHuman: (human: THuman) =>
+      dispatch(actionUpdateHuman(human, true))
   })
 )(
-  class HumansTable extends Component<Props> {
+  class ContactsTable extends Component<Props> {
     public props: Props;
 
     public onCellValueChanged = ({

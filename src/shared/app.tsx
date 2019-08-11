@@ -11,11 +11,11 @@ import { ScrollToTop } from "./common/scroll-top";
 import { colors } from "./common/styles/style-color";
 import { fonts } from "./common/styles/style-font";
 import { TopBar } from "./common/top-bar";
+import { ContactsTableContainer } from "./contacts/contacts-table";
 import { Home } from "./home/home";
 import { HumanProfileContainer } from "./human/human-profile";
 import { ProfileCreatorContainer } from "./human/profile-creator";
 import { ProfileEditorContainer } from "./human/profile-editor/profile-editor";
-import { HumansTableContainer } from "./humans/humans";
 import { Onboard } from "./onboard";
 import { Settings } from "./settings/settings";
 
@@ -41,7 +41,7 @@ export class App extends Component<Props> {
               <Route
                 exact
                 path="/contacts/*"
-                component={HumansTableContainer}
+                component={ContactsTableContainer}
               />
               <Route exact path="/" component={Home} />
               <Route exact path="/onboard/" component={Onboard} />

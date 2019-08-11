@@ -72,12 +72,17 @@ export function humanReducer(state: any = {}, action: TAction): any {
   return state;
 }
 
-export function actionUpdateHuman(payload: any): any {
+export function actionUpdateHuman(
+  payload: any,
+  remoteOnly: boolean = false
+): any {
   return (dispatch: any) => {
-    dispatch({
-      type: UPDATE_HUMAN,
-      payload
-    });
+    if (!remoteOnly) {
+      dispatch({
+        type: UPDATE_HUMAN,
+        payload
+      });
+    }
 
     axiosInstance.post("/api/updateHuman/", payload);
   };
