@@ -1,5 +1,7 @@
-import { Button } from "antd";
+import Button from "antd/lib/button";
+import Col from "antd/lib/col";
 import Icon from "antd/lib/icon";
+import Row from "antd/lib/row";
 import dateFormat from "dateformat";
 import gql from "graphql-tag";
 import { t } from "onefx/lib/iso-i18n";
@@ -15,7 +17,6 @@ import { mdit } from "../common/markdownit";
 import { shade } from "../common/styles/shade";
 import { colors } from "../common/styles/style-color";
 import { fonts } from "../common/styles/style-font";
-import { fullOnLap } from "../common/styles/style-media";
 import { ContentPadding } from "../common/styles/style-padding";
 import { UpsertEventContainer } from "./event/upsert-event";
 import { KeyMetrics } from "./key-metrics";
@@ -61,8 +62,9 @@ export const HumanProfileContainer = connect(
     return (
       <ContentPadding>
         <Padding />
-        <Flex alignItems="flex-start">
-          <Flex column={true} width="25%" media={fullOnLap}>
+
+        <Row gutter={16}>
+          <Col span={6}>
             <Flex {...SECTION}>
               <Flex>
                 <div style={{ paddingBottom: "8px" }}>{human.address}</div>
@@ -110,9 +112,8 @@ export const HumanProfileContainer = connect(
             </Flex>
 
             <Padding />
-          </Flex>
-
-          <Flex width="50%" media={fullOnLap}>
+          </Col>
+          <Col span={12}>
             {(human.workingOn || human.desire || human.blurb) && [
               <Flex key={0} width="100%" {...SECTION}>
                 {human.blurb && <div>{human.blurb}</div>}
@@ -134,27 +135,28 @@ export const HumanProfileContainer = connect(
             </Flex>
 
             <Padding />
-          </Flex>
+          </Col>
+          <Col span={6}>
+            <Flex column={true} {...SECTION}>
+              <Flex width="100%">
+                <strong>Personality</strong>
 
-          <Flex width="20%" media={fullOnLap} {...SECTION}>
-            <Flex width="100%">
-              <strong>Personality</strong>
+                <TitleContent title="extraversionIntroversion" human={human} />
+                <TitleContent title="intuitingSensing" human={human} />
+                <TitleContent title="thinkingFeeling" human={human} />
+                <TitleContent title="planingPerceiving" human={human} />
+              </Flex>
 
-              <TitleContent title="extraversionIntroversion" human={human} />
-              <TitleContent title="intuitingSensing" human={human} />
-              <TitleContent title="thinkingFeeling" human={human} />
-              <TitleContent title="planingPerceiving" human={human} />
+              <Padding />
+
+              <Flex width="100%" borderTop={LINE}>
+                <TitleContent title="tdp" human={human} />
+                <TitleContent title="knownSource" human={human} />
+                <TitleContent title="interests" human={human} />
+              </Flex>
             </Flex>
-
-            <Padding />
-
-            <Flex width="100%" borderTop={LINE}>
-              <TitleContent title="tdp" human={human} />
-              <TitleContent title="knownSource" human={human} />
-              <TitleContent title="interests" human={human} />
-            </Flex>
-          </Flex>
-        </Flex>
+          </Col>
+        </Row>
         <Padding />
       </ContentPadding>
     );
@@ -248,6 +250,7 @@ class Interactions extends Component<{ contactId: string }> {
     return (
       <Query
         query={GET_INTERACTIONS}
+        ssr={false}
         fetchPolicy="network-only"
         variables={{ contactId, offset: 0, limit: Interactions.PAGE_SIZE }}
       >

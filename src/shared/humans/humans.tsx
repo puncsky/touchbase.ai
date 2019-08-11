@@ -122,7 +122,15 @@ export const HumansTableContainer = connect(
   class HumansTable extends Component<Props> {
     public props: Props;
 
-    public onCellValueChanged = ({ data, newValue, ...otherProps }: any) => {
+    public onCellValueChanged = ({
+      data,
+      newValue,
+      oldValue,
+      ...otherProps
+    }: any) => {
+      if (newValue === oldValue) {
+        return;
+      }
       this.props.actionUpdateHuman(
         updateHumanFromRow(
           { ...data, [otherProps.colDef.field]: newValue },

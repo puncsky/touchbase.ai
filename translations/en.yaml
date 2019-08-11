@@ -30,7 +30,7 @@ desire: Desire
 edit_event: Edit Event
 education: Education
 experience: Experience
-extraversionIntroversion: Extroversion vs. Introversion
+extraversionIntroversion: Attitude
 extroversion: Extroversion
 field.address: Address
 field.avatar_url: Avatar
@@ -58,7 +58,7 @@ home.create_account: CREATE ACCOUNT
 inbound_trust: Inbound Trust
 interactions: Interactions
 introversion: Introversion
-intuitingSensing: Intuiting vs. Sensing
+intuitingSensing: Perceiving
 ipq: IPQ
 knownSource: Source
 meta.description: Smartly engage more in meaningful relationships
@@ -67,13 +67,13 @@ not_found.bar: Not Found
 not_found.info: We cannot find the page for you...
 not_found.title: Oops!
 outbound_trust: Outbound Trust
-planingPerceiving: Planing vs. Perceiving
+planingPerceiving: Lifestyle
 profile.prefill: Prefill other fields
 profile_editor.experience: Experience
 profile_editor.observation: Observation
 profile_editor.pii: Personal
 tdp: Team Dimension Profile
-thinkingFeeling: Thinking vs. Feeling
+thinkingFeeling: Judging
 topbar.brand: Rebinder.co
 topbar.contacts: Contacts
 topbar.create: ADD
