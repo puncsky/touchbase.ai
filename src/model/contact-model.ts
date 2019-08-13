@@ -97,7 +97,7 @@ export class ContactModel {
   public Model: mongoose.Model<TContactDoc>;
 
   constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
-    ContactSchema.index({ name: 1 });
+    ContactSchema.index({ name: "text" });
     ContactSchema.index({ ownerId: 1 });
 
     ContactSchema.pre("save", function onSave(next: Function): void {
@@ -159,5 +159,17 @@ export class ContactModel {
   // tslint:disable-next-line:no-any
   public async findManyIdsByNames(names: Array<string>): Promise<Array<any>> {
     return this.Model.where("name id").find({ name: { $in: names } });
+  }
+
+  public async findName({
+    name,
+    ownerId
+  }: {
+    name: string;
+    ownerId: string;
+  }): Promise<Array<TContact>> {
+    return this.Model.find({ $text: { $search: name }, ownerId }).select(
+      "name"
+    );
   }
 }

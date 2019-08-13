@@ -7,11 +7,11 @@ import React, { Component } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-
 import { CommonMargin } from "./common-margin";
 import { Icon } from "./icon";
 import { Cross } from "./icons/cross.svg";
 import { Hamburger } from "./icons/hamburger.svg";
+import { SearchBox } from "./search-box";
 import { transition } from "./styles/style-animation";
 import { colors } from "./styles/style-color";
 import { media, PALM_WIDTH } from "./styles/style-media";
@@ -103,6 +103,7 @@ export const TopBar = connect((state: any) => ({
               <BrandText href="/">{t("topbar.brand")}</BrandText>
               {loggedIn && (
                 <>
+                  <SearchBox />
                   <BrandText href="/contacts/" onClick={this.hideMobileMenu}>
                     {t("topbar.contacts")}
                   </BrandText>

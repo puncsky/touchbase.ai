@@ -96,3 +96,4 @@ field.education: Education
 field.jane_doe: Jane Doe
 field.error.required.name: Please enter the name of the contact.
 field.error.required: This field is required.
+topbar.search_everything: Search Contact...

@@ -216,6 +216,23 @@ class GetInteractions {
   public limit?: number;
 }
 
+@ArgsType()
+class SearchRequest {
+  @Field(_ => String)
+  public name: string;
+}
+
+interface ISearchResult {}
+
+@ObjectType()
+class SearchResult implements ISearchResult {
+  @Field(_ => String)
+  public name: string;
+
+  @Field(_ => String)
+  public path: string;
+}
+
 export class ContactResolver {
   @Mutation(_ => Contact)
   public async createContact(
@@ -244,5 +261,20 @@ export class ContactResolver {
       skip: offset,
       limit
     });
+  }
+
+  @Query(_ => [SearchResult])
+  public async search(
+    @Args() { name }: SearchRequest,
+    @Ctx() { model, userId }: Context
+  ): Promise<Array<SearchResult>> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to fetch personal notes`);
+    }
+    const entries = await model.contact.findName({ name, ownerId: userId });
+    return entries.map(en => ({
+      name: en.name,
+      path: `/${en.name.replace(/ /g, ".")}/`
+    }));
   }
 }

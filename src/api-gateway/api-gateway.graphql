@@ -116,9 +116,15 @@ type Query {
   # get the article
   articles(id: String): [ArticleResponse!]
   interactions(contactId: String, offset: Float, limit: Float): [Interaction!]!
+  search(name: String!): [SearchResult!]!
 
   # is the server healthy?
   health: String!
+}
+
+type SearchResult {
+  name: String!
+  path: String!
 }
 
 enum TdpType {

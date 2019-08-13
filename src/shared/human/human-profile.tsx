@@ -64,7 +64,7 @@ export const HumanProfileContainer = connect(
         <Padding />
 
         <Row gutter={16}>
-          <Col span={6}>
+          <Col sm={6} xs={24}>
             <Flex {...SECTION}>
               <Flex>
                 <div style={{ paddingBottom: "8px" }}>{human.address}</div>
@@ -113,7 +113,7 @@ export const HumanProfileContainer = connect(
 
             <Padding />
           </Col>
-          <Col span={12}>
+          <Col sm={12} xs={24}>
             {(human.workingOn || human.desire || human.blurb) && [
               <Flex key={0} width="100%" {...SECTION}>
                 {human.blurb && <div>{human.blurb}</div>}
@@ -136,7 +136,7 @@ export const HumanProfileContainer = connect(
 
             <Padding />
           </Col>
-          <Col span={6}>
+          <Col sm={6} xs={24}>
             <Flex column={true} {...SECTION}>
               <Flex width="100%">
                 <strong>Personality</strong>

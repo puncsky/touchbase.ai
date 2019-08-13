@@ -51,7 +51,7 @@ export function interactionsReducer(state: any = [], action: TAction): any {
 export function actionUpsertEvent(payload: any): any {
   return (dispatch: any) => {
     axiosInstance.post("/api/upsertEvent/", payload).then(resp => {
-      dispatch({ type: UPSERT_EVENT, payload: resp.data.result });
+      dispatch({ type: UPSERT_EVENT, payload: resp.data.searchResult });
     });
   };
 }
@@ -101,7 +101,7 @@ export function actionCreateHuman(payload: any): any {
     axiosInstance.post("/api/createHuman/", payload).then(resp => {
       dispatch({
         type: CREATE_HUMAN,
-        payload: resp.data.result
+        payload: resp.data.searchResult
       });
     });
   };
