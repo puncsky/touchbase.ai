@@ -19,11 +19,6 @@
           "comment": "Usage has been approved by Tian on 2019-07-17 17:22"
         },
         {
-          "file": "src/shared/human/human-profile.tsx",
-          "method": "<unknown>",
-          "comment": "Usage has been approved by Tian on 2019-07-22 24:46"
-        },
-        {
           "file": "src/shared/article/article.tsx",
           "method": "render",
           "comment": "Usage has been approved by Tian on 2019-07-11 10:21"
@@ -34,7 +29,7 @@
           "comment": "Usage has been approved by Tian on 2019-08-08 03:26"
         },
         {
-          "file": "src/shared/human/human-profile.tsx",
+          "file": "src/shared/contact/contact-detail.tsx",
           "method": "render",
           "comment": "Usage has been approved by Tian on 2019-08-10 01:54"
         }

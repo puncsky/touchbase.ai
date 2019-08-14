@@ -11,11 +11,11 @@ import { ScrollToTop } from "./common/scroll-top";
 import { colors } from "./common/styles/style-color";
 import { fonts } from "./common/styles/style-font";
 import { TopBar } from "./common/top-bar";
+import { ContactDetailContainer } from "./contact/contact-detail";
+import { ProfileCreatorContainer } from "./contact/profile-creator";
+import { ProfileEditorContainer } from "./contact/profile-editor/profile-editor";
 import { ContactsTableContainer } from "./contacts/contacts-table";
 import { Home } from "./home/home";
-import { HumanProfileContainer } from "./human/human-profile";
-import { ProfileCreatorContainer } from "./human/profile-creator";
-import { ProfileEditorContainer } from "./human/profile-editor/profile-editor";
 import { Onboard } from "./onboard";
 import { Settings } from "./settings/settings";
 
@@ -48,13 +48,13 @@ export class App extends Component<Props> {
               <Route
                 exact
                 path="/profile/*"
-                component={HumanProfileContainer}
+                component={ContactDetailContainer}
               />
               <Route exact path="/settings/*" component={Settings} />
               <Route
                 exact
                 path="/:nameDash/*"
-                component={HumanProfileContainer}
+                component={ContactDetailContainer}
               />
               <Route component={NotFound} />
             </Switch>

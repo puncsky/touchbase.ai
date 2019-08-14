@@ -48,7 +48,7 @@ const SECTION = {
 type Props = { human: THuman; interactions: Array<TInteraction> };
 
 // @ts-ignore
-export const HumanProfileContainer = connect(
+export const ContactDetailContainer = connect(
   (state: { human: THuman; interactions: Array<TInteraction> }) => ({
     human: state.human,
     interactions: state.interactions

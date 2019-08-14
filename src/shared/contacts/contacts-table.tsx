@@ -7,7 +7,7 @@ import { THuman } from "../../types/human";
 import { FOOTER_ABOVE } from "../common/footer";
 import { colors } from "../common/styles/style-color";
 import { ContentPadding } from "../common/styles/style-padding";
-import { actionUpdateHuman } from "../human/human-reducer";
+import { actionUpdateHuman } from "../contact/human-reducer";
 
 type THumanRow = {
   _id: string;

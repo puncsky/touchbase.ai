@@ -5,11 +5,11 @@ import { ApolloProvider } from "react-apollo";
 import { combineReducers } from "redux";
 import { AppContainer } from "../../shared/app-container";
 import { apolloClient } from "../../shared/common/apollo-client";
-import { humansReducer } from "../../shared/contacts/humans-reducer";
 import {
   humanReducer,
   interactionsReducer
-} from "../../shared/human/human-reducer";
+} from "../../shared/contact/human-reducer";
+import { humansReducer } from "../../shared/contacts/humans-reducer";
 
 clientReactRender({
   VDom: (

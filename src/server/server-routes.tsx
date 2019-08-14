@@ -4,7 +4,7 @@ import * as React from "react";
 import { setApiGateway } from "../api-gateway/api-gateway";
 import { AppContainer } from "../shared/app-container";
 import { apolloSSR } from "../shared/common/apollo-ssr";
-import { setHumanHandlers } from "../shared/human/human-handler";
+import { setHumanHandlers } from "../shared/contact/human-handler";
 import { setEmailPasswordIdentityProviderRoutes } from "../shared/onefx-auth-provider/email-password-identity-provider/email-password-identity-provider-handler";
 import { MyServer } from "./start-server";
 
