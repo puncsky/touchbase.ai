@@ -18,6 +18,15 @@ const SEARCH = gql`
   }
 `;
 
+let dblCtrlKey: any = 0;
+const listenDoubleShift = cb => event => {
+  if (dblCtrlKey !== 0 && event.key === "Shift") {
+    cb();
+  } else {
+    dblCtrlKey = setTimeout(() => (dblCtrlKey = 0), 300);
+  }
+};
+
 type ISearchResult = {
   name: string;
   path: string;
@@ -36,6 +45,8 @@ export const SearchBox = withRouter(
       searchResult: []
     };
 
+    private keyDownhandler: any;
+
     public handleSearch = async (inputText: string) => {
       const { data } = await apolloClient.query<{
         search: Array<ISearchResult>;
@@ -51,6 +62,21 @@ export const SearchBox = withRouter(
     public handleSelect = (value: any) => {
       this.props.history.push(value);
     };
+
+    public inputRef: any;
+
+    private readonly focus = () => {
+      this.inputRef.focus();
+    };
+
+    public componentDidMount(): void {
+      this.keyDownhandler = listenDoubleShift(this.focus);
+      document.addEventListener("keydown", this.keyDownhandler);
+    }
+
+    public componentWillUnmount(): void {
+      document.removeEventListener("keydown", this.keyDownhandler);
+    }
 
     public render(): JSX.Element {
       const { searchResult } = this.state;
@@ -75,6 +101,7 @@ export const SearchBox = withRouter(
             onSelect={this.handleSelect}
           >
             <Input
+              ref={ref => (this.inputRef = ref)}
               suffix={<Icon type="search" className="certain-category-icon" />}
             />
           </AutoComplete>
