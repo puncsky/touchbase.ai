@@ -33,7 +33,7 @@ type ISearchResult = {
 };
 
 type State = {
-  searchResult: Array<string>;
+  searchResults: Array<ISearchResult>;
 };
 
 type Props = RouterProps;
@@ -42,7 +42,7 @@ export const SearchBox = withRouter(
   // @ts-ignore
   class SearchBoxInner extends Component<Props> {
     public state: State = {
-      searchResult: []
+      searchResults: []
     };
 
     private keyDownhandler: any;
@@ -56,7 +56,7 @@ export const SearchBox = withRouter(
         },
         query: SEARCH
       });
-      this.setState({ searchResult: data.search.map(s => s.path) });
+      this.setState({ searchResults: data.search });
     };
 
     public handleSelect = (value: any) => {
@@ -79,9 +79,11 @@ export const SearchBox = withRouter(
     }
 
     public render(): JSX.Element {
-      const { searchResult } = this.state;
-      const children = searchResult.map(email => (
-        <Option key={email}>{email}</Option>
+      const { searchResults } = this.state;
+      const children = searchResults.map(res => (
+        <Option key={res.path} value={res.path}>
+          {res.name}
+        </Option>
       ));
       return (
         <div
