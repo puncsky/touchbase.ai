@@ -1,13 +1,17 @@
 import { AgGridReact } from "ag-grid-react";
+import isBrowser = require("is-browser");
 import { assetURL } from "onefx/lib/asset-url";
 import React, { Component } from "react";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
+import { RouterProps, withRouter } from "react-router";
 import { THuman } from "../../types/human";
 import { FOOTER_ABOVE } from "../common/footer";
 import { colors } from "../common/styles/style-color";
 import { ContentPadding } from "../common/styles/style-padding";
 import { actionUpdateHuman } from "../contact/human-reducer";
+
+const PUSH_LINK_CLS = "push-link";
 
 type THumanRow = {
   _id: string;
@@ -47,7 +51,7 @@ type Props = {
   humans: Array<THuman>;
   rows: Array<THumanRow>;
   actionUpdateHuman: any;
-};
+} & RouterProps;
 const defaultColumnProperties = {
   width: 120
 };
@@ -57,7 +61,7 @@ const columnDefs = [
     headerName: "Name",
     checkboxSelection: true,
     cellRenderer: ({ value, data }) =>
-      `<span style="color: red;"><a style="color: ${
+      `<span><a class=${PUSH_LINK_CLS} style="color: ${
         colors.primary
       };" href=${`"/${data._id}/"`}/>${value}</span>`
   },
@@ -110,65 +114,83 @@ const updateHumanFromRow = (row, initialHuman) => {
 };
 
 // @ts-ignore
-export const ContactsTableContainer = connect(
-  (state: { humans: Array<THuman> }) => ({
-    humans: state.humans,
-    rows: state.humans && state.humans.map(rowFromHuman)
-  }),
-  (dispatch: any) => ({
-    actionUpdateHuman: (human: THuman) =>
-      dispatch(actionUpdateHuman(human, true))
-  })
-)(
-  class ContactsTable extends Component<Props> {
-    public props: Props;
+export const ContactsTableContainer = withRouter(
+  // @ts-ignore
+  connect(
+    (state: { humans: Array<THuman> }) => ({
+      humans: state.humans,
+      rows: state.humans && state.humans.map(rowFromHuman)
+    }),
+    (dispatch: any) => ({
+      actionUpdateHuman: (human: THuman) =>
+        dispatch(actionUpdateHuman(human, true))
+    })
+  )(
+    class ContactsTable extends Component<Props> {
+      public props: Props;
 
-    public onCellValueChanged = ({
-      data,
-      newValue,
-      oldValue,
-      ...otherProps
-    }: any) => {
-      if (newValue === oldValue) {
-        return;
-      }
-      this.props.actionUpdateHuman(
-        updateHumanFromRow(
-          { ...data, [otherProps.colDef.field]: newValue },
-          this.props.humans[otherProps.rowIndex]
-        )
-      );
-    };
+      public onCellValueChanged = ({
+        data,
+        newValue,
+        oldValue,
+        ...otherProps
+      }: any) => {
+        if (newValue === oldValue) {
+          return;
+        }
+        this.props.actionUpdateHuman(
+          updateHumanFromRow(
+            { ...data, [otherProps.colDef.field]: newValue },
+            this.props.humans[otherProps.rowIndex]
+          )
+        );
+      };
 
-    public render(): JSX.Element {
-      const { rows } = this.props;
-      return (
-        <ContentPadding>
-          <Helmet
-            link={[
-              {
-                rel: "stylesheet",
-                type: "text/css",
-                href: assetURL("/stylesheets/all-table-main.css")
-              }
-            ]}
-          />
-          <div
-            className="ag-theme-balham"
-            style={{ width: "100%", height: FOOTER_ABOVE.minHeight }}
-          >
-            <AgGridReact
-              enableSorting={true}
-              rowSelection="multiple"
-              enableFilter={true}
-              columnDefs={columnDefs}
-              rowData={rows}
-              onCellValueChanged={this.onCellValueChanged}
-              defaultColDef={{ editable: true }}
+      public onGridReady = (): void => {
+        if (!isBrowser) {
+          return;
+        }
+        const els = document.getElementsByClassName(PUSH_LINK_CLS) || [];
+        // @ts-ignore
+        for (const el of els) {
+          el.addEventListener("click", e => {
+            e.preventDefault();
+            this.props.history.push(el.getAttribute("href"));
+          });
+        }
+      };
+
+      public render(): JSX.Element {
+        const { rows } = this.props;
+        return (
+          <ContentPadding>
+            <Helmet
+              link={[
+                {
+                  rel: "stylesheet",
+                  type: "text/css",
+                  href: assetURL("/stylesheets/all-table-main.css")
+                }
+              ]}
             />
-          </div>
-        </ContentPadding>
-      );
+            <div
+              className="ag-theme-balham"
+              style={{ width: "100%", height: FOOTER_ABOVE.minHeight }}
+            >
+              <AgGridReact
+                onGridReady={this.onGridReady}
+                enableSorting={true}
+                rowSelection="multiple"
+                enableFilter={true}
+                columnDefs={columnDefs}
+                rowData={rows}
+                onCellValueChanged={this.onCellValueChanged}
+                defaultColDef={{ editable: true }}
+              />
+            </div>
+          </ContentPadding>
+        );
+      }
     }
-  }
+  )
 );
