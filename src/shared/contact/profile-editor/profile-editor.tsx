@@ -40,8 +40,8 @@ export const formItemLayout = {
 
 type Props = {
   human: THuman;
-  actionUpdateHuman(payload: any): void;
-  history: any;
+  actionUpdateHuman?(payload: any): void;
+  history?: any;
   form?: WrappedFormUtils;
 };
 
@@ -53,7 +53,7 @@ type State = { visible: boolean };
 @withRouter
 // @ts-ignore
 @connect(
-  (state: { human: THuman }) => ({ human: state.human }),
+  () => ({}),
   (dispatch: any) => ({
     actionUpdateHuman: payload => dispatch(actionUpdateHuman(payload))
   })
@@ -75,7 +75,7 @@ class ProfileEditorContainer extends Component<Props, State> {
   public onOk(): void {
     const { form, human, actionUpdateHuman } = this.props;
 
-    if (!form) {
+    if (!form || !actionUpdateHuman) {
       return;
     }
 

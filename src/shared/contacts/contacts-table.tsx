@@ -56,10 +56,10 @@ const columnDefs = [
     field: "name",
     headerName: "Name",
     checkboxSelection: true,
-    cellRenderer: ({ value }) =>
+    cellRenderer: ({ value, data }) =>
       `<span style="color: red;"><a style="color: ${
         colors.primary
-      };" href=${`"/${value.replace(/ /g, ".")}/"`}/>${value}</span>`
+      };" href=${`"/${data._id}/"`}/>${value}</span>`
   },
   { field: "experienceTitle", headerName: "Title" },
   { field: "inboundTrust", headerName: "In-Trust" },

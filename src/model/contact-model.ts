@@ -100,6 +100,11 @@ export class ContactModel {
     ContactSchema.index({ name: "text" });
     ContactSchema.index({ ownerId: 1 });
 
+    ContactSchema.virtual("id").get(function onId(): void {
+      // @ts-ignore
+      return this._id;
+    });
+
     ContactSchema.pre("save", function onSave(next: Function): void {
       // @ts-ignore
       this.updateAt = new Date();
@@ -169,7 +174,7 @@ export class ContactModel {
     ownerId: string;
   }): Promise<Array<TContact>> {
     return this.Model.find({ $text: { $search: name }, ownerId }).select(
-      "name"
+      "name _id"
     );
   }
 }

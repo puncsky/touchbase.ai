@@ -9,17 +9,20 @@ import { styled } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { match, Route, RouterProps } from "react-router";
+import { Link, withRouter } from "react-router-dom";
 import { THuman, TInteraction } from "../../types/human";
 import { BOX_SHADOW, LINE } from "../common/box-shadow";
 import { Flex } from "../common/flex";
 import { mdit } from "../common/markdownit";
+import { Preloader } from "../common/preloader";
 import { shade } from "../common/styles/shade";
 import { colors } from "../common/styles/style-color";
 import { fonts } from "../common/styles/style-font";
 import { ContentPadding } from "../common/styles/style-padding";
 import { UpsertEventContainer } from "./event/upsert-event";
 import { KeyMetrics } from "./key-metrics";
+import { ProfileEditorContainer } from "./profile-editor/profile-editor";
 
 function currentTitle(human: THuman): string {
   return (
@@ -45,123 +48,217 @@ const SECTION = {
   boxShadow: BOX_SHADOW
 };
 
-type Props = { human: THuman; interactions: Array<TInteraction> };
+type Props = {
+  human: THuman;
+  interactions: Array<TInteraction>;
+  match: match<{ nameDash: string }>;
+} & RouterProps;
 
-// @ts-ignore
-export const ContactDetailContainer = connect(
-  (state: { human: THuman; interactions: Array<TInteraction> }) => ({
-    human: state.human,
-    interactions: state.interactions
-  })
-)(
-  // tslint:disable-next-line:max-func-body-length
-  function HumanProfile({ human, interactions }: Props): JSX.Element | null {
-    if (!human || !human.name) {
-      return null;
+const GET_CONTACTS = gql`
+  query contacts($id: String!) {
+    contacts(id: $id) {
+      _id
+      emails
+      name
+      avatarUrl
+      address
+      bornAt
+      bornAddress
+      knownAt
+      knownSource
+      extraversionIntroversion
+      intuitingSensing
+      thinkingFeeling
+      planingPerceiving
+      tdp
+      inboundTrust
+      outboundTrust
+      blurb
+      workingOn
+      desire
+      title
+      experience {
+        title
+        name
+      }
+      education {
+        title
+        name
+      }
+      linkedin
+      facebook
+      createAt
+      createAt
     }
-    return (
-      <ContentPadding>
-        <Padding />
-
-        <Row gutter={16}>
-          <Col sm={6} xs={24}>
-            <Flex {...SECTION}>
-              <Flex>
-                <div style={{ paddingBottom: "8px" }}>{human.address}</div>
-              </Flex>
-              <Flex width="100%" column={true}>
-                <div style={{ position: "relative" }}>
-                  <img
-                    alt="favicon"
-                    style={{ width: "100%", maxWidth: "272px" }}
-                    src={human.avatarUrl || "/favicon-light.svg"}
-                  />
-                  <Link to="./edit/">
-                    <Icon1 type="edit" />
-                  </Link>
-                </div>
-              </Flex>
-
-              <Flex
-                width="100%"
-                center={true}
-                column={true}
-                padding="8px 0 8px 0"
-                textAlign="center"
-              >
-                <h2 style={fonts.h2}>{human.name}</h2>
-                <h3 style={fonts.h5}>{currentTitle(human)}</h3>
-                <h3 style={fonts.h5}>{currentOrg(human)}</h3>
-              </Flex>
-
-              <KeyMetrics
-                metrics={{
-                  interactionsPerQuarter: 0,
-                  interactions: interactions && interactions.length,
-                  knownAt: human.knownAt,
-
-                  inboundTrust: human.inboundTrust,
-                  outboundTrust: human.outboundTrust
-                }}
-              />
-
-              <TitleContent title="experience" human={human} />
-              <TitleContent title="education" human={human} />
-              <TitleContent title="bornAt" human={human} />
-              <TitleContent title="bornAddress" human={human} />
-            </Flex>
-
-            <Padding />
-          </Col>
-          <Col sm={12} xs={24}>
-            {(human.workingOn || human.desire || human.blurb) && [
-              <Flex key={0} width="100%" {...SECTION}>
-                {human.blurb && <div>{human.blurb}</div>}
-
-                <TitleContent title="workingOn" human={human} />
-                <TitleContent title="desire" human={human} />
-              </Flex>,
-              <Padding key={1} />
-            ]}
-
-            <Flex width="100%" {...SECTION}>
-              <UpsertEventContainer eventId={""} initialValue={""}>
-                {/*
-                // @ts-ignore */}
-                <Button type="primary">{t("add_event")}</Button>
-              </UpsertEventContainer>
-
-              <Interactions contactId={String(human._id)} />
-            </Flex>
-
-            <Padding />
-          </Col>
-          <Col sm={6} xs={24}>
-            <Flex column={true} {...SECTION}>
-              <Flex width="100%">
-                <strong>Personality</strong>
-
-                <TitleContent title="extraversionIntroversion" human={human} />
-                <TitleContent title="intuitingSensing" human={human} />
-                <TitleContent title="thinkingFeeling" human={human} />
-                <TitleContent title="planingPerceiving" human={human} />
-              </Flex>
-
-              <Padding />
-
-              <Flex width="100%" borderTop={LINE}>
-                <TitleContent title="tdp" human={human} />
-                <TitleContent title="knownSource" human={human} />
-                <TitleContent title="interests" human={human} />
-              </Flex>
-            </Flex>
-          </Col>
-        </Row>
-        <Padding />
-      </ContentPadding>
-    );
   }
+`;
+
+export const ContactDetailContainer = withRouter(
+  // @ts-ignore
+  connect((state: { human: THuman; interactions: Array<TInteraction> }) => ({
+    // human: state.human,
+    // interactions: state.interactions
+  }))(
+    // tslint:disable-next-line:max-func-body-length
+    class ContactFetcher extends Component<Props> {
+      public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
+        return (
+          this.props.match.params.nameDash !==
+            nextProps.match.params.nameDash ||
+          (this.props.match.params[0].startsWith("edit") ||
+            nextProps.match.params[0].startsWith("edit"))
+        );
+      }
+
+      public render(): JSX.Element | null {
+        const props: Props = this.props;
+        const id = props.match.params.nameDash;
+        return (
+          <ContentPadding>
+            <Padding />
+
+            <Query
+              query={GET_CONTACTS}
+              variables={{
+                id
+              }}
+            >
+              {({
+                data,
+                error,
+                loading
+              }: QueryResult<{ contacts: Array<THuman> }>) => {
+                if (loading || error || !data) {
+                  return <Preloader />;
+                }
+
+                const human = data.contacts[0];
+
+                if (!human) {
+                  return <div />;
+                }
+
+                return <Contact human={human} />;
+              }}
+            </Query>
+            <Padding />
+          </ContentPadding>
+        );
+      }
+    }
+  )
 );
+
+// tslint:disable-next-line:max-func-body-length
+function Contact({ human }: { human: THuman }): JSX.Element {
+  return (
+    <Row gutter={16}>
+      <Col sm={6} xs={24}>
+        <Flex {...SECTION}>
+          <Flex>
+            <div style={{ paddingBottom: "8px" }}>{human.address}</div>
+          </Flex>
+          <Flex width="100%" column={true}>
+            <div style={{ position: "relative" }}>
+              <img
+                alt="favicon"
+                style={{ width: "100%", maxWidth: "272px" }}
+                src={human.avatarUrl || "/favicon-light.svg"}
+              />
+              <Link to="./edit/">
+                <Icon1 type="edit" />
+              </Link>
+              <Route
+                exact
+                path="*/edit/"
+                component={() => <ProfileEditorContainer human={human} />}
+              />
+            </div>
+          </Flex>
+
+          <Flex
+            width="100%"
+            center={true}
+            column={true}
+            padding="8px 0 8px 0"
+            textAlign="center"
+          >
+            <h2 style={fonts.h2}>{human.name}</h2>
+            <h3 style={fonts.h5}>{currentTitle(human)}</h3>
+            <h3 style={fonts.h5}>{currentOrg(human)}</h3>
+          </Flex>
+
+          <KeyMetrics
+            metrics={{
+              interactionsPerQuarter: 0,
+              interactions: 0,
+              knownAt: human.knownAt,
+
+              inboundTrust: human.inboundTrust,
+              outboundTrust: human.outboundTrust
+            }}
+          />
+
+          <TitleContent title="experience" human={human} />
+          <TitleContent title="education" human={human} />
+          <TitleContent title="bornAt" human={human} />
+          <TitleContent title="bornAddress" human={human} />
+        </Flex>
+
+        <Padding />
+      </Col>
+      <Col sm={12} xs={24}>
+        {(human.workingOn || human.desire || human.blurb) && [
+          <Flex key={0} width="100%" {...SECTION}>
+            {human.blurb && <div>{human.blurb}</div>}
+
+            <TitleContent title="workingOn" human={human} />
+            <TitleContent title="desire" human={human} />
+          </Flex>,
+          <Padding key={1} />
+        ]}
+
+        <Flex width="100%" {...SECTION}>
+          <Flex width="100%">
+            <UpsertEventContainer
+              eventId={""}
+              initialValue={""}
+              humanId={human._id || ""}
+            >
+              {/*
+                // @ts-ignore */}
+              <Button type="primary">{t("add_event")}</Button>
+            </UpsertEventContainer>
+          </Flex>
+
+          <Interactions contactId={String(human._id)} />
+        </Flex>
+
+        <Padding />
+      </Col>
+      <Col sm={6} xs={24}>
+        <Flex column={true} {...SECTION}>
+          <Flex width="100%">
+            <strong>Personality</strong>
+
+            <TitleContent title="extraversionIntroversion" human={human} />
+            <TitleContent title="intuitingSensing" human={human} />
+            <TitleContent title="thinkingFeeling" human={human} />
+            <TitleContent title="planingPerceiving" human={human} />
+          </Flex>
+
+          <Padding />
+
+          <Flex width="100%" borderTop={LINE}>
+            <TitleContent title="tdp" human={human} />
+            <TitleContent title="knownSource" human={human} />
+            <TitleContent title="interests" human={human} />
+          </Flex>
+        </Flex>
+      </Col>
+    </Row>
+  );
+}
 
 function TitleContent({ title, human }: any): JSX.Element | null {
   if (!human[title]) {
@@ -261,7 +358,7 @@ class Interactions extends Component<{ contactId: string }> {
           fetchMore
         }: QueryResult<{ interactions: Array<TInteraction> }>) => {
           if (loading || error || !data) {
-            return <div />;
+            return <Preloader />;
           }
 
           return (
@@ -284,6 +381,7 @@ class Interactions extends Component<{ contactId: string }> {
                     <UpsertEventContainer
                       eventId={iter.id}
                       initialValue={iter.content}
+                      humanId={contactId}
                     >
                       <div style={{ cursor: "pointer" }}>{t("edit")}</div>
                     </UpsertEventContainer>

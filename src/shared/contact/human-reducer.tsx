@@ -1,7 +1,10 @@
 // @flow
 import axios from "axios";
+import gql from "graphql-tag";
 import isBrowser from "is-browser";
 import JsonGlobal from "safe-json-globals/get";
+import { THuman } from "../../types/human";
+import { apolloClient } from "../common/apollo-client";
 
 const csrfToken = isBrowser && JsonGlobal("state").base.csrfToken;
 
@@ -88,7 +91,15 @@ export function actionUpdateHuman(
   };
 }
 
-export function actionCreateHuman(payload: any): any {
+const CREATE_CONTACT = gql`
+  mutation createContact($createContactInput: CreateContactInput!) {
+    createContact(createContactInput: $createContactInput) {
+      _id
+    }
+  }
+`;
+
+export function actionCreateHuman(payload: THuman, history: any): any {
   return (dispatch: any) => {
     dispatch({
       type: CREATE_HUMAN,
@@ -98,11 +109,18 @@ export function actionCreateHuman(payload: any): any {
       type: CLEAR_LOCAL_EVENS
     });
 
-    axiosInstance.post("/api/createHuman/", payload).then(resp => {
-      dispatch({
-        type: CREATE_HUMAN,
-        payload: resp.data.searchResults
+    apolloClient
+      .mutate<{ createContact: { _id: string } }>({
+        mutation: CREATE_CONTACT,
+        variables: { createContactInput: payload }
+      })
+      .then(resp => {
+        setTimeout(() => {
+          if (!resp.data) {
+            return;
+          }
+          history.push(`/${resp.data.createContact._id}/`);
+        }, 1000);
       });
-    });
   };
 }

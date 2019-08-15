@@ -11,7 +11,7 @@ export interface TContact {
   bornAddress: string;
 
   // How do we meet?
-  knownAt: string; // date
+  knownAt: Date; // date
   knownSource: string;
 
   // Personalities
@@ -24,8 +24,8 @@ export interface TContact {
   thinkingFeeling: "" | "thinking" | "feeling";
   planingPerceiving: "" | "planing" | "perceiving";
   tdp: "" | "creator" | "refiner" | "advancer" | "executor" | "flexor";
-  inboundTrust: 1;
-  outboundTrust: 1;
+  inboundTrust: number;
+  outboundTrust: number;
 
   // bio
   blurb: string;

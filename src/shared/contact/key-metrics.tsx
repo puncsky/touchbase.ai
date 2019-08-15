@@ -8,7 +8,7 @@ import { fonts } from "../common/styles/style-font";
 type TMetrics = {
   interactions: number;
   interactionsPerQuarter: number;
-  knownAt: string;
+  knownAt: Date;
   inboundTrust: number;
   outboundTrust: number;
 };
@@ -59,7 +59,7 @@ export function KeyMetrics({ metrics }: { metrics: TMetrics }): JSX.Element {
 
 const Width50 = styled("div", { width: "50%" });
 
-function FromNow({ dateString }: { dateString: string }): JSX.Element {
+function FromNow({ dateString }: { dateString: Date }): JSX.Element {
   const totalMonths = monthDiff(new Date(dateString), new Date());
   const years = Math.floor(totalMonths / 12);
   const months = totalMonths % 12;
@@ -73,10 +73,10 @@ function FromNow({ dateString }: { dateString: string }): JSX.Element {
   );
 }
 
-function monthDiff(d1: Date, d2: Date): number {
+export function monthDiff(past: Date, now: Date): number {
   let months;
-  months = (d2.getFullYear() - d1.getFullYear()) * 12;
-  months -= d1.getMonth() + 1;
-  months += d2.getMonth();
+  months = (now.getFullYear() - past.getFullYear()) * 12;
+  months -= past.getMonth() + 1;
+  months += now.getMonth();
   return months <= 0 ? 0 : months;
 }

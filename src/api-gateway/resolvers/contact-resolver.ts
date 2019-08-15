@@ -8,65 +8,10 @@ import {
   InputType,
   Mutation,
   ObjectType,
-  Query,
-  registerEnumType
+  Query
 } from "type-graphql";
 import { THuman, TInteraction } from "../../types/human";
 import { Context } from "../api-gateway";
-
-export enum AttitudeType {
-  empty = "",
-  introversion = "introversion",
-  extroversion = "extroversion",
-  ambiversion = "ambiversion"
-}
-
-registerEnumType(AttitudeType, {
-  name: "AttitudeType"
-});
-
-export enum PerceivingType {
-  empty = "",
-  intuiting = "intuiting",
-  sensing = "sensing"
-}
-
-registerEnumType(PerceivingType, {
-  name: "PerceivingType"
-});
-
-export enum JudgingType {
-  empty = "",
-  thinking = "thinking",
-  feeling = "feeling"
-}
-
-registerEnumType(JudgingType, {
-  name: "JudgingType"
-});
-
-export enum LifestyleType {
-  empty = "",
-  planing = "planing",
-  perceiving = "perceiving"
-}
-
-registerEnumType(LifestyleType, {
-  name: "LifestyleType"
-});
-
-export enum TdpType {
-  empty = "",
-  creator = "creator",
-  refiner = "refiner",
-  advancer = "advancer",
-  executor = "executor",
-  flexor = "flexor"
-}
-
-registerEnumType(TdpType, {
-  name: "TdpType"
-});
 
 @InputType()
 class CreateContactInput implements THuman {
@@ -85,28 +30,28 @@ class CreateContactInput implements THuman {
   public bornAt: string;
   @Field(_ => String)
   public bornAddress: string;
-  @Field(_ => String)
-  public knownAt: string;
+  @Field(_ => Date)
+  public knownAt: Date;
   @Field(_ => String)
   public knownSource: string;
-  @Field(_ => AttitudeType)
+  @Field(_ => String, { nullable: true })
   public extraversionIntroversion:
     | ""
     | "introversion"
     | "extroversion"
     | "ambiversion";
-  @Field(_ => PerceivingType)
+  @Field(_ => String, { nullable: true })
   public intuitingSensing: "" | "intuiting" | "sensing";
-  @Field(_ => JudgingType)
+  @Field(_ => String, { nullable: true })
   public thinkingFeeling: "" | "thinking" | "feeling";
-  @Field(_ => LifestyleType)
+  @Field(_ => String, { nullable: true })
   public planingPerceiving: "" | "planing" | "perceiving";
-  @Field(_ => TdpType)
+  @Field(_ => String, { nullable: true })
   public tdp: "" | "creator" | "refiner" | "advancer" | "executor" | "flexor";
-  @Field(_ => String)
-  public inboundTrust: 1;
-  @Field(_ => String)
-  public outboundTrust: 1;
+  @Field(_ => Number)
+  public inboundTrust: number;
+  @Field(_ => Number)
+  public outboundTrust: number;
   @Field(_ => String)
   public blurb: string;
   @Field(_ => String)
@@ -115,19 +60,18 @@ class CreateContactInput implements THuman {
   public desire: string;
   @Field(_ => String)
   public title: string;
-  @Field(_ => String)
-  @Field(_ => String)
+  @Field(_ => [ExperienceInput])
   public experience: [{ title: string; name: string }];
-  @Field(_ => String)
+  @Field(_ => [ExperienceInput])
   public education: [{ title: string; name: string }];
   @Field(_ => String)
   public linkedin: string;
   @Field(_ => String)
   public facebook: string;
   @Field(_ => String, { nullable: true })
-  public createdAt?: string | undefined;
+  public createAt?: string | undefined;
   @Field(_ => String, { nullable: true })
-  public updatedAt?: string | undefined;
+  public updateAt?: string | undefined;
 }
 
 @ObjectType()
@@ -135,61 +79,76 @@ class Contact implements THuman {
   @Field(_ => String, { nullable: true })
   // tslint:disable-next-line:variable-name
   public _id?: string | undefined;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public emails: Array<string>;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public name: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public avatarUrl: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public address: string;
-  @Field(_ => String)
+  @Field(_ => Date, { nullable: true })
   public bornAt: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public bornAddress: string;
-  @Field(_ => String)
-  public knownAt: string;
-  @Field(_ => String)
+  @Field(_ => Date, { nullable: true })
+  public knownAt: Date;
+  @Field(_ => String, { nullable: true })
   public knownSource: string;
-  @Field(_ => AttitudeType)
+  @Field(_ => String, { nullable: true })
   public extraversionIntroversion:
     | ""
     | "introversion"
     | "extroversion"
     | "ambiversion";
-  @Field(_ => PerceivingType)
+  @Field(_ => String, { nullable: true })
   public intuitingSensing: "" | "intuiting" | "sensing";
-  @Field(_ => JudgingType)
+  @Field(_ => String, { nullable: true })
   public thinkingFeeling: "" | "thinking" | "feeling";
-  @Field(_ => LifestyleType)
+  @Field(_ => String, { nullable: true })
   public planingPerceiving: "" | "planing" | "perceiving";
-  @Field(_ => TdpType)
+  @Field(_ => String, { nullable: true })
   public tdp: "" | "creator" | "refiner" | "advancer" | "executor" | "flexor";
-  @Field(_ => String)
-  public inboundTrust: 1;
-  @Field(_ => String)
-  public outboundTrust: 1;
-  @Field(_ => String)
+  @Field(_ => Number, { nullable: true })
+  public inboundTrust: number;
+  @Field(_ => Number, { nullable: true })
+  public outboundTrust: number;
+  @Field(_ => String, { nullable: true })
   public blurb: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public workingOn: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public desire: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public title: string;
-  @Field(_ => String)
-  @Field(_ => String)
-  public experience: [{ title: string; name: string }];
-  @Field(_ => String)
-  public education: [{ title: string; name: string }];
-  @Field(_ => String)
+  @Field(_ => [Experience])
+  public experience: [Experience];
+  @Field(_ => [Experience])
+  public education: [Experience];
+  @Field(_ => String, { nullable: true })
   public linkedin: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public facebook: string;
+  @Field(_ => Date, { nullable: true })
+  public createAt?: string | undefined;
+  @Field(_ => Date, { nullable: true })
+  public updateAt?: string | undefined;
+}
+
+@ObjectType()
+class Experience {
   @Field(_ => String, { nullable: true })
-  public createdAt?: string | undefined;
+  public title: string;
   @Field(_ => String, { nullable: true })
-  public updatedAt?: string | undefined;
+  public name: string;
+}
+
+@InputType()
+class ExperienceInput {
+  @Field(_ => String, { nullable: true })
+  public title: string;
+  @Field(_ => String, { nullable: true })
+  public name: string;
 }
 
 @ObjectType()
@@ -220,6 +179,12 @@ class GetInteractions {
 class SearchRequest {
   @Field(_ => String)
   public name: string;
+}
+
+@ArgsType()
+class ContactsRequest {
+  @Field(_ => String)
+  public id: string;
 }
 
 interface ISearchResult {}
@@ -274,7 +239,18 @@ export class ContactResolver {
     const entries = await model.contact.findName({ name, ownerId: userId });
     return entries.map(en => ({
       name: en.name,
-      path: `/${en.name.replace(/ /g, ".")}/`
+      path: `/${en._id}/`
     }));
+  }
+
+  @Query(_ => [Contact], { nullable: true })
+  public async contacts(
+    @Args() { id }: ContactsRequest,
+    @Ctx() { model, userId }: Context
+  ): Promise<Array<Contact | null>> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to fetch contacts`);
+    }
+    return [await model.contact.getById(userId, id)];
   }
 }

@@ -14,7 +14,7 @@ export interface THuman extends TContact {
   bornAddress: string;
 
   // How do we meet?
-  knownAt: string; // date
+  knownAt: Date; // date
   knownSource: string;
 
   // Personalities
@@ -27,8 +27,8 @@ export interface THuman extends TContact {
   thinkingFeeling: "" | "thinking" | "feeling";
   planingPerceiving: "" | "planing" | "perceiving";
   tdp: "" | "creator" | "refiner" | "advancer" | "executor" | "flexor";
-  inboundTrust: 1;
-  outboundTrust: 1;
+  inboundTrust: number;
+  outboundTrust: number;
 
   // bio
   blurb: string;
@@ -54,8 +54,8 @@ export interface THuman extends TContact {
   facebook: string;
 
   // meta
-  createdAt?: string;
-  updatedAt?: string;
+  createAt?: string | undefined;
+  updateAt?: string | undefined;
 }
 
 export type TInteraction = {

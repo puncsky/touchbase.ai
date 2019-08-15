@@ -54,7 +54,7 @@ export function setHumanHandlers(server: MyServer): void {
           selfProfile._id
         );
       }
-      ctx.redirect(`${selfProfile.name.replace(/ /g, ".")}/`);
+      ctx.redirect(`/${selfProfile._id}/`);
     }
   );
   server.get("contacts", "/contacts/*", server.auth.authRequired, async ctx => {
@@ -87,22 +87,6 @@ export function setHumanHandlers(server: MyServer): void {
       ctx.setState("human", human);
       ctx.setState("base.ownerHumanId", user.lifetimeHumanId);
       ctx.setState("base.userId", user.id);
-      // if (human) {
-      //   const interactions =
-      //     (await server.model.event.getAllByOwnerIdRelatedHumanId(
-      //       ctx.state.userId,
-      //       human.id
-      //     )) || [];
-      //   ctx.setState(
-      //     "interactions",
-      //     interactions.map((iter: TPersonalNote) => ({
-      //       id: iter.id,
-      //       timestamp: iter.timestamp,
-      //       content: iter.content,
-      //       contentHtml: mdit.render(iter.content)
-      //     }))
-      //   );
-      // }
       // @ts-ignore
       ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
         VDom: <AppContainer />,

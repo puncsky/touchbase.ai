@@ -27,8 +27,7 @@ type State = {
 // @ts-ignore
 export const UpsertEventContainer = connect(
   (state: { base: { ownerHumanId: string }; human: THuman }) => ({
-    ownerHumanId: state.base.ownerHumanId,
-    humanId: state.human._id
+    ownerHumanId: state.base.ownerHumanId
   }),
   (dispatch: any) => ({
     actionUpsertEvent: payload => dispatch(actionUpsertEvent(payload))

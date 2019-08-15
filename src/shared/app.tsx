@@ -13,7 +13,6 @@ import { fonts } from "./common/styles/style-font";
 import { TopBar } from "./common/top-bar";
 import { ContactDetailContainer } from "./contact/contact-detail";
 import { ProfileCreatorContainer } from "./contact/profile-creator";
-import { ProfileEditorContainer } from "./contact/profile-editor/profile-editor";
 import { ContactsTableContainer } from "./contacts/contacts-table";
 import { Home } from "./home/home";
 import { Onboard } from "./onboard";
@@ -60,7 +59,6 @@ export class App extends Component<Props> {
             </Switch>
           </ScrollToTop>
         </div>
-        <Route exact path="*/edit/" component={ProfileEditorContainer} />
         <Route exact path="*/create/" component={ProfileCreatorContainer} />
         <Footer />
       </RootStyle>

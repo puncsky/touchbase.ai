@@ -38,7 +38,7 @@ export const EMPTY_HUMAN: THuman = {
   extraversionIntroversion: "",
   facebook: "",
   intuitingSensing: "",
-  knownAt: "2018-10-13T08:00:36.591Z",
+  knownAt: new Date(),
   knownSource: "",
   linkedin: "",
   planingPerceiving: "",
@@ -51,7 +51,7 @@ export const EMPTY_HUMAN: THuman = {
 
 type Props = {
   human: THuman;
-  actionCreateHuman(payload: any): void;
+  actionCreateHuman(payload: any, history: any): void;
   form?: WrappedFormUtils;
 } & RouterProps;
 
@@ -64,10 +64,11 @@ export const ProfileCreatorContainer = Form.create({ name: "profile-creator" })(
     connect(
       () => ({ human: EMPTY_HUMAN }),
       (dispatch: any) => ({
-        actionCreateHuman: payload => dispatch(actionCreateHuman(payload))
+        actionCreateHuman: (payload, history) =>
+          dispatch(actionCreateHuman(payload, history))
       })
     )(
-      class ProfileEditor extends Component<Props, State> {
+      class ProfileCreator extends Component<Props, State> {
         public props: Props;
         public state: State = { visible: false };
         public ref: any;
@@ -105,18 +106,9 @@ export const ProfileCreatorContainer = Form.create({ name: "profile-creator" })(
               // @ts-ignore
               emails: result.emails.split(",")
             };
-            actionCreateHuman(clone);
+            actionCreateHuman(clone, history);
 
             this.setState({ visible: false });
-            window.setTimeout(() => {
-              if (history.location.pathname === "/contacts/create/") {
-                history.push("../");
-              } else {
-                history.push(
-                  `/${clone.name.toLowerCase().replace(/ /g, ".")}/`
-                );
-              }
-            }, 200);
           });
         }
 

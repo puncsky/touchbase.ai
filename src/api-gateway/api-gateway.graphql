@@ -15,40 +15,33 @@ type ArticleResponse {
   filename: String!
 }
 
-enum AttitudeType {
-  empty
-  introversion
-  extroversion
-  ambiversion
-}
-
 type Contact {
   _id: String
-  emails: [String!]!
-  name: String!
-  avatarUrl: String!
-  address: String!
-  bornAt: String!
-  bornAddress: String!
-  knownAt: String!
-  knownSource: String!
-  extraversionIntroversion: AttitudeType!
-  intuitingSensing: PerceivingType!
-  thinkingFeeling: JudgingType!
-  planingPerceiving: LifestyleType!
-  tdp: TdpType!
-  inboundTrust: String!
-  outboundTrust: String!
-  blurb: String!
-  workingOn: String!
-  desire: String!
-  title: String!
-  experience: [String!]!
-  education: [String!]!
-  linkedin: String!
-  facebook: String!
-  createdAt: String
-  updatedAt: String
+  emails: [String!]
+  name: String
+  avatarUrl: String
+  address: String
+  bornAt: DateTime
+  bornAddress: String
+  knownAt: DateTime
+  knownSource: String
+  extraversionIntroversion: String
+  intuitingSensing: String
+  thinkingFeeling: String
+  planingPerceiving: String
+  tdp: String
+  inboundTrust: Float
+  outboundTrust: Float
+  blurb: String
+  workingOn: String
+  desire: String
+  title: String
+  experience: [Experience!]!
+  education: [Experience!]!
+  linkedin: String
+  facebook: String
+  createAt: DateTime
+  updateAt: DateTime
 }
 
 input CreateContactInput {
@@ -59,29 +52,39 @@ input CreateContactInput {
   address: String!
   bornAt: String!
   bornAddress: String!
-  knownAt: String!
+  knownAt: DateTime!
   knownSource: String!
-  extraversionIntroversion: AttitudeType!
-  intuitingSensing: PerceivingType!
-  thinkingFeeling: JudgingType!
-  planingPerceiving: LifestyleType!
-  tdp: TdpType!
-  inboundTrust: String!
-  outboundTrust: String!
+  extraversionIntroversion: String
+  intuitingSensing: String
+  thinkingFeeling: String
+  planingPerceiving: String
+  tdp: String
+  inboundTrust: Float!
+  outboundTrust: Float!
   blurb: String!
   workingOn: String!
   desire: String!
   title: String!
-  experience: [String!]!
-  education: [String!]!
+  experience: [ExperienceInput!]!
+  education: [ExperienceInput!]!
   linkedin: String!
   facebook: String!
-  createdAt: String
-  updatedAt: String
+  createAt: String
+  updateAt: String
 }
 
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
 scalar DateTime
+
+type Experience {
+  title: String
+  name: String
+}
+
+input ExperienceInput {
+  title: String
+  name: String
+}
 
 type Interaction {
   id: String!
@@ -90,26 +93,8 @@ type Interaction {
   contentHtml: String
 }
 
-enum JudgingType {
-  empty
-  thinking
-  feeling
-}
-
-enum LifestyleType {
-  empty
-  planing
-  perceiving
-}
-
 type Mutation {
   createContact(createContactInput: CreateContactInput!): Contact!
-}
-
-enum PerceivingType {
-  empty
-  intuiting
-  sensing
 }
 
 type Query {
@@ -117,6 +102,7 @@ type Query {
   articles(id: String): [ArticleResponse!]
   interactions(contactId: String, offset: Float, limit: Float): [Interaction!]!
   search(name: String!): [SearchResult!]!
+  contacts(id: String!): [Contact!]
 
   # is the server healthy?
   health: String!
@@ -125,13 +111,4 @@ type Query {
 type SearchResult {
   name: String!
   path: String!
-}
-
-enum TdpType {
-  empty
-  creator
-  refiner
-  advancer
-  executor
-  flexor
 }
