@@ -23,7 +23,7 @@ const listenDoubleShift = cb => event => {
   if (dblCtrlKey !== 0 && event.key === "Shift") {
     cb();
   } else {
-    dblCtrlKey = setTimeout(() => (dblCtrlKey = 0), 300);
+    dblCtrlKey = setTimeout(() => (dblCtrlKey = 0), 200);
   }
 };
 
