@@ -54,8 +54,8 @@ export interface THuman extends TContact {
   facebook: string;
 
   // meta
-  createAt?: string | undefined;
-  updateAt?: string | undefined;
+  createAt?: Date;
+  updateAt?: Date;
 }
 
 export type TInteraction = {

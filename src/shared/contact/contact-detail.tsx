@@ -4,6 +4,7 @@ import Icon from "antd/lib/icon";
 import Row from "antd/lib/row";
 import dateFormat from "dateformat";
 import gql from "graphql-tag";
+import omitDeep from "omit-deep-lodash";
 import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
@@ -54,7 +55,7 @@ type Props = {
   match: match<{ nameDash: string }>;
 } & RouterProps;
 
-const GET_CONTACTS = gql`
+export const GET_CONTACTS = gql`
   query contacts($id: String!) {
     contacts(id: $id) {
       _id
@@ -132,7 +133,7 @@ export const ContactDetailContainer = withRouter(
                   return <Preloader />;
                 }
 
-                const human = data.contacts[0];
+                const human = omitDeep(data.contacts[0], "__typename");
 
                 if (!human) {
                   return <div />;

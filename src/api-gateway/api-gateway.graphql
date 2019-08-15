@@ -16,7 +16,7 @@ type ArticleResponse {
 }
 
 type Contact {
-  _id: String
+  _id: String!
   emails: [String!]
   name: String
   avatarUrl: String
@@ -46,31 +46,31 @@ type Contact {
 
 input CreateContactInput {
   _id: String
-  emails: [String!]!
-  name: String!
-  avatarUrl: String!
-  address: String!
-  bornAt: String!
-  bornAddress: String!
-  knownAt: DateTime!
-  knownSource: String!
+  emails: [String!]
+  name: String
+  avatarUrl: String
+  address: String
+  bornAt: String
+  bornAddress: String
+  knownAt: DateTime
+  knownSource: String
   extraversionIntroversion: String
   intuitingSensing: String
   thinkingFeeling: String
   planingPerceiving: String
   tdp: String
-  inboundTrust: Float!
-  outboundTrust: Float!
-  blurb: String!
-  workingOn: String!
-  desire: String!
-  title: String!
+  inboundTrust: Float
+  outboundTrust: Float
+  blurb: String
+  workingOn: String
+  desire: String
+  title: String
   experience: [ExperienceInput!]!
   education: [ExperienceInput!]!
-  linkedin: String!
-  facebook: String!
-  createAt: String
-  updateAt: String
+  linkedin: String
+  facebook: String
+  createAt: DateTime
+  updateAt: DateTime
 }
 
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
@@ -95,6 +95,7 @@ type Interaction {
 
 type Mutation {
   createContact(createContactInput: CreateContactInput!): Contact!
+  updateContact(updateContactInput: UpdateContactInput!): Contact!
 }
 
 type Query {
@@ -111,4 +112,33 @@ type Query {
 type SearchResult {
   name: String!
   path: String!
+}
+
+input UpdateContactInput {
+  _id: String!
+  emails: [String!]
+  name: String
+  avatarUrl: String
+  address: String
+  bornAt: DateTime
+  bornAddress: String
+  knownAt: DateTime
+  knownSource: String
+  extraversionIntroversion: String
+  intuitingSensing: String
+  thinkingFeeling: String
+  planingPerceiving: String
+  tdp: String
+  inboundTrust: Float
+  outboundTrust: Float
+  blurb: String
+  workingOn: String
+  desire: String
+  title: String
+  experience: [ExperienceInput!]!
+  education: [ExperienceInput!]!
+  linkedin: String
+  facebook: String
+  createAt: DateTime
+  updateAt: DateTime
 }

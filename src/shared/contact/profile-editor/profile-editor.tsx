@@ -40,7 +40,7 @@ export const formItemLayout = {
 
 type Props = {
   human: THuman;
-  actionUpdateHuman?(payload: any): void;
+  actionUpdateHuman?(payload: any, remoteOnly: boolean): void;
   history?: any;
   form?: WrappedFormUtils;
 };
@@ -55,7 +55,8 @@ type State = { visible: boolean };
 @connect(
   () => ({}),
   (dispatch: any) => ({
-    actionUpdateHuman: payload => dispatch(actionUpdateHuman(payload))
+    actionUpdateHuman: (payload, remoteOnly) =>
+      dispatch(actionUpdateHuman(payload, remoteOnly))
   })
 )
 class ProfileEditorContainer extends Component<Props, State> {
@@ -86,7 +87,7 @@ class ProfileEditorContainer extends Component<Props, State> {
       // @ts-ignore
       emails: result.emails.split(",")
     };
-    actionUpdateHuman(clone);
+    actionUpdateHuman(clone, false);
 
     this.close();
   }

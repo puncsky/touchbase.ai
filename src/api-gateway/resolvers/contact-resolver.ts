@@ -1,3 +1,4 @@
+/* tslint:disable:variable-name */
 import { AuthenticationError } from "apollo-server-errors";
 import {
   Arg,
@@ -16,23 +17,23 @@ import { Context } from "../api-gateway";
 @InputType()
 class CreateContactInput implements THuman {
   @Field(_ => String, { nullable: true })
-  // tslint:disable-next-line:variable-name
   public _id?: string | undefined;
-  @Field(_ => String)
+
+  @Field(_ => String, { nullable: true })
   public emails: Array<string>;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public name: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public avatarUrl: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public address: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public bornAt: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public bornAddress: string;
-  @Field(_ => Date)
+  @Field(_ => Date, { nullable: true })
   public knownAt: Date;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public knownSource: string;
   @Field(_ => String, { nullable: true })
   public extraversionIntroversion:
@@ -48,37 +49,99 @@ class CreateContactInput implements THuman {
   public planingPerceiving: "" | "planing" | "perceiving";
   @Field(_ => String, { nullable: true })
   public tdp: "" | "creator" | "refiner" | "advancer" | "executor" | "flexor";
-  @Field(_ => Number)
+  @Field(_ => Number, { nullable: true })
   public inboundTrust: number;
-  @Field(_ => Number)
+  @Field(_ => Number, { nullable: true })
   public outboundTrust: number;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public blurb: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public workingOn: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public desire: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public title: string;
   @Field(_ => [ExperienceInput])
-  public experience: [{ title: string; name: string }];
+  public experience: [ExperienceInput];
   @Field(_ => [ExperienceInput])
-  public education: [{ title: string; name: string }];
-  @Field(_ => String)
+  public education: [ExperienceInput];
+  @Field(_ => String, { nullable: true })
   public linkedin: string;
-  @Field(_ => String)
+  @Field(_ => String, { nullable: true })
   public facebook: string;
+  @Field(_ => Date, { nullable: true })
+  public createAt?: Date;
+  @Field(_ => Date, { nullable: true })
+  public updateAt?: Date;
+}
+
+@InputType()
+class UpdateContactInput implements THuman {
+  @Field(_ => String)
+  public _id: string;
+
   @Field(_ => String, { nullable: true })
-  public createAt?: string | undefined;
+  public emails: Array<string>;
   @Field(_ => String, { nullable: true })
-  public updateAt?: string | undefined;
+  public name: string;
+  @Field(_ => String, { nullable: true })
+  public avatarUrl: string;
+  @Field(_ => String, { nullable: true })
+  public address: string;
+  @Field(_ => Date, { nullable: true })
+  public bornAt: string;
+  @Field(_ => String, { nullable: true })
+  public bornAddress: string;
+  @Field(_ => Date, { nullable: true })
+  public knownAt: Date;
+  @Field(_ => String, { nullable: true })
+  public knownSource: string;
+  @Field(_ => String, { nullable: true })
+  public extraversionIntroversion:
+    | ""
+    | "introversion"
+    | "extroversion"
+    | "ambiversion";
+  @Field(_ => String, { nullable: true })
+  public intuitingSensing: "" | "intuiting" | "sensing";
+  @Field(_ => String, { nullable: true })
+  public thinkingFeeling: "" | "thinking" | "feeling";
+  @Field(_ => String, { nullable: true })
+  public planingPerceiving: "" | "planing" | "perceiving";
+  @Field(_ => String, { nullable: true })
+  public tdp: "" | "creator" | "refiner" | "advancer" | "executor" | "flexor";
+  @Field(_ => Number, { nullable: true })
+  public inboundTrust: number;
+  @Field(_ => Number, { nullable: true })
+  public outboundTrust: number;
+  @Field(_ => String, { nullable: true })
+  public blurb: string;
+  @Field(_ => String, { nullable: true })
+  public workingOn: string;
+  @Field(_ => String, { nullable: true })
+  public desire: string;
+  @Field(_ => String, { nullable: true })
+  public title: string;
+  @Field(_ => [ExperienceInput])
+  public experience: [ExperienceInput];
+  @Field(_ => [ExperienceInput])
+  public education: [ExperienceInput];
+  @Field(_ => String, { nullable: true })
+  public linkedin: string;
+  @Field(_ => String, { nullable: true })
+  public facebook: string;
+  @Field(_ => Date, { nullable: true })
+  public createAt?: Date;
+  @Field(_ => Date, { nullable: true })
+  public updateAt?: Date;
 }
 
 @ObjectType()
 class Contact implements THuman {
-  @Field(_ => String, { nullable: true })
+  @Field(_ => String)
   // tslint:disable-next-line:variable-name
-  public _id?: string | undefined;
+  public _id: string;
+
   @Field(_ => String, { nullable: true })
   public emails: Array<string>;
   @Field(_ => String, { nullable: true })
@@ -130,9 +193,9 @@ class Contact implements THuman {
   @Field(_ => String, { nullable: true })
   public facebook: string;
   @Field(_ => Date, { nullable: true })
-  public createAt?: string | undefined;
+  public createAt?: Date;
   @Field(_ => Date, { nullable: true })
-  public updateAt?: string | undefined;
+  public updateAt?: Date;
 }
 
 @ObjectType()
@@ -205,10 +268,26 @@ export class ContactResolver {
     @Ctx() { model, userId }: Context
   ): Promise<Contact> {
     if (!userId) {
-      throw new AuthenticationError(`please login to fetch personal notes`);
+      throw new AuthenticationError(`please login to createContact`);
     }
 
     return model.human.newAndSave({ ...createContactInput, ownerId: userId });
+  }
+
+  @Mutation(_ => Contact)
+  public async updateContact(
+    @Arg("updateContactInput") updateContactInput: UpdateContactInput,
+    @Ctx() { model, userId }: Context
+  ): Promise<Contact | null> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to fetch personal notes`);
+    }
+
+    return model.human.updateOne(
+      updateContactInput._id,
+      userId,
+      updateContactInput
+    );
   }
 
   @Query(_ => [Interaction])
@@ -217,7 +296,7 @@ export class ContactResolver {
     @Ctx() { model, userId }: Context
   ): Promise<Array<Interaction>> {
     if (!userId) {
-      throw new AuthenticationError(`please login to fetch personal notes`);
+      throw new AuthenticationError(`please login to fetch interactions`);
     }
 
     return model.event.getAllByOwnerIdRelatedHumanId({
@@ -234,7 +313,7 @@ export class ContactResolver {
     @Ctx() { model, userId }: Context
   ): Promise<Array<SearchResult>> {
     if (!userId) {
-      throw new AuthenticationError(`please login to fetch personal notes`);
+      throw new AuthenticationError(`please login to search`);
     }
     const entries = await model.contact.findName({ name, ownerId: userId });
     return entries.map(en => ({

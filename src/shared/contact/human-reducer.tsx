@@ -5,6 +5,7 @@ import isBrowser from "is-browser";
 import JsonGlobal from "safe-json-globals/get";
 import { THuman } from "../../types/human";
 import { apolloClient } from "../common/apollo-client";
+import { GET_CONTACTS } from "./contact-detail";
 
 const csrfToken = isBrowser && JsonGlobal("state").base.csrfToken;
 
@@ -75,6 +76,14 @@ export function humanReducer(state: any = {}, action: TAction): any {
   return state;
 }
 
+const UPDATE_CONTACT = gql`
+  mutation updateContact($updateContactInput: UpdateContactInput!) {
+    updateContact(updateContactInput: $updateContactInput) {
+      _id
+    }
+  }
+`;
+
 export function actionUpdateHuman(
   payload: any,
   remoteOnly: boolean = false
@@ -87,7 +96,11 @@ export function actionUpdateHuman(
       });
     }
 
-    axiosInstance.post("/api/updateHuman/", payload);
+    apolloClient.mutate<{ updateContact: { _id: string } }>({
+      mutation: UPDATE_CONTACT,
+      variables: { updateContactInput: payload },
+      refetchQueries: [{ query: GET_CONTACTS, variables: { id: payload._id } }]
+    });
   };
 }
 
