@@ -387,6 +387,7 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
             <>
               {data.interactions.map((iter, i) => (
                 <div
+                  className="interactions-list"
                   key={i}
                   style={{
                     width: "100%",
