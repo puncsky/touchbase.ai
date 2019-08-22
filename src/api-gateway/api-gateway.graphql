@@ -91,17 +91,24 @@ type Interaction {
   timestamp: DateTime!
   content: String!
   contentHtml: String
+  relatedHumans: [String!]!
 }
 
 type Mutation {
   createContact(createContactInput: CreateContactInput!): Contact!
   updateContact(updateContactInput: UpdateContactInput!): Contact!
+  upsertInteraction(upsertInteraction: UpsertInteraction!): Interaction!
 }
 
 type Query {
   # get the article
   articles(id: String): [ArticleResponse!]
-  interactions(contactId: String, offset: Float, limit: Float): [Interaction!]!
+  interactions(
+    contactId: String
+    isSelf: Boolean
+    offset: Float
+    limit: Float
+  ): [Interaction!]!
   search(name: String!): [SearchResult!]!
   contacts(id: String!): [Contact!]
 
@@ -141,4 +148,11 @@ input UpdateContactInput {
   facebook: String
   createAt: DateTime
   updateAt: DateTime
+}
+
+input UpsertInteraction {
+  id: String!
+  timestamp: DateTime!
+  content: String!
+  relatedHumans: [String!]!
 }

@@ -50,8 +50,7 @@ const SECTION = {
 };
 
 type Props = {
-  human: THuman;
-  interactions: Array<TInteraction>;
+  ownerHumanId: string;
   match: match<{ nameDash: string }>;
 } & RouterProps;
 
@@ -96,9 +95,8 @@ export const GET_CONTACTS = gql`
 
 export const ContactDetailContainer = withRouter(
   // @ts-ignore
-  connect((state: { human: THuman; interactions: Array<TInteraction> }) => ({
-    // human: state.human,
-    // interactions: state.interactions
+  connect((state: { base: { ownerHumanId: string } }) => ({
+    ownerHumanId: state.base.ownerHumanId
   }))(
     // tslint:disable-next-line:max-func-body-length
     class ContactFetcher extends Component<Props> {
@@ -114,6 +112,7 @@ export const ContactDetailContainer = withRouter(
       public render(): JSX.Element | null {
         const props: Props = this.props;
         const id = props.match.params.nameDash;
+        const ownerHumanId = props.ownerHumanId;
         return (
           <ContentPadding>
             <Padding />
@@ -139,7 +138,7 @@ export const ContactDetailContainer = withRouter(
                   return <div />;
                 }
 
-                return <Contact human={human} />;
+                return <Contact human={human} isSelf={ownerHumanId === id} />;
               }}
             </Query>
             <Padding />
@@ -151,7 +150,13 @@ export const ContactDetailContainer = withRouter(
 );
 
 // tslint:disable-next-line:max-func-body-length
-function Contact({ human }: { human: THuman }): JSX.Element {
+function Contact({
+  human,
+  isSelf
+}: {
+  human: THuman;
+  isSelf?: boolean;
+}): JSX.Element {
   return (
     <Row gutter={16}>
       <Col sm={6} xs={24}>
@@ -232,7 +237,7 @@ function Contact({ human }: { human: THuman }): JSX.Element {
             </UpsertEventContainer>
           </Flex>
 
-          <Interactions contactId={String(human._id)} />
+          <Interactions contactId={String(human._id)} isSelf={isSelf} />
         </Flex>
 
         <Padding />
@@ -327,9 +332,19 @@ const Icon1 = styled(Icon, {
   color: colors.white
 });
 
-const GET_INTERACTIONS = gql`
-  query interactions($contactId: String, $offset: Float, $limit: Float) {
-    interactions(contactId: $contactId, offset: $offset, limit: $limit) {
+export const GET_INTERACTIONS = gql`
+  query interactions(
+    $contactId: String
+    $offset: Float
+    $limit: Float
+    $isSelf: Boolean
+  ) {
+    interactions(
+      contactId: $contactId
+      offset: $offset
+      limit: $limit
+      isSelf: $isSelf
+    ) {
       id
       content
       timestamp
@@ -337,20 +352,26 @@ const GET_INTERACTIONS = gql`
   }
 `;
 
-class Interactions extends Component<{ contactId: string }> {
+export const PAGE_SIZE: number = 5;
+
+class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
   public start: number = 0;
 
-  public static PAGE_SIZE: number = 5;
-
+  // tslint:disable-next-line:max-func-body-length
   public render(): JSX.Element {
-    const { contactId } = this.props;
+    const { contactId, isSelf } = this.props;
 
     return (
       <Query
         query={GET_INTERACTIONS}
         ssr={false}
         fetchPolicy="network-only"
-        variables={{ contactId, offset: 0, limit: Interactions.PAGE_SIZE }}
+        variables={{
+          contactId,
+          offset: 0,
+          limit: PAGE_SIZE,
+          isSelf
+        }}
       >
         {({
           loading,
@@ -402,14 +423,14 @@ class Interactions extends Component<{ contactId: string }> {
                       query: GET_INTERACTIONS,
                       variables: {
                         contactId,
-                        offset: this.start + Interactions.PAGE_SIZE,
-                        limit: Interactions.PAGE_SIZE
+                        offset: this.start + PAGE_SIZE,
+                        limit: PAGE_SIZE
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
                         if (!fetchMoreResult) {
                           return prev;
                         }
-                        this.start += Interactions.PAGE_SIZE;
+                        this.start += PAGE_SIZE;
                         window.console.log(
                           JSON.stringify({
                             prev,

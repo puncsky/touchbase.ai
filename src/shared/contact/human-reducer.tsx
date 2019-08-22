@@ -5,7 +5,7 @@ import isBrowser from "is-browser";
 import JsonGlobal from "safe-json-globals/get";
 import { THuman } from "../../types/human";
 import { apolloClient } from "../common/apollo-client";
-import { GET_CONTACTS } from "./contact-detail";
+import { GET_CONTACTS, GET_INTERACTIONS, PAGE_SIZE } from "./contact-detail";
 
 const csrfToken = isBrowser && JsonGlobal("state").base.csrfToken;
 
@@ -52,11 +52,47 @@ export function interactionsReducer(state: any = [], action: TAction): any {
   return state;
 }
 
-export function actionUpsertEvent(payload: any): any {
+const UPSERT_INTERACTION = gql`
+  mutation upsertInteraction($upsertInteraction: UpsertInteraction!) {
+    upsertInteraction(upsertInteraction: $upsertInteraction) {
+      id
+      timestamp
+      content
+      contentHtml
+      relatedHumans
+    }
+  }
+`;
+
+export function actionUpsertEvent(
+  payload: any,
+  contactId: string,
+  isSelf: boolean
+): any {
   return (dispatch: any) => {
-    axiosInstance.post("/api/upsertEvent/", payload).then(resp => {
-      dispatch({ type: UPSERT_EVENT, payload: resp.data.searchResults });
-    });
+    apolloClient
+      .mutate<{ upsertInteraction: { _id: string } }>({
+        mutation: UPSERT_INTERACTION,
+        variables: { upsertInteraction: payload },
+        refetchQueries: [
+          {
+            query: GET_INTERACTIONS,
+            variables: {
+              contactId,
+              offset: 0,
+              limit: PAGE_SIZE,
+              isSelf
+            }
+          }
+        ]
+      })
+      .then(resp => {
+        // TODO(tian): error handling
+        dispatch({
+          type: UPSERT_EVENT,
+          payload: resp.data && resp.data.upsertInteraction
+        });
+      });
   };
 }
 

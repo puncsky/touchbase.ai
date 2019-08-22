@@ -54,11 +54,20 @@ export class PersonalNoteModel {
     limit
   }: {
     ownerId: string;
-    humanId: string;
+    humanId?: string;
     skip?: number;
     limit?: number;
   }): Promise<Array<TPersonalNoteDoc>> {
-    let resp = this.Model.find({ ownerId, relatedHumans: humanId }).sort({
+    let query: any = {
+      ownerId
+    };
+    if (humanId) {
+      query = {
+        ownerId,
+        relatedHumans: humanId
+      };
+    }
+    let resp = this.Model.find(query).sort({
       timestamp: "desc"
     });
     if (skip !== undefined) {

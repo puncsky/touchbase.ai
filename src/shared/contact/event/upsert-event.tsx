@@ -10,7 +10,7 @@ import { actionUpsertEvent } from "../human-reducer";
 
 type Props = {
   // container
-  actionUpsertEvent(payload: any): void;
+  actionUpsertEvent(payload: any, contactId: string, isSelf: boolean): void;
   ownerHumanId: string;
   humanId: string;
 
@@ -30,7 +30,8 @@ export const UpsertEventContainer = connect(
     ownerHumanId: state.base.ownerHumanId
   }),
   (dispatch: any) => ({
-    actionUpsertEvent: payload => dispatch(actionUpsertEvent(payload))
+    actionUpsertEvent: (payload: any, contactId: string, isSelf: boolean) =>
+      dispatch(actionUpsertEvent(payload, contactId, isSelf))
   })
 )(
   // @ts-ignore
@@ -60,11 +61,16 @@ export const UpsertEventContainer = connect(
             title={eventId ? t("edit_event") : t("add_event")}
             onCancel={() => this.setState({ isVisible: false })}
             onOk={() => {
-              actionUpsertEvent({
-                id: eventId,
-                content: this.getSimpleMde().value(),
-                relatedHumans: [ownerHumanId, humanId]
-              });
+              actionUpsertEvent(
+                {
+                  id: eventId,
+                  content: this.getSimpleMde().value(),
+                  relatedHumans: [ownerHumanId, humanId],
+                  timestamp: new Date()
+                },
+                humanId,
+                ownerHumanId === humanId
+              );
               this.setState({ isVisible: false });
             }}
           >

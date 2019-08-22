@@ -11,6 +11,7 @@ import {
   ObjectType,
   Query
 } from "type-graphql";
+import { TPersonalNote } from "../../types/contact";
 import { THuman, TInteraction } from "../../types/human";
 import { Context } from "../api-gateway";
 
@@ -223,13 +224,30 @@ class Interaction implements TInteraction {
   @Field(_ => String)
   public content: string;
   @Field(_ => String, { nullable: true })
-  public contentHtml: string;
+  public contentHtml?: string;
+  @Field(_ => [String])
+  public relatedHumans: Array<string>;
+}
+
+@InputType()
+class UpsertInteraction implements TInteraction {
+  @Field(_ => String)
+  public id: string;
+  @Field(_ => Date)
+  public timestamp: Date;
+  @Field(_ => String)
+  public content: string;
+  @Field(_ => [String])
+  public relatedHumans: Array<string>;
 }
 
 @ArgsType()
 class GetInteractions {
   @Field(_ => String, { nullable: true })
   public contactId: string;
+
+  @Field(_ => Boolean, { nullable: true })
+  public isSelf: boolean;
 
   @Field(_ => Number, { nullable: true })
   public offset?: number;
@@ -280,7 +298,7 @@ export class ContactResolver {
     @Ctx() { model, userId }: Context
   ): Promise<Contact | null> {
     if (!userId) {
-      throw new AuthenticationError(`please login to fetch personal notes`);
+      throw new AuthenticationError(`please login to updateContactInput`);
     }
 
     return model.human.updateOne(
@@ -292,19 +310,45 @@ export class ContactResolver {
 
   @Query(_ => [Interaction])
   public async interactions(
-    @Args() { contactId, offset, limit }: GetInteractions,
+    @Args() { contactId, offset, limit, isSelf }: GetInteractions,
     @Ctx() { model, userId }: Context
   ): Promise<Array<Interaction>> {
     if (!userId) {
       throw new AuthenticationError(`please login to fetch interactions`);
     }
-
     return model.event.getAllByOwnerIdRelatedHumanId({
       ownerId: userId,
-      humanId: contactId,
+      humanId: isSelf ? undefined : contactId,
       skip: offset,
       limit
     });
+  }
+
+  @Mutation(_ => Interaction)
+  public async upsertInteraction(
+    @Arg("upsertInteraction") item: UpsertInteraction,
+    @Ctx() { model, userId }: Context
+  ): Promise<Interaction | null> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to upsertInteraction`);
+    }
+
+    const found = item.content.match(/@([a-zA-Z\u4e00-\u9fa5.]+)/g) || [];
+    const usernames = found.map(it => it.replace("@", "").replace(".", " "));
+    const humans = await model.human.findManyIdsByNames(usernames);
+
+    const associatedItem: TInteraction = item;
+
+    associatedItem.relatedHumans = [
+      ...associatedItem.relatedHumans,
+      ...humans.map((h: TPersonalNote) => h.id)
+    ];
+    const ownedItem = { ...associatedItem, ownerId: userId };
+    if (!item.id) {
+      ownedItem.timestamp = new Date();
+      return model.event.add(ownedItem);
+    }
+    return model.event.updateOne(item.id, userId, ownedItem);
   }
 
   @Query(_ => [SearchResult])
