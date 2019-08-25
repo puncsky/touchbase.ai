@@ -2,10 +2,12 @@ import AutoComplete from "antd/lib/auto-complete";
 import Icon from "antd/lib/icon";
 import Input from "antd/lib/input";
 import gql from "graphql-tag";
+import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import { RouterProps, withRouter } from "react-router";
 import { apolloClient } from "./apollo-client";
+import { loadScript } from "./load-script";
 
 const { Option } = AutoComplete;
 
@@ -17,15 +19,6 @@ const SEARCH = gql`
     }
   }
 `;
-
-let dblCtrlKey: any = 0;
-const listenDoubleShift = cb => event => {
-  if (dblCtrlKey !== 0 && event.key === "Shift") {
-    cb();
-  } else {
-    dblCtrlKey = setTimeout(() => (dblCtrlKey = 0), 200);
-  }
-};
 
 type ISearchResult = {
   name: string;
@@ -45,7 +38,7 @@ export const SearchBox = withRouter(
       searchResults: []
     };
 
-    private keyDownhandler: any;
+    private listener: any;
 
     public handleSearch = async (inputText: string) => {
       const { data } = await apolloClient.query<{
@@ -70,12 +63,23 @@ export const SearchBox = withRouter(
     };
 
     public componentDidMount(): void {
-      this.keyDownhandler = listenDoubleShift(this.focus);
-      document.addEventListener("keydown", this.keyDownhandler);
+      loadScript(assetURL("/keypress-2.1.5.min.js"), () => {
+        // @ts-ignore
+        this.listener = new window.keypress.Listener();
+        this.listener.simple_combo(
+          "cmd e",
+          () => {
+            this.focus();
+          },
+          true
+        );
+      });
     }
 
     public componentWillUnmount(): void {
-      document.removeEventListener("keydown", this.keyDownhandler);
+      if (this.listener) {
+        this.listener.reset();
+      }
     }
 
     public render(): JSX.Element {

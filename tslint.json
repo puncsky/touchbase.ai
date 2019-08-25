@@ -118,11 +118,12 @@
     "no-implicit-dependencies": false,
     "no-suspicious-comment": false,
     "no-use-before-declare": false,
-    "react-unused-props-and-state": false
+    "react-unused-props-and-state": false,
+    "member-access": false
   },
   "jsRules": {
     "quotemark": [true, "double", "jsx-double"],
     "max-classes-per-file": false,
-    "no-unused-variable": false
+    "no-unused-variable": true
   }
 }
