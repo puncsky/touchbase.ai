@@ -1,3 +1,4 @@
+/* tslint:disable:react-a11y-input-elements */
 import window from "global/window";
 import { t } from "onefx/lib/iso-i18n";
 import Helmet from "onefx/lib/react-helmet";
@@ -24,7 +25,8 @@ export class MdEditor extends Component<Props> {
           element: this.ref,
           autofocus: true,
           initialValue,
-          spellChecker: false
+          spellChecker: false,
+          placeholder: t("field.note_placeholder")
         });
         getSimpleMde(this.getSimpleMde);
       }
@@ -44,12 +46,8 @@ export class MdEditor extends Component<Props> {
             href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"
           />
         </Helmet>
-        <textarea
-          style={{ display: "none" }}
-          ref={ref => (this.ref = ref)}
-          defaultValue=""
-          placeholder={t("field.note_placeholder")}
-        />
+
+        <textarea ref={ref => (this.ref = ref)} />
       </div>
     );
   }
