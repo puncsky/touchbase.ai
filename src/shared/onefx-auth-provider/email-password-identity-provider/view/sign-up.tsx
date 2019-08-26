@@ -133,8 +133,8 @@ export class SignUpInner extends Component<Props, State> {
                 style={{ fontSize: "10px" }}
                 dangerouslySetInnerHTML={{
                   __html: t("auth/consent", {
-                    tosUrl: "/legal/terms-of-service",
-                    policyUrl: "/legal/privacy-policy"
+                    tosUrl: "/page/legal/terms-of-service",
+                    policyUrl: "/page/legal/privacy-policy"
                   })
                 }}
               />

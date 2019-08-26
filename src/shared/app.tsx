@@ -36,7 +36,7 @@ export class App extends Component<Props> {
         <div style={FOOTER_ABOVE}>
           <ScrollToTop>
             <Switch>
-              <Route exact path="/legal/:id" component={ArticleFetcher} />
+              <Route exact path="/page/:id+" component={ArticleFetcher} />
               <Route
                 exact
                 path="/contacts/*"

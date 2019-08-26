@@ -5,6 +5,7 @@ import { RouteComponentProps, withRouter } from "react-router";
 import { CommonMargin } from "../common/common-margin";
 import { Article } from "./article";
 import { ArticleResponse } from "./article-types";
+import { NotFound } from "../common/not-found";
 
 const FETCH_ARTICLE = gql`
   query articles($id: String!) {
@@ -26,7 +27,7 @@ export function ArticleFetcherInner(
         data
       }: QueryResult<{ articles: Array<ArticleResponse> }>) => {
         if (loading || error || !data || !data.articles) {
-          return null;
+          return <NotFound />;
         }
 
         return (

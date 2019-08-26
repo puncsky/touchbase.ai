@@ -1,6 +1,6 @@
 ---
 layout: post
-id: privacy-policy
+id: legal/privacy-policy
 title: "Privacy Policy - How we secure and protect your information."
 ---
 

@@ -107,7 +107,7 @@ export function parseArticle(
   const metaObject = getMeta(regResult[1]);
   const mdContent = regResult[2];
   metaObject.contentHTML = getHTML(mdContent);
-  metaObject.id = getID(filename);
+  metaObject.id = metaObject.id || getID(filename);
   metaObject.filename = filename;
   if (!metaObject.hasOwnProperty("published")) {
     metaObject.published = true;

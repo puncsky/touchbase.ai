@@ -35,12 +35,12 @@ export function Footer(): JSX.Element {
         </a>
 
         <Flex>
-          <Link style={{ fontSize: "10px" }} to="/legal/privacy-policy/">
+          <Link style={{ fontSize: "10px" }} to="/page/legal/privacy-policy/">
             {t("tos.privacy")}
           </Link>
           <CommonMargin />
           {/* tslint:disable-next-line:react-a11y-anchors */}
-          <Link style={{ fontSize: "10px" }} to="/legal/terms-of-service/">
+          <Link style={{ fontSize: "10px" }} to="/page/legal/terms-of-service/">
             {t("tos.tos")}
           </Link>
         </Flex>

@@ -16,12 +16,7 @@ import { fullOnPalm, media } from "../common/styles/style-media";
 import { ContentPadding } from "../common/styles/style-padding";
 
 const DOC_STYLES = `
-h2, h3, h4, h5 {
-  padding: 52px 0 8px;
-  margin: -52px 0 0 !important;
-  -webkit-background-clip: content-box;
-  background-clip: content-box;
-}
+
 h1 > a.markdownIt-Anchor > span, h2 > a.markdownIt-Anchor > span, h3 > a.markdownIt-Anchor > span, h4 > a.markdownIt-Anchor > span, h5 > a.markdownIt-Anchor > span {
   color: transparent;}
 
@@ -34,13 +29,19 @@ h1:hover > a.markdownIt-Anchor:hover > span, h2:hover > a.markdownIt-Anchor:hove
 h1:focus > a.markdownIt-Anchor:focus > span, h2:focus > a.markdownIt-Anchor:focus > span, h3:focus > a.markdownIt-Anchor:focus > span, h4:focus > a.markdownIt-Anchor:focus > span, h5:focus > a.markdownIt-Anchor:focus > span {
   color: ${colors.primary}; }
 
-h2:before {
-  content: "\\A";
-  width: 8px;
-  height: 20px;
-  background: ${colors.primary};
-  display: inline-block;
-  margin: 0 10px 0 0; }
+h2 {
+  border-bottom: 1px solid #dedede;
+  padding-bottom: .3em;
+}
+
+h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
+  display: block;
+  content: " ";
+  height: 60px;
+  margin-top: -60px;
+  visibility: hidden;
+}
+
 
 p {   word-wrap: break-word; }
 
@@ -48,6 +49,59 @@ p {   word-wrap: break-word; }
 
 .markdownIt-Link-Anchor::before {
   content: "#";
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #dfe2e5;
+  margin: 8px 0;
+}
+
+table, td, th {
+  table-layout: fixed;
+  width: 100%;
+  background-color: #fff;
+  text-align: left;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+table td, table th {
+  border: 1px solid #dfe2e5;
+  padding: 6px 13px;
+}
+
+table th {
+  border: 1px solid #dfe2e5;
+  padding: 6px 13px;
+  font-weight: 600;
+}
+
+td, th {
+  display: table-cell;
+  vertical-align: inherit;
+}
+
+table tr {
+  background-color: #fff;
+  border-top: 1px solid #c6cbd1;
+}
+
+tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
 }
 `;
 
