@@ -110,7 +110,13 @@ export class OnefxAuth {
       ctx.query.next || (ctx.request.body && ctx.request.body.next)
     );
     if (ctx.is("json")) {
-      ctx.body = { shouldRedirect: true, ok: true, next: nextUrl };
+      const isMobileWebView = ctx.session.isMobileWebView;
+      ctx.body = {
+        shouldRedirect: true,
+        ok: true,
+        next: nextUrl,
+        authToken: isMobileWebView ? token : null
+      };
       return;
     }
     ctx.redirect(nextUrl);

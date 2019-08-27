@@ -3,9 +3,9 @@ import React from "react";
 import { Query, QueryResult } from "react-apollo";
 import { RouteComponentProps, withRouter } from "react-router";
 import { CommonMargin } from "../common/common-margin";
+import { NotFound } from "../common/not-found";
 import { Article } from "./article";
 import { ArticleResponse } from "./article-types";
-import { NotFound } from "../common/not-found";
 
 const FETCH_ARTICLE = gql`
   query articles($id: String!) {

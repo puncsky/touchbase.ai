@@ -21,6 +21,7 @@ import { SignUp } from "./sign-up";
 
 type Props = {
   googleTid?: string;
+  isMobileWebView?: boolean;
 };
 
 export class IdentityApp extends Component<Props> {
@@ -29,11 +30,12 @@ export class IdentityApp extends Component<Props> {
   }
 
   public render(): JSX.Element {
+    const { isMobileWebView } = this.props;
     return (
       <RootStyle>
         <Head />
-        <TopBar />
-        <div style={FOOTER_ABOVE}>
+        {!isMobileWebView && <TopBar />}
+        <div style={isMobileWebView ? { height: "100vh" } : FOOTER_ABOVE}>
           <Route path="/email-token/*" component={EmailTokenInvalid} />
           <Switch>
             <Route exact path="/login" component={SignIn} />
@@ -48,7 +50,7 @@ export class IdentityApp extends Component<Props> {
             <Route component={NotFound} />
           </Switch>
         </div>
-        <Footer />
+        {!isMobileWebView && <Footer />}
       </RootStyle>
     );
   }

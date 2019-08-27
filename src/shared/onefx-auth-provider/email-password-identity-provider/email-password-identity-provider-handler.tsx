@@ -1,10 +1,11 @@
 import koa from "koa";
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import * as React from "react";
+import { combineReducers } from "redux";
 import validator from "validator";
 import { MyServer } from "../../../server/start-server";
 import { TUser } from "../../onefx-auth/model/user-model";
-import { IdentityApp } from "./view/identity-app";
+import { IdentityAppContainer } from "./view/identity-app-container";
 
 const PASSWORD_MIN_LENGTH = 8;
 
@@ -49,6 +50,16 @@ export function passwordValidator(): Handler {
   };
 }
 
+function isMobileWebView(ctx: koa.Context): boolean {
+  const isMobile =
+    ctx.headers["x-app-id"] === "mobile-rebinder" ||
+    ctx.session.isMobileWebView;
+  if (isMobile) {
+    ctx.session.isMobileWebView = true;
+  }
+  return isMobile;
+}
+
 // tslint:disable-next-line
 export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
   // view routes
@@ -59,6 +70,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     async (ctx: koa.Context, _: Function) => {
       ctx.setState("base.next", ctx.query.next);
       ctx.setState("base.userId", ctx.state.userId);
+      ctx.setState("base.isMobileWebView", isMobileWebView(ctx));
       return isoRender(ctx);
     }
   );
@@ -263,8 +275,10 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
 
 function isoRender(ctx: koa.Context): void {
   ctx.body = ctx.isoReactRender({
-    VDom: <IdentityApp />,
-    reducer: noopReducer,
+    VDom: <IdentityAppContainer />,
+    reducer: combineReducers({
+      base: noopReducer
+    }),
     clientScript: "/identity-provider-main.js"
   });
 }

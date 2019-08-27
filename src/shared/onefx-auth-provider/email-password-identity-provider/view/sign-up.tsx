@@ -70,8 +70,12 @@ export class SignUpInner extends Component<Props, State> {
         next
       })
       .then(r => {
-        if (r.data.ok && r.data.shouldRedirect) {
+        if (r.data.ok && r.data.shouldRedirect && !r.data.authToken) {
           return (window.location.href = r.data.next);
+        } else if (r.data.ok && r.data.authToken) {
+          // web view login in
+          // @ts-ignore
+          window.postMessage(JSON.stringify({ authToken: r.data.authToken }));
         } else if (r.data.error) {
           const error = r.data.error;
           const errorState = {
@@ -126,6 +130,7 @@ export class SignUpInner extends Component<Props, State> {
                 >
                   {t("auth/button_submit")}
                 </Button>
+                [
               </FieldMargin>
             </Flex>
             <FieldMargin>

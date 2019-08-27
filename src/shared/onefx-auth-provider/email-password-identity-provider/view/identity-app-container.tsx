@@ -2,19 +2,23 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { IdentityApp } from "./identity-app";
 
-type ReduxProps = {
-  googleTid: string;
-  locale: string;
+type ReduxState = {
+  base: {
+    analytics: {
+      googleTid: string;
+    };
+    locale: string;
+    isMobileWebView: boolean;
+  };
 };
 
 export const IdentityAppContainer = withRouter(
   // @ts-ignore
-  connect<ReduxProps>(state => {
+  connect((state: ReduxState) => {
     return {
-      // @ts-ignore
       googleTid: state.base.analytics.googleTid,
-      // @ts-ignore
-      locale: state.base.locale
+      locale: state.base.locale,
+      isMobileWebView: state.base.isMobileWebView
     };
   })(IdentityApp)
 );
