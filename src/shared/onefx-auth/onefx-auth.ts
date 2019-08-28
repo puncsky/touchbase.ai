@@ -122,10 +122,13 @@ export class OnefxAuth {
     ctx.redirect(nextUrl);
   };
 
-  public tokenFromCtx = (ctx: koa.Context) => {
-    let token = ctx.cookies.get(this.config.cookieName, this.config.cookieOpts);
-    if (!token && ctx.headers.authorization) {
-      token = String(ctx.headers.authorization).replace("Bearer ", "");
+  public tokenFromCtx = (ctx: koa.Context): string | undefined => {
+    let token: string | undefined = String(ctx.headers.authorization).replace(
+      "Bearer ",
+      ""
+    );
+    if (!token) {
+      token = ctx.cookies.get(this.config.cookieName, this.config.cookieOpts);
     }
     return token;
   };
