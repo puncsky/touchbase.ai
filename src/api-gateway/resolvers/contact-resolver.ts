@@ -268,6 +268,14 @@ class ContactsRequest {
   public id: string;
 }
 
+@ArgsType()
+class ContactRequest {
+  @Field(_ => String, { nullable: true })
+  public id?: string;
+  @Field(_ => String, { nullable: true })
+  public userId?: string;
+}
+
 interface ISearchResult {}
 
 @ObjectType()
@@ -375,5 +383,42 @@ export class ContactResolver {
       throw new AuthenticationError(`please login to fetch contacts`);
     }
     return [await model.contact.getById(userId, id)];
+  }
+
+  @Query(_ => Contact, { nullable: true })
+  public async contact(
+    @Args() req: ContactRequest,
+    @Ctx() { model, userId, auth }: Context
+  ): Promise<Contact | null> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to fetch contact`);
+    }
+    if (req.userId) {
+      if (req.userId !== String(userId)) {
+        throw new AuthenticationError(
+          `fetching a contact not belonging to current user`
+        );
+      }
+      const user = await auth.user.getById(userId);
+      if (!user) {
+        throw new AuthenticationError(`user is not found`);
+      }
+      const contact = await model.contact.getById(userId, user.lifetimeHumanId);
+      if (!contact) {
+        return null;
+      }
+      if (
+        !contact.emails ||
+        contact.emails.length === 0 ||
+        !contact.emails[0]
+      ) {
+        contact.emails = [user.email];
+      }
+      return contact;
+    }
+    if (req.id) {
+      return model.contact.getById(userId, req.id);
+    }
+    return null;
   }
 }

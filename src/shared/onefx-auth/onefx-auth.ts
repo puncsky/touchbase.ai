@@ -91,7 +91,7 @@ export class OnefxAuth {
     ctx.cookies.set(this.config.cookieName, undefined, this.config.cookieOpts);
     const token = this.tokenFromCtx(ctx);
     if (token) {
-      this.jwt.revoke(token);
+      await this.jwt.revoke(token);
     }
     ctx.redirect(allowedLogoutNext(ctx.query.next));
   };

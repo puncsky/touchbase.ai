@@ -6,10 +6,16 @@ import { Model } from "../model";
 import { Gateways } from "../server/gateway/gateway";
 import { MyServer } from "../server/start-server";
 import { ArticleResolver } from "../shared/article/article-resolver";
+import { OnefxAuth } from "../shared/onefx-auth";
 import { ContactResolver } from "./resolvers/contact-resolver";
 import { MetaResolver } from "./resolvers/meta-resolver";
 
-export type Context = { model: Model; gateways: Gateways; userId: string };
+export type Context = {
+  model: Model;
+  gateways: Gateways;
+  userId: string;
+  auth: OnefxAuth;
+};
 
 export async function setApiGateway(server: MyServer): Promise<void> {
   const resolvers = [MetaResolver, ArticleResolver, ContactResolver];
@@ -35,7 +41,8 @@ export async function setApiGateway(server: MyServer): Promise<void> {
       return {
         userId,
         model: server.model,
-        gateways: server.gateways
+        gateways: server.gateways,
+        auth: server.auth
       };
     }
   });

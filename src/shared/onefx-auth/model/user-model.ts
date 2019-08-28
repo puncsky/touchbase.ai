@@ -15,6 +15,7 @@ export type TUser = mongoose.Document &
     avatar: string;
 
     isBlocked: boolean;
+    lifetimeHumanId: string;
 
     createAt: Date;
     updateAt: Date;
