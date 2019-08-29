@@ -71,11 +71,13 @@ export const TopBar = connect((state: any) => ({
         ];
       }
 
-      return [
-        <StyledLink key={2} to="./create/" onClick={this.hideMobileMenu}>
-          {t("topbar.create")}
-        </StyledLink>
-      ];
+      return (
+        <>
+          <StyledLink key={2} to="./create/" onClick={this.hideMobileMenu}>
+            {t("topbar.create")}
+          </StyledLink>
+        </>
+      );
     };
 
     public renderMobileMenu = () => {
@@ -85,7 +87,17 @@ export const TopBar = connect((state: any) => ({
 
       return (
         <OutsideClickHandler onOutsideClick={this.hideMobileMenu}>
-          <Dropdown>{this.renderMenu()}</Dropdown>
+          <Dropdown>
+            <StyledLink key={2} to="./create/" onClick={this.hideMobileMenu}>
+              {t("topbar.create")}
+            </StyledLink>
+            <StyledLink to="/contacts/" onClick={this.hideMobileMenu}>
+              {t("topbar.contacts")}
+            </StyledLink>
+            <StyledLink to="/settings/" onClick={this.hideMobileMenu}>
+              <AntIcon type="setting" theme="filled" />
+            </StyledLink>
+          </Dropdown>
         </OutsideClickHandler>
       );
     };
@@ -100,28 +112,39 @@ export const TopBar = connect((state: any) => ({
             <Flex>
               {loggedIn ? (
                 <LinkLogoWrapper to={`/me/`}>
-                  <Icon url={assetURL("/favicon.svg")} />
+                  <Icon
+                    width={`${TOP_BAR_HEIGHT}px`}
+                    url={assetURL("/favicon.svg")}
+                  />
                 </LinkLogoWrapper>
               ) : (
                 <LogoWrapper href="/">
-                  <Icon url={assetURL("/favicon.svg")} />
+                  <Icon
+                    width={`${TOP_BAR_HEIGHT}px`}
+                    url={assetURL("/favicon.svg")}
+                  />
                 </LogoWrapper>
               )}
               <CommonMargin />
-              {loggedIn ? (
-                <BrandLink to={`/me/`}>{t("topbar.brand")}</BrandLink>
-              ) : (
-                <BrandText href="/">{t("topbar.brand")}</BrandText>
-              )}
+              <HiddenOnMobile>
+                {loggedIn ? (
+                  <BrandLink to={`/me/`}>{t("topbar.brand")}</BrandLink>
+                ) : (
+                  <BrandText href="/">{t("topbar.brand")}</BrandText>
+                )}
+              </HiddenOnMobile>
+
               {loggedIn && (
                 <>
                   <SearchBox />
-                  <BrandLink to="/contacts/" onClick={this.hideMobileMenu}>
-                    {t("topbar.contacts")}
-                  </BrandLink>
-                  <BrandLink to="/settings/" onClick={this.hideMobileMenu}>
-                    <AntIcon type="setting" theme="filled" />
-                  </BrandLink>
+                  <HiddenOnMobile>
+                    <BrandLink to="/contacts/" onClick={this.hideMobileMenu}>
+                      {t("topbar.contacts")}
+                    </BrandLink>
+                    <BrandLink to="/settings/" onClick={this.hideMobileMenu}>
+                      <AntIcon type="setting" theme="filled" />
+                    </BrandLink>
+                  </HiddenOnMobile>
                 </>
               )}
             </Flex>
@@ -292,4 +315,11 @@ const Dropdown = styled("div", {
   height: "100vh",
   alignItems: "flex-end!important",
   boxSizing: "border-box"
+});
+
+const HiddenOnMobile = styled("div", {
+  display: "flex!important",
+  [media.palm]: {
+    display: "none!important"
+  }
 });

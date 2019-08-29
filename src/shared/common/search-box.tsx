@@ -92,7 +92,7 @@ export const SearchBox = withRouter(
       return (
         <div
           className="certain-category-search-wrapper"
-          style={{ width: 250, marginRight: "14px" }}
+          style={{ width: "100%", marginRight: "14px" }}
         >
           <AutoComplete
             className="certain-category-search"
