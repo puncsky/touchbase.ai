@@ -65,8 +65,8 @@ input CreateContactInput {
   workingOn: String
   desire: String
   title: String
-  experience: [ExperienceInput!]!
-  education: [ExperienceInput!]!
+  experience: [ExperienceInput!]
+  education: [ExperienceInput!]
   linkedin: String
   facebook: String
   createAt: DateTime
@@ -110,7 +110,7 @@ type Query {
     limit: Float
   ): [Interaction!]!
   search(name: String!): [SearchResult!]!
-  contacts(id: String!): [Contact!]
+  contacts(offset: Float, limit: Float): [Contact!]
   contact(id: String, userId: String): Contact
 
   # is the server healthy?

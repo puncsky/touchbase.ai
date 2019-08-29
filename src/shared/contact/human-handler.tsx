@@ -58,8 +58,6 @@ export function setHumanHandlers(server: MyServer): void {
     }
   );
   server.get("contacts", "/contacts/*", server.auth.authRequired, async ctx => {
-    const humans = await server.model.human.findById(ctx.state.userId, 0, 1000);
-    ctx.setState("humans", humans);
     ctx.setState("base.userId", ctx.state.userId);
     // @ts-ignore
     ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {

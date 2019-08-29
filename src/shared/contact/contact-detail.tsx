@@ -54,9 +54,9 @@ type Props = {
   match: match<{ nameDash: string }>;
 } & RouterProps;
 
-export const GET_CONTACTS = gql`
-  query contacts($id: String!) {
-    contacts(id: $id) {
+export const GET_CONTACT = gql`
+  query contact($id: String!) {
+    contact(id: $id) {
       _id
       emails
       name
@@ -118,7 +118,9 @@ export const ContactDetailContainer = withRouter(
             <Padding />
 
             <Query
-              query={GET_CONTACTS}
+              ssr={false}
+              fetchPolicy="network-only"
+              query={GET_CONTACT}
               variables={{
                 id
               }}
@@ -127,12 +129,12 @@ export const ContactDetailContainer = withRouter(
                 data,
                 error,
                 loading
-              }: QueryResult<{ contacts: Array<THuman> }>) => {
+              }: QueryResult<{ contact: Array<THuman> }>) => {
                 if (loading || error || !data) {
                   return <Preloader />;
                 }
 
-                const human = omitDeep(data.contacts[0], "__typename");
+                const human = omitDeep(data.contact, "__typename");
 
                 if (!human) {
                   return <div />;

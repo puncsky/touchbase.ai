@@ -138,10 +138,15 @@ export class ContactModel {
     offset: number,
     limit: number
   ): Promise<Array<TContactDoc>> {
-    return this.Model.find({ ownerId })
-      .skip(offset)
-      .limit(limit)
-      .sort("-updateAt");
+    let found = this.Model.find({ ownerId });
+    if (offset !== undefined) {
+      found = found.skip(offset);
+    }
+    if (limit !== undefined) {
+      found = found.limit(limit);
+    }
+
+    return found.sort("-updateAt");
   }
 
   public async updateOne(

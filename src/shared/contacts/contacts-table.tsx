@@ -1,12 +1,16 @@
 import { AgGridReact } from "ag-grid-react";
+import gql from "graphql-tag";
 import isBrowser = require("is-browser");
+import omitDeep from "omit-deep-lodash";
 import { assetURL } from "onefx/lib/asset-url";
 import React, { Component } from "react";
+import { Query, QueryResult } from "react-apollo";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { RouterProps, withRouter } from "react-router";
 import { THuman } from "../../types/human";
 import { FOOTER_ABOVE } from "../common/footer";
+import { Preloader } from "../common/preloader";
 import { colors } from "../common/styles/style-color";
 import { ContentPadding } from "../common/styles/style-padding";
 import { actionUpdateHuman } from "../contact/human-reducer";
@@ -43,13 +47,50 @@ type THumanRow = {
   tdp: "" | "creator" | "refiner" | "advancer" | "executor" | "flexor";
   thinkingFeeling: "" | "thinking" | "feeling";
   blurb: string;
-  inboundTrust: 1;
-  outboundTrust: 1;
+  inboundTrust: number;
+  outboundTrust: number;
 };
 
+const GET_CONTACTS = gql`
+  query contacts($offset: Float, $limit: Float) {
+    contacts(offset: $offset, limit: $limit) {
+      _id
+      emails
+      name
+      avatarUrl
+      address
+      bornAt
+      bornAddress
+      knownAt
+      knownSource
+      extraversionIntroversion
+      intuitingSensing
+      thinkingFeeling
+      planingPerceiving
+      tdp
+      inboundTrust
+      outboundTrust
+      blurb
+      workingOn
+      desire
+      title
+      experience {
+        title
+        name
+      }
+      education {
+        title
+        name
+      }
+      linkedin
+      facebook
+      createAt
+      updateAt
+    }
+  }
+`;
+
 type Props = {
-  humans: Array<THuman>;
-  rows: Array<THumanRow>;
   actionUpdateHuman: any;
 } & RouterProps;
 const defaultColumnProperties = {
@@ -87,7 +128,7 @@ const rowFromHuman = h => ({
   emailsJoin: h.emails.join(", ")
 });
 
-const updateHumanFromRow = (row, initialHuman) => {
+const updateHumanFromRow = (row: THumanRow, initialHuman: THuman) => {
   const {
     experienceTitle,
     experienceName,
@@ -110,17 +151,16 @@ const updateHumanFromRow = (row, initialHuman) => {
   clone.emails = emailsJoin
     .split(",")
     .map(e => e.toLowerCase().replace(/ /g, ""));
-  return clone;
+  clone.inboundTrust = Number(clone.inboundTrust);
+  clone.outboundTrust = Number(clone.outboundTrust);
+  return omitDeep(clone, "__typename");
 };
 
 // @ts-ignore
 export const ContactsTableContainer = withRouter(
   // @ts-ignore
   connect(
-    (state: { humans: Array<THuman> }) => ({
-      humans: state.humans,
-      rows: state.humans && state.humans.map(rowFromHuman)
-    }),
+    () => null,
     (dispatch: any) => ({
       actionUpdateHuman: (human: THuman) =>
         dispatch(actionUpdateHuman(human, true))
@@ -128,6 +168,8 @@ export const ContactsTableContainer = withRouter(
   )(
     class ContactsTable extends Component<Props> {
       public props: Props;
+
+      humans: Array<THuman>;
 
       public onCellValueChanged = ({
         data,
@@ -141,7 +183,7 @@ export const ContactsTableContainer = withRouter(
         this.props.actionUpdateHuman(
           updateHumanFromRow(
             { ...data, [otherProps.colDef.field]: newValue },
-            this.props.humans[otherProps.rowIndex]
+            this.humans[otherProps.rowIndex]
           )
         );
       };
@@ -161,7 +203,6 @@ export const ContactsTableContainer = withRouter(
       };
 
       public render(): JSX.Element {
-        const { rows } = this.props;
         return (
           <ContentPadding>
             <Helmet
@@ -177,16 +218,33 @@ export const ContactsTableContainer = withRouter(
               className="ag-theme-balham"
               style={{ width: "100%", height: FOOTER_ABOVE.minHeight }}
             >
-              <AgGridReact
-                onGridReady={this.onGridReady}
-                enableSorting={true}
-                rowSelection="multiple"
-                enableFilter={true}
-                columnDefs={columnDefs}
-                rowData={rows}
-                onCellValueChanged={this.onCellValueChanged}
-                defaultColDef={{ editable: true }}
-              />
+              <Query ssr={false} query={GET_CONTACTS}>
+                {({
+                  data,
+                  error,
+                  loading
+                }: QueryResult<{ contacts: Array<THuman> }>) => {
+                  if (loading || error || !data) {
+                    return <Preloader />;
+                  }
+
+                  this.humans = data.contacts;
+                  const rows = data.contacts.map(rowFromHuman);
+
+                  return (
+                    <AgGridReact
+                      onGridReady={this.onGridReady}
+                      enableSorting={true}
+                      rowSelection="multiple"
+                      enableFilter={true}
+                      columnDefs={columnDefs}
+                      rowData={rows}
+                      onCellValueChanged={this.onCellValueChanged}
+                      defaultColDef={{ editable: true }}
+                    />
+                  );
+                }}
+              </Query>
             </div>
           </ContentPadding>
         );

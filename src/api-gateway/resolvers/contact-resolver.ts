@@ -62,9 +62,9 @@ class CreateContactInput implements THuman {
   public desire: string;
   @Field(_ => String, { nullable: true })
   public title: string;
-  @Field(_ => [ExperienceInput])
+  @Field(_ => [ExperienceInput], { nullable: true })
   public experience: [ExperienceInput];
-  @Field(_ => [ExperienceInput])
+  @Field(_ => [ExperienceInput], { nullable: true })
   public education: [ExperienceInput];
   @Field(_ => String, { nullable: true })
   public linkedin: string;
@@ -264,8 +264,11 @@ class SearchRequest {
 
 @ArgsType()
 class ContactsRequest {
-  @Field(_ => String)
-  public id: string;
+  @Field(_ => Number, { nullable: true })
+  offset: number;
+
+  @Field(_ => Number, { nullable: true })
+  limit: number;
 }
 
 @ArgsType()
@@ -376,13 +379,13 @@ export class ContactResolver {
 
   @Query(_ => [Contact], { nullable: true })
   public async contacts(
-    @Args() { id }: ContactsRequest,
+    @Args() { offset, limit }: ContactsRequest,
     @Ctx() { model, userId }: Context
   ): Promise<Array<Contact | null>> {
     if (!userId) {
       throw new AuthenticationError(`please login to fetch contacts`);
     }
-    return [await model.contact.getById(userId, id)];
+    return model.human.findById(userId, offset, limit);
   }
 
   @Query(_ => Contact, { nullable: true })
