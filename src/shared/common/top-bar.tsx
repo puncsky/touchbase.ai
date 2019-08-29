@@ -98,18 +98,30 @@ export const TopBar = connect((state: any) => ({
         <div>
           <Bar>
             <Flex>
-              <Logo />
+              {loggedIn ? (
+                <LinkLogoWrapper to={`/me/`}>
+                  <Icon url={assetURL("/favicon.svg")} />
+                </LinkLogoWrapper>
+              ) : (
+                <LogoWrapper href="/">
+                  <Icon url={assetURL("/favicon.svg")} />
+                </LogoWrapper>
+              )}
               <CommonMargin />
-              <BrandText href="/">{t("topbar.brand")}</BrandText>
+              {loggedIn ? (
+                <BrandLink to={`/me/`}>{t("topbar.brand")}</BrandLink>
+              ) : (
+                <BrandText href="/">{t("topbar.brand")}</BrandText>
+              )}
               {loggedIn && (
                 <>
                   <SearchBox />
-                  <BrandText href="/contacts/" onClick={this.hideMobileMenu}>
+                  <BrandLink to="/contacts/" onClick={this.hideMobileMenu}>
                     {t("topbar.contacts")}
-                  </BrandText>
-                  <BrandText href="/settings/" onClick={this.hideMobileMenu}>
+                  </BrandLink>
+                  <BrandLink to="/settings/" onClick={this.hideMobileMenu}>
                     <AntIcon type="setting" theme="filled" />
-                  </BrandText>
+                  </BrandLink>
                 </>
               )}
             </Flex>
@@ -219,15 +231,10 @@ const LogoWrapper = styled("a", {
   width: `${TOP_BAR_HEIGHT}px`,
   height: `${TOP_BAR_HEIGHT}px`
 });
-
-function Logo(): JSX.Element {
-  return (
-    <LogoWrapper href="/">
-      <Icon url={assetURL("/favicon.svg")} />
-    </LogoWrapper>
-  );
-}
-
+const LinkLogoWrapper = styled(Link, {
+  width: `${TOP_BAR_HEIGHT}px`,
+  height: `${TOP_BAR_HEIGHT}px`
+});
 const menuItem: StyleObject = {
   color: colors.text01,
   marginLeft: "14px",
@@ -246,6 +253,12 @@ const menuItem: StyleObject = {
 };
 const A = styled("a", menuItem);
 const BrandText = styled("a", {
+  ...menuItem,
+  marginLeft: 0,
+  marginRight: "14px",
+  [media.palm]: {}
+});
+const BrandLink = styled(Link, {
   ...menuItem,
   marginLeft: 0,
   marginRight: "14px",

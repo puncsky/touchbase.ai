@@ -52,6 +52,11 @@ export class App extends Component<Props> {
               <Route exact path="/settings/*" component={Settings} />
               <Route
                 exact
+                path="/me/*"
+                component={() => <ContactDetailContainer isSelf={true} />}
+              />
+              <Route
+                exact
                 path="/:nameDash/*"
                 component={ContactDetailContainer}
               />

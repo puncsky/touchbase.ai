@@ -16,6 +16,7 @@ import { THuman, TInteraction } from "../../types/human";
 import { BOX_SHADOW, LINE } from "../common/box-shadow";
 import { Flex } from "../common/flex";
 import { mdit } from "../common/markdownit";
+import { NotFound } from "../common/not-found";
 import { Preloader } from "../common/preloader";
 import { shade } from "../common/styles/shade";
 import { colors } from "../common/styles/style-color";
@@ -50,6 +51,7 @@ const SECTION = {
 };
 
 type Props = {
+  isSelf?: boolean;
   ownerHumanId: string;
   match: match<{ nameDash: string }>;
 } & RouterProps;
@@ -120,7 +122,7 @@ export const ContactDetailContainer = withRouter(
             <Query
               query={GET_CONTACT}
               variables={{
-                id
+                id: props.isSelf ? ownerHumanId : id
               }}
             >
               {({
@@ -128,15 +130,14 @@ export const ContactDetailContainer = withRouter(
                 error,
                 loading
               }: QueryResult<{ contact: Array<THuman> }>) => {
-                if (loading || error || !data) {
+                if (loading) {
                   return <Preloader />;
+                }
+                if (error || !data) {
+                  return <NotFound />;
                 }
 
                 const human = omitDeep(data.contact, "__typename");
-
-                if (!human) {
-                  return <div />;
-                }
 
                 return <Contact human={human} isSelf={ownerHumanId === id} />;
               }}
@@ -373,17 +374,20 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
       >
         {({
           loading,
-          error,
           data,
           fetchMore
         }: QueryResult<{ interactions: Array<TInteraction> }>) => {
-          if (loading || error || !data) {
+          if (loading) {
             return <Preloader />;
+          }
+          let interactions: Array<TInteraction> = [];
+          if (data && data.interactions) {
+            interactions = data.interactions;
           }
 
           return (
             <>
-              {data.interactions.map((iter, i) => (
+              {interactions.map((iter, i) => (
                 <div
                   className="interactions-list"
                   key={i}
@@ -415,7 +419,7 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                 </div>
               ))}
 
-              {Boolean(data.interactions.length) && (
+              {Boolean(interactions.length) && (
                 <Button
                   onClick={() => {
                     fetchMore({
