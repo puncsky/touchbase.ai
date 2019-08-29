@@ -130,7 +130,6 @@ export class SignUpInner extends Component<Props, State> {
                 >
                   {t("auth/button_submit")}
                 </Button>
-                [
               </FieldMargin>
             </Flex>
             <FieldMargin>

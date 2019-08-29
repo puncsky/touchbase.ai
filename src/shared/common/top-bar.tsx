@@ -85,6 +85,21 @@ export const TopBar = connect((state: any) => ({
         return null;
       }
 
+      if (!this.props.loggedIn) {
+        return (
+          <OutsideClickHandler onOutsideClick={this.hideMobileMenu}>
+            <Dropdown>
+              <A href="/login" onClick={this.hideMobileMenu}>
+                {t("topbar.login")}
+              </A>
+              <A href="/sign-up" onClick={this.hideMobileMenu}>
+                {t("topbar.sign_up")}
+              </A>
+            </Dropdown>
+          </OutsideClickHandler>
+        );
+      }
+
       return (
         <OutsideClickHandler onOutsideClick={this.hideMobileMenu}>
           <Dropdown>
