@@ -21,6 +21,8 @@ export class PersonalNoteModel {
       content: { type: String },
       timestamp: { type: Date, default: Date.now },
 
+      public: { type: Boolean },
+
       // systematic
       createAt: { type: Date, default: Date.now },
       updateAt: { type: Date, default: Date.now }
@@ -45,6 +47,17 @@ export class PersonalNoteModel {
 
   public async getById(id: string): Promise<TPersonalNoteDoc | null> {
     return this.Model.findOne({ _id: id });
+  }
+
+  public async getPublicById(id: string): Promise<TPersonalNoteDoc | null> {
+    return this.Model.findOne({ _id: id, public: true });
+  }
+
+  public async getByIdAndOwner(
+    id: string,
+    ownerUserId: string
+  ): Promise<TPersonalNoteDoc | null> {
+    return this.Model.findOne({ _id: id, ownerId: ownerUserId });
   }
 
   public async getAllByOwnerIdRelatedHumanId({

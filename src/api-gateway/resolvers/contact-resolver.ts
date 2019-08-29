@@ -342,9 +342,16 @@ export class ContactResolver {
   @Query(_ => Interaction, { nullable: true })
   public async note(
     @Args() { id }: GetNote,
-    @Ctx() { model }: Context
+    @Ctx() { model, userId }: Context
   ): Promise<Interaction | null> {
-    return model.event.getById(id);
+    const foundPublic = await model.event.getPublicById(id);
+    if (foundPublic) {
+      return foundPublic;
+    }
+    if (!foundPublic && !userId) {
+      return null;
+    }
+    return model.event.getByIdAndOwner(id, userId);
   }
 
   @Mutation(_ => Interaction)

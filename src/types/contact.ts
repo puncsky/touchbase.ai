@@ -57,6 +57,7 @@ export interface TContact {
 
 export interface TPersonalNote {
   id: string;
+  public?: boolean;
   timestamp: Date;
   content: string;
   contentHtml?: string;
