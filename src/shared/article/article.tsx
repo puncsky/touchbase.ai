@@ -263,5 +263,7 @@ export class Article extends PureComponent<PropType> {
 export const Article2 = styled("article", {
   maxWidth: "680px",
   width: "100%",
-  color: "#404040!important"
+  color: "#404040!important",
+  backgroundColor: colors.white,
+  padding: "16px"
 });

@@ -15,6 +15,7 @@ import { ContactDetailContainer } from "./contact/contact-detail";
 import { ProfileCreatorContainer } from "./contact/profile-creator";
 import { ContactsTableContainer } from "./contacts/contacts-table";
 import { Home } from "./home/home";
+import { NoteFetcher } from "./note/note-fetcher";
 import { Onboard } from "./onboard";
 import { Settings } from "./settings/settings";
 
@@ -55,6 +56,7 @@ export class App extends Component<Props> {
                 path="/me/*"
                 component={() => <ContactDetailContainer isSelf={true} />}
               />
+              <Route exact path="/note/:id" component={NoteFetcher} />
               <Route
                 exact
                 path="/:nameDash/*"

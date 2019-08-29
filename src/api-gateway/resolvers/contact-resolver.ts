@@ -223,8 +223,6 @@ class Interaction implements TInteraction {
   public timestamp: Date;
   @Field(_ => String)
   public content: string;
-  @Field(_ => String, { nullable: true })
-  public contentHtml?: string;
   @Field(_ => [String])
   public relatedHumans: Array<string>;
 }
@@ -254,6 +252,12 @@ class GetInteractions {
 
   @Field(_ => Number, { nullable: true })
   public limit?: number;
+}
+
+@ArgsType()
+class GetNote {
+  @Field(_ => String)
+  public id: string;
 }
 
 @ArgsType()
@@ -333,6 +337,14 @@ export class ContactResolver {
       skip: offset,
       limit
     });
+  }
+
+  @Query(_ => Interaction, { nullable: true })
+  public async note(
+    @Args() { id }: GetNote,
+    @Ctx() { model }: Context
+  ): Promise<Interaction | null> {
+    return model.event.getById(id);
   }
 
   @Mutation(_ => Interaction)

@@ -90,7 +90,6 @@ type Interaction {
   id: String!
   timestamp: DateTime!
   content: String!
-  contentHtml: String
   relatedHumans: [String!]!
 }
 
@@ -109,6 +108,7 @@ type Query {
     offset: Float
     limit: Float
   ): [Interaction!]!
+  note(id: String!): Interaction
   search(name: String!): [SearchResult!]!
   contacts(offset: Float, limit: Float): [Contact!]
   contact(id: String, userId: String): Contact
