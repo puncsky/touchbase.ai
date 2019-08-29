@@ -3,14 +3,11 @@ import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import React from "react";
 import { combineReducers } from "redux";
 import { MyServer } from "../../server/start-server";
-import { TPersonalNote } from "../../types/contact";
 import { AppContainer } from "../app-container";
 import { apolloSSR } from "../common/apollo-ssr";
-import { mdit } from "../common/markdownit";
 import { humansReducer } from "../contacts/humans-reducer";
 import { humanReducer, interactionsReducer } from "./human-reducer";
 import { EMPTY_HUMAN } from "./profile-creator";
-import { humanValidator } from "./validators";
 
 // tslint:disable-next-line:max-func-body-length
 export function setHumanHandlers(server: MyServer): void {
@@ -99,77 +96,4 @@ export function setHumanHandlers(server: MyServer): void {
       });
     }
   );
-
-  // APIs
-  server.post(
-    "createHuman",
-    "/api/createHuman/",
-    server.auth.authRequired,
-    humanValidator,
-    async ctx => {
-      const newHuman = await server.model.human.newAndSave({
-        ...ctx.request.body,
-        ownerId: ctx.state.userId
-      });
-      ctx.response.body = { ok: true, result: newHuman };
-    }
-  );
-  server.post(
-    "updateHuman",
-    "/api/updateHuman/",
-    server.auth.authRequired,
-    async ctx => {
-      await server.model.human.updateOne(
-        ctx.request.body._id,
-        ctx.state.userId,
-        ctx.request.body
-      );
-      ctx.response.body = { ok: true };
-    }
-  );
-  server.post(
-    "upsertEvent",
-    "/api/upsertEvent/",
-    server.auth.authRequired,
-    async ctx => {
-      const item = ctx.request.body;
-      const ownerId = ctx.state.userId;
-      const event = await upsertEvent(ownerId, item);
-      if (!event) {
-        ctx.response.body = {
-          ok: false
-        };
-        return;
-      }
-      ctx.response.body = {
-        ok: true,
-        result: {
-          id: event.id,
-          timestamp: event.timestamp,
-          content: event.content,
-          contentHtml: mdit.render(event.content)
-        }
-      };
-    }
-  );
-
-  // services
-  async function upsertEvent(
-    ownerId: string,
-    item: TPersonalNote
-  ): Promise<TPersonalNote | null> {
-    const found = item.content.match(/@([a-zA-Z\u4e00-\u9fa5.]+)/g) || [];
-    const usernames = found.map(it => it.replace("@", "").replace(".", " "));
-    const humans = await server.model.human.findManyIdsByNames(usernames);
-    item.relatedHumans = [
-      ...item.relatedHumans,
-      ...humans.map((h: TPersonalNote) => h.id)
-    ];
-    const ownedItem = { ownerId, ...item };
-    if (!item.id) {
-      ownedItem.timestamp = new Date();
-      return server.model.event.add(ownedItem);
-    }
-    return server.model.event.updateOne(item.id, ownerId, ownedItem);
-  }
 }

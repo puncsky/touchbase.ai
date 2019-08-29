@@ -118,8 +118,6 @@ export const ContactDetailContainer = withRouter(
             <Padding />
 
             <Query
-              ssr={false}
-              fetchPolicy="network-only"
               query={GET_CONTACT}
               variables={{
                 id
@@ -366,8 +364,6 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
     return (
       <Query
         query={GET_INTERACTIONS}
-        ssr={false}
-        fetchPolicy="network-only"
         variables={{
           contactId,
           offset: 0,
