@@ -1,4 +1,5 @@
 import { ApolloServer } from "apollo-server-koa";
+import koa from "koa";
 import path from "path";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
@@ -15,6 +16,7 @@ export type Context = {
   gateways: Gateways;
   userId: string;
   auth: OnefxAuth;
+  ctx: koa.Context;
 };
 
 export async function setApiGateway(server: MyServer): Promise<void> {
@@ -42,7 +44,8 @@ export async function setApiGateway(server: MyServer): Promise<void> {
         userId,
         model: server.model,
         gateways: server.gateways,
-        auth: server.auth
+        auth: server.auth,
+        ctx
       };
     }
   });

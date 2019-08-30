@@ -16,6 +16,12 @@ import { THuman, TInteraction } from "../../types/human";
 import { Context } from "../api-gateway";
 
 @InputType()
+class DeleteContactInput {
+  @Field(_ => String)
+  _id: string;
+}
+
+@InputType()
 class CreateContactInput implements THuman {
   @Field(_ => String, { nullable: true })
   public _id?: string | undefined;
@@ -442,5 +448,25 @@ export class ContactResolver {
       return model.contact.getById(userId, req.id);
     }
     return null;
+  }
+
+  @Mutation(_ => Boolean)
+  public async deleteContact(
+    @Arg("deleteContactInput") deleteContactInput: DeleteContactInput,
+    @Ctx() { model, userId, auth, ctx }: Context
+  ): Promise<Boolean> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to deleteContactInput`);
+    }
+    const user = await auth.user.getById(userId);
+    if (!user) {
+      throw new AuthenticationError(`please login to deleteContactInput`);
+    }
+    if (String(user.lifetimeHumanId) === deleteContactInput._id) {
+      // @ts-ignore
+      throw new Error(ctx.t("field.delete_contact.error_self"));
+    }
+
+    return model.human.deleteOne({ ...deleteContactInput, ownerId: userId });
   }
 }

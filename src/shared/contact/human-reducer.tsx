@@ -5,6 +5,7 @@ import isBrowser from "is-browser";
 import JsonGlobal from "safe-json-globals/get";
 import { THuman } from "../../types/human";
 import { apolloClient } from "../common/apollo-client";
+import { GET_CONTACTS } from "../contacts/contacts-table";
 import { GET_CONTACT, GET_INTERACTIONS, PAGE_SIZE } from "./contact-detail";
 
 const csrfToken = isBrowser && JsonGlobal("state").base.csrfToken;
@@ -161,7 +162,12 @@ export function actionCreateHuman(payload: THuman, history: any): any {
     apolloClient
       .mutate<{ createContact: { _id: string } }>({
         mutation: CREATE_CONTACT,
-        variables: { createContactInput: payload }
+        variables: { createContactInput: payload },
+        refetchQueries: [
+          {
+            query: GET_CONTACTS
+          }
+        ]
       })
       .then(resp => {
         setTimeout(() => {

@@ -108,3 +108,10 @@ home.section1.desc:
   <p>Rebinder.co makes it easy to understand people, grow networks, and engage in meaningful relationships.</p>
 fetch_more: Fetch More
 topbar.search_everything: Search Contact...
+field.delete_contact.title: Remove contact?
+field.delete_contact.content: "Most information you've added to ${name}'s contact will be deleted. However, your notes associated with this contact will not and you can still find them in your own timeline."
+field.delete_contact.deleted: Deleted the contact ${name}
+field.delete_contact.failed: "failed to delete user: ${e}"
+field.delete_contact.yes: Yes, remove contact
+field.delete_contact.cancel: Cancel
+field.delete_contact.error_self: Cannot delete your own profile

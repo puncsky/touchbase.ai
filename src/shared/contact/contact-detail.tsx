@@ -139,6 +139,10 @@ export const ContactDetailContainer = withRouter(
 
                 const human = omitDeep(data.contact, "__typename");
 
+                if (!human) {
+                  return <NotFound />;
+                }
+
                 return <Contact human={human} isSelf={ownerHumanId === id} />;
               }}
             </Query>

@@ -51,7 +51,7 @@ type THumanRow = {
   outboundTrust: number;
 };
 
-const GET_CONTACTS = gql`
+export const GET_CONTACTS = gql`
   query contacts($offset: Float, $limit: Float) {
     contacts(offset: $offset, limit: $limit) {
       _id
@@ -160,7 +160,7 @@ const updateHumanFromRow = (row: THumanRow, initialHuman: THuman) => {
 export const ContactsTableContainer = withRouter(
   // @ts-ignore
   connect(
-    () => null,
+    () => ({}),
     (dispatch: any) => ({
       actionUpdateHuman: (human: THuman) =>
         dispatch(actionUpdateHuman(human, true))

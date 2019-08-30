@@ -7,19 +7,28 @@ import {
   Icon,
   Input,
   Modal,
+  notification,
   Tabs,
   Upload
 } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
+import Popover from "antd/lib/popover";
 import { RcFile } from "antd/lib/upload/interface";
 import window from "global/window";
+import gql from "graphql-tag";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
+import { Mutation, MutationFn } from "react-apollo";
+import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import { RouterProps, withRouter } from "react-router";
+import { styled } from "styletron-react";
 import { THuman } from "../../../types/human";
+import { CommonMargin } from "../../common/common-margin";
+import { Flex } from "../../common/flex";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";
+import { GET_CONTACTS } from "../../contacts/contacts-table";
 import { actionUpdateHuman } from "../human-reducer";
 import { ExperienceForm } from "./experience-form";
 import { ObservationForm } from "./observation-form";
@@ -219,9 +228,110 @@ function PersonalForm({
       <SocialNetworkForm form={form} human={human} />
 
       <SourceForm form={form} human={human} />
+
+      <DeleteContactPopover name={human.name} contactId={String(human._id)} />
     </>
   );
 }
+
+const DELETE_CONTACT = gql`
+  mutation deleteContact($id: String!) {
+    deleteContact(deleteContactInput: { _id: $id })
+  }
+`;
+
+const DeleteContactPopover = withRouter(
+  // @ts-ignore
+  class DeleteContactPopoverInner extends Component<
+    { name: string; contactId: string } & RouterProps,
+    { visible: boolean }
+  > {
+    state: { visible: boolean } = { visible: false };
+
+    render(): JSX.Element {
+      const { name, contactId, history } = this.props;
+
+      const content = (
+        <OutsideClickHandler
+          onOutsideClick={() => this.setState({ visible: false })}
+        >
+          <PopoverContent>
+            <div>{t(t("field.delete_contact.content"), { name })}</div>
+            <CommonMargin />
+            <div>
+              <Flex justifyContent="flex-start">
+                <Mutation mutation={DELETE_CONTACT}>
+                  {(
+                    deleteContact: MutationFn<{ id: string }>,
+                    { loading }: { loading: boolean }
+                  ) => {
+                    return (
+                      // @ts-ignore
+                      <Button
+                        type="danger"
+                        loading={loading}
+                        onClick={async () => {
+                          try {
+                            await deleteContact({
+                              refetchQueries: [
+                                {
+                                  query: GET_CONTACTS
+                                }
+                              ],
+                              variables: { id: contactId }
+                            });
+                            history.push("/contacts/");
+                            notification.success({
+                              message: t("field.delete_contact.deleted", {
+                                name
+                              })
+                            });
+                          } catch (e) {
+                            const filtered = String(e).replace(
+                              "Error: GraphQL error:",
+                              ""
+                            );
+                            notification.error({
+                              message: t("field.delete_contact.failed", {
+                                e: filtered
+                              })
+                            });
+                          }
+                        }}
+                      >
+                        {t("field.delete_contact.yes")}
+                      </Button>
+                    );
+                  }}
+                </Mutation>
+                <CommonMargin />
+                <Button onClick={() => this.setState({ visible: false })}>
+                  {t("field.delete_contact.cancel")}
+                </Button>
+              </Flex>
+            </div>
+          </PopoverContent>
+        </OutsideClickHandler>
+      );
+      return (
+        <Popover
+          visible={this.state.visible}
+          trigger="click"
+          content={content}
+          title={t("field.delete_contact.title")}
+        >
+          <Button onClick={() => this.setState({ visible: true })}>
+            Delete
+          </Button>
+        </Popover>
+      );
+    }
+  }
+);
+
+const PopoverContent = styled("div", {
+  maxWidth: "350px"
+});
 
 function SocialNetworkForm({
   human,

@@ -166,6 +166,17 @@ export class ContactModel {
     return new this.Model(human).save();
   }
 
+  public async deleteOne({
+    _id,
+    ownerId
+  }: {
+    _id: string;
+    ownerId: string;
+  }): Promise<Boolean> {
+    const resp = await this.Model.deleteOne({ _id, ownerId });
+    return Boolean(resp && resp.ok);
+  }
+
   // tslint:disable-next-line:no-any
   public async findManyIdsByNames(names: Array<string>): Promise<Array<any>> {
     return this.Model.where("name id").find({ name: { $in: names } });
