@@ -8,7 +8,7 @@ import {
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import { t } from "onefx/lib/iso-i18n";
 import React from "react";
-import { THuman } from "../../../types/human";
+import { TContact2 } from "../../../types/human";
 import { formItemLayout } from "./profile-editor";
 
 // tslint:disable-next-line:max-func-body-length
@@ -16,7 +16,7 @@ export function ObservationForm({
   human,
   form
 }: {
-  human: THuman;
+  human: TContact2;
   form?: WrappedFormUtils;
 }): JSX.Element | null {
   if (!form) {

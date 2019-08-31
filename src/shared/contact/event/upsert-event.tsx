@@ -3,7 +3,7 @@ import { Modal } from "antd";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { THuman } from "../../../types/human";
+import { TContact2 } from "../../../types/human";
 import { MdEditor } from "../../common/md-editor";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";
 import { actionUpsertEvent } from "../human-reducer";
@@ -26,7 +26,7 @@ type State = {
 
 // @ts-ignore
 export const UpsertEventContainer = connect(
-  (state: { base: { ownerHumanId: string }; human: THuman }) => ({
+  (state: { base: { ownerHumanId: string }; human: TContact2 }) => ({
     ownerHumanId: state.base.ownerHumanId
   }),
   (dispatch: any) => ({

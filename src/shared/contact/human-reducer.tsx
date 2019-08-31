@@ -3,7 +3,7 @@ import axios from "axios";
 import gql from "graphql-tag";
 import isBrowser from "is-browser";
 import JsonGlobal from "safe-json-globals/get";
-import { THuman } from "../../types/human";
+import { TContact2 } from "../../types/human";
 import { apolloClient } from "../common/apollo-client";
 import { GET_CONTACTS } from "../contacts/contacts-table";
 import { GET_CONTACT, GET_INTERACTIONS, PAGE_SIZE } from "./contact-detail";
@@ -149,7 +149,7 @@ const CREATE_CONTACT = gql`
   }
 `;
 
-export function actionCreateHuman(payload: THuman, history: any): any {
+export function actionCreateHuman(payload: TContact2, history: any): any {
   return (dispatch: any) => {
     dispatch({
       type: CREATE_HUMAN,

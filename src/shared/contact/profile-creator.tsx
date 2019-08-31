@@ -8,12 +8,12 @@ import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { RouterProps, withRouter } from "react-router";
-import { THuman } from "../../types/human";
+import { TContact2 } from "../../types/human";
 import { TOP_BAR_HEIGHT } from "../common/top-bar";
 import { actionCreateHuman } from "./human-reducer";
 import { ProfileEditorForm } from "./profile-editor/profile-editor";
 
-export const EMPTY_HUMAN: THuman = {
+export const EMPTY_HUMAN: TContact2 = {
   emails: [""],
   name: "",
   avatarUrl: "",
@@ -50,7 +50,7 @@ export const EMPTY_HUMAN: THuman = {
 };
 
 type Props = {
-  human: THuman;
+  human: TContact2;
   actionCreateHuman(payload: any, history: any): void;
   form?: WrappedFormUtils;
 } & RouterProps;

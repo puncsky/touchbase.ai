@@ -24,7 +24,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { RouterProps, withRouter } from "react-router";
 import { styled } from "styletron-react";
-import { THuman } from "../../../types/human";
+import { TContact2 } from "../../../types/human";
 import { CommonMargin } from "../../common/common-margin";
 import { Flex } from "../../common/flex";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";
@@ -48,7 +48,7 @@ export const formItemLayout = {
 };
 
 type Props = {
-  human: THuman;
+  human: TContact2;
   actionUpdateHuman?(payload: any, remoteOnly: boolean): void;
   history?: any;
   form?: WrappedFormUtils;
@@ -131,7 +131,7 @@ export { ProfileEditorContainer };
 
 export class ProfileEditorForm extends Component<{
   form?: WrappedFormUtils;
-  human: THuman;
+  human: TContact2;
 }> {
   public render(): JSX.Element {
     const { form, human } = this.props;
@@ -157,7 +157,7 @@ function PersonalForm({
   human,
   form
 }: {
-  human: THuman;
+  human: TContact2;
   form?: WrappedFormUtils;
 }): JSX.Element | null {
   if (!form) {
@@ -337,7 +337,7 @@ function SocialNetworkForm({
   human,
   form
 }: {
-  human: THuman;
+  human: TContact2;
   form?: WrappedFormUtils;
 }): JSX.Element | null {
   if (!form) {
@@ -368,7 +368,7 @@ function SourceForm({
   human,
   form
 }: {
-  human: THuman;
+  human: TContact2;
   form?: WrappedFormUtils;
 }): JSX.Element | null {
   if (!form) {

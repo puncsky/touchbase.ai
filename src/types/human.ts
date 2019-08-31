@@ -2,7 +2,7 @@
 
 import { TContact } from "./contact";
 
-export interface THuman extends TContact {
+export interface TContact2 extends TContact {
   _id?: string;
 
   // Name card

@@ -14,7 +14,7 @@ import { FormProps } from "antd/lib/form/Form";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component, FormEvent } from "react";
-import { THuman } from "../../types/human";
+import { TContact2 } from "../../types/human";
 import { EMPTY_HUMAN } from "./profile-creator";
 
 const { Option } = Select;
@@ -24,7 +24,7 @@ type State = {
 };
 
 type Props = {
-  human: THuman;
+  human: TContact2;
 } & FormProps;
 
 class HumanForm extends Component<Props, State> {
@@ -64,7 +64,7 @@ class HumanForm extends Component<Props, State> {
     if (!getFieldDecorator) {
       throw new Error("getFieldDecorator is not a function");
     }
-    const human: THuman = this.props.human || EMPTY_HUMAN;
+    const human: TContact2 = this.props.human || EMPTY_HUMAN;
 
     const formItemLayout = {
       labelCol: {

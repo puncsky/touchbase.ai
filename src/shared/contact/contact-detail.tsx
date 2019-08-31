@@ -12,7 +12,7 @@ import { Query, QueryResult } from "react-apollo";
 import { connect } from "react-redux";
 import { match, Route, RouterProps } from "react-router";
 import { Link, withRouter } from "react-router-dom";
-import { THuman, TInteraction } from "../../types/human";
+import { TContact2, TInteraction } from "../../types/human";
 import { BOX_SHADOW, LINE } from "../common/box-shadow";
 import { Flex } from "../common/flex";
 import { mdit } from "../common/markdownit";
@@ -26,7 +26,7 @@ import { UpsertEventContainer } from "./event/upsert-event";
 import { KeyMetrics } from "./key-metrics";
 import { ProfileEditorContainer } from "./profile-editor/profile-editor";
 
-function currentTitle(human: THuman): string {
+function currentTitle(human: TContact2): string {
   return (
     human.title ||
     (human.experience[0] && human.experience[0].title) ||
@@ -34,7 +34,7 @@ function currentTitle(human: THuman): string {
   );
 }
 
-function currentOrg(human: THuman): string {
+function currentOrg(human: TContact2): string {
   return (
     human.title ||
     (human.experience[0] && human.experience[0].name) ||
@@ -129,7 +129,7 @@ export const ContactDetailContainer = withRouter(
                 data,
                 error,
                 loading
-              }: QueryResult<{ contact: Array<THuman> }>) => {
+              }: QueryResult<{ contact: Array<TContact2> }>) => {
                 if (loading) {
                   return <Preloader />;
                 }
@@ -159,7 +159,7 @@ function Contact({
   human,
   isSelf
 }: {
-  human: THuman;
+  human: TContact2;
   isSelf?: boolean;
 }): JSX.Element {
   return (

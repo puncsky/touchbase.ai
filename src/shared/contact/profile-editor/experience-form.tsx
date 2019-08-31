@@ -2,7 +2,7 @@ import { Form, Input } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import { t } from "onefx/lib/iso-i18n";
 import React from "react";
-import { THuman } from "../../../types/human";
+import { TContact2 } from "../../../types/human";
 import { SmallMargin } from "../../common/common-margin";
 import { formItemLayout } from "./profile-editor";
 
@@ -16,7 +16,7 @@ export function ExperienceForm({
   human,
   form
 }: {
-  human: THuman;
+  human: TContact2;
   form?: WrappedFormUtils;
 }): JSX.Element | null {
   if (!form) {

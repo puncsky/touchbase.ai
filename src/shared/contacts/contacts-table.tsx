@@ -8,7 +8,7 @@ import { Query, QueryResult } from "react-apollo";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { RouterProps, withRouter } from "react-router";
-import { THuman } from "../../types/human";
+import { TContact2 } from "../../types/human";
 import { FOOTER_ABOVE } from "../common/footer";
 import { Preloader } from "../common/preloader";
 import { colors } from "../common/styles/style-color";
@@ -128,7 +128,7 @@ const rowFromHuman = h => ({
   emailsJoin: h.emails.join(", ")
 });
 
-const updateHumanFromRow = (row: THumanRow, initialHuman: THuman) => {
+const updateHumanFromRow = (row: THumanRow, initialHuman: TContact2) => {
   const {
     experienceTitle,
     experienceName,
@@ -162,14 +162,14 @@ export const ContactsTableContainer = withRouter(
   connect(
     () => ({}),
     (dispatch: any) => ({
-      actionUpdateHuman: (human: THuman) =>
+      actionUpdateHuman: (human: TContact2) =>
         dispatch(actionUpdateHuman(human, true))
     })
   )(
     class ContactsTable extends Component<Props> {
       public props: Props;
 
-      humans: Array<THuman>;
+      humans: Array<TContact2>;
 
       public onCellValueChanged = ({
         data,
@@ -223,7 +223,7 @@ export const ContactsTableContainer = withRouter(
                   data,
                   error,
                   loading
-                }: QueryResult<{ contacts: Array<THuman> }>) => {
+                }: QueryResult<{ contacts: Array<TContact2> }>) => {
                   if (loading || error || !data) {
                     return <Preloader />;
                   }

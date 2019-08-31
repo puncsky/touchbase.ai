@@ -12,7 +12,7 @@ import {
   Query
 } from "type-graphql";
 import { TPersonalNote } from "../../types/contact";
-import { THuman, TInteraction } from "../../types/human";
+import { TContact2, TInteraction } from "../../types/human";
 import { Context } from "../api-gateway";
 
 @InputType()
@@ -22,7 +22,7 @@ class DeleteContactInput {
 }
 
 @InputType()
-class CreateContactInput implements THuman {
+class CreateContactInput implements TContact2 {
   @Field(_ => String, { nullable: true })
   public _id?: string | undefined;
 
@@ -83,7 +83,7 @@ class CreateContactInput implements THuman {
 }
 
 @InputType()
-class UpdateContactInput implements THuman {
+class UpdateContactInput implements TContact2 {
   @Field(_ => String)
   public _id: string;
 
@@ -144,7 +144,7 @@ class UpdateContactInput implements THuman {
 }
 
 @ObjectType()
-class Contact implements THuman {
+class Contact implements TContact2 {
   @Field(_ => String)
   // tslint:disable-next-line:variable-name
   public _id: string;
