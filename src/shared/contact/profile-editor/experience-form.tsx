@@ -1,7 +1,8 @@
 import { Form, Input } from "antd";
+import Button from "antd/lib/button/button";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import { t } from "onefx/lib/iso-i18n";
-import React from "react";
+import React, { Component } from "react";
 import { TContact2 } from "../../../types/human";
 import { SmallMargin } from "../../common/common-margin";
 import { formItemLayout } from "./profile-editor";
@@ -24,6 +25,72 @@ function At(): JSX.Element {
       disabled
     />
   );
+}
+
+class AddNewExp extends Component<
+  { form?: WrappedFormUtils; i: number; fieldName: string },
+  { shouldNew: boolean }
+> {
+  state: { shouldNew: boolean } = { shouldNew: false };
+  setShouldNew = (flag: boolean) => this.setState({ shouldNew: flag });
+
+  render(): JSX.Element {
+    const { form, i, fieldName } = this.props;
+
+    if (!form) {
+      return <div />;
+    }
+    const getFieldDecorator = form.getFieldDecorator;
+
+    if (this.state.shouldNew) {
+      return (
+        <>
+          <SmallMargin />
+          <InputGroup key={i} compact>
+            {getFieldDecorator(`${fieldName}[${i}].title`, {
+              initialValue: "",
+              rules: []
+            })(
+              <Input
+                style={{ maxWidth: "180px", textAlign: "center" }}
+                placeholder={t("experience.title")}
+              />
+            )}
+            <At />
+            {getFieldDecorator(`${fieldName}[${i}].name`, {
+              initialValue: "",
+              rules: []
+            })(
+              <Input
+                style={{
+                  maxWidth: "180px",
+                  textAlign: "center",
+                  borderLeft: 0
+                }}
+                placeholder={t("experience.org")}
+              />
+            )}
+          </InputGroup>
+          {(() => (
+            <AddNewExp form={form} i={i + 1} fieldName={fieldName} />
+          ))()}
+          he
+        </>
+      );
+    }
+
+    return (
+      <>
+        <SmallMargin />
+        <Button
+          onClick={() => this.setShouldNew(true)}
+          shape="circle"
+          icon="plus"
+        />
+        <br />
+      </>
+    );
+  }
 }
 
 // tslint:disable-next-line:max-func-body-length
@@ -102,6 +169,12 @@ export function ExperienceForm({
         );
       })}
 
+      <AddNewExp
+        form={form}
+        i={human.experience.length}
+        fieldName="experience"
+      />
+
       <div className="ant-form-item-label">
         <label
           htmlFor="profile-editor_education[0].title"
@@ -138,10 +211,11 @@ export function ExperienceForm({
                 placeholder={t("experience.org")}
               />
             )}
-            <SmallMargin />
           </InputGroup>
         );
       })}
+
+      <AddNewExp form={form} i={human.education.length} fieldName="education" />
     </>
   );
 }
