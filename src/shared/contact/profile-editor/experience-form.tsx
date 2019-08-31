@@ -11,6 +11,21 @@ const InputGroup = Input.Group;
 
 const { TextArea } = Input;
 
+function At(): JSX.Element {
+  return (
+    <Input
+      style={{
+        width: 40,
+        borderLeft: 0,
+        pointerEvents: "none",
+        backgroundColor: "#fff"
+      }}
+      placeholder="@"
+      disabled
+    />
+  );
+}
+
 // tslint:disable-next-line:max-func-body-length
 export function ExperienceForm({
   human,
@@ -47,13 +62,6 @@ export function ExperienceForm({
         })(<TextArea autosize={true} />)}
       </Form.Item>
 
-      <Form.Item {...formItemLayout} label={t("field.desire")}>
-        {getFieldDecorator("desire", {
-          initialValue: human.desire,
-          rules: []
-        })(<TextArea autosize={true} />)}
-      </Form.Item>
-
       <div className="ant-form-item-label">
         <label
           htmlFor="profile-editor_experience[0].title"
@@ -72,20 +80,24 @@ export function ExperienceForm({
               rules: []
             })(
               <Input
-                style={{ width: "50%", textAlign: "center" }}
-                placeholder="Title"
+                style={{ maxWidth: "180px", textAlign: "center" }}
+                placeholder={t("experience.title")}
               />
             )}
+            <At />
             {getFieldDecorator(`experience[${i}].name`, {
               initialValue: human.experience[i].name,
               rules: []
             })(
               <Input
-                style={{ width: "50%", textAlign: "center", borderLeft: 0 }}
-                placeholder="Maximum"
+                style={{
+                  maxWidth: "180px",
+                  textAlign: "center",
+                  borderLeft: 0
+                }}
+                placeholder={t("experience.org")}
               />
             )}
-            <SmallMargin />
           </InputGroup>
         );
       })}
@@ -108,17 +120,22 @@ export function ExperienceForm({
               rules: []
             })(
               <Input
-                style={{ width: "50%", textAlign: "center" }}
-                placeholder="Title"
+                style={{ maxWidth: "180px", textAlign: "center" }}
+                placeholder={t("experience.title")}
               />
             )}
+            <At />
             {getFieldDecorator(`education[${i}].name`, {
               initialValue: human.education[i].name,
               rules: []
             })(
               <Input
-                style={{ width: "50%", textAlign: "center", borderLeft: 0 }}
-                placeholder="Maximum"
+                style={{
+                  maxWidth: "180px",
+                  textAlign: "center",
+                  borderLeft: 0
+                }}
+                placeholder={t("experience.org")}
               />
             )}
             <SmallMargin />

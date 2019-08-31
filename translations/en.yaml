@@ -115,3 +115,5 @@ field.delete_contact.failed: "failed to delete user: ${e}"
 field.delete_contact.yes: Yes, remove contact
 field.delete_contact.cancel: Cancel
 field.delete_contact.error_self: Cannot delete your own profile
+experience.title: Title
+experience.org: Orgnization
