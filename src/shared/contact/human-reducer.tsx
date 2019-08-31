@@ -59,7 +59,6 @@ const UPSERT_INTERACTION = gql`
       id
       timestamp
       content
-      contentHtml
       relatedHumans
     }
   }

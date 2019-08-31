@@ -62,7 +62,6 @@ export type TInteraction = {
   id: string;
   timestamp: Date;
   content: string;
-  contentHtml?: string;
 
   relatedHumans: Array<string>;
 };
