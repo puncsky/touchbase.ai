@@ -94,7 +94,9 @@ class ProfileEditorContainer extends Component<Props, State> {
       ...human,
       ...result,
       // @ts-ignore
-      emails: result.emails.split(",")
+      emails: result.emails.split(","),
+      experience: (result.experience || []).filter((e: any) => e),
+      education: (result.education || []).filter((e: any) => e)
     };
     actionUpdateHuman(clone, false);
 

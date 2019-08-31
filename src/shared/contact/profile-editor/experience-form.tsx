@@ -2,7 +2,7 @@ import { Form, Input } from "antd";
 import Button from "antd/lib/button/button";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import { t } from "onefx/lib/iso-i18n";
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { TContact2 } from "../../../types/human";
 import { SmallMargin } from "../../common/common-margin";
 import { formItemLayout } from "./profile-editor";
@@ -27,6 +27,74 @@ function At(): JSX.Element {
   );
 }
 
+class DeleteableExp extends PureComponent<
+  {
+    form: WrappedFormUtils;
+    i: number;
+    fieldName: string;
+    title?: string;
+    org?: string;
+  },
+  { deleted: boolean }
+> {
+  state: { deleted: boolean } = { deleted: false };
+
+  render(): JSX.Element | null {
+    const {
+      form: { getFieldDecorator },
+      i,
+      fieldName,
+      title,
+      org
+    } = this.props;
+
+    if (this.state.deleted) {
+      return null;
+    }
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          margin: "4px 0"
+        }}
+      >
+        <InputGroup compact>
+          {getFieldDecorator(`${fieldName}[${i}].title`, {
+            initialValue: title || "",
+            rules: []
+          })(
+            <Input
+              style={{ maxWidth: "165px", textAlign: "center" }}
+              placeholder={t("experience.title")}
+            />
+          )}
+          <At />
+          {getFieldDecorator(`${fieldName}[${i}].name`, {
+            initialValue: org || "",
+            rules: []
+          })(
+            <Input
+              style={{
+                maxWidth: "165px",
+                textAlign: "center",
+                borderLeft: 0
+              }}
+              placeholder={t("experience.org")}
+            />
+          )}
+        </InputGroup>
+        <Button
+          onClick={() => this.setState({ deleted: true })}
+          shape="circle"
+          icon="delete"
+        />
+      </div>
+    );
+  }
+}
+
 class AddNewExp extends Component<
   { form?: WrappedFormUtils; i: number; fieldName: string },
   { shouldNew: boolean }
@@ -40,37 +108,11 @@ class AddNewExp extends Component<
     if (!form) {
       return <div />;
     }
-    const getFieldDecorator = form.getFieldDecorator;
 
     if (this.state.shouldNew) {
       return (
         <>
-          <SmallMargin />
-          <InputGroup key={i} compact>
-            {getFieldDecorator(`${fieldName}[${i}].title`, {
-              initialValue: "",
-              rules: []
-            })(
-              <Input
-                style={{ maxWidth: "180px", textAlign: "center" }}
-                placeholder={t("experience.title")}
-              />
-            )}
-            <At />
-            {getFieldDecorator(`${fieldName}[${i}].name`, {
-              initialValue: "",
-              rules: []
-            })(
-              <Input
-                style={{
-                  maxWidth: "180px",
-                  textAlign: "center",
-                  borderLeft: 0
-                }}
-                placeholder={t("experience.org")}
-              />
-            )}
-          </InputGroup>
+          <DeleteableExp form={form} i={i} fieldName={fieldName} />
           {(() => (
             <AddNewExp form={form} i={i + 1} fieldName={fieldName} />
           ))()}
@@ -141,31 +183,14 @@ export function ExperienceForm({
 
       {human.experience.map((_: any, i) => {
         return (
-          <InputGroup key={i} compact>
-            {getFieldDecorator(`experience[${i}].title`, {
-              initialValue: human.experience[i].title,
-              rules: []
-            })(
-              <Input
-                style={{ maxWidth: "180px", textAlign: "center" }}
-                placeholder={t("experience.title")}
-              />
-            )}
-            <At />
-            {getFieldDecorator(`experience[${i}].name`, {
-              initialValue: human.experience[i].name,
-              rules: []
-            })(
-              <Input
-                style={{
-                  maxWidth: "180px",
-                  textAlign: "center",
-                  borderLeft: 0
-                }}
-                placeholder={t("experience.org")}
-              />
-            )}
-          </InputGroup>
+          <DeleteableExp
+            key={i}
+            fieldName="experience"
+            i={i}
+            form={form}
+            title={human.experience[i].title}
+            org={human.experience[i].name}
+          />
         );
       })}
 
@@ -187,31 +212,14 @@ export function ExperienceForm({
 
       {human.education.map((_: any, i) => {
         return (
-          <InputGroup key={i} compact>
-            {getFieldDecorator(`education[${i}].title`, {
-              initialValue: human.education[i].title,
-              rules: []
-            })(
-              <Input
-                style={{ maxWidth: "180px", textAlign: "center" }}
-                placeholder={t("experience.title")}
-              />
-            )}
-            <At />
-            {getFieldDecorator(`education[${i}].name`, {
-              initialValue: human.education[i].name,
-              rules: []
-            })(
-              <Input
-                style={{
-                  maxWidth: "180px",
-                  textAlign: "center",
-                  borderLeft: 0
-                }}
-                placeholder={t("experience.org")}
-              />
-            )}
-          </InputGroup>
+          <DeleteableExp
+            key={i}
+            fieldName="education"
+            i={i}
+            form={form}
+            title={human.education[i].title}
+            org={human.education[i].name}
+          />
         );
       })}
 
