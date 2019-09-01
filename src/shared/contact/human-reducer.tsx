@@ -83,6 +83,15 @@ export function actionUpsertEvent(
               limit: PAGE_SIZE,
               isSelf
             }
+          },
+          {
+            query: GET_INTERACTIONS,
+            variables: {
+              contactId,
+              offset: 0,
+              limit: PAGE_SIZE,
+              isSelf: true
+            }
           }
         ]
       })
