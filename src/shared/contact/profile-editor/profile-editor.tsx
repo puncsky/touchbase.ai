@@ -13,7 +13,6 @@ import {
 } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import Popover from "antd/lib/popover";
-import { RcFile } from "antd/lib/upload/interface";
 import window from "global/window";
 import gql from "graphql-tag";
 import moment from "moment";
@@ -28,6 +27,7 @@ import { TContact2 } from "../../../types/human";
 import { CommonMargin } from "../../common/common-margin";
 import { Flex } from "../../common/flex";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";
+import { upload } from "../../common/upload";
 import { GET_CONTACTS } from "../../contacts/contacts-table";
 import { actionUpdateHuman } from "../human-reducer";
 import { ExperienceForm } from "./experience-form";
@@ -155,85 +155,102 @@ export class ProfileEditorForm extends Component<{
   }
 }
 
-function PersonalForm({
-  human,
-  form
-}: {
-  human: TContact2;
-  form?: WrappedFormUtils;
-}): JSX.Element | null {
-  if (!form) {
-    return null;
+class PersonalForm extends Component<
+  {
+    human: TContact2;
+    form?: WrappedFormUtils;
+  },
+  { avatarUrl: string }
+> {
+  state: { avatarUrl: string } = { avatarUrl: "" };
+
+  render(): JSX.Element | null {
+    const { human, form } = this.props;
+
+    if (!form) {
+      return null;
+    }
+    const { getFieldDecorator } = form;
+
+    const beforeUpload = async ({ file, onSuccess }: any) => {
+      const fieldName = "avatarUrl";
+      const data = await upload(file, fieldName);
+      form.setFieldsValue({
+        [fieldName]: data.secure_url
+      });
+      this.setState({ [fieldName]: data.secure_url });
+      onSuccess(data, file);
+    };
+
+    return (
+      <>
+        <Form.Item {...formItemLayout} label={t("field.name")}>
+          {getFieldDecorator("name", {
+            initialValue: human.name,
+            rules: [
+              {
+                required: true,
+                message: t("field.error.required.name")
+              }
+            ]
+          })(<Input placeholder={t("field.jane_doe")} />)}
+        </Form.Item>
+
+        <Form.Item {...formItemLayout} label={t("field.emails")}>
+          {getFieldDecorator("emails", {
+            initialValue: human.emails.join(", "),
+            rules: []
+          })(<Input placeholder={t("field.emails")} />)}
+        </Form.Item>
+
+        <Form.Item {...formItemLayout} label={t("field.avatar_url")}>
+          {getFieldDecorator("avatarUrl", {
+            initialValue: human.avatarUrl
+          })(<Input hidden={true} />)}
+          <Upload customRequest={beforeUpload}>
+            {human.avatarUrl ? (
+              <img
+                alt="avatar"
+                style={{ width: "50%", cursor: "pointer" }}
+                src={this.state.avatarUrl || human.avatarUrl}
+              />
+            ) : (
+              <Button>
+                <Icon type="upload" /> Click to Upload
+              </Button>
+            )}
+          </Upload>
+        </Form.Item>
+
+        <Form.Item {...formItemLayout} label={t("field.address")}>
+          {getFieldDecorator("address", {
+            initialValue: human.address,
+            rules: []
+          })(<Input placeholder={t("field.address")} />)}
+        </Form.Item>
+
+        <Form.Item {...formItemLayout} label={t("field.dateOfBirth")}>
+          {getFieldDecorator("bornAt", {
+            initialValue: human.bornAt && moment(human.bornAt),
+            rules: []
+          })(<DatePicker placeholder={t("field.dateOfBirth")} />)}
+        </Form.Item>
+
+        <Form.Item {...formItemLayout} label={t("field.birthplace")}>
+          {getFieldDecorator("bornAddress", {
+            initialValue: human.bornAddress,
+            rules: []
+          })(<Input placeholder={t("field.birthplace")} />)}
+        </Form.Item>
+
+        <SocialNetworkForm form={form} human={human} />
+
+        <SourceForm form={form} human={human} />
+
+        <DeleteContactPopover name={human.name} contactId={String(human._id)} />
+      </>
+    );
   }
-  const { getFieldDecorator } = form;
-  return (
-    <>
-      <Form.Item {...formItemLayout} label={t("field.name")}>
-        {getFieldDecorator("name", {
-          initialValue: human.name,
-          rules: [
-            {
-              required: true,
-              message: t("field.error.required.name")
-            }
-          ]
-        })(<Input placeholder={t("field.jane_doe")} />)}
-      </Form.Item>
-
-      <Form.Item {...formItemLayout} label={t("field.emails")}>
-        {getFieldDecorator("emails", {
-          initialValue: human.emails.join(", "),
-          rules: []
-        })(<Input placeholder={t("field.emails")} />)}
-      </Form.Item>
-
-      <Form.Item {...formItemLayout} label={t("field.avatar_url")}>
-        {getFieldDecorator("avatarUrl", {
-          initialValue: human.avatarUrl
-        })(<Input hidden={true} />)}
-        <Upload beforeUpload={(_: RcFile, __: Array<RcFile>) => true}>
-          {human.avatarUrl ? (
-            <img
-              alt="avatar"
-              style={{ width: "50%", cursor: "pointer" }}
-              src={human.avatarUrl}
-            />
-          ) : (
-            <Button>
-              <Icon type="upload" /> Click to Upload
-            </Button>
-          )}
-        </Upload>
-      </Form.Item>
-
-      <Form.Item {...formItemLayout} label={t("field.address")}>
-        {getFieldDecorator("address", {
-          initialValue: human.address,
-          rules: []
-        })(<Input placeholder={t("field.address")} />)}
-      </Form.Item>
-
-      <Form.Item {...formItemLayout} label={t("field.dateOfBirth")}>
-        {getFieldDecorator("bornAt", {
-          initialValue: human.bornAt && moment(human.bornAt),
-          rules: []
-        })(<DatePicker placeholder={t("field.dateOfBirth")} />)}
-      </Form.Item>
-
-      <Form.Item {...formItemLayout} label={t("field.birthplace")}>
-        {getFieldDecorator("bornAddress", {
-          initialValue: human.bornAddress,
-          rules: []
-        })(<Input placeholder={t("field.birthplace")} />)}
-      </Form.Item>
-
-      <SocialNetworkForm form={form} human={human} />
-
-      <SourceForm form={form} human={human} />
-
-      <DeleteContactPopover name={human.name} contactId={String(human._id)} />
-    </>
-  );
 }
 
 const DELETE_CONTACT = gql`
