@@ -23,6 +23,7 @@ import { colors } from "../common/styles/style-color";
 import { fonts } from "../common/styles/style-font";
 import { ContentPadding } from "../common/styles/style-padding";
 import { UpsertEventContainer } from "./event/upsert-event";
+import { HeatmapCalendar } from "./heatmap-calendar";
 import { KeyMetrics } from "./key-metrics";
 import { ProfileEditorContainer } from "./profile-editor/profile-editor";
 
@@ -57,8 +58,8 @@ type Props = {
 } & RouterProps;
 
 export const GET_CONTACT = gql`
-  query contact($id: String!) {
-    contact(id: $id) {
+  query contact($id: String, $isSelf: Boolean) {
+    contact(id: $id, isSelf: $isSelf) {
       _id
       emails
       name
@@ -122,7 +123,8 @@ export const ContactDetailContainer = withRouter(
             <Query
               query={GET_CONTACT}
               variables={{
-                id: props.isSelf ? ownerHumanId : id
+                id: props.isSelf ? ownerHumanId : id,
+                isSelf: props.isSelf
               }}
             >
               {({
@@ -143,7 +145,12 @@ export const ContactDetailContainer = withRouter(
                   return <NotFound />;
                 }
 
-                return <Contact human={human} isSelf={ownerHumanId === id} />;
+                return (
+                  <Contact
+                    human={human}
+                    isSelf={ownerHumanId === id || props.isSelf}
+                  />
+                );
               }}
             </Query>
             <Padding />
@@ -230,6 +237,11 @@ function Contact({
         ]}
 
         <Flex width="100%" {...SECTION}>
+          <HeatmapCalendar
+            isSelf={Boolean(isSelf)}
+            contactId={String(human._id)}
+          />
+
           <Flex width="100%">
             <UpsertEventContainer
               eventId={""}

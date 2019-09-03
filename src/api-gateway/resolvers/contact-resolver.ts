@@ -273,6 +273,23 @@ class SearchRequest {
 }
 
 @ArgsType()
+class InteractionCountsRequest {
+  @Field(_ => Boolean, { nullable: true })
+  public isSelf: string;
+
+  @Field(_ => String, { nullable: true })
+  public contactId: string;
+}
+
+@ObjectType()
+class InteractionCount {
+  @Field(_ => String)
+  public date: string;
+  @Field(_ => Number)
+  public count: number;
+}
+
+@ArgsType()
 class ContactsRequest {
   @Field(_ => Number, { nullable: true })
   offset: number;
@@ -287,6 +304,8 @@ class ContactRequest {
   public id?: string;
   @Field(_ => String, { nullable: true })
   public userId?: string;
+  @Field(_ => Boolean, { nullable: true })
+  public isSelf: boolean;
 }
 
 interface ISearchResult {}
@@ -421,8 +440,8 @@ export class ContactResolver {
     if (!userId) {
       throw new AuthenticationError(`please login to fetch contact`);
     }
-    if (req.userId) {
-      if (req.userId !== String(userId)) {
+    if (req.userId || req.isSelf) {
+      if (req.userId !== String(userId) && !req.isSelf) {
         throw new AuthenticationError(
           `fetching a contact not belonging to current user`
         );
@@ -468,5 +487,16 @@ export class ContactResolver {
     }
 
     return model.human.deleteOne({ ...deleteContactInput, ownerId: userId });
+  }
+
+  @Query(_ => [InteractionCount], { nullable: true })
+  public async interactionCounts(
+    @Args() { contactId, isSelf }: InteractionCountsRequest,
+    @Ctx() { model, userId }: Context
+  ): Promise<Array<InteractionCount | null>> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to fetch interactionCounts`);
+    }
+    return model.event.count(userId, isSelf ? null : contactId);
   }
 }

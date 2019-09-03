@@ -97,6 +97,11 @@ type Interaction {
   relatedHumans: [String!]!
 }
 
+type InteractionCount {
+  date: String!
+  count: Float!
+}
+
 type Mutation {
   createContact(createContactInput: CreateContactInput!): Contact!
   updateContact(updateContactInput: UpdateContactInput!): Contact!
@@ -116,7 +121,8 @@ type Query {
   note(id: String!): Interaction
   search(name: String!): [SearchResult!]!
   contacts(offset: Float, limit: Float): [Contact!]
-  contact(id: String, userId: String): Contact
+  contact(id: String, userId: String, isSelf: Boolean): Contact
+  interactionCounts(isSelf: Boolean, contactId: String): [InteractionCount!]
 
   # is the server healthy?
   health: String!

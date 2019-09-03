@@ -1,5 +1,6 @@
 import { TPersonalNote } from "../types/contact";
 
+import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
@@ -47,6 +48,45 @@ export class PersonalNoteModel {
 
   public async getById(id: string): Promise<TPersonalNoteDoc | null> {
     return this.Model.findOne({ _id: id });
+  }
+
+  async count(
+    ownerId: string,
+    id: string | null
+  ): Promise<Array<{ date: string; count: number }>> {
+    const match: any = { ownerId };
+    if (id) {
+      match.relatedHumans = new ObjectId(id);
+    }
+    const resp: Array<Aggregated> = await this.Model.aggregate([
+      {
+        $match: match
+      },
+      {
+        $group: {
+          _id: {
+            day: {
+              $dayOfMonth: "$createAt"
+            },
+            month: {
+              $month: "$createAt"
+            },
+            year: {
+              $year: "$createAt"
+            }
+          },
+          count: {
+            $sum: 1
+          }
+        }
+      }
+    ]);
+    return resp.map((a: Aggregated) => {
+      return {
+        date: `${a._id.year}-${a._id.month}-${a._id.day}`,
+        count: a.count
+      };
+    });
   }
 
   public async getPublicById(id: string): Promise<TPersonalNoteDoc | null> {
@@ -107,4 +147,14 @@ export class PersonalNoteModel {
   public async add(entry: any): Promise<TPersonalNoteDoc> {
     return new this.Model(entry).save();
   }
+}
+
+export interface Aggregated {
+  _id: Id;
+  count: number;
+}
+export interface Id {
+  day: number;
+  month: number;
+  year: number;
 }
