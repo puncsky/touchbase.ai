@@ -12,12 +12,14 @@ export const colors = {
   black05: "#F2F2F2",
 
   text01: "#333333",
+  text02: "rgba(0, 0, 0, 0.65)",
 
   white: "#fff",
 
   error: "#e71d32", //	Error
   success: "#5aa700", //	Success
   warning: "#efc100", //	Warning
+  warning50: "#fffee6",
   information: "#5aaafa", //	Information
 
   nav01: "#fff", //	Global top bar
