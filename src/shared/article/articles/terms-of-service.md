@@ -1,6 +1,6 @@
 ---
 layout: post
-id: legal/privacy-policy
+id: legal/terms-of-service
 title: "Terms of Service"
 ---
 
