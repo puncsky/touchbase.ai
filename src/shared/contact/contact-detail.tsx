@@ -208,8 +208,6 @@ function Contact({
 
           <KeyMetrics
             metrics={{
-              interactionsPerQuarter: 0,
-              interactions: 0,
               knownAt: human.knownAt,
 
               inboundTrust: human.inboundTrust,

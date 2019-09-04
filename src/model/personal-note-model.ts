@@ -83,7 +83,9 @@ export class PersonalNoteModel {
     ]);
     return resp.map((a: Aggregated) => {
       return {
-        date: `${a._id.year}-${a._id.month}-${a._id.day}`,
+        date: `${a._id.year}-${String(a._id.month).padStart(2, "0")}-${String(
+          a._id.day
+        ).padStart(2, "0")}`,
         count: a.count
       };
     });

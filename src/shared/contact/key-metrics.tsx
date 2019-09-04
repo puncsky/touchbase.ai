@@ -6,8 +6,6 @@ import { Flex } from "../common/flex";
 import { fonts } from "../common/styles/style-font";
 
 type TMetrics = {
-  interactions: number;
-  interactionsPerQuarter: number;
   knownAt: Date;
   inboundTrust: number;
   outboundTrust: number;
@@ -23,17 +21,7 @@ export function KeyMetrics({ metrics }: { metrics: TMetrics }): JSX.Element {
       borderBottom={LINE}
       padding="8px 0 8px 0"
     >
-      <Flex width="100%" justifyContent="space-between">
-        <div>
-          <div style={fonts.h4}>{metrics.interactions}</div>
-          <div>{t("interactions")}</div>
-        </div>
-
-        <div>
-          <div style={fonts.h4}>{metrics.interactionsPerQuarter}</div>
-          <div>{t("ipq")}</div>
-        </div>
-
+      <Flex center={true} width="100%">
         <div>
           <FromNow dateString={metrics.knownAt} />
           <div>{t("years_known")}</div>
