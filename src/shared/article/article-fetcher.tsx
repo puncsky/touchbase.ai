@@ -6,6 +6,7 @@ import { CommonMargin } from "../common/common-margin";
 import { NotFound } from "../common/not-found";
 import { Article } from "./article";
 import { ArticleResponse } from "./article-types";
+import { Preloader } from "../common/preloader";
 
 const FETCH_ARTICLE = gql`
   query articles($id: String!) {
@@ -26,7 +27,11 @@ export function ArticleFetcherInner(
         error,
         data
       }: QueryResult<{ articles: Array<ArticleResponse> }>) => {
-        if (loading || error || !data || !data.articles) {
+        if (loading) {
+          return <Preloader />;
+        }
+
+        if (error || !data || !data.articles) {
           return <NotFound />;
         }
 

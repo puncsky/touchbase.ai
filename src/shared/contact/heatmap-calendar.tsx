@@ -30,8 +30,6 @@ export function HeatmapCalendar({ isSelf, contactId }: Props): JSX.Element {
             isSelf,
             contactId
           }}
-          fetchPolicy="network-only"
-          ssr={false}
         >
           {({
             data,
