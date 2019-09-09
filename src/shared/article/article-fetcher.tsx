@@ -4,9 +4,9 @@ import { Query, QueryResult } from "react-apollo";
 import { RouteComponentProps, withRouter } from "react-router";
 import { CommonMargin } from "../common/common-margin";
 import { NotFound } from "../common/not-found";
+import { Preloader } from "../common/preloader";
 import { Article } from "./article";
 import { ArticleResponse } from "./article-types";
-import { Preloader } from "../common/preloader";
 
 const FETCH_ARTICLE = gql`
   query articles($id: String!) {
