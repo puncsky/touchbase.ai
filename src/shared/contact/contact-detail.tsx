@@ -376,16 +376,16 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
   public render(): JSX.Element {
     const { contactId, isSelf } = this.props;
 
+    const query: Record<string, any> = {
+      offset: 0,
+      limit: PAGE_SIZE
+    };
+    if (!isSelf) {
+      query.contactId = contactId;
+    }
+
     return (
-      <Query
-        query={GET_INTERACTIONS}
-        variables={{
-          contactId,
-          offset: 0,
-          limit: PAGE_SIZE,
-          isSelf
-        }}
-      >
+      <Query query={GET_INTERACTIONS} variables={query}>
         {({
           loading,
           data,

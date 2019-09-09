@@ -30,8 +30,8 @@ export const UpsertEventContainer = connect(
     ownerHumanId: state.base.ownerHumanId
   }),
   (dispatch: any) => ({
-    actionUpsertEvent: (payload: any, contactId: string, isSelf: boolean) =>
-      dispatch(actionUpsertEvent(payload, contactId, isSelf))
+    actionUpsertEvent: (payload: any, contactId: string) =>
+      dispatch(actionUpsertEvent(payload, contactId))
   })
 )(
   // @ts-ignore

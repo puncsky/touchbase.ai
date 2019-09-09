@@ -64,11 +64,7 @@ const UPSERT_INTERACTION = gql`
   }
 `;
 
-export function actionUpsertEvent(
-  payload: any,
-  contactId: string,
-  isSelf: boolean
-): any {
+export function actionUpsertEvent(payload: any, contactId: string): any {
   return (dispatch: any) => {
     apolloClient
       .mutate<{ upsertInteraction: { _id: string } }>({
@@ -80,14 +76,12 @@ export function actionUpsertEvent(
             variables: {
               contactId,
               offset: 0,
-              limit: PAGE_SIZE,
-              isSelf
+              limit: PAGE_SIZE
             }
           },
           {
             query: GET_INTERACTIONS,
             variables: {
-              contactId,
               offset: 0,
               limit: PAGE_SIZE,
               isSelf: true

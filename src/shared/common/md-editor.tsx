@@ -47,7 +47,7 @@ export class MdEditor extends Component<Props> {
           />
         </Helmet>
 
-        <textarea ref={ref => (this.ref = ref)} />
+        <textarea style={{ display: "none" }} ref={ref => (this.ref = ref)} />
       </div>
     );
   }
