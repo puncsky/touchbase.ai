@@ -380,7 +380,9 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
       offset: 0,
       limit: PAGE_SIZE
     };
-    if (!isSelf) {
+    if (isSelf) {
+      query.isSelf = true;
+    } else {
       query.contactId = contactId;
     }
 
