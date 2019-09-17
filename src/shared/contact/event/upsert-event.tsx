@@ -59,7 +59,12 @@ export const UpsertEventContainer = connect(
             visible={this.state.isVisible}
             style={{ top: TOP_BAR_HEIGHT }}
             title={eventId ? t("edit_event") : t("add_event")}
-            onCancel={() => this.setState({ isVisible: false })}
+            onCancel={() => {
+              this.setState({ isVisible: false });
+              if (!initialValue) {
+                this.getSimpleMde().value("");
+              }
+            }}
             onOk={() => {
               actionUpsertEvent(
                 {
@@ -71,6 +76,9 @@ export const UpsertEventContainer = connect(
                 humanId,
                 ownerHumanId === humanId
               );
+              if (!initialValue) {
+                this.getSimpleMde().value("");
+              }
               this.setState({ isVisible: false });
             }}
           >
