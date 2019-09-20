@@ -55,6 +55,10 @@ export function HeatmapCalendar({ isSelf, contactId }: Props): JSX.Element {
                   return `color-github-${value.count}`;
                 }}
                 tooltipDataAttrs={value => {
+                  if (!value || !value.date) {
+                    return null;
+                  }
+
                   return {
                     "data-tip": `${new Date(value.date)
                       .toISOString()

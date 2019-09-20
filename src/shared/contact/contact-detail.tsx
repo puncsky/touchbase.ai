@@ -28,6 +28,7 @@ import { UpsertEventContainer } from "./event/upsert-event";
 import { HeatmapCalendar } from "./heatmap-calendar";
 import { KeyMetrics } from "./key-metrics";
 import { ProfileEditorContainer } from "./profile-editor/profile-editor";
+import ReactTooltip from "react-tooltip";
 
 function currentTitle(human: TContact2): string {
   return (
@@ -241,6 +242,7 @@ function Contact({
             isSelf={Boolean(isSelf)}
             contactId={String(human._id)}
           />
+          <ReactTooltip />
 
           <Flex width="100%">
             <UpsertEventContainer
