@@ -149,6 +149,17 @@ export class PersonalNoteModel {
   public async add(entry: any): Promise<TPersonalNoteDoc> {
     return new this.Model(entry).save();
   }
+
+  public async deleteOne({
+    _id,
+    ownerId
+  }: {
+    _id: string;
+    ownerId: string;
+  }): Promise<Boolean> {
+    const resp = await this.Model.deleteOne({ _id, ownerId });
+    return Boolean(resp && resp.ok);
+  }
 }
 
 export interface Aggregated {

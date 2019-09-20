@@ -115,5 +115,11 @@ field.delete_contact.failed: "failed to delete user: ${e}"
 field.delete_contact.yes: Yes, remove contact
 field.delete_contact.cancel: Cancel
 field.delete_contact.error_self: Cannot delete your own profile
+field.delete_note.title: Delete note?
+field.delete_note.content: "This note will be deleted and cannot be recovered in the future."
+field.delete_note.deleted: Deleted the note
+field.delete_note.failed: "failed to delete note: ${e}"
+field.delete_note.yes: Yes, delete note
+field.delete_note.cancel: Cancel
 experience.title: Title
 experience.org: Orgnization

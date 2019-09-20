@@ -22,6 +22,12 @@ class DeleteContactInput {
 }
 
 @InputType()
+class DeleteNoteInput {
+  @Field(_ => String)
+  _id: string;
+}
+
+@InputType()
 class CreateContactInput implements TContact2 {
   @Field(_ => String, { nullable: true })
   public _id?: string | undefined;
@@ -377,6 +383,21 @@ export class ContactResolver {
       return null;
     }
     return model.event.getByIdAndOwner(id, userId);
+  }
+
+  @Mutation(_ => Boolean)
+  public async deleteNote(
+    @Arg("deleteNoteInput") deleteNoteInput: DeleteNoteInput,
+    @Ctx() { model, userId }: Context
+  ): Promise<Boolean> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to deleteNoteInput`);
+    }
+
+    return model.personalNote.deleteOne({
+      ...deleteNoteInput,
+      ownerId: userId
+    });
   }
 
   @Mutation(_ => Interaction)

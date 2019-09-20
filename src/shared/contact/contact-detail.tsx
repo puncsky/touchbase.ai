@@ -14,6 +14,7 @@ import { match, Route, RouterProps } from "react-router";
 import { Link, withRouter } from "react-router-dom";
 import { TContact2, TInteraction } from "../../types/human";
 import { BOX_SHADOW, LINE } from "../common/box-shadow";
+import { CommonMargin } from "../common/common-margin";
 import { Flex } from "../common/flex";
 import { mdit } from "../common/markdownit";
 import { NotFound } from "../common/not-found";
@@ -22,6 +23,7 @@ import { shade } from "../common/styles/shade";
 import { colors } from "../common/styles/style-color";
 import { fonts } from "../common/styles/style-font";
 import { ContentPadding } from "../common/styles/style-padding";
+import { DeleteNotePopover } from "./delete-note-container";
 import { UpsertEventContainer } from "./event/upsert-event";
 import { HeatmapCalendar } from "./heatmap-calendar";
 import { KeyMetrics } from "./key-metrics";
@@ -419,13 +421,20 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                     <span>
                       {dateFormat(iter.timestamp, "yyyy-mm-dd HH:MM")}{" "}
                     </span>
-                    <UpsertEventContainer
-                      eventId={iter.id}
-                      initialValue={iter.content}
-                      humanId={contactId}
-                    >
-                      <div style={{ cursor: "pointer" }}>{t("edit")}</div>
-                    </UpsertEventContainer>
+                    <Flex>
+                      <UpsertEventContainer
+                        eventId={iter.id}
+                        initialValue={iter.content}
+                        humanId={contactId}
+                      >
+                        <div style={{ cursor: "pointer" }}>{t("edit")}</div>
+                      </UpsertEventContainer>
+                      <CommonMargin />
+                      <DeleteNotePopover
+                        noteId={iter.id}
+                        contactId={contactId}
+                      />
+                    </Flex>
                   </Flex>
                   <div
                     dangerouslySetInnerHTML={{

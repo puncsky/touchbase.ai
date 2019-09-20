@@ -64,30 +64,32 @@ const UPSERT_INTERACTION = gql`
   }
 `;
 
+export const refetchInteractionsQueries = (contactId: string) => [
+  {
+    query: GET_INTERACTIONS,
+    variables: {
+      contactId,
+      offset: 0,
+      limit: PAGE_SIZE
+    }
+  },
+  {
+    query: GET_INTERACTIONS,
+    variables: {
+      offset: 0,
+      limit: PAGE_SIZE,
+      isSelf: true
+    }
+  }
+];
+
 export function actionUpsertEvent(payload: any, contactId: string): any {
   return (dispatch: any) => {
     apolloClient
       .mutate<{ upsertInteraction: { _id: string } }>({
         mutation: UPSERT_INTERACTION,
         variables: { upsertInteraction: payload },
-        refetchQueries: [
-          {
-            query: GET_INTERACTIONS,
-            variables: {
-              contactId,
-              offset: 0,
-              limit: PAGE_SIZE
-            }
-          },
-          {
-            query: GET_INTERACTIONS,
-            variables: {
-              offset: 0,
-              limit: PAGE_SIZE,
-              isSelf: true
-            }
-          }
-        ]
+        refetchQueries: refetchInteractionsQueries(contactId)
       })
       .then(resp => {
         // TODO(tian): error handling
