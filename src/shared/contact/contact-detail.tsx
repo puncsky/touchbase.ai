@@ -12,6 +12,7 @@ import { Query, QueryResult } from "react-apollo";
 import { connect } from "react-redux";
 import { match, Route, RouterProps } from "react-router";
 import { Link, withRouter } from "react-router-dom";
+import ReactTooltip from "react-tooltip";
 import { TContact2, TInteraction } from "../../types/human";
 import { BOX_SHADOW, LINE } from "../common/box-shadow";
 import { CommonMargin } from "../common/common-margin";
@@ -28,7 +29,6 @@ import { UpsertEventContainer } from "./event/upsert-event";
 import { HeatmapCalendar } from "./heatmap-calendar";
 import { KeyMetrics } from "./key-metrics";
 import { ProfileEditorContainer } from "./profile-editor/profile-editor";
-import ReactTooltip from "react-tooltip";
 
 function currentTitle(human: TContact2): string {
   return (
@@ -429,7 +429,9 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                         initialValue={iter.content}
                         humanId={contactId}
                       >
-                        <div style={{ cursor: "pointer" }}>{t("edit")}</div>
+                        <Button type="link" size="small">
+                          {t("edit")}
+                        </Button>
                       </UpsertEventContainer>
                       <CommonMargin />
                       <DeleteNotePopover

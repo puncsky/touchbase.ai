@@ -123,3 +123,5 @@ field.delete_note.yes: Yes, delete note
 field.delete_note.cancel: Cancel
 experience.title: Title
 experience.org: Orgnization
+edit: Edit
+delete: Delete

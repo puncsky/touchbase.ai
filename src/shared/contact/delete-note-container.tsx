@@ -94,8 +94,12 @@ export const DeleteNotePopover = withRouter(
           content={content}
           title={t("field.delete_note.title")}
         >
-          <Button size="small" onClick={() => this.setState({ visible: true })}>
-            Delete
+          <Button
+            size="small"
+            type="link"
+            onClick={() => this.setState({ visible: true })}
+          >
+            {t("delete")}
           </Button>
         </Popover>
       );

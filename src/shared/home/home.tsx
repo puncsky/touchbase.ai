@@ -26,11 +26,8 @@ class HomeInner extends PureComponent<{ userId: string }> {
     // @ts-ignore
     const { history } = this.props;
     return (
-      <Layout tagName={"main"}>
-        <Layout.Content
-          tagName={"main"}
-          style={{ backgroundColor: colors.nav01 }}
-        >
+      <Layout>
+        <Layout.Content style={{ backgroundColor: colors.nav01 }}>
           <ContentPadding>
             <Row style={{ margin: "80px 0" }}>
               <Col md={12} xs={24}>
@@ -73,7 +70,7 @@ class HomeInner extends PureComponent<{ userId: string }> {
           </ContentPadding>
         </Layout.Content>
 
-        <Layout.Content tagName={"main"}>
+        <Layout.Content>
           <ContentPadding>
             <Row style={{ margin: "80px 0" }}>
               <Col md={12} xs={24}>
