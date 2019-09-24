@@ -421,7 +421,7 @@ export class ContactResolver {
     ];
     const ownedItem = { ...associatedItem, ownerId: userId };
     if (!item.id) {
-      ownedItem.timestamp = new Date();
+      ownedItem.timestamp = ownedItem.timestamp || new Date();
       return model.event.add(ownedItem);
     }
     return model.event.updateOne(item.id, userId, ownedItem);

@@ -245,6 +245,8 @@ function Contact({
           <ReactTooltip />
 
           <Flex width="100%">
+            {/*
+            // @ts-ignore */}
             <UpsertEventContainer
               eventId={""}
               initialValue={""}
@@ -424,10 +426,13 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                       {dateFormat(iter.timestamp, "yyyy-mm-dd HH:MM")}{" "}
                     </span>
                     <Flex>
+                      {/*
+            // @ts-ignore */}
                       <UpsertEventContainer
                         eventId={iter.id}
                         initialValue={iter.content}
                         humanId={contactId}
+                        timestamp={iter.timestamp}
                       >
                         <Button type="link" size="small">
                           {t("edit")}
