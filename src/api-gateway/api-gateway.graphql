@@ -99,6 +99,7 @@ type Interaction {
   timestamp: DateTime!
   content: String!
   relatedHumans: [String!]!
+  public: Boolean
 }
 
 type InteractionCount {
@@ -172,4 +173,5 @@ input UpsertInteraction {
   timestamp: DateTime!
   content: String!
   relatedHumans: [String!]!
+  public: Boolean!
 }

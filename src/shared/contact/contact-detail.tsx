@@ -251,6 +251,7 @@ function Contact({
               eventId={""}
               initialValue={""}
               humanId={human._id || ""}
+              public={false}
             >
               {/*
                 // @ts-ignore */}
@@ -368,6 +369,7 @@ export const GET_INTERACTIONS = gql`
     ) {
       id
       content
+      public
       timestamp
     }
   }
@@ -433,6 +435,7 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                         initialValue={iter.content}
                         humanId={contactId}
                         timestamp={iter.timestamp}
+                        public={iter.public}
                       >
                         <Button type="link" size="small">
                           {t("edit")}

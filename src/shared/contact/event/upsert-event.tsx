@@ -1,6 +1,8 @@
 // @flow
 import { DatePicker, Form, Modal } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
+import Switch from "antd/lib/switch";
+import ObjectID from "bson-objectid";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
@@ -22,10 +24,13 @@ type Props = {
   eventId: string;
   children: any;
   timestamp?: Date;
+  public?: boolean;
 };
 
 type State = {
   isVisible: boolean;
+  public?: boolean;
+  id: string;
 };
 
 export const UpsertEventContainer = Form.create<
@@ -46,8 +51,15 @@ export const UpsertEventContainer = Form.create<
       public getSimpleMde: any = null;
 
       public state: State = {
-        isVisible: false
+        isVisible: false,
+        public: false,
+        id: ""
       };
+
+      constructor(props: Props) {
+        super(props);
+        this.state.public = props.public;
+      }
 
       public render(): JSX.Element | null {
         const {
@@ -64,6 +76,7 @@ export const UpsertEventContainer = Form.create<
         if (!form || !getFieldDecorator) {
           return null;
         }
+        const isPublic = this.state.public;
         return (
           <div>
             <Modal
@@ -80,9 +93,10 @@ export const UpsertEventContainer = Form.create<
                 const values = form.getFieldsValue();
                 actionUpsertEvent(
                   {
-                    id: eventId,
+                    id: eventId || String(this.state.id),
                     content: this.getSimpleMde().value(),
                     relatedHumans: [ownerHumanId, humanId],
+                    public: this.state.public,
                     timestamp:
                       (values.timestamp && values.timestamp.toDate()) ||
                       new Date()
@@ -108,6 +122,24 @@ export const UpsertEventContainer = Form.create<
                     (this.getSimpleMde = getSimpleMde)
                   }
                 />
+                <Form.Item label="Make public?">
+                  {getFieldDecorator("public", {})(
+                    <Switch
+                      defaultChecked={isPublic}
+                      onChange={v =>
+                        this.setState({
+                          public: v,
+                          id: eventId || String(new ObjectID())
+                        })
+                      }
+                    />
+                  )}
+
+                  {isPublic && (
+                    <span>{`https://rebinder.co/note/${eventId ||
+                      String(this.state.id)}`}</span>
+                  )}
+                </Form.Item>
               </Form>
             </Modal>
             <div

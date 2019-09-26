@@ -60,6 +60,7 @@ const UPSERT_INTERACTION = gql`
       timestamp
       content
       relatedHumans
+      public
     }
   }
 `;

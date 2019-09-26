@@ -64,4 +64,5 @@ export type TInteraction = {
   content: string;
 
   relatedHumans: Array<string>;
+  public?: boolean;
 };
