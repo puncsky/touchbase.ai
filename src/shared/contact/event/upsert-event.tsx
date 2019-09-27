@@ -136,7 +136,7 @@ export const UpsertEventContainer = Form.create<
                   )}
 
                   {isPublic && (
-                    <span>{`https://rebinder.co/note/${eventId ||
+                    <span>{`https://guanxilab.com/note/${eventId ||
                       String(this.state.id)}`}</span>
                   )}
                 </Form.Item>

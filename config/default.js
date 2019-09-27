@@ -2,7 +2,7 @@ const { config } = require("dotenv");
 config();
 
 module.exports = {
-  project: "web-onefx-boilerplate",
+  project: "guanxilab",
   server: {
     port: process.env.PORT || 4103,
     staticDir: "./dist",

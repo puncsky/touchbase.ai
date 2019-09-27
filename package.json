@@ -1,7 +1,7 @@
 {
-  "name": "web-onefx-boilerplate",
+  "name": "guanxilab",
   "version": "1.1.0",
-  "description": "field_description",
+  "description": "Smartly engage more in meaningful relationships",
   "main": "server.js",
   "scripts": {
     "start": "ts-node --transpile-only ./server.ts",
@@ -69,6 +69,7 @@
   "homepage": "https://github.com/puncsky/template_website#readme",
   "devDependencies": {
     "@2fd/graphdoc": "2.4.0",
+    "@types/graphql": "^14.5.0",
     "@types/highlight.js": "9.12.3",
     "@types/markdown-it": "0.0.8",
     "ava": "1.1.0",
@@ -138,7 +139,7 @@
     "apollo-cache-inmemory": "1.6.2",
     "apollo-client": "2.6.3",
     "apollo-link-http": "^1.5.16",
-    "apollo-server-koa": "2.7.0",
+    "apollo-server-koa": "2.9.4",
     "axios": "0.19.0",
     "babel-loader": "8.0.6",
     "babel-plugin-module-resolver": "3.2.0",
@@ -152,7 +153,7 @@
     "ellipsize": "0.1.0",
     "form-serialize": "0.7.2",
     "global": "4.4.0",
-    "graphql": "14.4.2",
+    "graphql": "^14.5.8",
     "graphql-iso-date": "3.6.1",
     "graphql-tag": "2.10.1",
     "highlight.js": "9.15.10",

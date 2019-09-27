@@ -36,7 +36,7 @@ export const authConfig = {
     domain:
       String(process.env.NODE_ENV).indexOf("production") === -1
         ? "localhost"
-        : "rebinder.co",
+        : "guanxilab.com",
 
     secure: false,
     httpOnly: true,
@@ -51,10 +51,10 @@ export const authConfig = {
   emailTokenLink:
     String(process.env.NODE_ENV).indexOf("production") === -1
       ? "http://localhost:4103/email-token/"
-      : "https://rebinder.co/email-token/",
+      : "https://guanxilab.com/email-token/",
   mailgun: {
     apiKey: "4ee685b1d4e8f8470ed3e2e0a2aaf1dc-1053eade-3799e99b",
-    domain: "mail.rebinder.co",
+    domain: "mail.guanxilab.com",
     retryLimit: 2
   },
   emailTokenNext: "/settings/reset-password/"

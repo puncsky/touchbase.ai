@@ -1,22 +1,16 @@
-# guanxilab-com
+# GuanxiLab
 
-[![CircleCI](https://circleci.com/gh/puncsky/web-onefx-boilerplate/tree/master.svg?style=svg)](https://circleci.com/gh/puncsky/web-onefx-boilerplate/tree/master)
+GuanxiLab is the easy, open source way for everyone
+
+[![CircleCI](https://circleci.com/gh/puncsky/guanxilab/tree/master.svg?style=svg)](https://circleci.com/gh/puncsky/guanxilab/tree/master)
 
 - [Documentation](https://onefx.js.org/doc.html?utm_source=github-iotex-explorer)
 - [Contributing](https://onefx.js.org/contributing.html?utm_source=github-iotex-explorer)
 
 ## Getting Started
 
-OneFx is a full-stack framework for building web apps. Here are the features you'll find in Onefx.js:
-
-- server side rendering and universal rendering with react and redux
-- ES2017, JSX, TypeScript support out of the box
-- server-side development via Koa.js
-
-### Create a project
-
 ```bash
-git clone git@github.com:puncsky/web-onefx-boilerplate.git my-awesome-project
+git clone git@github.com:puncsky/guanxilab.git
 ```
 
 ### Run your project
@@ -24,7 +18,7 @@ git clone git@github.com:puncsky/web-onefx-boilerplate.git my-awesome-project
 This is intended for \*nix users. If you use Windows, go to [Run on Windows](#run-on-windows). Let's first prepare the environment.
 
 ```bash
-cd my-awesome-project
+cd guanxilab
 
 nvm use 10.15.0
 npm install

@@ -10,7 +10,7 @@ import { styled } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
 import { connect } from "react-redux";
-import { match, Route, RouterProps } from "react-router";
+import { match, Route, RouteComponentProps, RouterProps } from "react-router";
 import { Link, withRouter } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { TContact2, TInteraction } from "../../types/human";
@@ -99,7 +99,11 @@ export const GET_CONTACT = gql`
   }
 `;
 
-export const ContactDetailContainer = withRouter(
+interface IProps extends RouteComponentProps<any> {
+  isSelf: boolean;
+}
+
+export const ContactDetailContainer = withRouter<IProps>(
   // @ts-ignore
   connect((state: { base: { ownerHumanId: string } }) => ({
     ownerHumanId: state.base.ownerHumanId
