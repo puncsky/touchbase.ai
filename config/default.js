@@ -29,10 +29,13 @@ module.exports = {
     },
     mongoose: {
       uri: process.env.MONGODB_URI
-    }
+    },
+    fullContactApiKey:
+      process.env.FULLCONTACT_API_KEY ||
+      console.warn("FULLCONTACT_API_KEY is empty")
   },
   analytics: {
-    googleTid: "G-W01VD4JFJW"
+    googleTid: "188049079"
   },
   // csp: {
   //   "default-src": ["none"],

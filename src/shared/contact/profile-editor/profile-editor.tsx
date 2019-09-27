@@ -246,8 +246,12 @@ class PersonalForm extends Component<
         <SocialNetworkForm form={form} human={human} />
 
         <SourceForm form={form} human={human} />
-
-        <DeleteContactPopover name={human.name} contactId={String(human._id)} />
+        {human._id && (
+          <DeleteContactPopover
+            name={human.name}
+            contactId={String(human._id)}
+          />
+        )}
       </>
     );
   }

@@ -1,9 +1,11 @@
 /* tslint:disable:no-any */
 import mongoose from "mongoose";
 import { MyServer } from "../start-server";
+import { Fullcontact } from "./fullcontact";
 
 export type Gateways = {
   mongoose: mongoose.Mongoose;
+  fullcontact: Fullcontact;
 };
 
 export async function setGateways(server: MyServer): Promise<void> {
@@ -24,4 +26,8 @@ export async function setGateways(server: MyServer): Promise<void> {
   }
   // @ts-ignore
   server.gateways.mongoose = mongoose;
+  server.gateways.fullcontact = new Fullcontact(
+    // @ts-ignore
+    server.config.gateways.fullContactApiKey
+  );
 }
