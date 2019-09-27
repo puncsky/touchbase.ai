@@ -1,4 +1,4 @@
-# web-onefx-boilerplate
+# guanxilab-com
 
 [![CircleCI](https://circleci.com/gh/puncsky/web-onefx-boilerplate/tree/master.svg?style=svg)](https://circleci.com/gh/puncsky/web-onefx-boilerplate/tree/master)
 
