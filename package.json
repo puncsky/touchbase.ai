@@ -168,7 +168,7 @@
     "nodemailer": "5.1.1",
     "nodemailer-mailgun-transport": "1.4.0",
     "omit-deep-lodash": "1.1.4",
-    "onefx": "1.5.2",
+    "onefx": "1.5.3",
     "process": "0.11.10",
     "react": "16.10.1",
     "react-apollo": "2.5.8",
