@@ -140,13 +140,13 @@ export class ProfileEditorForm extends Component<{
     return (
       <Form>
         <Tabs defaultActiveKey="1" tabPosition={"left"}>
-          <TabPane tab={t("profile_editor.pii")} key="1">
+          <TabPane forceRender tab={t("profile_editor.pii")} key="1">
             <PersonalForm form={form} human={human} />
           </TabPane>
-          <TabPane tab={t("profile_editor.experience")} key="2">
+          <TabPane forceRender tab={t("profile_editor.experience")} key="2">
             <ExperienceForm form={form} human={human} />
           </TabPane>
-          <TabPane tab={t("profile_editor.observation")} key="3">
+          <TabPane forceRender tab={t("profile_editor.observation")} key="3">
             <ObservationForm form={form} human={human} />
           </TabPane>
         </Tabs>
