@@ -1,6 +1,6 @@
 # GuanxiLab
 
-GuanxiLab is the easy, open source way for everyone
+GuanxiLab is the easy, open source way for everyone to smartly engage more in meaningful relationships.
 
 [![CircleCI](https://circleci.com/gh/puncsky/guanxilab/tree/master.svg?style=svg)](https://circleci.com/gh/puncsky/guanxilab/tree/master)
 
