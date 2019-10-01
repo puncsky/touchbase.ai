@@ -96,7 +96,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
   );
   server.get(
     "reset-password",
-    "/settings/reset-password",
+    "/reset-password/*",
     async (ctx: koa.Context) => {
       const token = ctx.query.token;
       const found = await server.auth.emailToken.findOne(token);
@@ -117,7 +117,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
       }
 
       const newToken = await server.auth.emailToken.newAndSave(et.userId);
-      ctx.query.next = `/settings/reset-password/?token=${encodeURIComponent(
+      ctx.query.next = `/reset-password/?token=${encodeURIComponent(
         newToken.token
       )}`;
       ctx.state.userId = et.userId;

@@ -44,7 +44,7 @@ export class IdentityApp extends Component<Props> {
             <Route exact path="/email-token/*" component={ForgotPassword} />
             <Route
               exact
-              path="/settings/reset-password"
+              path="/reset-password/*"
               component={ResetPasswordContainer}
             />
             <Route component={NotFound} />

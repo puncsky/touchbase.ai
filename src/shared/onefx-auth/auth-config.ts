@@ -44,7 +44,7 @@ export const authConfig = {
   },
   ttl: 90, // days
   loginUrl: "/login",
-  allowedLoginNext: ["/", "/settings/reset-password/"],
+  allowedLoginNext: ["/", "/reset-password/"],
   allowedLogoutNext: ["/"],
   secret,
   emailTokenTtl: 5, // mins
@@ -57,7 +57,7 @@ export const authConfig = {
     domain: "mail.guanxilab.com",
     retryLimit: 2
   },
-  emailTokenNext: "/settings/reset-password/"
+  emailTokenNext: "/reset-password/"
 };
 
 export function allowedLoginNext(next: string): string {

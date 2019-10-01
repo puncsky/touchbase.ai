@@ -23,14 +23,13 @@ export function setServerRoutes(server: MyServer): void {
     });
   });
 
+  setEmailPasswordIdentityProviderRoutes(server);
   setHumanHandlers(server);
 
   setApiGateway(server);
-  setEmailPasswordIdentityProviderRoutes(server);
 
   // @ts-ignore
   server.get("SPA", /^(?!\/?api-gateway\/).+$/, async (ctx: koa.Context) => {
-    ctx.setState("base.blah", "this is a sample initial state");
     // @ts-ignore
     ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
       VDom: <AppContainer />,
