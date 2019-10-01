@@ -4,6 +4,7 @@ import { WrappedFormUtils } from "antd/lib/form/Form";
 import Modal from "antd/lib/modal";
 import notification from "antd/lib/notification";
 import window from "global/window";
+import omitBy from "lodash.omitby";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -106,7 +107,7 @@ export const ProfileCreatorContainer = Form.create({ name: "profile-creator" })(
               // @ts-ignore
               emails: result.emails.split(",")
             };
-            actionCreateHuman(clone, history);
+            actionCreateHuman(omitBy(clone, val => !val && val !== 0), history);
 
             this.setState({ visible: false });
           });
