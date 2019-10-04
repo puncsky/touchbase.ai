@@ -4,6 +4,8 @@ GuanxiLab is the easy, open source way for everyone to smartly engage more in me
 
 [![CircleCI](https://circleci.com/gh/puncsky/guanxilab/tree/master.svg?style=svg)](https://circleci.com/gh/puncsky/guanxilab/tree/master)
 
+![guanxilab screenshot](https://res.cloudinary.com/dohtidfqh/image/upload/v1570181029/web-guiguio/guanxilab-screenshot.png)
+
 - [Documentation](https://onefx.js.org/doc.html?utm_source=github-iotex-explorer)
 - [Contributing](https://onefx.js.org/contributing.html?utm_source=github-iotex-explorer)
 
