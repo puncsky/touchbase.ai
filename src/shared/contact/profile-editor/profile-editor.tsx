@@ -15,6 +15,7 @@ import { WrappedFormUtils } from "antd/lib/form/Form";
 import Popover from "antd/lib/popover";
 import window from "global/window";
 import gql from "graphql-tag";
+import omitBy from "lodash.omitby";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
@@ -98,7 +99,7 @@ class ProfileEditorContainer extends Component<Props, State> {
       experience: (result.experience || []).filter((e: any) => e),
       education: (result.education || []).filter((e: any) => e)
     };
-    actionUpdateHuman(clone, false);
+    actionUpdateHuman(omitBy(clone, val => !val && val !== 0), false);
 
     this.close();
   }
