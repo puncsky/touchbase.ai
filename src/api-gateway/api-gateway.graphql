@@ -132,6 +132,12 @@ type Query {
 
   # is the server healthy?
   health: String!
+  fullContact(
+    email: String
+    emailHash: String
+    twitter: String
+    phone: String
+  ): String!
 }
 
 type SearchResult {
