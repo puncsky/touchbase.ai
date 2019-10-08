@@ -35,7 +35,7 @@ module.exports = {
       console.warn("FULLCONTACT_API_KEY is empty")
   },
   analytics: {
-    googleTid: "188049079"
+    googleTid: "UA-149377173-1"
   },
   // csp: {
   //   "default-src": ["none"],
