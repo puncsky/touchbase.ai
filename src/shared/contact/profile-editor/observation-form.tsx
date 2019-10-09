@@ -25,7 +25,7 @@ export function ObservationForm({
   const { getFieldDecorator } = form;
   return (
     <>
-      <Divider>Trust</Divider>
+      <Divider>{t("observation.trust.title")}</Divider>
       <Form.Item {...formItemLayout} label={t("field.inbound_trust")}>
         {getFieldDecorator("inboundTrust", {
           initialValue: human.inboundTrust,
@@ -40,7 +40,7 @@ export function ObservationForm({
         })(<Rate />)}
       </Form.Item>
 
-      <Divider>Cognitive learning styles</Divider>
+      <Divider>{t("observation.style.title")}</Divider>
 
       <Form.Item
         {...formItemLayout}
@@ -106,7 +106,7 @@ export function ObservationForm({
         )}
       </Form.Item>
 
-      <Divider>Team Dimension Profile</Divider>
+      <Divider>{t("tdp")}</Divider>
 
       <Form.Item {...formItemLayout} label={t("field.tdp")}>
         {getFieldDecorator("tdp", {

@@ -125,7 +125,7 @@ export const ProfileCreatorContainer = Form.create({ name: "profile-creator" })(
           return (
             <Modal
               style={{ top: TOP_BAR_HEIGHT }}
-              title={t("submit")}
+              title={t("auth/button_submit")}
               visible={visible}
               onOk={() => this.onOk()}
               onCancel={() => this.close()}

@@ -276,7 +276,7 @@ function Contact({
       <Col sm={6} xs={24}>
         <Flex column={true} {...SECTION}>
           <Flex width="100%">
-            <strong>Personality</strong>
+            <strong>{t("personality")}</strong>
 
             <TitleContent title="extraversionIntroversion" human={human} />
             <TitleContent title="intuitingSensing" human={human} />

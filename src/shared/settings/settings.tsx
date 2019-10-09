@@ -38,13 +38,13 @@ class SettingsInner extends Component<Props> {
           <Tabs activeKey={RESET_PW} onTabClick={this.onTabChange} type="card">
             <Tabs.TabPane key={RESET_PW} tab={t("settings.security")}>
               <TitleMargin>
-                <Title level={3}>Sessions</Title>
+                <Title level={3}>{t("settings.sessions")}</Title>
               </TitleMargin>
 
               <Button href="/logout">{t("settings.logout")}</Button>
 
               <TitleMargin>
-                <Title level={3}>Reset Password</Title>
+                <Title level={3}>{t("auth/reset_password")}</Title>
               </TitleMargin>
               <div style={{ maxWidth: "320px" }}>
                 <ResetPasswordContainer isEmbedded={true} />

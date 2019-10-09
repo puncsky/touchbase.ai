@@ -122,7 +122,7 @@ export const UpsertEventContainer = Form.create<
                     (this.getSimpleMde = getSimpleMde)
                   }
                 />
-                <Form.Item label="Make public?">
+                <Form.Item label={t("make_public")}>
                   {getFieldDecorator("public", {})(
                     <Switch
                       defaultChecked={isPublic}

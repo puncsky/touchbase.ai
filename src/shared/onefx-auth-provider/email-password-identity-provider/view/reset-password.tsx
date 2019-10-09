@@ -162,14 +162,14 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
           )}
           {(!message || this.props.isEmbedded) && (
             <FieldMargin>
-              <InputLabel>New Password</InputLabel>
+              <InputLabel>{t("auth/new-password")}</InputLabel>
               <TextInput
                 defaultValue={valueNewPassword}
                 error={errorNewPassword}
                 type="password"
                 aria-label="New Password"
                 name="newPassword"
-                placeholder="New Password"
+                placeholder={t("auth/new-password")}
               />
               <InputError>{errorNewPassword || "\u0020"}</InputError>
             </FieldMargin>

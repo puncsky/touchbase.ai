@@ -23,11 +23,14 @@ auth/user-disabled: User is banned
 auth/user-not-found: User is not found
 auth/weak-password: Please use at least 8 characters as the password
 auth/wrong-password: Password is incorrect
+auth/password: Password
+auth/new-password: New Password
 bornAddress: From
 bornAt: Birthday
 close: CLOSE
 desire: Desire
 edit_event: Edit Event
+make_public: Make public?
 education: Education
 experience: Experience
 extraversionIntroversion: Attitude
@@ -40,7 +43,7 @@ field.dateOfBirth: Date of Birth
 field.desire: Desire
 field.email: Email
 field.emails: Emails
-field.extroversion_introversion.help: Extroverts perfer external people and things and drawing energy from action. Introverts prefer their own thinking and gaining energy from reflection.
+field.extroversion_introversion.help: Extroverts prefer external people and things and drawing energy from action. Introverts prefer their own thinking and gaining energy from reflection.
 field.extroversion_introversion: Attitudes
 field.inbound_trust: Inbound
 field.intuiting_sensing.help: People who prefer sensing are more likely to trust information that is in the present, tangible, and concrete. Those who prefer intuition tend to trust information that is less dependent upon the senses.
@@ -54,11 +57,25 @@ field.tdp: TDP
 field.thinking_feeling.help: Those who prefer thinking tend to decide things from a more detached standpoint. Those who prefer feeling tend to come to decisions by associating or empathizing with the situation and the needs of the people involved.
 field.thinking_feeling: Judging
 field.working_on: Working on
+observation.trust.title: Trust
+observation.style.title: Cognitive learning styles
 home.create_account: CREATE ACCOUNT
 inbound_trust: Inbound Trust
 interactions: Interactions
+personality: Personality
 introversion: Introversion
 intuitingSensing: Perceiving
+intuiting: Intuiting
+sensing: Sensing
+thinking: Thinking
+feeling: Feeling
+planning: Planning
+perceiving: Perceiving
+creator: Creator
+refiner: Refiner
+advancer: Advancer
+executor: Executor
+flexor: Flexor
 ipq: IPQ
 knownSource: Source
 meta.description: Smartly engage more in meaningful relationships
@@ -72,6 +89,7 @@ profile.prefill: Prefill other fields
 profile_editor.experience: Experience
 profile_editor.observation: Observation
 profile_editor.pii: Personal
+profile_editor.upload: Click to Upload
 tdp: Team Dimension Profile
 thinkingFeeling: Judging
 topbar.brand: GuanxiLab
@@ -99,6 +117,7 @@ field.error.required.name: Please enter the name of the contact.
 field.error.required: This field is required.
 field.error.phone.format: Please enter a valid phone number.
 settings.manage_your_account: Manage Your Account
+settings.sessions: Sessions
 settings.security: Security
 settings.logout: Logout
 home.title: Smartly engage more in meaningful relationships
