@@ -1,4 +1,10 @@
-import { ApolloServer } from "apollo-server-koa";
+import { HttpLink } from "apollo-link-http";
+import {
+  ApolloServer,
+  introspectSchema,
+  makeRemoteExecutableSchema,
+  mergeSchemas
+} from "apollo-server-koa";
 import koa from "koa";
 import path from "path";
 import "reflect-metadata";
@@ -24,13 +30,30 @@ export async function setApiGateway(server: MyServer): Promise<void> {
   server.resolvers = resolvers;
 
   const sdlPath = path.resolve(__dirname, "api-gateway.graphql");
-  const schema = await buildSchema({
+  const localSchema = await buildSchema({
     resolvers,
     emitSchemaFile: {
       path: sdlPath,
       commentDescriptions: true
     },
     validate: false
+  });
+  const schemas = [localSchema];
+
+  if (process.env.ENABLE_GUANXI_DAILY) {
+    const remoteLink = new HttpLink({
+      uri: `https://puncsky.com/api-gateway/`,
+      fetch
+    });
+    const remoteSchema = makeRemoteExecutableSchema({
+      schema: await introspectSchema(remoteLink),
+      link: remoteLink
+    });
+    schemas.push(remoteSchema);
+  }
+
+  const schema = mergeSchemas({
+    schemas
   });
 
   const apollo = new ApolloServer({
