@@ -25,52 +25,68 @@ type Props = {
   locale: string;
 };
 
-export class App extends Component<Props> {
+type State = {
+  isScript: boolean;
+};
+
+export class App extends Component<Props, State> {
+  public state: State = {
+    isScript: false
+  };
+
   public componentDidMount(): void {
     initGoogleTagmanager({ tid: this.props.googleTid });
+    this.setState({ isScript: true });
   }
 
   public render(): JSX.Element {
+    const { isScript } = this.state;
     return (
-      <RootStyle>
-        <Head />
-        <TopBar />
-        <div style={FOOTER_ABOVE}>
-          <ScrollToTop>
-            <Switch>
-              <Route exact path="/ribao" component={Daily} />
-              <Route exact path="/page/:id+" component={ArticleFetcher} />
-              <Route
-                exact
-                path="/contacts/*"
-                component={ContactsTableContainer}
-              />
-              <Route exact path="/" component={Home} />
-              <Route exact path="/onboard/" component={Onboard} />
-              <Route
-                exact
-                path="/profile/*"
-                component={ContactDetailContainer}
-              />
-              <Route exact path="/settings/*" component={Settings} />
-              <Route
-                exact
-                path="/me/*"
-                component={() => <ContactDetailContainer isSelf={true} />}
-              />
-              <Route exact path="/note/:id" component={NoteFetcher} />
-              <Route
-                exact
-                path="/:nameDash/*"
-                component={ContactDetailContainer}
-              />
-              <Route component={NotFound} />
-            </Switch>
-          </ScrollToTop>
-        </div>
-        <Route exact path="*/create/" component={ProfileCreatorContainer} />
-        <Footer />
-      </RootStyle>
+      <React.Fragment>
+        {!isScript ? (
+          <noscript>You need to enable JavaScript to run this app.</noscript>
+        ) : (
+          <RootStyle>
+            <Head />
+            <TopBar />
+            <div style={FOOTER_ABOVE}>
+              <ScrollToTop>
+                <Switch>
+                  <Route exact path="/ribao" component={Daily} />
+                  <Route exact path="/page/:id+" component={ArticleFetcher} />
+                  <Route
+                    exact
+                    path="/contacts/*"
+                    component={ContactsTableContainer}
+                  />
+                  <Route exact path="/" component={Home} />
+                  <Route exact path="/onboard/" component={Onboard} />
+                  <Route
+                    exact
+                    path="/profile/*"
+                    component={ContactDetailContainer}
+                  />
+                  <Route exact path="/settings/*" component={Settings} />
+                  <Route
+                    exact
+                    path="/me/*"
+                    component={() => <ContactDetailContainer isSelf={true} />}
+                  />
+                  <Route exact path="/note/:id" component={NoteFetcher} />
+                  <Route
+                    exact
+                    path="/:nameDash/*"
+                    component={ContactDetailContainer}
+                  />
+                  <Route component={NotFound} />
+                </Switch>
+              </ScrollToTop>
+            </div>
+            <Route exact path="*/create/" component={ProfileCreatorContainer} />
+            <Footer />
+          </RootStyle>
+        )}
+      </React.Fragment>
     );
   }
 }
