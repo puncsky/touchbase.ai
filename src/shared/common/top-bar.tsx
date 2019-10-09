@@ -142,9 +142,7 @@ export const TopBar = connect((state: any) => ({
               )}
               <CommonMargin />
               <HiddenOnMobile>
-                {loggedIn ? (
-                  <BrandLink to={`/me/`}>{t("topbar.brand")}</BrandLink>
-                ) : (
+                {!loggedIn && (
                   <BrandText href="/">{t("topbar.brand")}</BrandText>
                 )}
               </HiddenOnMobile>
