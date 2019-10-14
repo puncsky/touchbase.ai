@@ -94,8 +94,10 @@ field.known_source: via
 field.experience: Experience
 field.education: Education
 field.jane_doe: Jane Doe
+field.phone: Phone
 field.error.required.name: Please enter the name of the contact.
 field.error.required: This field is required.
+field.error.phone.format: Please enter a valid phone number.
 settings.manage_your_account: Manage Your Account
 settings.security: Security
 settings.logout: Logout

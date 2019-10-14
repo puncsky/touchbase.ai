@@ -16,6 +16,7 @@ import { ProfileEditorForm } from "./profile-editor/profile-editor";
 
 export const EMPTY_HUMAN: TContact2 = {
   emails: [""],
+  phone: "",
   name: "",
   avatarUrl: "",
   address: "",

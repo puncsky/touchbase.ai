@@ -94,6 +94,8 @@ field.known_source: via
 field.experience: Experience
 field.education: Education
 field.jane_doe: Jane Doe
+field.phone: 手机号码
 field.error.required.name: Please enter the name of the contact.
 field.error.required: This field is required.
+field.error.phone.format: 请输入一个有效的手机号.
 topbar.search_everything: Search Contact...

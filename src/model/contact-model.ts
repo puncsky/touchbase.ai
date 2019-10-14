@@ -46,6 +46,7 @@ const ContactSchema = new Schema({
   linkedin: { type: String },
   wechat: { type: String },
   facebook: { type: String },
+  phone: { type: String },
 
   // personalities
   extraversionIntroversion: {

@@ -31,6 +31,8 @@ import { TOP_BAR_HEIGHT } from "../../common/top-bar";
 import { upload } from "../../common/upload";
 import { GET_CONTACTS } from "../../contacts/contacts-table";
 import { actionUpdateHuman } from "../human-reducer";
+import PhoneInput from "../phone-input";
+import { formatToE164 } from "../phone-input/util";
 import { ExperienceForm } from "./experience-form";
 import { ObservationForm } from "./observation-form";
 
@@ -156,6 +158,17 @@ export class ProfileEditorForm extends Component<{
   }
 }
 
+// split here to avoid tslint max-func-body-length error
+// @ts-ignore
+function phoneInputValidator(rule: any, val: any, cb: any): void {
+  if (val) {
+    const phoneNumber = formatToE164(val);
+    cb(phoneNumber.length > 3 ? undefined : t("field.error.phone.format"));
+  } else {
+    cb();
+  }
+}
+
 class PersonalForm extends Component<
   {
     human: TContact2;
@@ -195,6 +208,14 @@ class PersonalForm extends Component<
               }
             ]
           })(<Input placeholder={t("field.jane_doe")} />)}
+        </Form.Item>
+
+        <Form.Item {...formItemLayout} label={t("field.phone")}>
+          {getFieldDecorator("phone", {
+            initialValue: human.phone,
+            validateTrigger: "onBlur",
+            rules: [{ validator: phoneInputValidator }]
+          })(<PhoneInput />)}
         </Form.Item>
 
         <Form.Item {...formItemLayout} label={t("field.emails")}>

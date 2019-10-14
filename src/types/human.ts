@@ -12,6 +12,7 @@ export interface TContact2 extends TContact {
   address: string;
   bornAt: string;
   bornAddress: string;
+  phone: string;
 
   // How do we meet?
   knownAt: Date; // date
