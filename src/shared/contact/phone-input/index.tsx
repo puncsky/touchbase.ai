@@ -1,5 +1,6 @@
 import { Input, Select } from "antd";
 import React from "react";
+import Helmet from "react-helmet";
 import { connect } from "react-redux";
 import { styled } from "styletron-react";
 import countryData from "./countries.json";
@@ -9,7 +10,6 @@ import {
   getCallingCode,
   guessCountry
 } from "./util";
-import Helmet from "react-helmet";
 
 const Option = Select.Option;
 
@@ -65,7 +65,11 @@ class DialCodeSelect extends React.Component<DialCodeSelectProps> {
         >
           {(countryData as Array<Array<string>>).map(
             ([name, dialCode, flag, iso2]) => (
-              <Option title={`+${dialCode}`} value={iso2} key={iso2 + dialCode}>
+              <Option
+                title={`${name} +${dialCode}`}
+                value={iso2}
+                key={iso2 + dialCode}
+              >
                 <OptionContent className="option-content">
                   {<span>{flag}</span>}
                   <CountryName>{name}</CountryName>
@@ -85,6 +89,7 @@ interface PhoneInputProps {
   value?: string;
   onChange?(v: string): void;
   onBlur?(v: any): void;
+  style?: React.CSSProperties;
 }
 
 interface PhoneInputState {
@@ -170,6 +175,7 @@ class PhoneInput extends React.Component<PhoneInputProps, PhoneInputState> {
   render(): JSX.Element {
     return (
       <Input
+        style={this.props.style}
         value={this.state.value}
         onChange={event => {
           this.onChangeInput(event.target.value, event.target);

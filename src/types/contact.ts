@@ -4,7 +4,7 @@ export interface TContact {
 
   // Name card
   emails: Array<string>;
-  phone: string;
+  phones: Array<string>;
   name: string;
   avatarUrl: string;
   address: string;

@@ -50,6 +50,13 @@ export const formItemLayout = {
   colon: false
 };
 
+const formItemLayoutWithOutLabel = {
+  wrapperCol: {
+    xs: { span: 24, offset: 0 },
+    sm: { span: 18, offset: 6 }
+  }
+};
+
 type Props = {
   human: TContact2;
   actionUpdateHuman?(payload: any, remoteOnly: boolean): void;
@@ -158,15 +165,12 @@ export class ProfileEditorForm extends Component<{
   }
 }
 
-// split here to avoid tslint max-func-body-length error
-// @ts-ignore
-function phoneInputValidator(rule: any, val: any, cb: any): void {
-  if (val) {
-    const phoneNumber = formatToE164(val);
-    cb(phoneNumber.length > 3 ? undefined : t("field.error.phone.format"));
-  } else {
-    cb();
-  }
+// to generate unique field key for array datas
+let fieldId = 0;
+
+interface PersonalFormState {
+  avatarUrl: string;
+  phoneKeys: Array<number>;
 }
 
 class PersonalForm extends Component<
@@ -174,9 +178,79 @@ class PersonalForm extends Component<
     human: TContact2;
     form?: WrappedFormUtils;
   },
-  { avatarUrl: string }
+  PersonalFormState
 > {
-  state: { avatarUrl: string } = { avatarUrl: "" };
+  constructor(props: { human: TContact2 }) {
+    super(props);
+    this.state = {
+      avatarUrl: "",
+      phoneKeys: props.human.phones.map(() => fieldId++)
+    };
+  }
+
+  addPhoneField = () => {
+    this.setState({ phoneKeys: this.state.phoneKeys.concat(fieldId++) });
+  };
+
+  removePhoneField = (key: number) => {
+    this.setState({ phoneKeys: this.state.phoneKeys.filter(k => k !== key) });
+  };
+
+  // extract here to avoid tslint max-func-body-length
+  renderPhones(): JSX.Element | null {
+    const { form, human } = this.props;
+    if (!form) {
+      return null;
+    }
+    return (
+      <>
+        {this.state.phoneKeys.map((key, i) => (
+          <Form.Item
+            style={{ marginBottom: 4 }}
+            key={key}
+            {...(i === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+            label={i === 0 ? t("field.phone") : ""}
+          >
+            {form.getFieldDecorator(`phones[${i}]`, {
+              initialValue: human.phones[i],
+              validateTrigger: "onBlur",
+              rules: [
+                {
+                  // @ts-ignore
+                  validator(rule: any, val: any, cb: any): void {
+                    if (val && formatToE164(val).length <= 3) {
+                      cb(t("field.error.phone.format"));
+                    } else {
+                      cb();
+                    }
+                  }
+                }
+              ]
+            })(
+              <PhoneInput
+                style={
+                  this.state.phoneKeys.length > 1
+                    ? { width: "calc(100% - 40px)", marginRight: 8 }
+                    : undefined
+                }
+              />
+            )}
+            {this.state.phoneKeys.length > 1 && (
+              <Button
+                shape="circle"
+                icon="delete"
+                onClick={() => this.removePhoneField(key)}
+              />
+            )}
+          </Form.Item>
+        ))}
+
+        <Form.Item {...formItemLayoutWithOutLabel}>
+          <Button shape="circle" icon="plus" onClick={this.addPhoneField} />
+        </Form.Item>
+      </>
+    );
+  }
 
   render(): JSX.Element | null {
     const { human, form } = this.props;
@@ -210,13 +284,7 @@ class PersonalForm extends Component<
           })(<Input placeholder={t("field.jane_doe")} />)}
         </Form.Item>
 
-        <Form.Item {...formItemLayout} label={t("field.phone")}>
-          {getFieldDecorator("phone", {
-            initialValue: human.phone,
-            validateTrigger: "onBlur",
-            rules: [{ validator: phoneInputValidator }]
-          })(<PhoneInput />)}
-        </Form.Item>
+        {this.renderPhones()}
 
         <Form.Item {...formItemLayout} label={t("field.emails")}>
           {getFieldDecorator("emails", {

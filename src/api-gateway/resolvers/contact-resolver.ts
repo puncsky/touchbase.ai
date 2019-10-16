@@ -37,7 +37,7 @@ class CreateContactInput implements TContact2 {
   @Field(_ => String, { nullable: true })
   public name: string;
   @Field(_ => String, { nullable: true })
-  public phone: string;
+  public phones: Array<string>;
   @Field(_ => String, { nullable: true })
   public avatarUrl: string;
   @Field(_ => String, { nullable: true })
@@ -100,7 +100,7 @@ class UpdateContactInput implements TContact2 {
   @Field(_ => String, { nullable: true })
   public name: string;
   @Field(_ => String, { nullable: true })
-  public phone: string;
+  public phones: Array<string>;
   @Field(_ => String, { nullable: true })
   public avatarUrl: string;
   @Field(_ => String, { nullable: true })
@@ -164,7 +164,7 @@ class Contact implements TContact2 {
   @Field(_ => String, { nullable: true })
   public name: string;
   @Field(_ => String, { nullable: true })
-  public phone: string;
+  public phones: Array<string>;
   @Field(_ => String, { nullable: true })
   public avatarUrl: string;
   @Field(_ => String, { nullable: true })
