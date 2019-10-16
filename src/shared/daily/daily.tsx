@@ -1,6 +1,9 @@
+import { Card } from "antd";
 import gql from "graphql-tag";
 import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
+import { CommonMargin } from "../common/common-margin";
+import { Flex } from "../common/flex";
 import { Preloader } from "../common/preloader";
 import { ContentPadding } from "../common/styles/style-padding";
 
@@ -44,12 +47,26 @@ export class Daily extends Component {
             data,
             error,
             loading
-          }: QueryResult<{ gxArticles: GxArticle }>) => {
+          }: QueryResult<{ gxArticles: Array<GxArticle> }>) => {
             if (loading || error || !data) {
               return <Preloader />;
             }
 
-            return <>{JSON.stringify(data.gxArticles, null, 2)}</>;
+            return (
+              <Flex center={true} column={true}>
+                {data.gxArticles.map((a: GxArticle, i: number) => {
+                  return (
+                    <>
+                      <CommonMargin />
+                      <Card key={i} style={{ maxWidth: "600px" }}>
+                        <h2>{a.title}</h2>
+                        <p>{a.content}</p>
+                      </Card>
+                    </>
+                  );
+                })}
+              </Flex>
+            );
           }}
         </Query>
       </ContentPadding>
