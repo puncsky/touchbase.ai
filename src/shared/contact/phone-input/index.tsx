@@ -9,6 +9,7 @@ import {
   getCallingCode,
   guessCountry
 } from "./util";
+import Helmet from "react-helmet";
 
 const Option = Select.Option;
 
@@ -25,7 +26,8 @@ const CountryName = styled("span", {
 });
 
 const DropdownWrap = styled("div", {
-  width: "301px"
+  width: "301px",
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)"
 });
 
 interface DialCodeSelectProps {
@@ -37,29 +39,43 @@ class DialCodeSelect extends React.Component<DialCodeSelectProps> {
   state: { open: boolean } = { open: false };
   render(): JSX.Element {
     return (
-      <Select
-        value={this.props.iso2}
-        onChange={this.props.onChange}
-        onDropdownVisibleChange={open => this.setState({ open })}
-        dropdownRender={menu => <DropdownWrap>{menu}</DropdownWrap>}
-        dropdownMenuStyle={{ padding: 0, background: "white" }}
-      >
-        {(countryData as Array<Array<string>>).map(
-          ([name, dialCode, flag, iso2]) => (
-            <Option value={iso2} key={iso2 + dialCode}>
-              <OptionContent>
-                {<span>{flag}</span>}
-                {this.state.open && iso2 !== this.props.iso2 && (
-                  <>
-                    <CountryName>{name}</CountryName>
-                    (+{dialCode})
-                  </>
-                )}
-              </OptionContent>
-            </Option>
-          )
-        )}
-      </Select>
+      <>
+        <Helmet>
+          <style>
+            {`
+          .ant-select-selection-selected-value .option-content * {
+            display: none;
+          }
+          .ant-select-selection-selected-value .option-content > :first-child {
+            display: initial;
+          }
+          `}
+          </style>
+        </Helmet>
+        <Select
+          style={{ minWidth: 64 }}
+          value={this.props.iso2}
+          onChange={this.props.onChange}
+          onDropdownVisibleChange={open => this.setState({ open })}
+          dropdownRender={menu => <DropdownWrap>{menu}</DropdownWrap>}
+          dropdownMenuStyle={{ padding: 0, background: "white" }}
+          showSearch
+          filterOption
+          optionFilterProp="title"
+        >
+          {(countryData as Array<Array<string>>).map(
+            ([name, dialCode, flag, iso2]) => (
+              <Option title={`+${dialCode}`} value={iso2} key={iso2 + dialCode}>
+                <OptionContent className="option-content">
+                  {<span>{flag}</span>}
+                  <CountryName>{name}</CountryName>
+                  <span>(+{dialCode})</span>
+                </OptionContent>
+              </Option>
+            )
+          )}
+        </Select>
+      </>
     );
   }
 }
@@ -127,9 +143,12 @@ class PhoneInput extends React.Component<PhoneInputProps, PhoneInputState> {
     const countryInfo = guessCountry(formatVal);
 
     if (countryInfo.iso2) {
-      const newValue = formatNumber(
-        formatVal.replace(countryInfo.callingCode, newCallingCode)
+      const newFormatVal = formatVal.replace(
+        countryInfo.callingCode,
+        newCallingCode
       );
+      const newCountryInfo = guessCountry(newFormatVal);
+      const newValue = formatNumber(newFormatVal, newCountryInfo.format);
       this.setState({
         value: newValue,
         iso2: newIso2
