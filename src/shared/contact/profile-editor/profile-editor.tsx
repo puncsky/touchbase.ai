@@ -33,6 +33,7 @@ import { GET_CONTACTS } from "../../contacts/contacts-table";
 import { actionUpdateHuman } from "../human-reducer";
 import PhoneInput from "../phone-input";
 import { formatToE164 } from "../phone-input/util";
+import DynamicFormItems from "./dynamic-form-items";
 import { ExperienceForm } from "./experience-form";
 import { ObservationForm } from "./observation-form";
 
@@ -48,13 +49,6 @@ export const formItemLayout = {
     sm: { span: 18 }
   },
   colon: false
-};
-
-const formItemLayoutWithOutLabel = {
-  wrapperCol: {
-    xs: { span: 24, offset: 0 },
-    sm: { span: 18, offset: 6 }
-  }
 };
 
 type Props = {
@@ -165,12 +159,8 @@ export class ProfileEditorForm extends Component<{
   }
 }
 
-// to generate unique field key for array datas
-let fieldId = 0;
-
 interface PersonalFormState {
   avatarUrl: string;
-  phoneKeys: Array<number>;
 }
 
 class PersonalForm extends Component<
@@ -180,75 +170,33 @@ class PersonalForm extends Component<
   },
   PersonalFormState
 > {
-  constructor(props: { human: TContact2 }) {
-    super(props);
-    this.state = {
-      avatarUrl: "",
-      phoneKeys: props.human.phones.map(() => fieldId++)
-    };
-  }
+  state: PersonalFormState = { avatarUrl: "" };
 
-  addPhoneField = () => {
-    this.setState({ phoneKeys: this.state.phoneKeys.concat(fieldId++) });
-  };
-
-  removePhoneField = (key: number) => {
-    this.setState({ phoneKeys: this.state.phoneKeys.filter(k => k !== key) });
-  };
-
-  // extract here to avoid tslint max-func-body-length
-  renderPhones(): JSX.Element | null {
-    const { form, human } = this.props;
-    if (!form) {
-      return null;
-    }
+  renderPhoneNumbers(): JSX.Element | null {
+    const { human, form } = this.props;
     return (
-      <>
-        {this.state.phoneKeys.map((key, i) => (
-          <Form.Item
-            style={{ marginBottom: 4 }}
-            key={key}
-            {...(i === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-            label={i === 0 ? t("field.phone") : ""}
-          >
-            {form.getFieldDecorator(`phones[${i}]`, {
-              initialValue: human.phones[i],
-              validateTrigger: "onBlur",
-              rules: [
-                {
-                  // @ts-ignore
-                  validator(rule: any, val: any, cb: any): void {
-                    if (val && formatToE164(val).length <= 3) {
-                      cb(t("field.error.phone.format"));
-                    } else {
-                      cb();
-                    }
+      <DynamicFormItems
+        itemSize={human.phones.length}
+        label={t("field.phone")}
+        renderItem={(key, i) =>
+          (form as WrappedFormUtils).getFieldDecorator(`phones[${i}]`, {
+            initialValue: human.phones[key],
+            validateTrigger: "onBlur",
+            rules: [
+              {
+                // @ts-ignore
+                validator(rule: any, val: any, cb: any): void {
+                  if (val && formatToE164(val).length <= 3) {
+                    cb(t("field.error.phone.format"));
+                  } else {
+                    cb();
                   }
                 }
-              ]
-            })(
-              <PhoneInput
-                style={
-                  this.state.phoneKeys.length > 1
-                    ? { width: "calc(100% - 40px)", marginRight: 8 }
-                    : undefined
-                }
-              />
-            )}
-            {this.state.phoneKeys.length > 1 && (
-              <Button
-                shape="circle"
-                icon="delete"
-                onClick={() => this.removePhoneField(key)}
-              />
-            )}
-          </Form.Item>
-        ))}
-
-        <Form.Item {...formItemLayoutWithOutLabel}>
-          <Button shape="circle" icon="plus" onClick={this.addPhoneField} />
-        </Form.Item>
-      </>
+              }
+            ]
+          })(<PhoneInput />)
+        }
+      />
     );
   }
 
@@ -284,7 +232,7 @@ class PersonalForm extends Component<
           })(<Input placeholder={t("field.jane_doe")} />)}
         </Form.Item>
 
-        {this.renderPhones()}
+        {this.renderPhoneNumbers()}
 
         <Form.Item {...formItemLayout} label={t("field.emails")}>
           {getFieldDecorator("emails", {

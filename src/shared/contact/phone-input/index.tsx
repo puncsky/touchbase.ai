@@ -180,7 +180,13 @@ class PhoneInput extends React.Component<PhoneInputProps, PhoneInputState> {
         onChange={event => {
           this.onChangeInput(event.target.value, event.target);
         }}
-        onBlur={this.props.onBlur}
+        onBlur={({ target }) => {
+          if (this.props.onBlur) {
+            this.props.onBlur({
+              target: { value: formatToE164(target.value) }
+            });
+          }
+        }}
         addonBefore={
           <DialCodeSelect
             iso2={this.state.iso2}
