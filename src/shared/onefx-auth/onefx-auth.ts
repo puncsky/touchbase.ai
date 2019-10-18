@@ -2,6 +2,7 @@ import koa from "koa";
 import { Server } from "onefx";
 import { logger } from "onefx/lib/integrated-gateways/logger";
 import { MyServer } from "../../server/start-server";
+import { MyContext } from "../../types/global";
 import {
   allowedLoginNext,
   allowedLogoutNext,
@@ -62,7 +63,7 @@ export class OnefxAuth {
     });
   }
 
-  public authRequired = async (ctx: koa.Context, next: Function) => {
+  public authRequired = async (ctx: MyContext, next: Function) => {
     await this.authOptionalContinue(ctx, () => undefined);
     const userId = ctx.state.userId;
     if (!userId) {
@@ -76,7 +77,7 @@ export class OnefxAuth {
     await next();
   };
 
-  public authOptionalContinue = async (ctx: koa.Context, next: Function) => {
+  public authOptionalContinue = async (ctx: MyContext, next: Function) => {
     const token = this.tokenFromCtx(ctx);
     if (!token) {
       return next();
@@ -87,7 +88,7 @@ export class OnefxAuth {
     await next();
   };
 
-  public logout = async (ctx: koa.Context, _: Function) => {
+  public logout = async (ctx: MyContext, _: Function) => {
     ctx.cookies.set(this.config.cookieName, "", this.config.cookieOpts);
     const token = this.tokenFromCtx(ctx);
     if (token) {
@@ -96,7 +97,7 @@ export class OnefxAuth {
     ctx.redirect(allowedLogoutNext(ctx.query.next));
   };
 
-  public postAuthentication = async (ctx: koa.Context, _: Function) => {
+  public postAuthentication = async (ctx: MyContext, _: Function) => {
     if (!ctx.state.userId) {
       return;
     }

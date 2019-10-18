@@ -2,6 +2,7 @@
 // $FlowFixMe
 import { message } from "antd";
 import axios from "axios";
+// @ts-ignore
 import window from "global/window";
 import { t } from "onefx/lib/iso-i18n";
 

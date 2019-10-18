@@ -4,6 +4,7 @@ import { Switch } from "react-router";
 import { Route } from "react-router-dom";
 import { ArticleFetcher } from "./article/article-fetcher";
 import { Footer, FOOTER_ABOVE } from "./common/footer";
+// @ts-ignore
 import initGoogleTagmanager from "./common/google-analytics";
 import { Head } from "./common/head";
 import { NotFound } from "./common/not-found";

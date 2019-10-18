@@ -1,4 +1,5 @@
 /* tslint:disable:react-a11y-input-elements */
+// @ts-ignore
 import window from "global/window";
 import { t } from "onefx/lib/iso-i18n";
 import Helmet from "onefx/lib/react-helmet";

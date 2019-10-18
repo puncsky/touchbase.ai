@@ -13,8 +13,10 @@ import {
 } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import Popover from "antd/lib/popover";
+// @ts-ignore
 import window from "global/window";
 import gql from "graphql-tag";
+// @ts-ignore
 import omitBy from "lodash.omitby";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
@@ -65,7 +67,7 @@ type State = { visible: boolean };
 @connect(
   () => ({}),
   (dispatch: any) => ({
-    actionUpdateHuman: (payload, remoteOnly) =>
+    actionUpdateHuman: (payload: any, remoteOnly: boolean) =>
       dispatch(actionUpdateHuman(payload, remoteOnly))
   })
 )
@@ -99,7 +101,7 @@ class ProfileEditorContainer extends Component<Props, State> {
       experience: (result.experience || []).filter((e: any) => e),
       education: (result.education || []).filter((e: any) => e)
     };
-    actionUpdateHuman(omitBy(clone, val => !val && val !== 0), false);
+    actionUpdateHuman(omitBy(clone, (val: any) => !val && val !== 0), false);
 
     this.close();
   }

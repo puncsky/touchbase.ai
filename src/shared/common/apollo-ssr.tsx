@@ -2,7 +2,6 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import fetch from "isomorphic-unfetch";
-import koa from "koa";
 import { initAssetURL } from "onefx/lib/asset-url";
 import { logger } from "onefx/lib/integrated-gateways/logger";
 import { configureStore } from "onefx/lib/iso-react-render/root/configure-store";
@@ -13,6 +12,7 @@ import { ApolloProvider } from "react-apollo";
 import { getDataFromTree } from "react-apollo";
 // @ts-ignore
 import * as engine from "styletron-engine-atomic";
+import { MyContext } from "../../types/global";
 
 type Opts = {
   VDom: JSX.Element;
@@ -21,7 +21,7 @@ type Opts = {
 };
 
 export async function apolloSSR(
-  ctx: koa.Context,
+  ctx: MyContext,
   uri: string,
   { VDom, reducer, clientScript }: Opts
 ): Promise<string> {

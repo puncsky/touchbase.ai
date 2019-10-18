@@ -3,7 +3,9 @@ import Form from "antd/lib/form/Form";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import Modal from "antd/lib/modal";
 import notification from "antd/lib/notification";
+// @ts-ignore
 import window from "global/window";
+// @ts-ignore
 import omitBy from "lodash.omitby";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
@@ -65,7 +67,7 @@ export const ProfileCreatorContainer = Form.create({ name: "profile-creator" })(
     connect(
       () => ({ human: EMPTY_HUMAN }),
       (dispatch: any) => ({
-        actionCreateHuman: (payload, history) =>
+        actionCreateHuman: (payload: any, history: any) =>
           dispatch(actionCreateHuman(payload, history))
       })
     )(
@@ -107,7 +109,10 @@ export const ProfileCreatorContainer = Form.create({ name: "profile-creator" })(
               // @ts-ignore
               emails: result.emails.split(",")
             };
-            actionCreateHuman(omitBy(clone, val => !val && val !== 0), history);
+            actionCreateHuman(
+              omitBy(clone, (val: any) => !val && val !== 0),
+              history
+            );
 
             this.setState({ visible: false });
           });

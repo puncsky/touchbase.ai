@@ -4,6 +4,7 @@ import Icon from "antd/lib/icon";
 import Row from "antd/lib/row";
 import dateFormat from "dateformat";
 import gql from "graphql-tag";
+// @ts-ignore
 import omitDeep from "omit-deep-lodash";
 import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
@@ -12,8 +13,9 @@ import { Query, QueryResult } from "react-apollo";
 import { connect } from "react-redux";
 import { match, Route, RouteComponentProps, RouterProps } from "react-router";
 import { Link, withRouter } from "react-router-dom";
+// @ts-ignore
 import ReactTooltip from "react-tooltip";
-import { TContact2, TInteraction } from "../../types/human";
+import { TContact2, TExperience, TInteraction } from "../../types/human";
 import { BOX_SHADOW, LINE } from "../common/box-shadow";
 import { CommonMargin } from "../common/common-margin";
 import { Flex } from "../common/flex";
@@ -114,7 +116,9 @@ export const ContactDetailContainer = withRouter<IProps>(
         return (
           this.props.match.params.nameDash !==
             nextProps.match.params.nameDash ||
+          // @ts-ignore
           (this.props.match.params[0].startsWith("edit") ||
+            // @ts-ignore
             nextProps.match.params[0].startsWith("edit"))
         );
       }
@@ -310,7 +314,7 @@ function TitleContent({ title, human }: any): JSX.Element | null {
       </div>
       <div>
         {Array.isArray(human[title]) ? (
-          human[title].map((h, i) => (
+          human[title].map((h: TExperience, i: number) => (
             <div
               key={i}
               style={{ marginLeft: "16px", textTransform: "capitalize" }}

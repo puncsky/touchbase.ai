@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 import React from "react";
 import { Query, QueryResult } from "react-apollo";
+// @ts-ignore
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Preloader } from "../common/preloader";
 
@@ -48,13 +49,13 @@ export function HeatmapCalendar({ isSelf, contactId }: Props): JSX.Element {
                 endDate={today}
                 values={data.interactionCounts}
                 gutterSize={2}
-                classForValue={value => {
+                classForValue={(value: { count: number; date: string }) => {
                   if (!value) {
                     return "color-empty";
                   }
                   return `color-github-${value.count}`;
                 }}
-                tooltipDataAttrs={value => {
+                tooltipDataAttrs={(value: { count: number; date: string }) => {
                   if (!value || !value.date) {
                     return null;
                   }

@@ -1,7 +1,7 @@
-import koa from "koa";
+import { MyContext } from "../../types/global";
 
 export async function humanValidator(
-  ctx: koa.Context,
+  ctx: MyContext,
   next: Function
 ): Promise<void> {
   ctx.request.body = {

@@ -1,8 +1,8 @@
-import koa = require("koa");
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import React from "react";
 import { combineReducers } from "redux";
 import { MyServer } from "../../server/start-server";
+import { MyContext } from "../../types/global";
 import { AppContainer } from "../app-container";
 import { apolloSSR } from "../common/apollo-ssr";
 import { humansReducer } from "../contacts/humans-reducer";
@@ -11,7 +11,7 @@ import { EMPTY_HUMAN } from "./profile-creator";
 
 // tslint:disable-next-line:max-func-body-length
 export function setHumanHandlers(server: MyServer): void {
-  server.get("/onboard/", server.auth.authRequired, async ctx => {
+  server.get("/onboard/", server.auth.authRequired, async (ctx: MyContext) => {
     // @ts-ignore
     ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
       VDom: <AppContainer />,
@@ -30,7 +30,7 @@ export function setHumanHandlers(server: MyServer): void {
     "home",
     "/",
     server.auth.authOptionalContinue,
-    async (ctx, next) => {
+    async (ctx: MyContext, next) => {
       if (!ctx.state.userId) {
         return next();
       }
@@ -54,27 +54,32 @@ export function setHumanHandlers(server: MyServer): void {
       ctx.redirect(`/${selfProfile._id}/`);
     }
   );
-  server.get("contacts", "/contacts/*", server.auth.authRequired, async ctx => {
-    ctx.setState("base.userId", ctx.state.userId);
-    // @ts-ignore
-    ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
-      VDom: <AppContainer />,
-      reducer: combineReducers({
-        base: noopReducer,
-        human: humanReducer,
-        humans: humansReducer,
-        interactions: interactionsReducer,
-        apolloState: noopReducer
-      }),
-      clientScript: "/main.js"
-    });
-  });
+  server.get(
+    "contacts",
+    "/contacts/*",
+    server.auth.authRequired,
+    async (ctx: MyContext) => {
+      ctx.setState("base.userId", ctx.state.userId);
+      // @ts-ignore
+      ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
+        VDom: <AppContainer />,
+        reducer: combineReducers({
+          base: noopReducer,
+          human: humanReducer,
+          humans: humansReducer,
+          interactions: interactionsReducer,
+          apolloState: noopReducer
+        }),
+        clientScript: "/main.js"
+      });
+    }
+  );
   server.get(
     "profile",
     // @ts-ignore
     /^(?!\/?api-gateway\/)\/.+\/$/,
     server.auth.authRequired,
-    async (ctx: koa.Context) => {
+    async (ctx: MyContext) => {
       const nameDot = ctx.path.split("/")[1].toLowerCase();
       const user = await server.auth.user.getById(ctx.state.userId);
       const name = nameDot.replace(/-/g, " ").replace(/\./g, " ");

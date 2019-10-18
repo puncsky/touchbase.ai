@@ -2,6 +2,7 @@
 import axios from "axios";
 import gql from "graphql-tag";
 import isBrowser from "is-browser";
+// @ts-ignore
 import JsonGlobal from "safe-json-globals/get";
 import { TContact2 } from "../../types/human";
 import { apolloClient } from "../common/apollo-client";

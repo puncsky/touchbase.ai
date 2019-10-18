@@ -1,18 +1,18 @@
-import koa from "koa";
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import * as React from "react";
 import { combineReducers } from "redux";
 import validator from "validator";
 import { MyServer } from "../../../server/start-server";
+import { MyContext } from "../../../types/global";
 import { TUser } from "../../onefx-auth/model/user-model";
 import { IdentityAppContainer } from "./view/identity-app-container";
 
 const PASSWORD_MIN_LENGTH = 8;
 
-type Handler = (ctx: koa.Context, next: Function) => Promise<{}>;
+type Handler = MyContext;
 
 export function emailValidator(): Handler {
-  return async (ctx: koa.Context, next: Function) => {
+  return async (ctx: MyContext, next: Function) => {
     let { email } = ctx.request.body;
     email = String(email).toLowerCase();
     email = validator.trim(email);
@@ -32,7 +32,7 @@ export function emailValidator(): Handler {
 }
 
 export function passwordValidator(): Handler {
-  return async (ctx: koa.Context, next: Function) => {
+  return async (ctx: MyContext, next: Function) => {
     let { password } = ctx.request.body;
     password = String(password);
     if (password.length < PASSWORD_MIN_LENGTH) {
@@ -50,7 +50,7 @@ export function passwordValidator(): Handler {
   };
 }
 
-function isMobileWebView(ctx: koa.Context): boolean {
+function isMobileWebView(ctx: MyContext): boolean {
   const isMobile =
     ctx.headers["x-app-id"] === "mobile-rebinder" ||
     ctx.session.isMobileWebView;
@@ -67,7 +67,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "login",
     "/login",
     // server.auth.authOptionalContinue,
-    async (ctx: koa.Context, _: Function) => {
+    async (ctx: MyContext, _: Function) => {
       ctx.setState("base.next", ctx.query.next);
       ctx.setState("base.userId", ctx.state.userId);
       ctx.setState("base.isMobileWebView", isMobileWebView(ctx));
@@ -78,7 +78,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "sign-up",
     "/sign-up",
     // server.auth.authOptionalContinue,
-    async (ctx: koa.Context, _: Function) => {
+    async (ctx: MyContext, _: Function) => {
       ctx.setState("base.next", ctx.query.next);
       ctx.setState("base.userId", ctx.state.userId);
       return isoRender(ctx);
@@ -88,27 +88,23 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "forgot-password",
     "/forgot-password",
     // server.auth.authOptionalContinue,
-    async (ctx: koa.Context, _: Function) => {
+    async (ctx: MyContext, _: Function) => {
       ctx.setState("base.next", ctx.query.next);
       ctx.setState("base.userId", ctx.state.userId);
       return isoRender(ctx);
     }
   );
-  server.get(
-    "reset-password",
-    "/reset-password/*",
-    async (ctx: koa.Context) => {
-      const token = ctx.query.token;
-      const found = await server.auth.emailToken.findOne(token);
-      ctx.setState("base.token", found && found.token);
-      return isoRender(ctx);
-    }
-  );
+  server.get("reset-password", "/reset-password/*", async (ctx: MyContext) => {
+    const token = ctx.query.token;
+    const found = await server.auth.emailToken.findOne(token);
+    ctx.setState("base.token", found && found.token);
+    return isoRender(ctx);
+  });
   server.get("logout", "/logout", server.auth.logout);
   server.get(
     "email-token",
     "/email-token/:token",
-    async (ctx: koa.Context, next: Function) => {
+    async (ctx: MyContext, next: Function) => {
       const et = await server.auth.emailToken.findOneAndDelete(
         ctx.params.token
       );
@@ -132,7 +128,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "/api/sign-up/",
     emailValidator(),
     passwordValidator(),
-    async (ctx: koa.Context, next: Function) => {
+    async (ctx: MyContext, next: Function) => {
       const { email, password } = ctx.request.body;
       try {
         const user: TUser = await server.auth.user.newAndSave({
@@ -162,7 +158,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "api-sign-in",
     "/api/sign-in/",
     emailValidator(),
-    async (ctx: koa.Context, next: Function) => {
+    async (ctx: MyContext, next: Function) => {
       const { email, password } = ctx.request.body;
       const user = await server.auth.user.getByMail(email);
       if (!user) {
@@ -209,7 +205,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "api-forgot-password",
     "/api/forgot-password/",
     emailValidator(),
-    async (ctx: koa.Context) => {
+    async (ctx: MyContext) => {
       const { email } = ctx.request.body;
 
       const user = await server.auth.user.getByMail(email);
@@ -227,7 +223,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "reset-password",
     "/api/reset-password/",
     server.auth.authRequired,
-    async (ctx: koa.Context) => {
+    async (ctx: MyContext) => {
       const { token, password, newPassword } = ctx.request.body;
       if (token) {
         const verified = Boolean(await server.auth.emailToken.findOne(token));
@@ -273,7 +269,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
   );
 }
 
-function isoRender(ctx: koa.Context): void {
+function isoRender(ctx: MyContext): void {
   ctx.body = ctx.isoReactRender({
     VDom: <IdentityAppContainer />,
     reducer: combineReducers({

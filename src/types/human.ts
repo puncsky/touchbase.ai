@@ -2,6 +2,11 @@
 
 import { TContact } from "./contact";
 
+export type TExperience = {
+  title: string;
+  name: string;
+};
+
 export interface TContact2 extends TContact {
   _id?: string;
 
@@ -36,18 +41,8 @@ export interface TContact2 extends TContact {
   desire: string;
   // experiences
   title: string;
-  experience: [
-    {
-      title: string;
-      name: string;
-    }
-  ];
-  education: [
-    {
-      title: string;
-      name: string;
-    }
-  ];
+  experience: [TExperience];
+  education: [TExperience];
 
   // social
   linkedin: string;

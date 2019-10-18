@@ -73,5 +73,9 @@ export async function setApiGateway(server: MyServer): Promise<void> {
     }
   });
   const gPath = "/api-gateway/";
-  apollo.applyMiddleware({ app: server.app, path: gPath });
+  apollo.applyMiddleware({
+    // @ts-ignore
+    app: server.app,
+    path: gPath
+  });
 }

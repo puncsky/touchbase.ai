@@ -1,7 +1,7 @@
-import koa from "koa";
 import { Server } from "onefx";
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import React from "react";
+import { MyContext } from "../../types/global";
 import { apolloSSR } from "../common/apollo-ssr";
 import { ProfileAppContainer } from "./profile-app";
 
@@ -10,7 +10,7 @@ export function setProfileHandler(server: Server): void {
     "/profile/*",
     // @ts-ignore
     server.auth.authRequired,
-    async (ctx: koa.Context, _: Function) => {
+    async (ctx: MyContext, _: Function) => {
       ctx.setState("base.userId", ctx.state.userId);
       // @ts-ignore
       ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {

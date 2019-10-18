@@ -1,6 +1,7 @@
 import { AgGridReact } from "ag-grid-react";
 import gql from "graphql-tag";
 import isBrowser = require("is-browser");
+// @ts-ignore
 import omitDeep from "omit-deep-lodash";
 import { assetURL } from "onefx/lib/asset-url";
 import React, { Component } from "react";
@@ -101,7 +102,7 @@ const columnDefs = [
     field: "name",
     headerName: "Name",
     checkboxSelection: true,
-    cellRenderer: ({ value, data }) =>
+    cellRenderer: ({ value, data }: { value: string; data: { _id: string } }) =>
       `<span><a class=${PUSH_LINK_CLS} style="color: ${
         colors.primary
       };" href=${`"/${data._id}/"`}/>${value}</span>`
@@ -120,7 +121,7 @@ const columnDefs = [
   { field: "educationName", headerName: "Education" }
 ].map(c => ({ ...c, ...defaultColumnProperties }));
 
-const rowFromHuman = h => ({
+const rowFromHuman = (h: TContact2) => ({
   ...h,
   experienceTitle: h.experience[0] && h.experience[0].title,
   experienceName: h.experience[0] && h.experience[0].name,
@@ -195,7 +196,7 @@ export const ContactsTableContainer = withRouter(
         const els = document.getElementsByClassName(PUSH_LINK_CLS) || [];
         // @ts-ignore
         for (const el of els) {
-          el.addEventListener("click", e => {
+          el.addEventListener("click", (e: Event) => {
             e.preventDefault();
             this.props.history.push(el.getAttribute("href"));
           });
