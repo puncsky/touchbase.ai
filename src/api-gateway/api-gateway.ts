@@ -16,6 +16,7 @@ import { ArticleResolver } from "../shared/article/article-resolver";
 import { OnefxAuth } from "../shared/onefx-auth";
 import { ContactResolver } from "./resolvers/contact-resolver";
 import { MetaResolver } from "./resolvers/meta-resolver";
+import { logger } from "onefx/lib/integrated-gateways/logger";
 
 export type Context = {
   model: Model;
@@ -41,15 +42,19 @@ export async function setApiGateway(server: MyServer): Promise<void> {
   const schemas = [localSchema];
 
   if (process.env.ENABLE_GUANXI_DAILY) {
-    const remoteLink = new HttpLink({
-      uri: `https://puncsky.com/api-gateway/`,
-      fetch
-    });
-    const remoteSchema = makeRemoteExecutableSchema({
-      schema: await introspectSchema(remoteLink),
-      link: remoteLink
-    });
-    schemas.push(remoteSchema);
+    try {
+      const remoteLink = new HttpLink({
+        uri: `https://tianpan.co/api-gateway/`,
+        fetch
+      });
+      const remoteSchema = makeRemoteExecutableSchema({
+        schema: await introspectSchema(remoteLink),
+        link: remoteLink
+      });
+      schemas.push(remoteSchema);
+    } catch (err) {
+      logger.error(`failed to link external tianpan.co api`);
+    }
   }
 
   const schema = mergeSchemas({
