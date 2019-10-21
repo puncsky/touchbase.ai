@@ -251,7 +251,7 @@ class UpsertInteraction implements TInteraction {
   public content: string;
   @Field(_ => [String])
   public relatedHumans: Array<string>;
-  @Field(_ => Boolean)
+  @Field(_ => Boolean, { nullable: true })
   public public: boolean;
 }
 

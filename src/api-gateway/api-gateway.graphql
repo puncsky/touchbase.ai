@@ -179,5 +179,5 @@ input UpsertInteraction {
   timestamp: DateTime!
   content: String!
   relatedHumans: [String!]!
-  public: Boolean!
+  public: Boolean
 }
