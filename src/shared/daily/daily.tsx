@@ -2,6 +2,7 @@ import { Card } from "antd";
 import gql from "graphql-tag";
 import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
+import { Link } from "react-router-dom";
 import { CommonMargin } from "../common/common-margin";
 import { Flex } from "../common/flex";
 import { Preloader } from "../common/preloader";
@@ -10,9 +11,10 @@ import { ContentPadding } from "../common/styles/style-padding";
 const query = gql`
   query gxArticles($skip: Int, $limit: Int) {
     gxArticles(skip: $skip, limit: $limit) {
+      id
       url
       title
-      content
+      short
       forwardedFor
       date
       visitorCount
@@ -24,6 +26,7 @@ const query = gql`
 `;
 
 type GxArticle = {
+  id: string;
   title: string;
   date: string;
   tags: Array<string>;
@@ -59,8 +62,10 @@ export class Daily extends Component {
                     <>
                       <CommonMargin />
                       <Card key={i} style={{ maxWidth: "600px" }}>
-                        <h2>{a.title}</h2>
-                        <p>{a.content}</p>
+                        <h2>
+                          <Link to={`/ribao/${a.id}`}>{a.title}</Link>
+                        </h2>
+                        <p>{a.short}</p>
                       </Card>
                     </>
                   );

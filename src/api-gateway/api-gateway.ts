@@ -6,6 +6,7 @@ import {
   mergeSchemas
 } from "apollo-server-koa";
 import koa from "koa";
+import { logger } from "onefx/lib/integrated-gateways/logger";
 import path from "path";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
@@ -16,7 +17,6 @@ import { ArticleResolver } from "../shared/article/article-resolver";
 import { OnefxAuth } from "../shared/onefx-auth";
 import { ContactResolver } from "./resolvers/contact-resolver";
 import { MetaResolver } from "./resolvers/meta-resolver";
-import { logger } from "onefx/lib/integrated-gateways/logger";
 
 export type Context = {
   model: Model;
@@ -44,7 +44,7 @@ export async function setApiGateway(server: MyServer): Promise<void> {
   if (process.env.ENABLE_GUANXI_DAILY) {
     try {
       const remoteLink = new HttpLink({
-        uri: `https://tianpan.co/api-gateway/`,
+        uri: `http://localhost:4000/api-gateway/`,
         fetch
       });
       const remoteSchema = makeRemoteExecutableSchema({
