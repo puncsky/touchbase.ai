@@ -68,6 +68,7 @@ export const GET_CONTACT = gql`
       _id
       emails
       name
+      phones
       avatarUrl
       address
       bornAt

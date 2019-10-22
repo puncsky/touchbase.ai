@@ -18,6 +18,7 @@ import { ProfileEditorForm } from "./profile-editor/profile-editor";
 
 export const EMPTY_HUMAN: TContact2 = {
   emails: [""],
+  phones: [""],
   name: "",
   avatarUrl: "",
   address: "",
@@ -128,6 +129,7 @@ export const ProfileCreatorContainer = Form.create({ name: "profile-creator" })(
               visible={visible}
               onOk={() => this.onOk()}
               onCancel={() => this.close()}
+              width={600}
             >
               <ProfileEditorForm human={human} form={form} />
             </Modal>

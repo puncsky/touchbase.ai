@@ -19,6 +19,7 @@ type Contact {
   _id: String!
   emails: [String!]
   name: String
+  phones: [String!]
   avatarUrl: String
   address: String
   bornAt: DateTime
@@ -48,6 +49,7 @@ input CreateContactInput {
   _id: String
   emails: [String!]
   name: String
+  phones: [String!]
   avatarUrl: String
   address: String
   bornAt: String
@@ -149,6 +151,7 @@ input UpdateContactInput {
   _id: String!
   emails: [String!]
   name: String
+  phones: [String!]
   avatarUrl: String
   address: String
   bornAt: DateTime

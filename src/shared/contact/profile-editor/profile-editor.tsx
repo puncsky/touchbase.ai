@@ -33,6 +33,9 @@ import { TOP_BAR_HEIGHT } from "../../common/top-bar";
 import { upload } from "../../common/upload";
 import { GET_CONTACTS } from "../../contacts/contacts-table";
 import { actionUpdateHuman } from "../human-reducer";
+import PhoneInput from "../phone-input";
+import { formatToE164 } from "../phone-input/util";
+import DynamicFormItems from "./dynamic-form-items";
 import { ExperienceForm } from "./experience-form";
 import { ObservationForm } from "./observation-form";
 
@@ -158,14 +161,46 @@ export class ProfileEditorForm extends Component<{
   }
 }
 
+interface PersonalFormState {
+  avatarUrl: string;
+}
+
 class PersonalForm extends Component<
   {
     human: TContact2;
     form?: WrappedFormUtils;
   },
-  { avatarUrl: string }
+  PersonalFormState
 > {
-  state: { avatarUrl: string } = { avatarUrl: "" };
+  state: PersonalFormState = { avatarUrl: "" };
+
+  renderPhoneNumbers(): JSX.Element | null {
+    const { human, form } = this.props;
+    return (
+      <DynamicFormItems
+        itemSize={human.phones.length}
+        label={t("field.phone")}
+        renderItem={(key, i) =>
+          (form as WrappedFormUtils).getFieldDecorator(`phones[${i}]`, {
+            initialValue: human.phones[key],
+            validateTrigger: "onBlur",
+            rules: [
+              {
+                // @ts-ignore
+                validator(rule: any, val: any, cb: any): void {
+                  if (val && formatToE164(val).length <= 3) {
+                    cb(t("field.error.phone.format"));
+                  } else {
+                    cb();
+                  }
+                }
+              }
+            ]
+          })(<PhoneInput />)
+        }
+      />
+    );
+  }
 
   render(): JSX.Element | null {
     const { human, form } = this.props;
@@ -198,6 +233,8 @@ class PersonalForm extends Component<
             ]
           })(<Input placeholder={t("field.jane_doe")} />)}
         </Form.Item>
+
+        {this.renderPhoneNumbers()}
 
         <Form.Item {...formItemLayout} label={t("field.emails")}>
           {getFieldDecorator("emails", {
