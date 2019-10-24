@@ -42,7 +42,7 @@ class DynamicFormItems extends React.Component<
   constructor(props: any) {
     super(props);
     this.state = {
-      fieldKeys: Array.from({ length: props.itemSize }).map(
+      fieldKeys: Array.from({ length: props.itemSize || 1 }).map(
         () => this.fieldId++
       )
     };

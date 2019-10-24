@@ -102,7 +102,11 @@ class ProfileEditorContainer extends Component<Props, State> {
       // @ts-ignore
       emails: result.emails.split(","),
       experience: (result.experience || []).filter((e: any) => e),
-      education: (result.education || []).filter((e: any) => e)
+      education: (result.education || []).filter((e: any) => e),
+      // Remove the next line codes if it's no need to handle the old contacts
+      // created before the phones features was added. This makes the phone input
+      // ui rendered with the old contacts look like more reasonable.
+      phones: (result.phones || []).filter((e: any) => e)
     };
     actionUpdateHuman(omitBy(clone, (val: any) => !val && val !== 0), false);
 
