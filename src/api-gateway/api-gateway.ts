@@ -44,7 +44,7 @@ export async function setApiGateway(server: MyServer): Promise<void> {
   if (process.env.ENABLE_GUANXI_DAILY) {
     try {
       const remoteLink = new HttpLink({
-        uri: `http://localhost:4000/api-gateway/`,
+        uri: `https://tianpan.co/api-gateway/`,
         fetch
       });
       const remoteSchema = makeRemoteExecutableSchema({
