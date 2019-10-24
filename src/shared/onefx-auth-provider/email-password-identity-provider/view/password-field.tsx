@@ -1,3 +1,4 @@
+import { t } from "onefx/lib/iso-i18n";
 import React from "react";
 import { FieldMargin } from "./field-margin";
 import { InputError } from "./input-error";
@@ -17,7 +18,9 @@ export function PasswordField({
 }: Props): JSX.Element {
   return (
     <FieldMargin>
-      <InputLabel htmlFor="email-login-password">Password</InputLabel>
+      <InputLabel htmlFor="email-login-password">
+        {t("auth/password")}
+      </InputLabel>
       <TextInput
         defaultValue={defaultValue}
         onChange={onChange}
@@ -26,7 +29,7 @@ export function PasswordField({
         aria-label="Password"
         id="email-login-password"
         name="password"
-        placeholder="Password"
+        placeholder={t("auth/password")}
       />
       <InputError>{error || "\u0020"}</InputError>
     </FieldMargin>

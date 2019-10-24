@@ -4,6 +4,7 @@ import isBrowser = require("is-browser");
 // @ts-ignore
 import omitDeep from "omit-deep-lodash";
 import { assetURL } from "onefx/lib/asset-url";
+import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
 import { Helmet } from "react-helmet";
@@ -97,29 +98,6 @@ type Props = {
 const defaultColumnProperties = {
   width: 120
 };
-const columnDefs = [
-  {
-    field: "name",
-    headerName: "Name",
-    checkboxSelection: true,
-    cellRenderer: ({ value, data }: { value: string; data: { _id: string } }) =>
-      `<span><a class=${PUSH_LINK_CLS} style="color: ${
-        colors.primary
-      };" href=${`"/${data._id}/"`}/>${value}</span>`
-  },
-  { field: "experienceTitle", headerName: "Title" },
-  { field: "inboundTrust", headerName: "In-Trust" },
-  { field: "outboundTrust", headerName: "Out-Trust" },
-  { field: "address", headerName: "Address" },
-  { field: "experienceName", headerName: "Company" },
-  { field: "emailsJoin", headerName: "Emails" },
-  { field: "bornAt", headerName: "Birthday" },
-  { field: "bornAddress", headerName: "Birthplace" },
-  { field: "desire", headerName: "desire" },
-  { field: "knownAt", headerName: "knownAt" },
-  { field: "knownSource", headerName: "knownSource" },
-  { field: "educationName", headerName: "Education" }
-].map(c => ({ ...c, ...defaultColumnProperties }));
 
 const rowFromHuman = (h: TContact2) => ({
   ...h,
@@ -204,6 +182,37 @@ export const ContactsTableContainer = withRouter(
       };
 
       public render(): JSX.Element {
+        // looks like `t` only works in render.
+        const columnDefs = [
+          {
+            field: "name",
+            headerName: t("field.name"),
+            checkboxSelection: true,
+            cellRenderer: ({
+              value,
+              data
+            }: {
+              value: string;
+              data: { _id: string };
+            }) =>
+              `<span><a class=${PUSH_LINK_CLS} style="color: ${
+                colors.primary
+              };" href=${`"/${data._id}/"`}/>${value}</span>`
+          },
+          { field: "experienceTitle", headerName: t("experience.title") },
+          { field: "inboundTrust", headerName: t("field.inbound_trust") },
+          { field: "outboundTrust", headerName: t("field.outbound_trust") },
+          { field: "address", headerName: t("field.address") },
+          { field: "experienceName", headerName: t("experience.org") },
+          { field: "emailsJoin", headerName: t("field.emails") },
+          { field: "bornAt", headerName: t("bornAt") },
+          { field: "bornAddress", headerName: t("bornAddress") },
+          { field: "desire", headerName: t("field.desire") },
+          { field: "knownAt", headerName: t("field.known_at") },
+          { field: "knownSource", headerName: t("field.known_source") },
+          { field: "educationName", headerName: t("field.education") }
+        ].map(c => ({ ...c, ...defaultColumnProperties }));
+
         return (
           <ContentPadding>
             <Helmet

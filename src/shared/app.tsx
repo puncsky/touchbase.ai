@@ -1,3 +1,6 @@
+import { ConfigProvider } from "antd";
+import enUS from "antd/lib/locale-provider/en_US";
+import zhCN from "antd/lib/locale-provider/zh_CN";
 import { styled } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import { Switch } from "react-router";
@@ -35,44 +38,46 @@ export class App extends Component<Props> {
   public render(): JSX.Element {
     return (
       <RootStyle>
-        <Head />
-        <TopBar />
-        <div style={FOOTER_ABOVE}>
-          <ScrollToTop>
-            <Switch>
-              <Route exact path="/ribao" component={Daily} />
-              <Route exact path="/ribao/:id" component={DailyItem} />
-              <Route exact path="/page/:id+" component={ArticleFetcher} />
-              <Route
-                exact
-                path="/contacts/*"
-                component={ContactsTableContainer}
-              />
-              <Route exact path="/" component={Home} />
-              <Route exact path="/onboard/" component={Onboard} />
-              <Route
-                exact
-                path="/profile/*"
-                component={ContactDetailContainer}
-              />
-              <Route exact path="/settings/*" component={Settings} />
-              <Route
-                exact
-                path="/me/*"
-                component={() => <ContactDetailContainer isSelf={true} />}
-              />
-              <Route exact path="/note/:id" component={NoteFetcher} />
-              <Route
-                exact
-                path="/:nameDash/*"
-                component={ContactDetailContainer}
-              />
-              <Route component={NotFound} />
-            </Switch>
-          </ScrollToTop>
-        </div>
-        <Route exact path="*/create/" component={ProfileCreatorContainer} />
-        <Footer />
+        <ConfigProvider locale={this.props.locale.includes("zh") ? zhCN : enUS}>
+          <Head />
+          <TopBar />
+          <div style={FOOTER_ABOVE}>
+            <ScrollToTop>
+              <Switch>
+                <Route exact path="/ribao" component={Daily} />
+                <Route exact path="/ribao/:id" component={DailyItem} />
+                <Route exact path="/page/:id+" component={ArticleFetcher} />
+                <Route
+                  exact
+                  path="/contacts/*"
+                  component={ContactsTableContainer}
+                />
+                <Route exact path="/" component={Home} />
+                <Route exact path="/onboard/" component={Onboard} />
+                <Route
+                  exact
+                  path="/profile/*"
+                  component={ContactDetailContainer}
+                />
+                <Route exact path="/settings/*" component={Settings} />
+                <Route
+                  exact
+                  path="/me/*"
+                  component={() => <ContactDetailContainer isSelf={true} />}
+                />
+                <Route exact path="/note/:id" component={NoteFetcher} />
+                <Route
+                  exact
+                  path="/:nameDash/*"
+                  component={ContactDetailContainer}
+                />
+                <Route component={NotFound} />
+              </Switch>
+            </ScrollToTop>
+          </div>
+          <Route exact path="*/create/" component={ProfileCreatorContainer} />
+          <Footer />
+        </ConfigProvider>
       </RootStyle>
     );
   }

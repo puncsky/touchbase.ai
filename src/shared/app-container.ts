@@ -5,6 +5,7 @@ import { App } from "./app";
 
 type Props = {
   googleTid: string;
+  locale: string;
 };
 
 export const AppContainer = withRouter(
@@ -13,7 +14,9 @@ export const AppContainer = withRouter(
     (state: object): Props => {
       return {
         // @ts-ignore
-        googleTid: state.base.analytics.googleTid
+        googleTid: state.base.analytics.googleTid,
+        // @ts-ignore
+        locale: state.base.locale
       };
     }
   )(App)

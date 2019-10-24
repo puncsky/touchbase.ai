@@ -384,7 +384,7 @@ const DeleteContactPopover = withRouter(
           title={t("field.delete_contact.title")}
         >
           <Button onClick={() => this.setState({ visible: true })}>
-            Delete
+            {t("delete")}
           </Button>
         </Popover>
       );
