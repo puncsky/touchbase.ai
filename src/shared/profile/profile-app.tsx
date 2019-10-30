@@ -133,11 +133,12 @@ type ConnectProps = {
 };
 
 export const ProfileAppContainer = withRouter(
-  // @ts-ignore
-  connect<ConnectProps>((state: object): { googleTid: string } => {
-    return {
-      // @ts-ignore
-      googleTid: state.base.analytics.googleTid
-    };
-  })(ProfileApp)
+  connect<ConnectProps>(
+    (state: object): ConnectProps => {
+      return {
+        // @ts-ignore
+        googleTid: state.base.analytics.googleTid
+      };
+    }
+  )(ProfileApp)
 );

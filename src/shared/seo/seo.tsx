@@ -1,6 +1,7 @@
 import React from "react";
+import { t } from "onefx/lib/iso-i18n";
 import Helmet from "react-helmet";
-// @ts-ignore
+import { connect } from "react-redux";
 import { ReactSEOMetaTags } from "react-seo-meta-tags";
 
 class Seo extends React.Component {
@@ -9,18 +10,30 @@ class Seo extends React.Component {
       <ReactSEOMetaTags
         render={(el: React.ReactNode) => <Helmet>{el}</Helmet>}
         website={{
-          title: "title",
-          language: "zh-cn"
+          title: `${t("topbar.brand")}`,
+          language: "zh-CN"
         }}
         organization={{
-          name: "Google",
-          legalName: "Google Inc",
-          url: "https://google.com",
-          logo: "https://google.com/logo.jpg"
+          name: t("topbar.brand"),
+          legalName: t("topbar.brand"),
+          url: "https://www.guanxilab.com/",
+          logo: "https://www.guanxilab.com/favicon.svg"
         }}
       />
     );
   }
 }
 
-export default Seo;
+type Props = {
+  locale: string;
+};
+
+export default connect<Props>(
+  (state: {}): Props => {
+    return {
+      // @ts-ignore
+      locale: state.base.locale
+    };
+  },
+  {}
+)(Seo);
