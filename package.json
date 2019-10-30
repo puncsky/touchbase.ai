@@ -12,7 +12,6 @@
     "build": "gulp build",
     "build-production": "NODE_ENV=production gulp build",
     "build-static-html": "NODE_ENV=production ts-node ./src/server/generate-static-html.ts",
-    "server": "node server",
     "lint": "git add . && pretty-quick --staged && tslint --fix --project tsconfig.json -t stylish",
     "postinstall": "npm run bp && npm run doc",
     "cover": "NODE_ENV=test tsc && nyc npm run ava",
