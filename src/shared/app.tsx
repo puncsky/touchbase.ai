@@ -9,7 +9,6 @@ import { ArticleFetcher } from "./article/article-fetcher";
 import { Footer, FOOTER_ABOVE } from "./common/footer";
 // @ts-ignore
 import initGoogleTagmanager from "./common/google-analytics";
-import Seo from "./seo/seo";
 import { Head } from "./common/head";
 import { NotFound } from "./common/not-found";
 import { ScrollToTop } from "./common/scroll-top";
@@ -24,6 +23,7 @@ import { DailyItem } from "./daily/daily-item";
 import { Home } from "./home/home";
 import { NoteFetcher } from "./note/note-fetcher";
 import { Onboard } from "./onboard";
+import Seo from "./seo/seo";
 import { Settings } from "./settings/settings";
 
 type Props = {
