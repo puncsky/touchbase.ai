@@ -1,5 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
+// @ts-ignore
 import { ReactSEOMetaTags } from "react-seo-meta-tags";
 
 class Seo extends React.Component {
