@@ -9,6 +9,7 @@ import { ArticleFetcher } from "./article/article-fetcher";
 import { Footer, FOOTER_ABOVE } from "./common/footer";
 // @ts-ignore
 import initGoogleTagmanager from "./common/google-analytics";
+import Seo from "./seo/seo";
 import { Head } from "./common/head";
 import { NotFound } from "./common/not-found";
 import { ScrollToTop } from "./common/scroll-top";
@@ -40,6 +41,7 @@ export class App extends Component<Props> {
       <RootStyle>
         <ConfigProvider locale={this.props.locale.includes("zh") ? zhCN : enUS}>
           <Head />
+          <Seo />
           <TopBar />
           <div style={FOOTER_ABOVE}>
             <ScrollToTop>
