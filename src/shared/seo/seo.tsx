@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { t } from "onefx/lib/iso-i18n";
 import React from "react";
 import Helmet from "react-helmet";
@@ -9,8 +8,9 @@ type Props = {
   locale: string;
 };
 
-class Seo extends React.Component {
+class Seo extends React.Component<Props> {
   public render(): JSX.Element {
+    const { locale } = this.props;
     return (
       <ReactSEOMetaTags
         render={(el: React.ReactNode) => <Helmet>{el}</Helmet>}
