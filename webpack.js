@@ -36,7 +36,12 @@ module.exports = {
         include: path.resolve("src")
       },
       { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
-      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+      {
+        enforce: "pre",
+        test: /\.js$/,
+        loader: "source-map-loader",
+        exclude: [/node_modules/, /build/, /__test__/]
+      },
       {
         test: /\.js$/,
         exclude: /(node_modules)/,
