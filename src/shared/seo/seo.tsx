@@ -1,17 +1,22 @@
-import React from "react";
 import { t } from "onefx/lib/iso-i18n";
+import React from "react";
 import Helmet from "react-helmet";
 import { connect } from "react-redux";
 import { ReactSEOMetaTags } from "react-seo-meta-tags";
 
-class Seo extends React.Component {
+type Props = {
+  locale: string;
+};
+
+class Seo extends React.Component<Props> {
   public render(): JSX.Element {
+    const { locale } = this.props;
     return (
       <ReactSEOMetaTags
         render={(el: React.ReactNode) => <Helmet>{el}</Helmet>}
         website={{
-          title: `${t("topbar.brand")}`,
-          language: "zh-CN"
+          title: t("topbar.brand"),
+          language: locale
         }}
         organization={{
           name: t("topbar.brand"),
@@ -23,10 +28,6 @@ class Seo extends React.Component {
     );
   }
 }
-
-type Props = {
-  locale: string;
-};
 
 export default connect<Props>(
   (state: {}): Props => {
