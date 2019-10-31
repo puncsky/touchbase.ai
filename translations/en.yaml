@@ -6,7 +6,7 @@ auth/email-already-in-use: Email is already in use
 auth/forgot_password.back: ← Back to Login
 auth/forgot_password.desc: Enter the email address associated with your account, and we’ll email you a link to reset your password.
 auth/forgot_password.email_content: "Hi, we’ve received a request to reset your password. If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link: ${link}."
-auth/forgot_password.email_title: Reset your Password
+: Reset your Password
 auth/forgot_password.email_token_failure: Your request to reset password has already expired. Please try again.
 auth/forgot_password.send: SEND RESET LINK
 auth/forgot_password.sent: A link to reset your password has been sent to ${email}.
