@@ -148,10 +148,11 @@ interface ITemplate {
 }
 
 export const template = (data: ITemplate) => {
-  //tslint:disable
+  // tslint:disable: no-function-constructor-with-string-args
+  // tslint:disable: function-constructor
   const fn = new Function(
     "data",
-
+    // tslint:disable-next-line: prefer-template
     "var p = []; with(data){p.push('" +
       templateStr
         .replace(/[\r\t\n]/g, "")
