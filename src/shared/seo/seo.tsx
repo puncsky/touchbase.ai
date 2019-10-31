@@ -29,7 +29,7 @@ class Seo extends React.Component<Props> {
   }
 }
 
-export default connect<Props>(
+export const SeoContainer = connect<Props>(
   (state: {}): Props => {
     return {
       // @ts-ignore
