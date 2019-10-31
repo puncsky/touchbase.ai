@@ -23,6 +23,7 @@ import { DailyItem } from "./daily/daily-item";
 import { Home } from "./home/home";
 import { NoteFetcher } from "./note/note-fetcher";
 import { Onboard } from "./onboard";
+import { SeoContainer } from "./seo/seo";
 import { Settings } from "./settings/settings";
 
 type Props = {
@@ -40,6 +41,7 @@ export class App extends Component<Props> {
       <RootStyle>
         <ConfigProvider locale={this.props.locale.includes("zh") ? zhCN : enUS}>
           <Head />
+          <SeoContainer />
           <TopBar />
           <div style={FOOTER_ABOVE}>
             <ScrollToTop>
