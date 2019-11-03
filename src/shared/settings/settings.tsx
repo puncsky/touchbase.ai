@@ -9,6 +9,7 @@ import { RouterProps, withRouter } from "react-router";
 import { colors } from "../common/styles/style-color";
 import { ContentPadding } from "../common/styles/style-padding";
 import { ResetPasswordContainer } from "../onefx-auth-provider/email-password-identity-provider/view/reset-password";
+import { DangerZone } from "./danger-zone";
 
 const { Title } = Typography;
 
@@ -49,6 +50,14 @@ class SettingsInner extends Component<Props> {
               <div style={{ maxWidth: "320px" }}>
                 <ResetPasswordContainer isEmbedded={true} />
               </div>
+              <TitleMargin>
+                <Title level={3} type="danger">
+                  {t("settings.dangerZone")}
+                </Title>
+              </TitleMargin>
+              <Zone>
+                <DangerZone />
+              </Zone>
             </Tabs.TabPane>
           </Tabs>
         </ContentPadding>
@@ -56,6 +65,12 @@ class SettingsInner extends Component<Props> {
     );
   }
 }
+
+const Zone = styled("div", () => ({
+  padding: "20px",
+  border: "1px solid red",
+  marginBottom: "20px"
+}));
 
 const PageHeader = styled("div", () => ({
   backgroundColor: colors.white,
