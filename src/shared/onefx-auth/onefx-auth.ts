@@ -55,17 +55,12 @@ export class OnefxAuth {
     const link = `${this.config.emailTokenLink}${token}`;
     logger.debug(`sending out password reset email ${link}`);
 
-    // const emailContent = t("auth/forgot_password.email_content", { link });
     const emailContent = template({
       logoSrc: "https://www.guanxilab.com/favicon.png",
-      forgotPasswordText: "Forgot your password?",
-      forgotPasswordDes:
-        "It happens to the best of us. The good news is you can change it right.",
-      forgotPasswordBtnText: "RESET YOUR PASSWORD",
-      forgotPasswordBtnLink: "https://www.mailgun.com/",
-      forgotPasswordDontReset:
-        "If you didn&rsquo;t request a password reset, you don&rsquo;t have to do anything.",
-      forgotPasswordIgnore: "Just ignore this email."
+      forgotPasswordText: t("auth/forgot_password"),
+      forgotPasswordDes: t("auth/forgot_password.email_content"),
+      forgotPasswordBtnText: t("auth/forgot_password.email_cta"),
+      forgotPasswordBtnLink: link
     });
 
     await this.mailgun.sendMail({
