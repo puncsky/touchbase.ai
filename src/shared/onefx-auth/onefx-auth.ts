@@ -13,6 +13,7 @@ import { Mailgun } from "./mailgun";
 import { EmailTokenModel } from "./model/email-token-model";
 import { JwtModel } from "./model/jwt-model";
 import { UserModel } from "./model/user-model";
+import { template } from "./template";
 import { getExpireEpochDays } from "./utils/expire-epoch";
 
 export class OnefxAuth {
@@ -54,7 +55,14 @@ export class OnefxAuth {
     const link = `${this.config.emailTokenLink}${token}`;
     logger.debug(`sending out password reset email ${link}`);
 
-    const emailContent = t("auth/forgot_password.email_content", { link });
+    const emailContent = template({
+      logoSrc: "https://www.guanxilab.com/favicon.png",
+      forgotPasswordText: t("auth/forgot_password"),
+      forgotPasswordDes: t("auth/forgot_password.email_content"),
+      forgotPasswordBtnText: t("auth/forgot_password.email_cta"),
+      forgotPasswordBtnLink: link
+    });
+
     await this.mailgun.sendMail({
       from: `"${t("meta.title")}" <noreply@${this.config.mailgun.domain}>`,
       to: email,
