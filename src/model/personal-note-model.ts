@@ -134,6 +134,25 @@ export class PersonalNoteModel {
     return resp;
   }
 
+  public async countByOwnerIdRelatedHumanId({
+    ownerId,
+    humanId
+  }: {
+    ownerId: string;
+    humanId?: string;
+  }): Promise<number> {
+    let query: any = {
+      ownerId
+    };
+    if (humanId) {
+      query = {
+        ownerId,
+        relatedHumans: humanId
+      };
+    }
+    return this.Model.find(query).countDocuments();
+  }
+
   public async updateOne(
     id: string,
     ownerId: string,

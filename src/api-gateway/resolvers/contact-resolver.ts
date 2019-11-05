@@ -305,6 +305,14 @@ class InteractionCount {
   public count: number;
 }
 
+@ObjectType()
+class InteractionConnection {
+  @Field(_ => [Interaction])
+  public interactions: Array<Interaction>;
+  @Field(_ => Number)
+  public count: number;
+}
+
 @ArgsType()
 class ContactsRequest {
   @Field(_ => Number, { nullable: true })
@@ -364,20 +372,26 @@ export class ContactResolver {
     );
   }
 
-  @Query(_ => [Interaction])
+  @Query(_ => InteractionConnection)
   public async interactions(
     @Args() { contactId, offset, limit, isSelf }: GetInteractions,
     @Ctx() { model, userId }: Context
-  ): Promise<Array<Interaction>> {
+  ): Promise<InteractionConnection> {
     if (!userId) {
       throw new AuthenticationError(`please login to fetch interactions`);
     }
-    return model.event.getAllByOwnerIdRelatedHumanId({
+    const param = {
       ownerId: userId,
       humanId: isSelf ? undefined : contactId,
       skip: offset,
       limit
-    });
+    };
+    const count = await model.event.countByOwnerIdRelatedHumanId(param);
+    const interactions = await model.event.getAllByOwnerIdRelatedHumanId(param);
+    return {
+      count,
+      interactions
+    };
   }
 
   @Query(_ => Interaction, { nullable: true })

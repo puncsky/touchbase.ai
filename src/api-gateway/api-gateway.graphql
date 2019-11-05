@@ -104,6 +104,11 @@ type Interaction {
   public: Boolean
 }
 
+type InteractionConnection {
+  interactions: [Interaction!]!
+  count: Float!
+}
+
 type InteractionCount {
   date: String!
   count: Float!
@@ -125,7 +130,7 @@ type Query {
     isSelf: Boolean
     offset: Float
     limit: Float
-  ): [Interaction!]!
+  ): InteractionConnection!
   note(id: String!): Interaction
   search(name: String!): [SearchResult!]!
   contacts(offset: Float, limit: Float): [Contact!]
