@@ -378,10 +378,13 @@ export const GET_INTERACTIONS = gql`
       limit: $limit
       isSelf: $isSelf
     ) {
-      id
-      content
-      public
-      timestamp
+      interactions {
+        id
+        content
+        public
+        timestamp
+      }
+      count
     }
   }
 `;
@@ -389,8 +392,6 @@ export const GET_INTERACTIONS = gql`
 export const PAGE_SIZE: number = 5;
 
 class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
-  public start: number = 0;
-
   // tslint:disable-next-line:max-func-body-length
   public render(): JSX.Element {
     const { contactId, isSelf } = this.props;
@@ -409,17 +410,17 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
       <Query query={GET_INTERACTIONS} variables={query}>
         {({
           loading,
-          data,
+          data = { interactions: { interactions: [], count: 0 } },
           fetchMore
-        }: QueryResult<{ interactions: Array<TInteraction> }>) => {
+        }: QueryResult<{
+          interactions: { interactions: Array<TInteraction>; count: Number };
+        }>) => {
           if (loading) {
             return <Preloader />;
           }
-          let interactions: Array<TInteraction> = [];
-          if (data && data.interactions) {
-            interactions = data.interactions;
-          }
-
+          const interactions: Array<TInteraction> =
+            data.interactions.interactions;
+          const count: Number = data.interactions.count;
           return (
             <>
               {interactions.map((iter, i) => (
@@ -466,22 +467,20 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                   />
                 </div>
               ))}
-
-              {Boolean(interactions.length) && (
+              {Boolean(interactions.length) && count > interactions.length && (
                 <Button
                   onClick={() => {
                     fetchMore({
                       query: GET_INTERACTIONS,
                       variables: {
                         contactId,
-                        offset: this.start + PAGE_SIZE,
+                        offset: interactions.length,
                         limit: PAGE_SIZE
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
                         if (!fetchMoreResult) {
                           return prev;
                         }
-                        this.start += PAGE_SIZE;
                         window.console.log(
                           JSON.stringify({
                             prev,
@@ -489,10 +488,15 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                           })
                         );
                         return {
-                          interactions: [
+                          ...prev,
+                          interactions: {
                             ...prev.interactions,
-                            ...fetchMoreResult.interactions
-                          ]
+                            interactions: [
+                              ...prev.interactions.interactions,
+                              ...fetchMoreResult.interactions.interactions
+                            ],
+                            count: fetchMoreResult.interactions.count
+                          }
                         };
                       }
                     }).catch(err => {
