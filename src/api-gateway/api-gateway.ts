@@ -15,6 +15,7 @@ import { Gateways } from "../server/gateway/gateway";
 import { MyServer } from "../server/start-server";
 import { ArticleResolver } from "../shared/article/article-resolver";
 import { OnefxAuth } from "../shared/onefx-auth";
+import { AccountResolve } from "./resolvers/account-resolver";
 import { ContactResolver } from "./resolvers/contact-resolver";
 import { MetaResolver } from "./resolvers/meta-resolver";
 
@@ -27,7 +28,12 @@ export type Context = {
 };
 
 export async function setApiGateway(server: MyServer): Promise<void> {
-  const resolvers = [MetaResolver, ArticleResolver, ContactResolver];
+  const resolvers = [
+    MetaResolver,
+    ArticleResolver,
+    ContactResolver,
+    AccountResolve
+  ];
   server.resolvers = resolvers;
 
   const sdlPath = path.resolve(__dirname, "api-gateway.graphql");

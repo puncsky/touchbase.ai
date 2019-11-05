@@ -178,6 +178,15 @@ export class ContactModel {
     return Boolean(resp && resp.ok);
   }
 
+  public async deleteAllByOwner({
+    ownerId
+  }: {
+    ownerId: string;
+  }): Promise<Boolean> {
+    const resp = await this.Model.deleteMany({ ownerId });
+    return Boolean(resp && resp.ok);
+  }
+
   // tslint:disable-next-line:no-any
   public async findManyIdsByNames(names: Array<string>): Promise<Array<any>> {
     return this.Model.where("name id").find({ name: { $in: names } });

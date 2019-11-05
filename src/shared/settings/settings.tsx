@@ -47,14 +47,17 @@ class SettingsInner extends Component<Props> {
               <TitleMargin>
                 <Title level={3}>{t("auth/reset_password")}</Title>
               </TitleMargin>
+
               <div style={{ maxWidth: "320px" }}>
                 <ResetPasswordContainer isEmbedded={true} />
               </div>
+
               <TitleMargin>
                 <Title level={3} type="danger">
                   {t("settings.dangerZone")}
                 </Title>
               </TitleMargin>
+
               <Zone>
                 <DangerZone />
               </Zone>
