@@ -125,9 +125,12 @@ settings.deleteAccount: 删除此账户
 settings.deleteAccountDesc: 注意，一旦删除，所有数据将不能恢复。
 settings.modal_title: 确定要删除吗？
 settings.modal_email_input_label: 你的邮箱
-settings.email_verify: 为了验证，在下面输入：delete my account
+settings.code_verify_prompt: 为了验证，在下面输入：
 settings.modal_email_delete_desc: 我们将会删除你账户的信息，包括笔记，提醒和时间线。
 settings.modal_danger: 这很危险！！！
+settings.forbidden_action: 操作被拒绝
+settings.invalid_code: 输入校验失败
+settings.verification_code: 删除我的账号
 home.title: 更智能地加入到有意义的关系中
 home.desc: 打开开源个人CRM。利用数据和 AI 来构建关系。快速并高质量地拓展个人网络。
 home.get_started: 注册以构建关系

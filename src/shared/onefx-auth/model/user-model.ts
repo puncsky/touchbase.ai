@@ -124,7 +124,7 @@ export class UserModel {
   }
 
   public async deleteById(id: string): Promise<boolean> {
-    const resp = await this.Model.deleteOne({ id });
+    const resp = await this.Model.deleteOne({ _id: id });
     return Boolean(resp && resp.ok);
   }
 }

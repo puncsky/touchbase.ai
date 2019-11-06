@@ -125,9 +125,12 @@ settings.deleteAccount: Delete This Account
 settings.deleteAccountDesc: Once deleted, it will be gone forever. Please be certain.
 settings.modal_title: Are you sure you want to delete this?
 settings.modal_email_input_label: Your Email
-settings.email_verify: To verify, type delete my account below
+settings.code_verify_prompt: To verify, type
 settings.modal_email_delete_desc: We will immediately delete all of your profiles, along with all of your notes, reminders, and timelines.
 settings.modal_danger: This is extremely important
+settings.forbidden_action: Forbidden Action
+settings.verification_code: delete my account
+settings.invalid_code: Invalid Code
 home.title: Smartly engage more in meaningful relationships
 home.desc: Open source personal CRM. Empowering relation builders with data and AI. Growing personal network with speed and quality.
 home.get_started: Sign Up to Build Relationships

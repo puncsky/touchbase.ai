@@ -114,7 +114,7 @@ type InteractionCount {
 }
 
 type Mutation {
-  deleteAccount(deleteAccountInput: DeleteAccountInput!): String!
+  deleteAccount(deleteAccountInput: DeleteAccountInput!): Boolean!
   createContact(createContactInput: CreateContactInput!): Contact!
   updateContact(updateContactInput: UpdateContactInput!): Contact!
   deleteNote(deleteNoteInput: DeleteNoteInput!): Boolean!
