@@ -1,13 +1,20 @@
 import { AuthenticationError } from "apollo-server-errors";
-import { Ctx, Mutation } from "type-graphql";
+import { Arg, Ctx, Field, InputType, Mutation } from "type-graphql";
 
 import { Context } from "../api-gateway";
 
+@InputType()
+class DeleteAccountInput {
+  @Field(_ => String)
+  email: string;
+}
+
 export class AccountResolve {
   @Mutation(_ => Boolean)
-  public async deleteAccount(@Ctx() { auth, userId, model }: Context): Promise<
-    boolean
-  > {
+  public async deleteAccount(
+    @Arg("deleteAccountInput") input: DeleteAccountInput,
+    @Ctx() { auth, userId, model }: Context
+  ): Promise<boolean> {
     if (!userId) {
       throw new AuthenticationError(`please login to deleteContactInput`);
     }
@@ -17,7 +24,7 @@ export class AccountResolve {
       throw new AuthenticationError(`user is not found`);
     }
 
-    try {
+    if (user.email === input.email) {
       const { contact, event, human, personalNote } = model;
       await Promise.all([
         contact.deleteAllByOwner({ ownerId: userId }),
@@ -27,7 +34,7 @@ export class AccountResolve {
         auth.user.deleteById(userId)
       ]);
       return Boolean(true);
-    } catch (e) {
+    } else {
       return Boolean(false);
     }
   }
