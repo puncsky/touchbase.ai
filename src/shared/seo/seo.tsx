@@ -23,21 +23,12 @@ class Seo extends React.Component<Props> {
           legalName: t("topbar.brand"),
           url: "https://www.guanxilab.com/",
           logo: "https://www.guanxilab.com/favicon.svg"
-          title: `${t("topbar.brand")}`,
-          language: "zh-CN"
         }}
       />
     );
   }
 }
 
-<<<<<<< HEAD
-type Props = {
-  locale: string;
-};
-
-=======
->>>>>>> Fix: change to named export
 export const SeoContainer = connect<Props>(
   (state: {}): Props => {
     return {
