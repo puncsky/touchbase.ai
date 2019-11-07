@@ -1,5 +1,6 @@
 import { notification } from "antd";
 import Button from "antd/lib/button/button";
+import Form from "antd/lib/form";
 import Modal from "antd/lib/modal";
 import Typography from "antd/lib/typography";
 import serialize from "form-serialize";
@@ -60,7 +61,6 @@ export class DangerZone extends Component<{}, State> {
       email: string;
       code: string;
     };
-    window.console.log(email);
 
     if (code !== t("settings.verification_code")) {
       notification.error({
@@ -154,8 +154,9 @@ export class DangerZone extends Component<{}, State> {
                   </FieldMargin>
                   <FieldMargin>
                     <InputLabel>
-                      {t("settings.code_verify_prompt") +
-                        t("settings.verification_code")}
+                      {`${t("settings.code_verify_prompt")} ${t(
+                        "settings.verification_code"
+                      )}`}
                     </InputLabel>
                     <TextInput
                       id="code"
