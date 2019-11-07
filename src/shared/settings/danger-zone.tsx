@@ -5,7 +5,6 @@ import { WrappedFormUtils } from "antd/lib/form/Form";
 import Input from "antd/lib/input";
 import Modal from "antd/lib/modal";
 import Typography from "antd/lib/typography";
-import serialize from "form-serialize";
 import gql from "graphql-tag";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
@@ -13,7 +12,6 @@ import Mutation, { MutationFn } from "react-apollo/Mutation";
 import { Flex } from "../common/flex";
 
 const { Text } = Typography;
-const VERIFICATION_FORM = "VERIFICATION_FORM";
 
 const DELETE_ACCOUNT = gql`
   mutation deleteAccount($email: String!) {
@@ -130,7 +128,8 @@ export class DangerZone extends Component<Props, State> {
         >
           {t("settings.deleteAccount")}
         </Button>
-        {/* @ts-ignore */}
+        {/*
+         // @ts-ignore */}
         <DangerZoneForm
           wrappedComponentRef={this.saveFormRef}
           modalShow={this.state.modalShow}
