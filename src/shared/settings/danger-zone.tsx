@@ -134,8 +134,12 @@ export class DangerZone extends Component<Props, State> {
         <DangerZoneForm
           wrappedComponentRef={this.saveFormRef}
           modalShow={this.state.modalShow}
-          submit={this.submit.bind(this)}
-          hide={this.hideModal.bind(this)}
+          submit={(func: MutationFn) => {
+            this.submit(func);
+          }}
+          hide={() => {
+            this.hideModal();
+          }}
         />
       </Flex>
     );
@@ -152,7 +156,7 @@ type FormProps = {
 const DangerZoneForm = Form.create({
   name: "danger_zone_form"
 })(
-  class extends React.Component<FormProps, {}> {
+  class extends React.Component<FormProps> {
     public render(): JSX.Element {
       const { form, modalShow, submit, hide } = this.props;
       const { getFieldDecorator } = form;
