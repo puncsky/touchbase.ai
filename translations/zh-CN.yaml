@@ -131,6 +131,7 @@ settings.modal_danger: 这很危险！！！
 settings.forbidden_action: 操作被拒绝
 settings.invalid_code: 输入校验失败
 settings.verification_code: 删除我的账号
+settings.empty_code:  字段不能为空
 home.title: 更智能地加入到有意义的关系中
 home.desc: 打开开源个人CRM。利用数据和 AI 来构建关系。快速并高质量地拓展个人网络。
 home.get_started: 注册以构建关系

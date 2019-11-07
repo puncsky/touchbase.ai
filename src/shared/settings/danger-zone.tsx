@@ -1,6 +1,8 @@
 import { notification } from "antd";
 import Button from "antd/lib/button/button";
 import Form from "antd/lib/form";
+import { WrappedFormUtils } from "antd/lib/form/Form";
+import Input from "antd/lib/input";
 import Modal from "antd/lib/modal";
 import Typography from "antd/lib/typography";
 import serialize from "form-serialize";
@@ -9,11 +11,6 @@ import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import Mutation, { MutationFn } from "react-apollo/Mutation";
 import { Flex } from "../common/flex";
-import { FieldMargin } from "../onefx-auth-provider/email-password-identity-provider/view/field-margin";
-import { FormContainer } from "../onefx-auth-provider/email-password-identity-provider/view/form-container";
-import { InputError } from "../onefx-auth-provider/email-password-identity-provider/view/input-error";
-import { InputLabel } from "../onefx-auth-provider/email-password-identity-provider/view/input-label";
-import { TextInput } from "../onefx-auth-provider/email-password-identity-provider/view/text-input";
 
 const { Text } = Typography;
 const VERIFICATION_FORM = "VERIFICATION_FORM";
@@ -35,7 +32,10 @@ type State = {
   codeError: string;
 };
 
-export class DangerZone extends Component<{}, State> {
+type Props = {};
+
+export class DangerZone extends Component<Props, State> {
+  private formRef: any;
   public constructor(props: any) {
     super(props);
     this.state = {
@@ -51,63 +51,66 @@ export class DangerZone extends Component<{}, State> {
     });
   };
 
-  public handleOk = async (func: MutationFn<{ email: string }>) => {
-    const el = window.document.getElementById(
-      VERIFICATION_FORM
-    ) as HTMLFormElement;
-    const { email = "", code = "" } = serialize(el, {
-      hash: true
-    }) as {
-      email: string;
-      code: string;
-    };
-
-    if (code !== t("settings.verification_code")) {
-      notification.error({
-        message: t("settings.forbidden_action"),
-        description: t("settings.invalid_code"),
-        duration: 3
-      });
-      return;
-    }
-    if (!validateEmail(email)) {
-      notification.error({
-        message: t("settings.forbidden_action"),
-        description: t("auth/invalid-email"),
-        duration: 3
-      });
-      return;
-    }
-
-    const result: any = await func({
-      variables: { email }
-    });
-
+  public hideModal = () => {
     this.setState({
       modalShow: false
     });
-
-    if (result.data.deleteAccount) {
-      window.location.href = "/logout";
-      window.console.log(result);
-    } else {
-      notification.error({
-        message: t("settings.forbidden_action"),
-        description: t("auth/invalid-email"),
-        duration: 3
-      });
-    }
   };
 
-  public handleCancel = () => {
-    this.setState({
-      modalShow: false
-    });
+  public submit = async (func: MutationFn<{ email: string }>) => {
+    const { form } = this.formRef.props;
+    form.validateFields(
+      async (err: any, { code, email }: { code: string; email: string }) => {
+        if (err) {
+          return;
+        }
+        this.hideModal();
+        form.resetFields();
+
+        if (code !== t("settings.verification_code")) {
+          notification.error({
+            message: t("settings.forbidden_action"),
+            description: t("settings.invalid_code"),
+            duration: 3
+          });
+          return;
+        }
+        if (!validateEmail(email)) {
+          notification.error({
+            message: t("settings.forbidden_action"),
+            description: t("auth/invalid-email"),
+            duration: 3
+          });
+          return;
+        }
+
+        const result: any = await func({
+          variables: { email }
+        });
+
+        this.setState({
+          modalShow: false
+        });
+
+        if (result.data.deleteAccount) {
+          window.location.href = "/logout";
+          window.console.log(result);
+        } else {
+          notification.error({
+            message: t("settings.forbidden_action"),
+            description: t("auth/invalid-email"),
+            duration: 3
+          });
+        }
+      }
+    );
+  };
+
+  saveFormRef = (formRef: any) => {
+    this.formRef = formRef;
   };
 
   public render(): JSX.Element {
-    const { emailError, codeError } = this.state;
-
     return (
       <Flex
         flexDirection="row"
@@ -120,14 +123,45 @@ export class DangerZone extends Component<{}, State> {
           </Text>
           <Text>{t("settings.deleteAccountDesc")}</Text>
         </Flex>
-        <Button type="danger" onClick={this.showModal}>
+        <Button
+          type="danger"
+          onClick={this.showModal}
+          style={{ margin: "8px 0" }}
+        >
           {t("settings.deleteAccount")}
         </Button>
+        {/* @ts-ignore */}
+        <DangerZoneForm
+          wrappedComponentRef={this.saveFormRef}
+          modalShow={this.state.modalShow}
+          submit={this.submit.bind(this)}
+          hide={this.hideModal.bind(this)}
+        />
+      </Flex>
+    );
+  }
+}
+
+type FormProps = {
+  modalShow: boolean;
+  form: WrappedFormUtils;
+  submit: any;
+  hide: any;
+};
+
+const DangerZoneForm = Form.create({
+  name: "danger_zone_form"
+})(
+  class extends React.Component<FormProps, {}> {
+    public render(): JSX.Element {
+      const { form, modalShow, submit, hide } = this.props;
+      const { getFieldDecorator } = form;
+      return (
         <Modal
           title={t("settings.modal_title")}
-          visible={this.state.modalShow}
-          onCancel={this.handleCancel}
+          visible={modalShow}
           footer={null}
+          onCancel={hide}
         >
           <Mutation mutation={DELETE_ACCOUNT}>
             {(
@@ -135,46 +169,41 @@ export class DangerZone extends Component<{}, State> {
               { loading }: { loading: boolean }
             ) => {
               return (
-                <FormContainer id={VERIFICATION_FORM}>
+                <Form layout="vertical">
                   <Text mark>{t("settings.modal_danger")}</Text>
                   <p>
                     <Text>{t("settings.modal_email_delete_desc")}</Text>
                   </p>
-                  <FieldMargin>
-                    <InputLabel htmlFor="email">Email</InputLabel>
-                    <TextInput
-                      id="email"
-                      type="email"
-                      aria-label="email"
-                      name="email"
-                      required={true}
-                      error={""}
-                    />
-                    <InputError>{emailError || "\u0020"}</InputError>
-                  </FieldMargin>
-                  <FieldMargin>
-                    <InputLabel>
-                      {`${t("settings.code_verify_prompt")} ${t(
-                        "settings.verification_code"
-                      )}`}
-                    </InputLabel>
-                    <TextInput
-                      id="code"
-                      type="text"
-                      aria-label="code"
-                      name="code"
-                      error={""}
-                    />
-                    <InputError>{codeError || "\u0020"}</InputError>
-                  </FieldMargin>
-                  <FieldMargin>
+                  <Form.Item label="Email">
+                    {getFieldDecorator("email", {
+                      rules: [
+                        {
+                          required: true,
+                          type: "email",
+                          message: t("auth/invalid-email")
+                        }
+                      ]
+                    })(<Input />)}
+                  </Form.Item>
+                  <Form.Item
+                    label={`${t("settings.code_verify_prompt")} ${t(
+                      "settings.verification_code"
+                    )}`}
+                  >
+                    {getFieldDecorator("code", {
+                      rules: [
+                        { required: true, message: t("settings.empty_code") }
+                      ]
+                    })(<Input />)}
+                  </Form.Item>
+                  <Form.Item>
                     <Button
                       type="danger"
                       htmlType="submit"
                       // @ts-ignore
                       onClick={(e: Event) => {
                         e.preventDefault();
-                        this.handleOk(deleteContact);
+                        submit(deleteContact);
                       }}
                       style={{ width: "100%" }}
                       size="large"
@@ -182,13 +211,13 @@ export class DangerZone extends Component<{}, State> {
                     >
                       {t("settings.deleteAccount")}
                     </Button>
-                  </FieldMargin>
-                </FormContainer>
+                  </Form.Item>
+                </Form>
               );
             }}
           </Mutation>
         </Modal>
-      </Flex>
-    );
+      );
+    }
   }
-}
+);

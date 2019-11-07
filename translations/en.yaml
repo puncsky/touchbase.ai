@@ -131,6 +131,7 @@ settings.modal_danger: This is extremely important
 settings.forbidden_action: Forbidden Action
 settings.verification_code: delete my account
 settings.invalid_code: Invalid Code
+settings.empty_code: Empty Code Field
 home.title: Smartly engage more in meaningful relationships
 home.desc: Open source personal CRM. Empowering relation builders with data and AI. Growing personal network with speed and quality.
 home.get_started: Sign Up to Build Relationships
