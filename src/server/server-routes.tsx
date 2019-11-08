@@ -28,6 +28,15 @@ export function setServerRoutes(server: MyServer): void {
 
   setApiGateway(server);
 
+  server.get("manifest", "/manifest.json", async (ctx: MyContext) => {
+    const manifest = require("./manifest.json") || {};
+    const translationKeys = ["short_name", "name", "description"];
+    for (const key of translationKeys) {
+      manifest[key] = ctx.t(manifest[key]);
+    }
+    ctx.body = JSON.stringify(manifest);
+  });
+
   // @ts-ignore
   server.get("SPA", /^(?!\/?api-gateway\/).+$/, async (ctx: MyContext) => {
     // @ts-ignore
