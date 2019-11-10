@@ -179,6 +179,15 @@ export class PersonalNoteModel {
     const resp = await this.Model.deleteOne({ _id, ownerId });
     return Boolean(resp && resp.ok);
   }
+
+  public async deleteAllByOwner({
+    ownerId
+  }: {
+    ownerId: string;
+  }): Promise<Boolean> {
+    const resp = await this.Model.deleteMany({ ownerId });
+    return Boolean(resp && resp.ok);
+  }
 }
 
 export interface Aggregated {

@@ -1,6 +1,7 @@
 {
-  "short_name": "guanxilab.com",
-  "name": "TODO_boilerplate",
+  "short_name": "meta.title",
+  "name": "meta.title",
+  "description": "meta.description",
   "icons": [
     {
       "src": "favicon.png",

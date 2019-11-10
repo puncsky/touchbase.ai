@@ -78,6 +78,10 @@ input CreateContactInput {
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
 scalar DateTime
 
+input DeleteAccountInput {
+  email: String!
+}
+
 input DeleteContactInput {
   _id: String!
 }
@@ -115,6 +119,7 @@ type InteractionCount {
 }
 
 type Mutation {
+  deleteAccount(deleteAccountInput: DeleteAccountInput!): Boolean!
   createContact(createContactInput: CreateContactInput!): Contact!
   updateContact(updateContactInput: UpdateContactInput!): Contact!
   deleteNote(deleteNoteInput: DeleteNoteInput!): Boolean!
