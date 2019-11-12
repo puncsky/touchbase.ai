@@ -5,9 +5,11 @@ import Switch from "antd/lib/switch";
 import ObjectID from "bson-objectid";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
+import Helmet from "onefx/lib/react-helmet";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { TContact2 } from "../../../types/human";
+import { loadScript } from "../../common/load-script";
 import { MdEditor } from "../../common/md-editor";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";
 import { actionUpsertEvent } from "../human-reducer";
@@ -61,6 +63,16 @@ export const UpsertEventContainer = Form.create<
         this.state.public = props.public;
       }
 
+      componentDidMount(): void {
+        // after load css
+        loadScript(
+          "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js",
+          // tslint:disable-next-line: no-empty
+          () => {}
+        );
+      }
+
+      // tslint:disable-next-line: max-func-body-length
       public render(): JSX.Element | null {
         const {
           actionUpsertEvent,
@@ -79,6 +91,12 @@ export const UpsertEventContainer = Form.create<
         const isPublic = this.state.public;
         return (
           <div>
+            <Helmet>
+              <link
+                rel="stylesheet"
+                href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"
+              />
+            </Helmet>
             <Modal
               visible={this.state.isVisible}
               style={{ top: TOP_BAR_HEIGHT }}
@@ -109,6 +127,7 @@ export const UpsertEventContainer = Form.create<
                 }
                 this.setState({ isVisible: false });
               }}
+              destroyOnClose
             >
               <Form>
                 <Form.Item>
@@ -123,7 +142,10 @@ export const UpsertEventContainer = Form.create<
                   }
                 />
                 <Form.Item label={t("make_public")}>
-                  {getFieldDecorator("public", {})(
+                  {getFieldDecorator(
+                    "public",
+                    {}
+                  )(
                     <Switch
                       defaultChecked={isPublic}
                       onChange={v =>
