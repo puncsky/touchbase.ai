@@ -122,4 +122,9 @@ export class UserModel {
     }
     return Boolean(resp && (await tools.bcompare(password, resp.password)));
   }
+
+  public async deleteById(id: string): Promise<boolean> {
+    const resp = await this.Model.deleteOne({ _id: id });
+    return Boolean(resp && resp.ok);
+  }
 }
