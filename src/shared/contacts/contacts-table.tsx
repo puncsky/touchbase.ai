@@ -1,4 +1,4 @@
-import { AgGridReact } from "ag-grid-react";
+import { AgGridReact } from "@ag-grid-community/react";
 import gql from "graphql-tag";
 import isBrowser = require("is-browser");
 // @ts-ignore
