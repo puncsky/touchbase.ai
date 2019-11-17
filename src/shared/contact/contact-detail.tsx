@@ -31,6 +31,7 @@ import { UpsertEventContainer } from "./event/upsert-event";
 import { HeatmapCalendar } from "./heatmap-calendar";
 import { KeyMetrics } from "./key-metrics";
 import { ProfileEditorContainer } from "./profile-editor/profile-editor";
+import { Tags } from "./tags";
 
 function currentTitle(human: TContact2): string {
   return (
@@ -118,9 +119,9 @@ export const ContactDetailContainer = withRouter<IProps>(
           this.props.match.params.nameDash !==
             nextProps.match.params.nameDash ||
           // @ts-ignore
-          (this.props.match.params[0].startsWith("edit") ||
+          this.props.match.params[0].startsWith("edit") ||
             // @ts-ignore
-            nextProps.match.params[0].startsWith("edit"))
+            nextProps.match.params[0].startsWith("edit")
         );
       }
 
@@ -247,6 +248,7 @@ function Contact({
         ]}
 
         <Flex width="100%" {...SECTION}>
+          <Tags />
           <HeatmapCalendar
             isSelf={Boolean(isSelf)}
             contactId={String(human._id)}
