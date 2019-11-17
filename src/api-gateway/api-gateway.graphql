@@ -75,6 +75,13 @@ input CreateContactInput {
   updateAt: DateTime
 }
 
+input CreateTagInput {
+  name: String!
+  rate: Float!
+  contactId: String!
+  ownerId: String!
+}
+
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
 scalar DateTime
 
@@ -88,6 +95,10 @@ input DeleteContactInput {
 
 input DeleteNoteInput {
   _id: String!
+}
+
+input DeleteTagInput {
+  id: String!
 }
 
 type Experience {
@@ -120,6 +131,8 @@ type Mutation {
   deleteNote(deleteNoteInput: DeleteNoteInput!): Boolean!
   upsertInteraction(upsertInteraction: UpsertInteraction!): Interaction!
   deleteContact(deleteContactInput: DeleteContactInput!): Boolean!
+  createTag(createTagInput: CreateTagInput!): Tag!
+  deleteTag(deleteTagInput: DeleteTagInput!): Boolean!
 }
 
 type Query {
@@ -145,11 +158,21 @@ type Query {
     twitter: String
     phone: String
   ): String!
+  getUserTags: [Tag!]!
+  getContactTags(contactId: String!): [Tag!]!
 }
 
 type SearchResult {
   name: String!
   path: String!
+}
+
+type Tag {
+  _id: String!
+  contactId: String!
+  name: String!
+  ownerId: String!
+  rate: Float!
 }
 
 input UpdateContactInput {
