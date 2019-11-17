@@ -1,5 +1,6 @@
 import {
   Arg,
+  Args,
   ArgsType,
   Ctx,
   Field,
@@ -80,7 +81,7 @@ export class TagResolver {
 
   @Query(_ => [Tag])
   public async getContactTags(
-    @Arg("getContactTags") getContactTags: GetContactTags,
+    @Args() getContactTags: GetContactTags,
     @Ctx() { model }: Context
   ): Promise<Array<TTag>> {
     return model.tag.getByContactId(getContactTags.contactId);
