@@ -18,6 +18,7 @@ import { OnefxAuth } from "../shared/onefx-auth";
 import { AccountResolve } from "./resolvers/account-resolver";
 import { ContactResolver } from "./resolvers/contact-resolver";
 import { MetaResolver } from "./resolvers/meta-resolver";
+import { TagResolver } from "./resolvers/tag-resolver";
 
 export type Context = {
   model: Model;
@@ -32,7 +33,8 @@ export async function setApiGateway(server: MyServer): Promise<void> {
     MetaResolver,
     ArticleResolver,
     ContactResolver,
-    AccountResolve
+    AccountResolve,
+    TagResolver
   ];
   server.resolvers = resolvers;
 
