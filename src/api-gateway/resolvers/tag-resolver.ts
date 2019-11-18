@@ -1,3 +1,4 @@
+import { AuthenticationError } from "apollo-server-errors";
 import {
   Arg,
   Args,
@@ -9,23 +10,35 @@ import {
   ObjectType,
   Query
 } from "type-graphql";
-import { TTag } from "../../types/tag";
+import { TTag, TTagTemplate } from "../../types/tag";
 import { Context } from "../api-gateway";
 
 @InputType()
-class CreateTagInput implements TTag {
+class CreateTagTemplateInput {
   @Field(_ => String)
   public name: string;
-  @Field(_ => Number)
-  public rate: number;
+  @Field(_ => Boolean)
+  public hasRate: boolean;
+}
+
+@InputType()
+class CreateTagInput {
+  @Field(_ => String)
+  public templateId: string;
   @Field(_ => String)
   public contactId: string;
-  @Field(_ => String)
-  public ownerId: string;
+  @Field(_ => Number)
+  public rate: number;
 }
 
 @InputType()
 class DeleteTagInput {
+  @Field(_ => String)
+  id: string;
+}
+
+@InputType()
+class DeleteTagTemplateInput {
   @Field(_ => String)
   id: string;
 }
@@ -37,29 +50,75 @@ class GetContactTags {
 }
 
 @ObjectType()
-class Tag implements TTag {
+class TagTemplate implements TTagTemplate {
   @Field(_ => String)
-  // tslint:disable-next-line:variable-name
-  public _id?: string | undefined;
-  @Field(_ => String)
-  public contactId: string;
+  public id?: string;
   @Field(_ => String)
   public name: string;
   @Field(_ => String)
   public ownerId: string;
+  @Field(_ => Boolean)
+  hasRate: boolean;
+  @Field(_ => Date)
+  createAt?: Date;
+  @Field(_ => Date)
+  updateAt?: Date;
+}
+
+@ObjectType()
+class ContactTag implements TTag {
+  @Field(_ => String)
+  public id?: string;
+  @Field(_ => String)
+  public name: string;
+  @Field(_ => String)
+  public templateId: string;
+  @Field(_ => String)
+  public ownerId: string;
   @Field(_ => Number)
   public rate: number;
+  @Field(_ => String)
+  public contactId: string;
+  @Field(_ => Boolean)
+  public hasRate: boolean;
+  @Field(_ => Date)
+  createAt?: Date;
+  @Field(_ => Date)
+  updateAt?: Date;
 }
 
 export class TagResolver {
-  @Mutation(_ => Tag)
+  @Mutation(_ => TagTemplate)
+  public async createTagTemplate(
+    @Arg("createTagTemplateInput")
+    createTagTemplateInput: CreateTagTemplateInput,
+    @Ctx() { model, userId }: Context
+  ): Promise<TagTemplate> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to createTag`);
+    }
+    return model.tag.createTemplate({
+      ...createTagTemplateInput,
+      ownerId: userId
+    });
+  }
+
+  @Mutation(_ => ContactTag)
   public async createTag(
     @Arg("createTagInput") createTagInput: CreateTagInput,
-    @Ctx() { model, userId }: Context
-  ): Promise<TTag> {
-    return model.tag.newAndSave({
-      ...createTagInput,
-      ownerId: userId
+    @Ctx() { model }: Context
+  ): Promise<ContactTag> {
+    const template = await model.tag.getTagTemplateById(
+      createTagInput.templateId
+    );
+    if (!template) {
+      throw Error("no template found");
+    }
+    // @ts-ignore
+    const { id, ...picked } = template;
+    return model.tag.createTag({
+      ...picked,
+      ...createTagInput
     });
   }
 
@@ -69,21 +128,30 @@ export class TagResolver {
     @Ctx() { model }: Context
   ): Promise<Boolean> {
     const id = deleteTagInput.id;
-    return model.tag.deleteOne(id);
+    return model.tag.deleteTag(id);
   }
 
-  @Query(_ => [Tag])
-  public async getUserTags(
+  @Mutation(_ => Boolean)
+  public async deleteTagTemplate(
+    @Arg("deleteTagTemplateInput")
+    deleteTagTemplateInput: DeleteTagTemplateInput,
+    @Ctx() { model }: Context
+  ): Promise<Boolean> {
+    return model.tag.deleteTemplate(deleteTagTemplateInput.id);
+  }
+
+  @Query(_ => [TagTemplate])
+  public async getUserTagTemplates(
     @Ctx() { model, userId }: Context
-  ): Promise<Array<TTag>> {
-    return model.tag.getByOwnerId(userId);
+  ): Promise<Array<TagTemplate>> {
+    return model.tag.getTemplatesByOwnerId(userId);
   }
 
-  @Query(_ => [Tag])
+  @Query(_ => [ContactTag])
   public async getContactTags(
     @Args() getContactTags: GetContactTags,
     @Ctx() { model }: Context
-  ): Promise<Array<TTag>> {
-    return model.tag.getByContactId(getContactTags.contactId);
+  ): Promise<Array<ContactTag>> {
+    return model.tag.getTagsByContactId(getContactTags.contactId);
   }
 }

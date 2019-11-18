@@ -1,7 +1,16 @@
-export interface TTag {
-  _id?: string;
+export interface TTagTemplate {
+  id?: string;
   name: string;
   ownerId: string;
-  rate?: number;
+  hasRate: boolean;
+}
+
+export interface TTag {
+  id?: string;
+  rate: number;
+  templateId: string;
   contactId: string;
+  name: string;
+  ownerId: string;
+  hasRate: boolean;
 }
