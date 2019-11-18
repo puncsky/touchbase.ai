@@ -114,14 +114,10 @@ class Tags extends React.Component<Props, State> {
     });
   };
 
+  // tslint:disable-next-line:max-func-body-length
   render(): JSX.Element {
     // @ts-ignore
-    const {
-      getFieldDecorator,
-      getFieldsError,
-      getFieldError,
-      isFieldTouched
-    } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
 
     return (
       <Container>
