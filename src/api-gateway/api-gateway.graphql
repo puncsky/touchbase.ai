@@ -45,6 +45,18 @@ type Contact {
   updateAt: DateTime
 }
 
+type ContactTag {
+  id: String!
+  name: String!
+  templateId: String!
+  ownerId: String!
+  rate: Float!
+  contactId: String!
+  hasRate: Boolean!
+  createAt: DateTime!
+  updateAt: DateTime!
+}
+
 input CreateContactInput {
   _id: String
   emails: [String!]
@@ -76,10 +88,14 @@ input CreateContactInput {
 }
 
 input CreateTagInput {
-  name: String!
-  rate: Float!
+  templateId: String!
   contactId: String!
-  ownerId: String!
+  rate: Float!
+}
+
+input CreateTagTemplateInput {
+  name: String!
+  hasRate: Boolean!
 }
 
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
@@ -98,6 +114,10 @@ input DeleteNoteInput {
 }
 
 input DeleteTagInput {
+  id: String!
+}
+
+input DeleteTagTemplateInput {
   id: String!
 }
 
@@ -131,8 +151,12 @@ type Mutation {
   deleteNote(deleteNoteInput: DeleteNoteInput!): Boolean!
   upsertInteraction(upsertInteraction: UpsertInteraction!): Interaction!
   deleteContact(deleteContactInput: DeleteContactInput!): Boolean!
-  createTag(createTagInput: CreateTagInput!): Tag!
+  createTagTemplate(
+    createTagTemplateInput: CreateTagTemplateInput!
+  ): TagTemplate!
+  createTag(createTagInput: CreateTagInput!): ContactTag!
   deleteTag(deleteTagInput: DeleteTagInput!): Boolean!
+  deleteTagTemplate(deleteTagTemplateInput: DeleteTagTemplateInput!): Boolean!
 }
 
 type Query {
@@ -158,8 +182,8 @@ type Query {
     twitter: String
     phone: String
   ): String!
-  getUserTags: [Tag!]!
-  getContactTags(contactId: String!): [Tag!]!
+  getUserTagTemplates: [TagTemplate!]!
+  getContactTags(contactId: String!): [ContactTag!]!
 }
 
 type SearchResult {
@@ -167,12 +191,13 @@ type SearchResult {
   path: String!
 }
 
-type Tag {
-  _id: String!
-  contactId: String!
+type TagTemplate {
+  id: String!
   name: String!
   ownerId: String!
-  rate: Float!
+  hasRate: Boolean!
+  createAt: DateTime!
+  updateAt: DateTime!
 }
 
 input UpdateContactInput {
