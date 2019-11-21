@@ -140,7 +140,7 @@ type Props = {
   showModal(): void;
 };
 
-export class SelectContainer extends React.Component<Props, {}> {
+export class SelectContainer extends React.Component<Props> {
   onChange = async (
     actionMeta: ActionMeta,
     createTag: MutationFn,
