@@ -37,7 +37,7 @@ function HeadInner({ locale }: { locale: string }): JSX.Element {
         {
           rel: "stylesheet",
           type: "text/css",
-          href: assetURL("/stylesheets/main.css")
+          href: assetURL("/stylesheets/main1.css")
         },
         {
           rel: "stylesheet",
