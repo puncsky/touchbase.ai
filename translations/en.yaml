@@ -159,3 +159,11 @@ experience.title: Title
 experience.org: Orgnization
 edit: Edit
 delete: Delete
+tag.create_tag: Create Tag
+tag.name: Tag Name
+tag.name_required: Please input tag name
+tag.rate_required: Need Rate?
+tag.create_error: Create Tag Failed
+tag.create_success: Creation Is Successful
+tags: Tags
+tag.select.placeholder: Select...

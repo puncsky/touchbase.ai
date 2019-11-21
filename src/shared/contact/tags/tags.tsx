@@ -1,22 +1,17 @@
-import {
-  Checkbox,
-  Divider,
-  Form,
-  Icon,
-  Input,
-  Modal,
-  Rate,
-  Select
-} from "antd";
+import { Checkbox, Form, Icon, Input, Modal } from "antd";
+import Divider from "antd/lib/divider";
 import { FormProps, WrappedFormUtils } from "antd/lib/form/Form";
+import notification from "antd/lib/notification";
+import Spin from "antd/lib/spin";
 import gql from "graphql-tag";
+import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
 import React from "react";
 import { Query, QueryResult } from "react-apollo";
 import Mutation, { MutationFn } from "react-apollo/Mutation";
-import { TTag, TTagTemplate } from "../../types/tag";
-
-const { Option } = Select;
+import { TTag, TTagTemplate } from "../../../types/tag";
+import { Flex } from "../../common/flex";
+import { SelectContainer } from "./select";
 
 const Container = styled("div", {
   width: "100%",
@@ -29,6 +24,7 @@ type State = {
 
 type Props = {
   contactId: string;
+  form: WrappedFormUtils;
 } & FormProps;
 
 const CREATE_TAG = gql`
@@ -53,15 +49,22 @@ const QUERY_TEMPLATES = gql`
     }
     getContactTags(contactId: $contactId) {
       id
-      name
       templateId
-      hasRate
       rate
       contactId
-      ownerId
+      hasRate
+      name
     }
   }
 `;
+
+function TagSpin(): JSX.Element {
+  return (
+    <Flex height="100">
+      <Spin size="large" />
+    </Flex>
+  );
+}
 
 class Tags extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -71,22 +74,15 @@ class Tags extends React.Component<Props, State> {
     };
   }
 
-  handleChange = (value: string) => {
-    window.console.log(`selected ${value}`);
-  };
-
-  handleRateChange = (key: string, value: number) => {
-    window.console.log(key, value);
-  };
-
   showModal = () => {
     this.setState({
       modalShow: true
     });
   };
 
-  createTag = (createTag: MutationFn) => {
+  createTag = (createTag: MutationFn, refetch: () => void) => {
     const { form } = this.props;
+    const { resetFields } = form;
     if (!form) {
       return;
     }
@@ -102,8 +98,17 @@ class Tags extends React.Component<Props, State> {
             }
           }
         });
+        this.hideModal();
+        notification.success({
+          message: t("tag.create_success")
+        });
+        resetFields();
+        refetch();
       } catch (e) {
-        window.console.log(e.graphQLErrors);
+        notification.error({
+          message: t("tag.create_error"),
+          description: e
+        });
       }
     });
   };
@@ -114,9 +119,7 @@ class Tags extends React.Component<Props, State> {
     });
   };
 
-  // tslint:disable-next-line:max-func-body-length
   render(): JSX.Element {
-    // @ts-ignore
     const { getFieldDecorator } = this.props.form;
 
     return (
@@ -127,68 +130,46 @@ class Tags extends React.Component<Props, State> {
         >
           {({
             loading,
-            data
+            data,
+            refetch
           }: QueryResult<{
-            getUserTagTemplates: Array<TTagTemplate>;
-            getContactTags: Array<TTag>;
+            getUserTagTemplates: [TTagTemplate];
+            getContactTags: [TTag];
           }>) => {
-            if (loading) {
-              return <div />;
-            }
-            if (!data) {
-              return <div />;
+            if (loading || !data) {
+              return <TagSpin />;
             }
             return (
               <>
-                <Select
-                  mode="tags"
-                  style={{ width: "100%" }}
-                  placeholder="Tags Mode"
-                  onChange={this.handleChange}
-                  dropdownRender={menu => (
-                    <div>
-                      {menu}
-                      <Divider style={{ margin: "4px 0" }} />
-                      {/* tslint:disable-next-line:react-a11y-event-has-role */}
-                      <div
-                        style={{ padding: "4px 8px", cursor: "pointer" }}
-                        onMouseDown={e => e.preventDefault()}
-                        onClick={this.showModal}
-                      >
-                        <Icon type="plus" /> Add item
-                      </div>
-                    </div>
-                  )}
-                >
-                  {data.getUserTagTemplates.map((item: TTagTemplate) => (
-                    <Option key={item.id}>
-                      <div className="option-wrap">
-                        {item.name}
-                        <Rate
-                          character="★"
-                          style={{ fontSize: 14, margin: 0 }}
-                        />
-                      </div>
-                    </Option>
-                  ))}
-                </Select>
+                <SelectContainer
+                  contactId={this.props.contactId}
+                  refetch={refetch}
+                  data={data}
+                  showModal={() => {
+                    this.showModal();
+                  }}
+                />
                 <Mutation mutation={CREATE_TAG}>
-                  {(createTag: MutationFn) => (
+                  {(
+                    createTag: MutationFn,
+                    { loading }: { loading: boolean }
+                  ) => (
                     <Modal
-                      title="Basic Modal"
+                      title={t("tag.create_tag")}
                       visible={this.state.modalShow}
                       onOk={() => {
-                        this.createTag(createTag);
+                        this.createTag(createTag, refetch);
                       }}
                       onCancel={this.hideModal}
+                      confirmLoading={loading}
                     >
                       <Form layout="vertical">
-                        <Form.Item label="Tag Name">
+                        <Form.Item label={t("tag.name")}>
                           {getFieldDecorator("name", {
                             rules: [
                               {
                                 required: true,
-                                message: "Please input tag name"
+                                message: t("tag.name_required")
                               }
                             ]
                           })(
@@ -196,10 +177,10 @@ class Tags extends React.Component<Props, State> {
                               prefix={
                                 <Icon
                                   type="tag"
-                                  style={{ color: "rgba(0,0,0,.25)" }}
+                                  style={{ color: "rgba(0,0,0,0.25)" }}
                                 />
                               }
-                              placeholder="name"
+                              placeholder={t("tag.name")}
                             />
                           )}
                         </Form.Item>
@@ -207,12 +188,13 @@ class Tags extends React.Component<Props, State> {
                           {getFieldDecorator("hasRate", {
                             valuePropName: "checked",
                             initialValue: false
-                          })(<Checkbox>Need Rate</Checkbox>)}
+                          })(<Checkbox>{t("tag.rate_required")}</Checkbox>)}
                         </Form.Item>
                       </Form>
                     </Modal>
                   )}
                 </Mutation>
+                <Divider />
               </>
             );
           }}

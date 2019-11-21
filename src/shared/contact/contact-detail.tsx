@@ -31,7 +31,7 @@ import { UpsertEventContainer } from "./event/upsert-event";
 import { HeatmapCalendar } from "./heatmap-calendar";
 import { KeyMetrics } from "./key-metrics";
 import { ProfileEditorContainer } from "./profile-editor/profile-editor";
-import { TagsContainer } from "./tags";
+import { TagsContainer } from "./tags/tags";
 
 function currentTitle(human: TContact2): string {
   return (

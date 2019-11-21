@@ -157,6 +157,7 @@ type Mutation {
   createTag(createTagInput: CreateTagInput!): ContactTag!
   deleteTag(deleteTagInput: DeleteTagInput!): Boolean!
   deleteTagTemplate(deleteTagTemplateInput: DeleteTagTemplateInput!): Boolean!
+  rateTag(rateTagInput: RateTagInput!): ContactTag!
 }
 
 type Query {
@@ -184,6 +185,11 @@ type Query {
   ): String!
   getUserTagTemplates: [TagTemplate!]!
   getContactTags(contactId: String!): [ContactTag!]!
+}
+
+input RateTagInput {
+  id: String!
+  rate: Float!
 }
 
 type SearchResult {

@@ -43,6 +43,14 @@ class DeleteTagTemplateInput {
   id: string;
 }
 
+@InputType()
+class RateTagInput {
+  @Field(_ => String)
+  id: string;
+  @Field(_ => Number)
+  rate: number;
+}
+
 @ArgsType()
 class GetContactTags {
   @Field(_ => String)
@@ -114,11 +122,11 @@ export class TagResolver {
     if (!template) {
       throw Error("no template found");
     }
-    // @ts-ignore
-    const { id, ...picked } = template;
     return model.tag.createTag({
-      ...picked,
-      ...createTagInput
+      ...createTagInput,
+      name: template.name,
+      ownerId: template.ownerId,
+      hasRate: template.hasRate
     });
   }
 
@@ -138,6 +146,14 @@ export class TagResolver {
     @Ctx() { model }: Context
   ): Promise<Boolean> {
     return model.tag.deleteTemplate(deleteTagTemplateInput.id);
+  }
+
+  @Mutation(_ => ContactTag)
+  public async rateTag(
+    @Arg("rateTagInput") rateTagInput: RateTagInput,
+    @Ctx() { model }: Context
+  ): Promise<ContactTag | null> {
+    return model.tag.findAndUpdateTagRate(rateTagInput);
   }
 
   @Query(_ => [TagTemplate])

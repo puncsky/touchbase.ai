@@ -88,6 +88,22 @@ export class TagModel {
     return Boolean(resp && resp.ok);
   }
 
+  public async findAndUpdateTagRate({
+    id,
+    rate
+  }: {
+    id: string;
+    rate: number;
+  }): Promise<TTagDoc | null> {
+    return this.TagModel.findOneAndUpdate(
+      { _id: id },
+      { rate },
+      {
+        new: true
+      }
+    );
+  }
+
   public async getTagTemplateById(id: string): Promise<TTagTemplateDoc | null> {
     return this.TagTemplateModel.findById(id);
   }
