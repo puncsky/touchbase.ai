@@ -1,4 +1,6 @@
+import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
 import { AgGridReact } from "@ag-grid-community/react";
+
 import gql from "graphql-tag";
 import isBrowser = require("is-browser");
 // @ts-ignore
@@ -250,6 +252,7 @@ export const ContactsTableContainer = withRouter(
                       columnDefs={columnDefs}
                       rowData={rows}
                       onCellValueChanged={this.onCellValueChanged}
+                      modules={[ClientSideRowModelModule]}
                       defaultColDef={{ editable: true }}
                     />
                   );
