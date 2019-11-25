@@ -469,11 +469,8 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                 <Button
                   onClick={() => {
                     fetchMore({
-                      query: GET_INTERACTIONS,
                       variables: {
-                        contactId,
-                        offset: interactions.length,
-                        limit: PAGE_SIZE
+                        offset: interactions.length
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
                         if (!fetchMoreResult) {
