@@ -66,20 +66,23 @@ const UPSERT_INTERACTION = gql`
   }
 `;
 
-export const refetchInteractionsQueries = (contactId: string) => [
+export const refetchInteractionsQueries = (
+  contactId: string,
+  updated: boolean = false
+) => [
   {
     query: GET_INTERACTIONS,
     variables: {
       contactId,
       offset: 0,
-      limit: PAGE_SIZE
+      limit: updated ? 0 : PAGE_SIZE
     }
   },
   {
     query: GET_INTERACTIONS,
     variables: {
       offset: 0,
-      limit: PAGE_SIZE,
+      limit: updated ? 0 : PAGE_SIZE,
       isSelf: true
     }
   }
@@ -91,7 +94,10 @@ export function actionUpsertEvent(payload: any, contactId: string): any {
       .mutate<{ upsertInteraction: { _id: string } }>({
         mutation: UPSERT_INTERACTION,
         variables: { upsertInteraction: payload },
-        refetchQueries: refetchInteractionsQueries(contactId)
+        refetchQueries: refetchInteractionsQueries(
+          contactId,
+          Boolean(payload.id)
+        )
       })
       .then(resp => {
         // TODO(tian): error handling

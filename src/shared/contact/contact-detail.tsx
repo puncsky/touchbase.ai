@@ -118,9 +118,9 @@ export const ContactDetailContainer = withRouter<IProps>(
           this.props.match.params.nameDash !==
             nextProps.match.params.nameDash ||
           // @ts-ignore
-          (this.props.match.params[0].startsWith("edit") ||
+          this.props.match.params[0].startsWith("edit") ||
             // @ts-ignore
-            nextProps.match.params[0].startsWith("edit"))
+            nextProps.match.params[0].startsWith("edit")
         );
       }
 
@@ -469,11 +469,8 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                 <Button
                   onClick={() => {
                     fetchMore({
-                      query: GET_INTERACTIONS,
                       variables: {
-                        contactId,
-                        offset: interactions.length,
-                        limit: PAGE_SIZE
+                        offset: interactions.length
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
                         if (!fetchMoreResult) {
