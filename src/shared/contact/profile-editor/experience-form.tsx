@@ -116,7 +116,6 @@ class AddNewExp extends Component<
           {(() => (
             <AddNewExp form={form} i={i + 1} fieldName={fieldName} />
           ))()}
-          he
         </>
       );
     }
