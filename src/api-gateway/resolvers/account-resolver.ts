@@ -9,7 +9,7 @@ class DeleteAccountInput {
   email: string;
 }
 
-export class AccountResolve {
+export class AccountResolver {
   @Mutation(_ => Boolean)
   public async deleteAccount(
     @Arg("deleteAccountInput") input: DeleteAccountInput,
