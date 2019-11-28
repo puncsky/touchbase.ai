@@ -1,4 +1,4 @@
-import { AuthenticationError } from "apollo-server-errors";
+import { AuthenticationError, ValidationError } from "apollo-server-errors";
 import {
   Arg,
   Args,
@@ -103,7 +103,7 @@ export class TagResolver {
     @Ctx() { model, userId }: Context
   ): Promise<TagTemplate> {
     if (!userId) {
-      throw new AuthenticationError(`please login to createTag`);
+      throw new AuthenticationError(`please login to createTagTemplate`);
     }
     return model.tag.createTemplate({
       ...createTagTemplateInput,
@@ -114,13 +114,16 @@ export class TagResolver {
   @Mutation(_ => ContactTag)
   public async createTag(
     @Arg("createTagInput") createTagInput: CreateTagInput,
-    @Ctx() { model }: Context
+    @Ctx() { model, userId }: Context
   ): Promise<ContactTag> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to createTag`);
+    }
     const template = await model.tag.getTagTemplateById(
       createTagInput.templateId
     );
     if (!template) {
-      throw Error("no template found");
+      throw new ValidationError("no template found");
     }
     return model.tag.createTag({
       ...createTagInput,
@@ -133,8 +136,11 @@ export class TagResolver {
   @Mutation(_ => Boolean)
   public async deleteTag(
     @Arg("deleteTagInput") deleteTagInput: DeleteTagInput,
-    @Ctx() { model }: Context
+    @Ctx() { model, userId }: Context
   ): Promise<Boolean> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to deleteTag`);
+    }
     const id = deleteTagInput.id;
     return model.tag.deleteTag(id);
   }
@@ -143,16 +149,22 @@ export class TagResolver {
   public async deleteTagTemplate(
     @Arg("deleteTagTemplateInput")
     deleteTagTemplateInput: DeleteTagTemplateInput,
-    @Ctx() { model }: Context
+    @Ctx() { model, userId }: Context
   ): Promise<Boolean> {
+    if (!userId) {
+      throw new AuthenticationError(`please login deleteTagTemplate`);
+    }
     return model.tag.deleteTemplate(deleteTagTemplateInput.id);
   }
 
   @Mutation(_ => ContactTag)
   public async rateTag(
     @Arg("rateTagInput") rateTagInput: RateTagInput,
-    @Ctx() { model }: Context
+    @Ctx() { model, userId }: Context
   ): Promise<ContactTag | null> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to rateTag`);
+    }
     return model.tag.findAndUpdateTagRate(rateTagInput);
   }
 
@@ -160,14 +172,20 @@ export class TagResolver {
   public async getUserTagTemplates(
     @Ctx() { model, userId }: Context
   ): Promise<Array<TagTemplate>> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to getUserTagTemplates`);
+    }
     return model.tag.getTemplatesByOwnerId(userId);
   }
 
   @Query(_ => [ContactTag])
   public async getContactTags(
     @Args() getContactTags: GetContactTags,
-    @Ctx() { model }: Context
+    @Ctx() { model, userId }: Context
   ): Promise<Array<ContactTag>> {
+    if (!userId) {
+      throw new AuthenticationError(`please login to getContactTags`);
+    }
     return model.tag.getTagsByContactId(getContactTags.contactId);
   }
 }
