@@ -54,8 +54,8 @@ export class TagModel {
       return this._id;
     });
 
-    this.TagModel = mongoose.model("Tag", TagSchema);
-    this.TagTemplateModel = mongoose.model("TagTemplate", TagTemplateSchema);
+    this.TagModel = mongoose.model("tags_by_contacts", TagSchema);
+    this.TagTemplateModel = mongoose.model("tag_templates", TagTemplateSchema);
   }
 
   public async createTemplate(
