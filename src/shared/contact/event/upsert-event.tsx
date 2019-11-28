@@ -43,8 +43,8 @@ export const UpsertEventContainer = Form.create<
       ownerHumanId: state.base.ownerHumanId
     }),
     (dispatch: any) => ({
-      actionUpsertEvent: (payload: any, contactId: string) =>
-        dispatch(actionUpsertEvent(payload, contactId))
+      actionUpsertEvent: (payload: any, contactId: string, isSelf: boolean) =>
+        dispatch(actionUpsertEvent(payload, contactId, isSelf))
     })
   )(
     // @ts-ignore
