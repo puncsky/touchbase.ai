@@ -17,6 +17,43 @@ const DELETE_NOTE = gql`
     deleteNote(deleteNoteInput: { _id: $id })
   }
 `;
+function updateStore(
+  store: any,
+  { data: { deleteNote } }: any,
+  isSelf: boolean,
+  contactId: string,
+  noteId: string
+): void {
+  if (!deleteNote) {
+    return;
+  }
+  const results: {
+    interactions: {
+      interactions: [TInteraction];
+      count: number;
+      __typename: string;
+    };
+  } | null = store.readQuery({
+    query: GET_INTERACTIONS,
+    variables: isSelf ? { isSelf } : { contactId }
+  });
+  if (!results) {
+    return;
+  }
+  const { __typename, count, interactions } = results.interactions;
+  const filteredArray = interactions.filter(item => item.id !== noteId);
+  store.writeQuery({
+    query: GET_INTERACTIONS,
+    data: {
+      interactions: {
+        interactions: filteredArray,
+        __typename,
+        count: count - 1
+      }
+    },
+    variables: isSelf ? { isSelf } : { contactId }
+  });
+}
 
 export const DeleteNotePopover = withRouter(
   // @ts-ignore
@@ -51,46 +88,14 @@ export const DeleteNotePopover = withRouter(
                           try {
                             await deleteContact({
                               variables: { id: noteId },
-                              update: (
-                                store,
-                                { data: { deleteNote } }: any
-                              ) => {
-                                if (!deleteNote) {
-                                  return;
-                                }
-                                const results: {
-                                  interactions: {
-                                    interactions: [TInteraction];
-                                    count: number;
-                                    __typename: string;
-                                  };
-                                } | null = store.readQuery({
-                                  query: GET_INTERACTIONS,
-                                  variables: isSelf ? { isSelf } : { contactId }
-                                });
-                                if (!results) {
-                                  return;
-                                }
-                                const {
-                                  __typename,
-                                  count,
-                                  interactions
-                                } = results.interactions;
-                                const filteredArray = interactions.filter(
-                                  item => item.id !== noteId
-                                );
-                                store.writeQuery({
-                                  query: GET_INTERACTIONS,
-                                  data: {
-                                    interactions: {
-                                      interactions: filteredArray,
-                                      __typename,
-                                      count: count - 1
-                                    }
-                                  },
-                                  variables: isSelf ? { isSelf } : { contactId }
-                                });
-                              }
+                              update: (store, data) =>
+                                updateStore(
+                                  store,
+                                  data,
+                                  isSelf,
+                                  contactId,
+                                  noteId
+                                )
                             });
                             this.setState({ visible: false });
                             notification.success({
