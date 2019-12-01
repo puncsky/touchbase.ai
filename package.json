@@ -134,7 +134,7 @@
     "@types/validator": "10.11.3",
     "@ag-grid-community/all-modules": "22.0.0",
     "@ag-grid-community/react": "22.0.0",
-    "antd": "3.25.3",
+    "antd": "3.26.0",
     "apollo-cache-inmemory": "1.6.3",
     "apollo-client": "2.6.4",
     "apollo-link-http": "1.5.16",
