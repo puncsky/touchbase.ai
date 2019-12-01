@@ -2,7 +2,6 @@ import { Checkbox, Form, Icon, Input, Modal } from "antd";
 import Divider from "antd/lib/divider";
 import { FormProps, WrappedFormUtils } from "antd/lib/form/Form";
 import notification from "antd/lib/notification";
-import Spin from "antd/lib/spin";
 import gql from "graphql-tag";
 import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
@@ -10,7 +9,7 @@ import React from "react";
 import { Query, QueryResult } from "react-apollo";
 import Mutation, { MutationFn } from "react-apollo/Mutation";
 import { TTag, TTagTemplate } from "../../../types/tag";
-import { Flex } from "../../common/flex";
+import { Preloader } from "../../common/preloader";
 import { SelectContainer } from "./select";
 
 const Container = styled("div", {
@@ -59,11 +58,7 @@ const QUERY_TEMPLATES = gql`
 `;
 
 function TagSpin(): JSX.Element {
-  return (
-    <Flex height="100">
-      <Spin size="large" />
-    </Flex>
-  );
+  return <Preloader />;
 }
 
 class Tags extends React.Component<Props, State> {
