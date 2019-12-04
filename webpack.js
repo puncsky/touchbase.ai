@@ -7,6 +7,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 const process = require("global/process");
 const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 
 const ANALYZE = false;
 const PROD = process.env.NODE_ENV === "production";
@@ -64,6 +65,7 @@ module.exports = {
     /* Advanced resolve configuration (click to show) */
   },
   plugins: [
+    new Dotenv(),
     new ManifestPlugin({
       basePath: "/",
       fileName: "asset-manifest.json"
