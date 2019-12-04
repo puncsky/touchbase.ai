@@ -14,11 +14,10 @@ const uploadConfig = {
   api_secret: process.env.CLOUDINARY_API_SECRET
 };
 
-// tslint:disable-next-line:variable-name
 export const upload = (
   file: any,
   title: any,
-  public_id: string,
+  publicId: string,
   sizeLimit: any = 500
 ) => {
   const fileSizeLimit = file.size / 1024 < sizeLimit;
@@ -34,7 +33,7 @@ export const upload = (
   formData.append("api_key", uploadConfig.api_key);
   formData.append("file", file);
   formData.append("timestamp", timestamp);
-  formData.append("public_id", public_id);
+  formData.append("public_id", publicId);
   formData.append("overwrite", overwrite);
   formData.append("tags", tags);
   formData.append("context", context);
@@ -43,7 +42,7 @@ export const upload = (
     tags,
     overwrite,
     context,
-    public_id
+    public_id: publicId
   });
   formData.append("signature", signature);
   return axios.post(uploadConfig.url, formData).then(({ data }) => data);
