@@ -108,7 +108,10 @@ class ProfileEditorContainer extends Component<Props, State> {
       // ui rendered with the old contacts look like more reasonable.
       phones: (result.phones || []).filter((e: any) => e)
     };
-    actionUpdateHuman(omitBy(clone, (val: any) => !val && val !== 0), false);
+    actionUpdateHuman(
+      omitBy(clone, (val: any) => !val && val !== 0),
+      false
+    );
 
     this.close();
   }
@@ -216,7 +219,7 @@ class PersonalForm extends Component<
 
     const beforeUpload = async ({ file, onSuccess }: any) => {
       const fieldName = "avatarUrl";
-      const data = await upload(file, fieldName);
+      const data = await upload(file, fieldName, human._id || "");
       form.setFieldsValue({
         [fieldName]: data.secure_url
       });
