@@ -11,7 +11,8 @@ const uploadConfig = {
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   url: `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_NAME}/image/upload`,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  // tslint:disable-next-line:no-non-null-assertion
+  api_secret: process.env.CLOUDINARY_API_SECRET!
 };
 
 export const upload = (
@@ -30,13 +31,15 @@ export const upload = (
   const tags = title ? `myphotoalbum,${title}` : "myphotoalbum";
   const overwrite = "true";
   const context = title ? `photo\=${title}` : "";
-  formData.append("api_key", uploadConfig.api_key);
   formData.append("file", file);
+  formData.append("api_key", uploadConfig.api_key);
+
   formData.append("timestamp", timestamp);
   formData.append("public_id", publicId);
   formData.append("overwrite", overwrite);
   formData.append("tags", tags);
   formData.append("context", context);
+
   const signature = createSignature({
     timestamp,
     tags,
@@ -45,23 +48,21 @@ export const upload = (
     public_id: publicId
   });
   formData.append("signature", signature);
+
   return axios.post(uploadConfig.url, formData).then(({ data }) => data);
 };
 
-function createSignature({
-  timestamp,
-  public_id,
-  tags,
-  context,
-  overwrite
-}: {
-  timestamp: number;
-  public_id: string;
-  tags: string;
-  context: string;
-  overwrite: string;
-}): string {
-  return sha1(
-    `context=${context}&overwrite=${overwrite}&public_id=${public_id}&tags=${tags}&timestamp=${timestamp}${uploadConfig.api_secret}`
-  );
+function createSignature(parameter: object): string {
+  const origin = Object.keys(parameter)
+    .sort()
+    .reverse()
+    .reduce(
+      (sum: string, key: string, index: number, array: Array<string>): string =>
+        `${index === array.length - 1 ? "" : "&"}${key}=${
+          // @ts-ignore
+          parameter[key]
+        }${sum}`,
+      uploadConfig.api_secret
+    );
+  return sha1(origin);
 }
