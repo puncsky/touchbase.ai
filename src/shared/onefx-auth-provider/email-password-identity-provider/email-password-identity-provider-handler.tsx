@@ -7,7 +7,7 @@ import { MyContext } from "../../../types/global";
 import { TUser } from "../../onefx-auth/model/user-model";
 import { IdentityAppContainer } from "./view/identity-app-container";
 
-const PASSWORD_MIN_LENGTH = 8;
+const PASSWORD_MIN_LENGTH = 6;
 
 type Handler = MyContext;
 
