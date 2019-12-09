@@ -3,7 +3,7 @@ add_interaction: 添加交互
 auth/button_submit: 提交
 auth/consent: 通过点击提交，即表示您同意 Beancount.io 的<a href="${tosUrl}">使用条款</a>， 并确认您已读过此<a href="${policyUrl}">隐私协议</a>。
 auth/email-already-in-use: 邮箱已被占用
-auth/forgot_password.back: ← 返回至登陆
+auth/forgot_password.back: ← 返回至登录
 auth/forgot_password.desc: 请输入与您账号所关联的邮箱地址，我们将通过邮件发送给您重置密码的链接。
 auth/forgot_password.email_content: "嗨，我们收到一个重置您密码的请求。如果您没有发起过这样的请求，请忽略此消息。否则，您可以通过下面的链接来重置您的密码: ${link}。"
 auth/forgot_password.email_title: 重置您的密码
@@ -12,16 +12,16 @@ auth/forgot_password.send: 发送重置链接
 auth/forgot_password.sent: 重置您密码的链接已经发送至 ${email} 。
 auth/forgot_password: 忘记密码
 auth/invalid-email: 邮箱无效
-auth/reset_password.desc: 您的密码至少需要包含一个特殊符号或数字，并且不能少于 8 个字符。
+auth/reset_password.desc: 您的密码至少需要包含一个特殊符号或数字，并且不能少于 6 个字符。
 auth/reset_password.success: 您的密码已经更新。
 auth/reset_password: 重置密码
 auth/sign_in.forgot_password: 忘记密码？重置
 auth/sign_in.switch_to_sign_up: 没有账号？注册
-auth/sign_in.title: 登陆
-auth/sign_up.switch_to_sign_in: 已有账号？登陆
+auth/sign_in.title: 登录
+auth/sign_up.switch_to_sign_in: 已有账号？登录
 auth/user-disabled: 用户被禁
 auth/user-not-found: 用户未找到
-auth/weak-password: 请至少使用 8 个字符作为密码
+auth/weak-password: 请至少使用 6 个字符作为密码
 auth/wrong-password: 密码不正确
 auth/password: 密码
 auth/new-password: 新密码
@@ -97,7 +97,7 @@ topbar.contacts: 联系人
 topbar.create: 添加
 topbar.edit: 编辑
 topbar.home: 主页
-topbar.login: 登陆
+topbar.login: 登录
 topbar.sign_up: 注册
 workingOn: 从事
 years_known: 已认识年数
@@ -119,7 +119,7 @@ field.error.phone.format: 请输入一个有效的手机号.
 settings.manage_your_account: 管理你的账户
 settings.sessions: 会话
 settings.security: 安全
-settings.logout: 退出登陆
+settings.logout: 退出登录
 settings.dangerZone: 危险区
 settings.deleteAccount: 删除此账户
 settings.deleteAccountDesc: 注意，一旦删除，所有数据将不能恢复。

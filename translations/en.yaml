@@ -13,7 +13,7 @@ auth/forgot_password.send: SEND RESET LINK
 auth/forgot_password.sent: A link to reset your password has been sent to ${email}.
 auth/forgot_password: Forgot Password
 auth/invalid-email: Email is invalid
-auth/reset_password.desc: Your password needs to have at least one symbol or number, and have at least 8 characters.
+auth/reset_password.desc: Your password needs to have at least one symbol or number, and have at least 6 characters.
 auth/reset_password.success: Your password has been updated.
 auth/reset_password: Reset password
 auth/sign_in.forgot_password: Forgot password? Reset
