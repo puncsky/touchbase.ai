@@ -1,4 +1,15 @@
-import { Checkbox, Form, Icon, Input, Modal } from "antd";
+import {
+  Checkbox,
+  Dropdown,
+  Form,
+  Icon,
+  Input,
+  Menu,
+  Modal,
+  Rate,
+  Tag,
+  AutoComplete
+} from "antd";
 import Divider from "antd/lib/divider";
 import { FormProps, WrappedFormUtils } from "antd/lib/form/Form";
 import notification from "antd/lib/notification";
@@ -9,6 +20,7 @@ import React from "react";
 import { Query, QueryResult } from "react-apollo";
 import Mutation, { MutationFn } from "react-apollo/Mutation";
 import { TTag, TTagTemplate } from "../../../types/tag";
+import { Flex } from "../../common/flex";
 import { Preloader } from "../../common/preloader";
 import { SelectContainer } from "./select";
 
@@ -19,6 +31,9 @@ const Container = styled("div", {
 
 type State = {
   modalShow: boolean;
+  showInput: boolean;
+  inputValue: string;
+  dataSource: Array<string>;
 };
 
 type Props = {
@@ -26,7 +41,7 @@ type Props = {
   form: WrappedFormUtils;
 } & FormProps;
 
-const CREATE_TAG = gql`
+const CREATE_TEMPLATE_TAG = gql`
   mutation createTagTemplateInput(
     $createTagTemplateInput: CreateTagTemplateInput!
   ) {
@@ -35,6 +50,16 @@ const CREATE_TAG = gql`
       name
       ownerId
       hasRate
+    }
+  }
+`;
+
+const CREATE_TAG = gql`
+  mutation createTag($createTagInput: CreateTagInput!) {
+    createTag(createTagInput: $createTagInput) {
+      id
+      ownerId
+      rate
     }
   }
 `;
@@ -62,10 +87,14 @@ function TagSpin(): JSX.Element {
 }
 
 class Tags extends React.Component<Props, State> {
+  // private input: Input;
   constructor(props: Props) {
     super(props);
     this.state = {
-      modalShow: false
+      modalShow: false,
+      showInput: false,
+      inputValue: "",
+      dataSource: []
     };
   }
 
@@ -114,9 +143,22 @@ class Tags extends React.Component<Props, State> {
     });
   };
 
-  render(): JSX.Element {
-    const { getFieldDecorator } = this.props.form;
+  showInput = () => {
+    this.setState({ showInput: true });
+  };
+  onSelect = (createTag: MutationFn, value: any) => {};
 
+  onSearch = (
+    createTemplateTag: MutationFn,
+    createTag: MutationFn,
+    searchText: string
+  ) => {};
+
+  onChange = (value: string) => {};
+
+  saveInputRef = (input: Input) => (this.input = input);
+
+  render(): JSX.Element {
     return (
       <Container>
         <Query
@@ -144,51 +186,64 @@ class Tags extends React.Component<Props, State> {
                     this.showModal();
                   }}
                 />
-                <Mutation mutation={CREATE_TAG}>
-                  {(
-                    createTag: MutationFn,
-                    { loading }: { loading: boolean }
-                  ) => (
-                    <Modal
-                      title={t("tag.create_tag")}
-                      visible={this.state.modalShow}
-                      onOk={() => {
-                        this.createTag(createTag, refetch);
-                      }}
-                      onCancel={this.hideModal}
-                      confirmLoading={loading}
-                    >
-                      <Form layout="vertical">
-                        <Form.Item label={t("tag.name")}>
-                          {getFieldDecorator("name", {
-                            rules: [
-                              {
-                                required: true,
-                                message: t("tag.name_required")
+                <Divider />
+                <Flex
+                  flexDirection="row"
+                  alignContent="flex-start"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                >
+                  {data.getContactTags.map(item => {
+                    const menu = (
+                      <Menu>
+                        <Menu.Item>
+                          <Rate value={item.rate} />
+                        </Menu.Item>
+                      </Menu>
+                    );
+                    return (
+                      <div key={item.id}>
+                        <Dropdown overlay={menu}>
+                          <Tag>{item.name}</Tag>
+                        </Dropdown>
+                      </div>
+                    );
+                  })}
+                  {this.state.showInput && (
+                    <Mutation mutation={CREATE_TAG}>
+                      {(createTag: MutationFn) => (
+                        <Mutation mutation={CREATE_TEMPLATE_TAG}>
+                          {(createTemplateTag: MutationFn) => (
+                            <AutoComplete
+                              autoFocus
+                              dataSource={this.state.dataSource}
+                              style={{ width: 200 }}
+                              onSelect={value =>
+                                this.onSelect(createTag, value)
                               }
-                            ]
-                          })(
-                            <Input
-                              prefix={
-                                <Icon
-                                  type="tag"
-                                  style={{ color: "rgba(0,0,0,0.25)" }}
-                                />
+                              onSearch={(value: string) =>
+                                this.onSearch(
+                                  createTemplateTag,
+                                  createTag,
+                                  value
+                                )
                               }
-                              placeholder={t("tag.name")}
+                              placeholder="input here"
                             />
                           )}
-                        </Form.Item>
-                        <Form.Item>
-                          {getFieldDecorator("hasRate", {
-                            valuePropName: "checked",
-                            initialValue: false
-                          })(<Checkbox>{t("tag.rate_required")}</Checkbox>)}
-                        </Form.Item>
-                      </Form>
-                    </Modal>
+                        </Mutation>
+                      )}
+                    </Mutation>
                   )}
-                </Mutation>
+                  {!this.state.showInput && (
+                    <Tag
+                      onClick={this.showInput}
+                      style={{ background: "#fff", borderStyle: "dashed" }}
+                    >
+                      <Icon type="plus" /> New Tag
+                    </Tag>
+                  )}
+                </Flex>
                 <Divider />
               </>
             );
