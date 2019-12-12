@@ -158,7 +158,11 @@ export class PersonalNoteModel {
     ownerId: string,
     event: TPersonalNote
   ): Promise<TPersonalNoteDoc | null> {
-    return this.Model.findOneAndUpdate({ _id: id, ownerId }, { $set: event });
+    return this.Model.findOneAndUpdate(
+      { _id: id, ownerId },
+      { $set: event },
+      { new: true }
+    );
   }
 
   public async newAndSave(entry: TPersonalNote): Promise<TPersonalNoteDoc> {

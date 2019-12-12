@@ -4,10 +4,11 @@ import gql from "graphql-tag";
 import isBrowser from "is-browser";
 // @ts-ignore
 import JsonGlobal from "safe-json-globals/get";
+import { TInteraction } from "../../types/human";
 import { TContact2 } from "../../types/human";
 import { apolloClient } from "../common/apollo-client";
 import { GET_CONTACTS } from "../contacts/contacts-table";
-import { GET_CONTACT, GET_INTERACTIONS, PAGE_SIZE } from "./contact-detail";
+import { GET_CONTACT, GET_INTERACTIONS } from "./contact-detail";
 
 const csrfToken = isBrowser && JsonGlobal("state").base.csrfToken;
 
@@ -66,34 +67,85 @@ const UPSERT_INTERACTION = gql`
   }
 `;
 
-export const refetchInteractionsQueries = (contactId: string) => [
-  {
-    query: GET_INTERACTIONS,
-    variables: {
-      contactId,
-      offset: 0,
-      limit: PAGE_SIZE
-    }
-  },
-  {
-    query: GET_INTERACTIONS,
-    variables: {
-      offset: 0,
-      limit: PAGE_SIZE,
-      isSelf: true
-    }
-  }
-];
-
-export function actionUpsertEvent(payload: any, contactId: string): any {
+export function actionUpsertEvent(
+  payload: any,
+  contactId: string,
+  isSelf: boolean = true
+): any {
   return (dispatch: any) => {
     apolloClient
       .mutate<{ upsertInteraction: { _id: string } }>({
         mutation: UPSERT_INTERACTION,
         variables: { upsertInteraction: payload },
-        refetchQueries: refetchInteractionsQueries(contactId)
+        // @ts-ignore
+        update: (
+          store,
+          {
+            data: { upsertInteraction }
+          }: { data: { upsertInteraction: TInteraction } }
+        ) => {
+          const variables = isSelf ? { isSelf: true } : { contactId };
+
+          const results: {
+            interactions: {
+              interactions: [TInteraction];
+              count: number;
+            };
+          } | null = store.readQuery({
+            query: GET_INTERACTIONS,
+            variables
+          });
+
+          if (!results) {
+            store.writeQuery({
+              query: GET_INTERACTIONS,
+              data: {
+                interactions: {
+                  interactions: [upsertInteraction],
+                  count: 1,
+                  __typename: "InteractionConnection"
+                }
+              },
+              variables: variables
+            });
+            return;
+          }
+
+          const {
+            interactions: { interactions, count }
+          } = results;
+
+          let isInsert = true;
+
+          let newInteractions = interactions.map(item => {
+            if (item.id === upsertInteraction.id) {
+              isInsert = false;
+              return {
+                ...item,
+                ...upsertInteraction
+              };
+            }
+            return item;
+          });
+
+          if (isInsert) {
+            newInteractions = [upsertInteraction, ...newInteractions];
+          }
+
+          store.writeQuery({
+            query: GET_INTERACTIONS,
+            data: {
+              interactions: {
+                interactions: newInteractions,
+                count: isInsert ? count + 1 : count,
+                __typename: "InteractionConnection"
+              }
+            },
+            variables: variables
+          });
+        }
       })
-      .then(resp => {
+      .then((resp: { data: { upsertInteraction: any } }) => {
         // TODO(tian): error handling
         dispatch({
           type: UPSERT_EVENT,
