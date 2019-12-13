@@ -158,7 +158,8 @@ experience.title: 职位
 experience.org: 机构
 edit: 编辑
 delete: 删除
-tag.create_tag: 创建标签
+tag.create_tag:  输入标签
+tag.add_tag:  增加标签
 tag.name: 标签名
 tag.name_required: 请输入标签名
 tag.rate_required: 是否需要评级？
