@@ -120,8 +120,7 @@ export const ContactDetailContainer = withRouter<IProps>(
             nextProps.match.params.nameDash ||
           // @ts-ignore
           this.props.match.params[0].startsWith("edit") ||
-          // @ts-ignore
-          nextProps.match.params[0].startsWith("edit")
+            nextProps.match.params[0].startsWith("edit")
         );
       }
 
@@ -371,13 +370,7 @@ export const GET_INTERACTIONS = gql`
     $offset: Float
     $limit: Float
     $isSelf: Boolean
-  ) {
-    interactions(
-      contactId: $contactId
-      offset: $offset
-      limit: $limit
-      isSelf: $isSelf
-    ) {
+  ) @connection(key: "event", filter: ["contactId", "isSelf"]) {
       interactions {
         id
         content
@@ -455,6 +448,7 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                       </UpsertEventContainer>
                       <CommonMargin />
                       <DeleteNotePopover
+                        isSelf={isSelf}
                         noteId={iter.id}
                         contactId={contactId}
                       />
