@@ -167,3 +167,7 @@ tag.create_error: 创建失败
 tag.create_success: 创建成功
 tags: 标签
 tag.select.placeholder: 选择...
+tag.delete: 删除标签
+tag.delete_confirm: 确定要删除这个标签吗？
+tag.delete_confirm.ok:  确认删除
+tag.delete_confirm.cancel:  取消

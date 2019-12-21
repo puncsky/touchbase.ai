@@ -1,15 +1,18 @@
 import {
   AutoComplete,
+  Button,
   Dropdown,
   Form,
   Icon,
   Input,
   Menu,
+  Modal,
   Rate,
   Tag
 } from "antd";
 import Divider from "antd/lib/divider";
 import { FormProps, WrappedFormUtils } from "antd/lib/form/Form";
+import { ApolloQueryResult } from "apollo-client";
 import gql from "graphql-tag";
 import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
@@ -25,12 +28,24 @@ const Container = styled("div", {
   marginBottom: "20px"
 });
 
+const TagWrapper = styled("div", {
+  padding: "5px"
+});
+
 type State = {
   modalShow: boolean;
   showInput: boolean;
   dataSource: Array<string>;
   inputValue: string;
+  selectedTag: TTag | null;
 };
+
+type RefetchTagType = () => Promise<
+  ApolloQueryResult<{
+    getUserTagTemplates: [TTagTemplate];
+    getContactTags: [TTag];
+  }>
+>;
 
 type Props = {
   contactId: string;
@@ -47,6 +62,21 @@ const CREATE_TEMPLATE_TAG = gql`
       ownerId
       hasRate
     }
+  }
+`;
+
+const UPDATE_TAG = gql`
+  mutation rateTag($rateTagInput: RateTagInput!) {
+    rateTag(rateTagInput: $rateTagInput) {
+      id
+      rate
+    }
+  }
+`;
+
+const DELETE_TAG = gql`
+  mutation deleteTag($deleteTagInput: DeleteTagInput!) {
+    deleteTag(deleteTagInput: $deleteTagInput)
   }
 `;
 
@@ -83,14 +113,14 @@ function TagSpin(): JSX.Element {
 }
 
 class Tags extends React.Component<Props, State> {
-  // private input: Input;
   constructor(props: Props) {
     super(props);
     this.state = {
       modalShow: false,
       showInput: false,
       inputValue: "",
-      dataSource: []
+      dataSource: [],
+      selectedTag: null
     };
   }
 
@@ -102,7 +132,7 @@ class Tags extends React.Component<Props, State> {
     createTag: MutationFn,
     value: string,
     unselected: Array<TTagTemplate>,
-    refetch: any
+    refetch: RefetchTagType
   ) => {
     const template = unselected.find(item => item.name === value);
     if (!template) {
@@ -113,7 +143,7 @@ class Tags extends React.Component<Props, State> {
         createTagInput: {
           templateId: template.id,
           contactId: this.props.contactId,
-          rate: 5
+          rate: 0
         }
       }
     });
@@ -150,7 +180,7 @@ class Tags extends React.Component<Props, State> {
   createTemplateAndTag = async (
     createTemplateTag: MutationFn,
     createTag: MutationFn,
-    refetch: any
+    refetch: RefetchTagType
   ) => {
     const template = (await createTemplateTag({
       variables: {
@@ -166,7 +196,7 @@ class Tags extends React.Component<Props, State> {
         createTagInput: {
           templateId: template.data.createTagTemplate.id,
           contactId: this.props.contactId,
-          rate: 5
+          rate: 0
         }
       }
     });
@@ -175,64 +205,166 @@ class Tags extends React.Component<Props, State> {
     this.onInputBlur();
   };
 
+  updateRate = async (
+    updateTag: MutationFn,
+    tag: TTag,
+    value: number,
+    refetch: RefetchTagType
+  ) => {
+    await updateTag({
+      variables: {
+        rateTagInput: {
+          id: tag.id,
+          rate: value
+        }
+      }
+    });
+    await refetch();
+  };
+
+  deleteTag = (deleteTag: MutationFn, tag: TTag, refetch: RefetchTagType) => {
+    Modal.confirm({
+      title: t("tag.delete_confirm"),
+      okType: "danger",
+      okText: t("tag.delete_confirm.ok"),
+      cancelText: t("tag.delete_confirm.cancel"),
+      onCancel: () => {
+        this.clearSelectedTag();
+      },
+      onOk: async () => {
+        await deleteTag({
+          variables: {
+            deleteTagInput: {
+              id: tag.id
+            }
+          }
+        });
+        await refetch();
+        this.clearSelectedTag();
+      }
+    });
+  };
+
+  clearSelectedTag = () => {
+    this.setState({
+      selectedTag: null
+    });
+  };
+
   render(): JSX.Element {
     return (
       <Container>
-        <Query
-          query={QUERY_TEMPLATES}
-          variables={{ contactId: this.props.contactId }}
-        >
-          {({
-            loading,
-            data,
-            refetch
-          }: QueryResult<{
-            getUserTagTemplates: [TTagTemplate];
-            getContactTags: [TTag];
-          }>) => {
-            if (loading || !data) {
-              return <TagSpin />;
-            }
-            const unselectedTemplates = data.getUserTagTemplates.filter(
-              template =>
-                data.getContactTags.findIndex(
-                  tag => tag.templateId === template.id
-                ) === -1
-            );
-            return (
-              <>
-                <Flex
-                  flexDirection="row"
-                  alignContent="flex-start"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                >
-                  {data.getContactTags.map(item => {
-                    const menu = (
-                      <Menu>
-                        <Menu.Item>
-                          <Rate value={item.rate} />
-                        </Menu.Item>
-                      </Menu>
-                    );
-                    return (
-                      <div key={item.id} style={{ padding: "5px" }}>
-                        <Dropdown overlay={menu}>
-                          <Tag>{item.name}</Tag>
-                        </Dropdown>
-                      </div>
-                    );
-                  })}
-                  {this.renderInput(unselectedTemplates, refetch)}
-                </Flex>
-                <Divider />
-              </>
-            );
-          }}
-        </Query>
+        <Mutation mutation={DELETE_TAG}>
+          {(deleteTagFn: MutationFn) => (
+            <Mutation mutation={UPDATE_TAG}>
+              {(updateTag: MutationFn) =>
+                this.renderQuery(deleteTagFn, updateTag)
+              }
+            </Mutation>
+          )}
+        </Mutation>
       </Container>
     );
   }
+
+  renderQuery = (deleteTagFn: MutationFn, updateTag: MutationFn) => {
+    return (
+      <Query
+        query={QUERY_TEMPLATES}
+        variables={{ contactId: this.props.contactId }}
+      >
+        {({
+          loading,
+          data,
+          refetch
+        }: QueryResult<{
+          getUserTagTemplates: [TTagTemplate];
+          getContactTags: [TTag];
+        }>) => {
+          if (loading || !data) {
+            return <TagSpin />;
+          }
+          const unselectedTemplates = data.getUserTagTemplates.filter(
+            template =>
+              data.getContactTags.findIndex(
+                tag => tag.templateId === template.id
+              ) === -1
+          );
+          return (
+            <>
+              <Flex
+                flexDirection="row"
+                alignContent="flex-start"
+                justifyContent="flex-start"
+                alignItems="center"
+              >
+                {data.getContactTags.map(item =>
+                  this.renderTag(deleteTagFn, updateTag, item, refetch)
+                )}
+                {this.renderInput(unselectedTemplates, refetch)}
+              </Flex>
+              <Divider />
+            </>
+          );
+        }}
+      </Query>
+    );
+  };
+
+  renderTag = (
+    deleteTagFn: MutationFn,
+    updateTag: MutationFn,
+    item: TTag,
+    refetch: RefetchTagType
+  ) => {
+    const menu = (
+      <Menu>
+        <Menu.Item>
+          <Rate
+            allowClear
+            value={item.rate}
+            onChange={value => {
+              this.updateRate(updateTag, item, value, refetch);
+            }}
+          />
+        </Menu.Item>
+        <Menu.Item>
+          <Button
+            type="danger"
+            ghost
+            onClick={() => {
+              this.setState({
+                modalShow: true,
+                selectedTag: item
+              });
+              this.deleteTag(deleteTagFn, item, refetch);
+            }}
+          >
+            {t("tag.delete")}
+          </Button>
+        </Menu.Item>
+      </Menu>
+    );
+    return (
+      <TagWrapper key={item.id}>
+        <Dropdown overlay={menu}>
+          <Tag>
+            {`${item.name}${item.rate > 0 ? " | " : ""}`}
+            {item.rate > 0 &&
+              Array.from({
+                length: 5
+              }).map((_, index) => (
+                <Icon
+                  key={`tag${index}`}
+                  type="star"
+                  theme={index < item.rate ? "filled" : "outlined"}
+                />
+              ))}
+          </Tag>
+        </Dropdown>
+      </TagWrapper>
+    );
+  };
 
   renderInput = (unselectedTemplates: Array<TTagTemplate>, refetch: any) => {
     const { inputValue, dataSource } = this.state;

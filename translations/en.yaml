@@ -168,3 +168,7 @@ tag.create_error: Create Tag Failed
 tag.create_success: Creation Is Successful
 tags: Tags
 tag.select.placeholder: Select...
+tag.delete: Delete
+tag.delete_confirm: Are you sure to remove this tag?
+tag.delete_confirm.ok: Yes, remove tag
+tag.delete_confirm.cancel: Cancel
