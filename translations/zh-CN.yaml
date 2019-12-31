@@ -160,13 +160,6 @@ edit: 编辑
 delete: 删除
 tag.create_tag:  输入标签
 tag.add_tag:  增加标签
-tag.name: 标签名
-tag.name_required: 请输入标签名
-tag.rate_required: 是否需要评级？
-tag.create_error: 创建失败
-tag.create_success: 创建成功
-tags: 标签
-tag.select.placeholder: 选择...
 tag.delete: 删除标签
 tag.delete_confirm: 确定要删除这个标签吗？
 tag.delete_confirm.ok:  确认删除
