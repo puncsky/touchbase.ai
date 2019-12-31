@@ -30,6 +30,11 @@ const DropdownWrap = styled("div", {
   boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)"
 });
 
+type PassingParam = {
+  value: string;
+  callingCode: string;
+};
+
 interface DialCodeSelectProps {
   iso2: string;
   onChange(value: string): void;
@@ -87,7 +92,7 @@ class DialCodeSelect extends React.Component<DialCodeSelectProps> {
 interface PhoneInputProps {
   locale: string;
   value?: string;
-  onChange?(v: string): void;
+  onChange?(v: PassingParam): void;
   onBlur?(v: any): void;
   style?: React.CSSProperties;
 }
@@ -137,7 +142,11 @@ class PhoneInput extends React.Component<PhoneInputProps, PhoneInputState> {
       }
     );
     if (onChange) {
-      onChange(formatToE164(newVal));
+      onChange({
+        value: phoneNumber,
+        callingCode: countryInfo.callingCode
+      });
+      // onChange(formatToE164(newVal));
     }
   };
 
@@ -159,7 +168,10 @@ class PhoneInput extends React.Component<PhoneInputProps, PhoneInputState> {
         iso2: newIso2
       });
       if (onChange) {
-        onChange(formatToE164(newValue));
+        onChange({
+          value: newValue,
+          callingCode: newCallingCode
+        });
       }
     } else {
       this.setState({
@@ -167,7 +179,10 @@ class PhoneInput extends React.Component<PhoneInputProps, PhoneInputState> {
         iso2: newIso2
       });
       if (onChange) {
-        onChange("");
+        onChange({
+          value: `+${newCallingCode}`,
+          callingCode: newCallingCode
+        });
       }
     }
   };

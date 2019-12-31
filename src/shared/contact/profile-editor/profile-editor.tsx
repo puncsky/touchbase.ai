@@ -108,7 +108,10 @@ class ProfileEditorContainer extends Component<Props, State> {
       // ui rendered with the old contacts look like more reasonable.
       phones: (result.phones || []).filter((e: any) => e)
     };
-    actionUpdateHuman(omitBy(clone, (val: any) => !val && val !== 0), false);
+    actionUpdateHuman(
+      omitBy(clone, (val: any) => !val && val !== 0),
+      false
+    );
 
     this.close();
   }
@@ -187,12 +190,19 @@ class PersonalForm extends Component<
         renderItem={(key, i) =>
           (form as WrappedFormUtils).getFieldDecorator(`phones[${i}]`, {
             initialValue: human.phones[key],
-            validateTrigger: "onBlur",
+            // validateTrigger: "onBlur",
+            getValueFromEvent: event => {
+              if (event.value === `+${event.callingCode}`) {
+                return "";
+              } else {
+                return event.value;
+              }
+            },
             rules: [
               {
                 // @ts-ignore
                 validator(rule: any, val: any, cb: any): void {
-                  if (val && formatToE164(val).length <= 3) {
+                  if (val && formatToE164(val || "").length < 9) {
                     cb(t("field.error.phone.format"));
                   } else {
                     cb();
