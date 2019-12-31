@@ -146,7 +146,6 @@ class PhoneInput extends React.Component<PhoneInputProps, PhoneInputState> {
         value: phoneNumber,
         callingCode: countryInfo.callingCode
       });
-      // onChange(formatToE164(newVal));
     }
   };
 
