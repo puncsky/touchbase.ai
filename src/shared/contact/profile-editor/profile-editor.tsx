@@ -108,7 +108,10 @@ class ProfileEditorContainer extends Component<Props, State> {
       // ui rendered with the old contacts look like more reasonable.
       phones: (result.phones || []).filter((e: any) => e)
     };
-    actionUpdateHuman(omitBy(clone, (val: any) => !val && val !== 0), false);
+    actionUpdateHuman(
+      omitBy(clone, (val: any) => !val && val !== 0),
+      false
+    );
 
     this.close();
   }
@@ -149,7 +152,7 @@ export class ProfileEditorForm extends Component<{
     const { form, human } = this.props;
     return (
       <Form>
-        <Tabs defaultActiveKey="1" tabPosition={"left"}>
+        <Tabs defaultActiveKey="1">
           <TabPane forceRender tab={t("profile_editor.pii")} key="1">
             <PersonalForm form={form} human={human} />
           </TabPane>
