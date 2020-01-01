@@ -159,3 +159,9 @@ experience.title: Title
 experience.org: Orgnization
 edit: Edit
 delete: Delete
+tag.create_tag: input here
+tag.add_tag: add tag
+tag.delete: Delete
+tag.delete_confirm: Are you sure to remove this tag?
+tag.delete_confirm.ok: Yes, remove tag
+tag.delete_confirm.cancel: Cancel
