@@ -184,7 +184,7 @@
     "reflect-metadata": "0.1.13",
     "safe-json-globals": "2.1.0",
     "shader": "1.0.0",
-    "ts-node": "8.6.1",
+    "ts-node": "8.6.2",
     "type-graphql": "0.17.6",
     "typescript": "3.6.4",
     "uuid": "3.3.3",
