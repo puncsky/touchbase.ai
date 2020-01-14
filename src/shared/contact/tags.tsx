@@ -420,7 +420,8 @@ class Tags extends React.Component<Props, State> {
             style={{
               background: "#fff",
               borderStyle: "dashed",
-              padding: "5px"
+              padding: "5px",
+              cursor: "pointer"
             }}
           >
             <Icon type="plus" />
