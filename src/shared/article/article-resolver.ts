@@ -1,5 +1,5 @@
 import { Args, Ctx, Query, Resolver } from "type-graphql";
-import { IContext } from "../../api-gateway/context";
+import { Context } from "../../api-gateway/api-gateway";
 import { ArticleService } from "./article-service";
 import { ArticleResponse, ArticlesRequest } from "./article-types";
 
@@ -19,7 +19,7 @@ export class ArticleResolver {
     @Args()
     args: ArticlesRequest,
     @Ctx()
-    _: IContext
+    _: Context
   ): Promise<Array<ArticleResponse>> {
     const article = this.articleService.getPostById(args.id);
 

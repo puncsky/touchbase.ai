@@ -4,7 +4,7 @@ import { combineReducers } from "redux";
 import validator from "validator";
 import { MyServer } from "../../../server/start-server";
 import { MyContext } from "../../../types/global";
-import { TUser } from "../../onefx-auth/model/user-model";
+import { TUserDoc } from "../../onefx-auth/model/user-model";
 import { IdentityAppContainer } from "./view/identity-app-container";
 
 const PASSWORD_MIN_LENGTH = 6;
@@ -52,7 +52,7 @@ export function passwordValidator(): Handler {
 
 function isMobileWebView(ctx: MyContext): boolean {
   const isMobile =
-    ctx.headers["x-app-id"] === "mobile-rebinder" ||
+    ctx.headers["x-app-id"] === "mobile-guanxi-io" ||
     ctx.session.isMobileWebView;
   if (isMobile) {
     ctx.session.isMobileWebView = true;
@@ -131,7 +131,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     async (ctx: MyContext, next: Function) => {
       const { email, password } = ctx.request.body;
       try {
-        const user: TUser = await server.auth.user.newAndSave({
+        const user: TUserDoc = await server.auth.user.newAndSave({
           email,
           password,
           ip: ctx.headers["x-forward-for"]

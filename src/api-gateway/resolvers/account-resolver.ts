@@ -1,10 +1,33 @@
 import { AuthenticationError } from "apollo-server-errors";
-import { Arg, Ctx, Field, InputType, Mutation } from "type-graphql";
+import {
+  Arg,
+  Args,
+  ArgsType,
+  Authorized,
+  Ctx,
+  Field,
+  InputType,
+  Mutation,
+  ObjectType,
+  Query
+} from "type-graphql";
 
 import { Context } from "../api-gateway";
 
 @InputType()
 class DeleteAccountInput {
+  @Field(_ => String)
+  email: string;
+}
+
+@ArgsType()
+class UserProfileRequest {
+  @Field(_ => String)
+  userId: string;
+}
+
+@ObjectType()
+class UserProfileResponse {
   @Field(_ => String)
   email: string;
 }
@@ -37,5 +60,19 @@ export class AccountResolver {
     } else {
       return Boolean(false);
     }
+  }
+
+  @Authorized()
+  @Query(_ => UserProfileResponse, {
+    description: "get the user",
+    nullable: true
+  })
+  public async userProfile(
+    @Args()
+    args: UserProfileRequest,
+    @Ctx()
+    ctx: Context
+  ): Promise<UserProfileResponse | null> {
+    return ctx.auth.user.getById(args.userId);
   }
 }

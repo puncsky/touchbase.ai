@@ -168,6 +168,9 @@ type Mutation {
 type Query {
   # get the article
   articles(id: String): [ArticleResponse!]
+
+  # get the user
+  userProfile(userId: String!): UserProfileResponse
   interactions(
     contactId: String
     isSelf: Boolean
@@ -247,4 +250,8 @@ input UpsertInteraction {
   content: String!
   relatedHumans: [String!]!
   public: Boolean
+}
+
+type UserProfileResponse {
+  email: String!
 }

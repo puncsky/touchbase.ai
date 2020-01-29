@@ -100,6 +100,8 @@
     "webpack-manifest-plugin": "2.2.0"
   },
   "dependencies": {
+    "@ag-grid-community/all-modules": "22.1.1",
+    "@ag-grid-community/react": "22.1.2",
     "@axetroy/react-github-calendar": "2.0.0",
     "@babel/cli": "7.8.3",
     "@babel/core": "7.8.3",
@@ -132,8 +134,6 @@
     "@types/styletron-react": "5.0.2",
     "@types/uuid": "3.4.7",
     "@types/validator": "10.11.3",
-    "@ag-grid-community/all-modules": "22.1.1",
-    "@ag-grid-community/react": "22.1.2",
     "antd": "3.26.7",
     "apollo-cache-inmemory": "1.6.5",
     "apollo-client": "2.6.8",
