@@ -226,7 +226,7 @@ class PersonalForm extends Component<
 
     const beforeUpload = async ({ file, onSuccess }: any) => {
       const fieldName = "avatarUrl";
-      const data = await upload(file, fieldName);
+      const data = await upload(file, fieldName, human._id || "");
       form.setFieldsValue({
         [fieldName]: data.secure_url
       });
