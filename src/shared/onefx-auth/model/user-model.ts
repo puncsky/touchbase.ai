@@ -10,19 +10,21 @@ type TNewUser = {
   ip: string;
 };
 
-export type TUser = mongoose.Document &
-  TNewUser & {
-    avatar: string;
+type TUser = TNewUser & {
+  id: string;
+  avatar: string;
 
-    isBlocked: boolean;
-    lifetimeHumanId: string;
+  isBlocked: boolean;
+  lifetimeHumanId: string;
 
-    createAt: Date;
-    updateAt: Date;
-  };
+  createAt: Date;
+  updateAt: Date;
+};
+
+export type TUserDoc = mongoose.Document & TUser;
 
 export class UserModel {
-  public Model: mongoose.Model<TUser>;
+  public Model: mongoose.Model<TUserDoc>;
 
   constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
     const UserSchema = new Schema({
@@ -96,14 +98,14 @@ export class UserModel {
   public async updateAssocProfileId(
     userId: string,
     lifetimeHumanId: string
-  ): Promise<TUser> {
+  ): Promise<TUserDoc> {
     return this.Model.update({ _id: userId }, { lifetimeHumanId });
   }
 
   public async updatePassword(
     userId: string,
     password: string
-  ): Promise<TUser | null> {
+  ): Promise<TUserDoc | null> {
     return this.Model.update(
       { _id: userId },
       { password: await tools.bhash(password) }

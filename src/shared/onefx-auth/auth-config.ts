@@ -33,10 +33,7 @@ export type AuthConfig = {
 export const authConfig = {
   cookieName: "auth",
   cookieOpts: {
-    domain:
-      String(process.env.NODE_ENV).indexOf("production") === -1
-        ? "localhost"
-        : "guanxilab.com",
+    domain: "",
 
     secure: false,
     httpOnly: true,

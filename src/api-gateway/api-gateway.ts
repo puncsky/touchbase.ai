@@ -1,12 +1,5 @@
-import { HttpLink } from "apollo-link-http";
-import {
-  ApolloServer,
-  introspectSchema,
-  makeRemoteExecutableSchema,
-  mergeSchemas
-} from "apollo-server-koa";
+import { ApolloServer, mergeSchemas } from "apollo-server-koa";
 import koa from "koa";
-import { logger } from "onefx/lib/integrated-gateways/logger";
 import path from "path";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
@@ -15,6 +8,7 @@ import { Gateways } from "../server/gateway/gateway";
 import { MyServer } from "../server/start-server";
 import { ArticleResolver } from "../shared/article/article-resolver";
 import { OnefxAuth } from "../shared/onefx-auth";
+import { customAuthChecker } from "./auth-checker";
 import { AccountResolver } from "./resolvers/account-resolver";
 import { ContactResolver } from "./resolvers/contact-resolver";
 import { MetaResolver } from "./resolvers/meta-resolver";
@@ -45,26 +39,10 @@ export async function setApiGateway(server: MyServer): Promise<void> {
       path: sdlPath,
       commentDescriptions: true
     },
-    validate: false
+    validate: false,
+    authChecker: customAuthChecker
   });
   const schemas = [localSchema];
-
-  if (process.env.ENABLE_GUANXI_DAILY) {
-    try {
-      const remoteLink = new HttpLink({
-        uri: `https://tianpan.co/api-gateway/`,
-        fetch
-      });
-      const remoteSchema = makeRemoteExecutableSchema({
-        schema: await introspectSchema(remoteLink),
-        link: remoteLink
-      });
-      schemas.push(remoteSchema);
-    } catch (err) {
-      logger.error(`failed to link external tianpan.co api`);
-    }
-  }
-
   const schema = mergeSchemas({
     schemas
   });
