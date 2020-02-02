@@ -178,7 +178,7 @@
     "react-redux": "5.1.2",
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
-    "react-seo-meta-tags": "1.0.1",
+    "react-seo-meta-tags": "1.1.0",
     "react-tooltip": "3.11.3",
     "redux": "4.0.5",
     "reflect-metadata": "0.1.13",
