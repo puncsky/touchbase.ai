@@ -13,7 +13,7 @@ import { PureComponent } from "react";
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { CommonMargin, SmallMargin } from "../common/common-margin";
+import { CommonMargin } from "../common/common-margin";
 import { Flex } from "../common/flex";
 import { colors } from "../common/styles/style-color";
 import { media } from "../common/styles/style-media";
