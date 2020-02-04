@@ -179,7 +179,7 @@
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
     "react-seo-meta-tags": "1.1.0",
-    "react-tooltip": "3.11.3",
+    "react-tooltip": "3.11.4",
     "redux": "4.0.5",
     "reflect-metadata": "0.1.13",
     "safe-json-globals": "2.1.0",
