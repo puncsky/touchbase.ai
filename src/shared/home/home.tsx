@@ -34,31 +34,52 @@ class HomeInner extends PureComponent<{ userId: string }> {
                 <HeroH1>{t("home.title")}</HeroH1>
                 <HeroP>{t("home.desc")}</HeroP>
                 {this.props.userId ? (
-                  <Button type="primary" size="large" href="/login/">
-                    {t("home.get_started_welcome_back")}
+                  <Flex justifyContent="flex-start!important">
+                    <Button type="primary" size="large" href="/login/">
+                      {t("home.get_started_welcome_back")}
 
-                    <div className="bw ns dw nt it">
-                      <svg
-                        width="1em"
-                        height="1em"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <title>Arrow right (filled)</title>
-                        <path
-                          d="M22.2 12l-6.5 9h-3.5l5.5-7.5H2v-3h15.7L12.2 3h3.5l6.5 9z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </div>
-                  </Button>
+                      <div className="bw ns dw nt it">
+                        <svg
+                          width="1em"
+                          height="1em"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <title>Arrow right (filled)</title>
+                          <path
+                            d="M22.2 12l-6.5 9h-3.5l5.5-7.5H2v-3h15.7L12.2 3h3.5l6.5 9z"
+                            fill="currentColor"
+                          ></path>
+                        </svg>
+                      </div>
+                    </Button>
+                    <CommonMargin />
+                    <Button
+                      size="large"
+                      target="_blank"
+                      href="https://github.com/puncsky/guanxi-io"
+                    >
+                      Fork me on Github
+                    </Button>
+                  </Flex>
                 ) : (
-                  <Button type="primary" size="large" href="/sign-up/">
-                    {t("home.get_started")}
+                  <Flex justifyContent="flex-start!important">
+                    <Button type="primary" size="large" href="/sign-up/">
+                      {t("home.get_started")}
 
-                    <Icon type="arrow-right" />
-                  </Button>
+                      <Icon type="arrow-right" />
+                    </Button>
+                    <CommonMargin />
+                    <Button
+                      size="large"
+                      target="_blank"
+                      href="https://github.com/puncsky/guanxi-io"
+                    >
+                      Fork me on Github
+                    </Button>
+                  </Flex>
                 )}
+
                 <CommonMargin />
               </Col>
               <Col md={12} xs={24}>
