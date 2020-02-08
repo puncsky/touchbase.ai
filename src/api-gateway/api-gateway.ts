@@ -12,6 +12,7 @@ import { customAuthChecker } from "./auth-checker";
 import { AccountResolver } from "./resolvers/account-resolver";
 import { ContactResolver } from "./resolvers/contact-resolver";
 import { MetaResolver } from "./resolvers/meta-resolver";
+import { PlaybookResolver } from "./resolvers/playbook-resolver";
 import { TagResolver } from "./resolvers/tag-resolver";
 
 export type Context = {
@@ -28,7 +29,8 @@ export async function setApiGateway(server: MyServer): Promise<void> {
     ArticleResolver,
     ContactResolver,
     AccountResolver,
-    TagResolver
+    TagResolver,
+    PlaybookResolver
   ];
   server.resolvers = resolvers;
 
