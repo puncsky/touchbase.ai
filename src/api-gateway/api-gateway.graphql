@@ -165,6 +165,21 @@ type Mutation {
   rateTag(rateTagInput: RateTagInput!): ContactTag!
 }
 
+type PlayBook {
+  id: String!
+  url: String!
+  isFave: Boolean!
+  short: String!
+  title: String!
+  content: String!
+  forwardedFor: String!
+  date: DateTime!
+  visitorCount: Float!
+  tags: [Tag!]!
+  contentHTML: String!
+  language: String!
+}
+
 type Query {
   # get the article
   articles(id: String): [ArticleResponse!]
@@ -191,6 +206,7 @@ type Query {
     twitter: String
     phone: String
   ): String!
+  playbookArticles(skip: Float!, limit: Float!): [PlayBook!]!
   getUserTagTemplates: [TagTemplate!]!
   getContactTags(contactId: String!): [ContactTag!]!
 }
@@ -203,6 +219,10 @@ input RateTagInput {
 type SearchResult {
   name: String!
   path: String!
+}
+
+type Tag {
+  enum: String!
 }
 
 type TagTemplate {
