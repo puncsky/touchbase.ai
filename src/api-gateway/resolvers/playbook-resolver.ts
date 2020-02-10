@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Args, ArgsType, Field, ObjectType, Query } from "type-graphql";
 
-const SourceUrl = "http://localhost:4000/cms/guanxi-io-zh-cn/?";
+const SourceUrl = "https://tianpan.co/cms/guanxi-io-zh-cn/?";
 
 @ObjectType()
 class PlayBook {
