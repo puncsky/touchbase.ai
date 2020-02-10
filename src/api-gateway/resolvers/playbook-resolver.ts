@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Args, ArgsType, Field, ObjectType, Query } from "type-graphql";
 
-const SourceUrl = "https://tianpan.co/cms/system-design-and-architecture/?";
+const SourceUrl = "http://localhost:4000/cms/guanxi-io-zh-cn/?";
 
 @ObjectType()
 class PlayBook {
@@ -12,7 +12,7 @@ class PlayBook {
   @Field(() => Boolean)
   isFave: boolean;
   @Field(() => String)
-  short: string;
+  description: string;
   @Field(() => String)
   title: string;
   @Field(() => String)
@@ -23,43 +23,41 @@ class PlayBook {
   date: Date;
   @Field(() => Number)
   visitorCount: number;
-  @Field(() => [Tag])
-  tags: Array<Tag>;
+  @Field(() => [String])
+  tags: Array<String>;
   @Field(() => String)
   contentHTML: string;
   @Field(() => String)
   language: string;
 }
 
-@ObjectType()
-class Tag {
-  @Field(() => String)
-  enum: string;
-}
-
 @ArgsType()
-class Pagination {
+class PlaybookArticlesRequest {
   @Field(() => Number)
   skip: number;
   @Field(() => Number)
   limit: number;
+  @Field(() => String, { nullable: true })
+  tag: string;
+  @Field(() => String, { nullable: true })
+  locale: string;
 }
 
 export class PlaybookResolver {
   @Query(() => [PlayBook])
   async playbookArticles(
-    @Args() { skip, limit }: Pagination
+    @Args() { skip, limit, tag = "" }: PlaybookArticlesRequest
   ): Promise<Array<PlayBook>> {
-    const { data } = await axios.get(`${SourceUrl}skip=${skip}&limit=${limit}`);
+    const { data } = await axios.get(
+      `${SourceUrl}skip=${skip}&limit=${limit}&tag=${encodeURIComponent(tag)}`
+    );
     return data.map((item: any) => {
-      const tags = (item.tags || "").split(",");
       return {
         ...item,
         url: `https://guanxi.io/${item.id}`,
-        tags: tags.map((t: string) => ({ enum: t })),
         isFave: false,
-        short: item.abstract || "",
-        forwardedFor: "https://guanxi.io/",
+        description: item.description || "",
+        forwardedFor: (item.references || [])[0],
         date: new Date(item.date),
         visitorCount: 0
       };

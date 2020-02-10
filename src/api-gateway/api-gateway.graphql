@@ -169,13 +169,13 @@ type PlayBook {
   id: String!
   url: String!
   isFave: Boolean!
-  short: String!
+  description: String!
   title: String!
   content: String!
   forwardedFor: String!
   date: DateTime!
   visitorCount: Float!
-  tags: [Tag!]!
+  tags: [String!]!
   contentHTML: String!
   language: String!
 }
@@ -206,7 +206,12 @@ type Query {
     twitter: String
     phone: String
   ): String!
-  playbookArticles(skip: Float!, limit: Float!): [PlayBook!]!
+  playbookArticles(
+    skip: Float!
+    limit: Float!
+    tag: String
+    locale: String
+  ): [PlayBook!]!
   getUserTagTemplates: [TagTemplate!]!
   getContactTags(contactId: String!): [ContactTag!]!
 }
@@ -219,10 +224,6 @@ input RateTagInput {
 type SearchResult {
   name: String!
   path: String!
-}
-
-type Tag {
-  enum: String!
 }
 
 type TagTemplate {
