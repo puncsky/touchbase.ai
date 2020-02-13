@@ -97,6 +97,7 @@ export const GET_CONTACT = gql`
       }
       linkedin
       facebook
+      github
       createAt
       createAt
     }

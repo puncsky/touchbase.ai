@@ -48,6 +48,7 @@ export interface TContact2 extends TContact {
   // social
   linkedin: string;
   facebook: string;
+  github: string;
 
   // meta
   createAt?: Date;

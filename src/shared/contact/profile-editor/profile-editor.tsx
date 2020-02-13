@@ -437,6 +437,13 @@ function SocialNetworkForm({
           rules: []
         })(<Input />)}
       </Form.Item>
+
+      <Form.Item {...formItemLayout} label={t("field.github")}>
+        {getFieldDecorator("github", {
+          initialValue: human.github,
+          rules: []
+        })(<Input />)}
+      </Form.Item>
     </>
   );
 }

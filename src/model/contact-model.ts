@@ -46,6 +46,7 @@ const ContactSchema = new Schema({
   linkedin: { type: String },
   wechat: { type: String },
   facebook: { type: String },
+  github: { type: String },
   phones: [{ type: String }],
 
   // personalities

@@ -298,6 +298,12 @@ class HumanForm extends Component<Props, State> {
           })(<Input />)}
         </Form.Item>
 
+        <Form.Item {...formItemLayout} label="github">
+          {getFieldDecorator("github", {
+            rules: []
+          })(<Input />)}
+        </Form.Item>
+
         <Form.Item {...tailFormItemLayout}>
           {/*
           // @ts-ignore */}

@@ -84,6 +84,8 @@ class CreateContactInput implements TContact2 {
   public linkedin: string;
   @Field(_ => String, { nullable: true })
   public facebook: string;
+  @Field(_ => String, { nullable: true })
+  public github: string;
   @Field(_ => Date, { nullable: true })
   public createAt?: Date;
   @Field(_ => Date, { nullable: true })
@@ -147,6 +149,8 @@ class UpdateContactInput implements TContact2 {
   public linkedin: string;
   @Field(_ => String, { nullable: true })
   public facebook: string;
+  @Field(_ => String, { nullable: true })
+  public github: string;
   @Field(_ => Date, { nullable: true })
   public createAt?: Date;
   @Field(_ => Date, { nullable: true })
@@ -211,6 +215,8 @@ class Contact implements TContact2 {
   public linkedin: string;
   @Field(_ => String, { nullable: true })
   public facebook: string;
+  @Field(_ => String, { nullable: true })
+  public github: string;
   @Field(_ => Date, { nullable: true })
   public createAt?: Date;
   @Field(_ => Date, { nullable: true })

@@ -24,6 +24,7 @@ export type TFullContact = {
   twitter: string;
   linkedin: string;
   facebook: string;
+  github: string;
 
   bio: string;
   avatar: string;

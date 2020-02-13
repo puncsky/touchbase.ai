@@ -106,6 +106,7 @@ tos.tos: 服务条款
 social_network: 社交网络
 field.facebook: Facebook
 field.linkedin: Linkedin
+field.github: Github
 source: 来源
 field.known_at: 认识于
 field.known_source: 通过
