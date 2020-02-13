@@ -165,7 +165,7 @@
     "markdown-it": "9.1.0",
     "markdown-it-mark": "3.0.0",
     "markdown-it-toc-and-anchor": "4.2.0",
-    "mongoose": "5.8.12",
+    "mongoose": "5.8.13",
     "nodemailer": "5.1.1",
     "nodemailer-mailgun-transport": "1.4.0",
     "omit-deep-lodash": "1.1.4",
