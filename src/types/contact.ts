@@ -50,6 +50,7 @@ export interface TContact {
   // social
   linkedin: string;
   facebook: string;
+  github: string;
 
   // meta
   createdAt?: string;

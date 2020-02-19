@@ -41,6 +41,7 @@ type Contact {
   education: [Experience!]!
   linkedin: String
   facebook: String
+  github: String
   createAt: DateTime
   updateAt: DateTime
 }
@@ -83,6 +84,7 @@ input CreateContactInput {
   education: [ExperienceInput!]
   linkedin: String
   facebook: String
+  github: String
   createAt: DateTime
   updateAt: DateTime
 }
@@ -261,6 +263,7 @@ input UpdateContactInput {
   education: [ExperienceInput!]!
   linkedin: String
   facebook: String
+  github: String
   createAt: DateTime
   updateAt: DateTime
 }

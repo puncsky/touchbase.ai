@@ -41,6 +41,7 @@ export const EMPTY_HUMAN: TContact2 = {
   ],
   extraversionIntroversion: "",
   facebook: "",
+  github: "",
   intuitingSensing: "",
   knownAt: new Date(),
   knownSource: "",

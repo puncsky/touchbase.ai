@@ -107,6 +107,7 @@ tos.tos: Terms of Service
 social_network: Social Network
 field.facebook: Facebook
 field.linkedin: Linkedin
+field.github: Github
 source: Source
 field.known_at: Known at
 field.known_source: via

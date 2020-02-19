@@ -43,6 +43,7 @@ type THumanRow = {
     | "extroversion"
     | "ambiversion";
   facebook: string;
+  github: string;
   intuitingSensing: "" | "intuiting" | "sensing";
   knownAt: "2018-10-13T08:00:36.591Z";
   knownSource: string;
@@ -88,6 +89,7 @@ export const GET_CONTACTS = gql`
       }
       linkedin
       facebook
+      github
       createAt
       updateAt
     }
