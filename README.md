@@ -29,7 +29,7 @@ npm install
 cp ./.env.tmpl ./.env
 ```
 
-Note: please provide your MongoDB URI like `MONGODB_URI=mongodb://localhost:27017/gruanxilab` in `./.env` file.
+Note: please provide your MongoDB URI like `MONGODB_URI=mongodb://localhost:27017/guanxilab` in `./.env` file.
 
 #### Development mode
 
