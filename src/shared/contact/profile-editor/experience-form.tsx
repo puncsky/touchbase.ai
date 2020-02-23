@@ -79,7 +79,7 @@ class DeleteableExp extends PureComponent<
               style={{
                 maxWidth: "165px",
                 textAlign: "center",
-                borderLeft: 0
+                borderLeftWidth: window.innerWidth >= 578 ? 0 : "1px"
               }}
               placeholder={t("experience.org")}
             />
@@ -170,59 +170,47 @@ export function ExperienceForm({
         })(<TextArea autosize={true} />)}
       </Form.Item>
 
-      <div className="ant-form-item-label">
-        <label
-          htmlFor="profile-editor_experience[0].title"
-          className=""
-          title="field.experience"
-        >
-          {t("field.experience")}
-        </label>
-      </div>
+      <Form.Item {...formItemLayout} label={t("field.experience")}>
+        {human.experience.map((_: any, i) => {
+          return (
+            <DeleteableExp
+              key={i}
+              fieldName="experience"
+              i={i}
+              form={form}
+              title={human.experience[i].title}
+              org={human.experience[i].name}
+            />
+          );
+        })}
 
-      {human.experience.map((_: any, i) => {
-        return (
-          <DeleteableExp
-            key={i}
-            fieldName="experience"
-            i={i}
-            form={form}
-            title={human.experience[i].title}
-            org={human.experience[i].name}
-          />
-        );
-      })}
+        <AddNewExp
+          form={form}
+          i={human.experience.length}
+          fieldName="experience"
+        />
+      </Form.Item>
 
-      <AddNewExp
-        form={form}
-        i={human.experience.length}
-        fieldName="experience"
-      />
+      <Form.Item {...formItemLayout} label={t("field.education")}>
+        {human.education.map((_: any, i) => {
+          return (
+            <DeleteableExp
+              key={i}
+              fieldName="education"
+              i={i}
+              form={form}
+              title={human.education[i].title}
+              org={human.education[i].name}
+            />
+          );
+        })}
 
-      <div className="ant-form-item-label">
-        <label
-          htmlFor="profile-editor_education[0].title"
-          className=""
-          title="field.education"
-        >
-          {t("field.education")}
-        </label>
-      </div>
-
-      {human.education.map((_: any, i) => {
-        return (
-          <DeleteableExp
-            key={i}
-            fieldName="education"
-            i={i}
-            form={form}
-            title={human.education[i].title}
-            org={human.education[i].name}
-          />
-        );
-      })}
-
-      <AddNewExp form={form} i={human.education.length} fieldName="education" />
+        <AddNewExp
+          form={form}
+          i={human.education.length}
+          fieldName="education"
+        />
+      </Form.Item>
     </>
   );
 }
