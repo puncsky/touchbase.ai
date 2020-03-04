@@ -169,7 +169,7 @@
     "nodemailer": "5.1.1",
     "nodemailer-mailgun-transport": "1.4.0",
     "omit-deep-lodash": "1.1.4",
-    "onefx": "1.6.2",
+    "onefx": "1.7.0",
     "process": "0.11.10",
     "react-apollo": "2.5.8",
     "react-calendar-heatmap": "1.8.1",
