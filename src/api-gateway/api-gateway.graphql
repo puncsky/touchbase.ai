@@ -100,6 +100,14 @@ input CreateTagTemplateInput {
   hasRate: Boolean!
 }
 
+input CreateTaskInput {
+  title: String!
+  done: Boolean!
+  rrule: String!
+  due: DateTime!
+  contacts: [String!]!
+}
+
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
 scalar DateTime
 
@@ -165,6 +173,9 @@ type Mutation {
   deleteTag(deleteTagInput: DeleteTagInput!): Boolean!
   deleteTagTemplate(deleteTagTemplateInput: DeleteTagTemplateInput!): Boolean!
   rateTag(rateTagInput: RateTagInput!): ContactTag!
+  deleteTask(id: String!): Boolean!
+  createTask(createTaskInput: CreateTaskInput!): Task!
+  upsertTask(upsertTaskInput: UpsertTaskInput!): Task!
 }
 
 type PlayBook {
@@ -216,6 +227,7 @@ type Query {
   ): [PlayBook!]!
   getUserTagTemplates: [TagTemplate!]!
   getContactTags(contactId: String!): [ContactTag!]!
+  getUserTasks: [Task!]!
 }
 
 input RateTagInput {
@@ -235,6 +247,16 @@ type TagTemplate {
   hasRate: Boolean!
   createAt: DateTime!
   updateAt: DateTime!
+}
+
+type Task {
+  id: String!
+  title: String!
+  done: Boolean!
+  contacts: [String!]!
+  rrule: String!
+  due: DateTime!
+  ownerId: String!
 }
 
 input UpdateContactInput {
@@ -274,6 +296,15 @@ input UpsertInteraction {
   content: String!
   relatedHumans: [String!]!
   public: Boolean
+}
+
+input UpsertTaskInput {
+  id: String!
+  title: String!
+  done: Boolean!
+  rrule: String!
+  due: DateTime!
+  contacts: [String!]!
 }
 
 type UserProfileResponse {
