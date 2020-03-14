@@ -1,4 +1,9 @@
 export type TTask = {
-  name: string;
+  id?: string;
+  title: string;
   ownerId: string;
+  rrule?: string;
+  due?: Date;
+  contacts?: Array<string>;
+  done: boolean;
 };

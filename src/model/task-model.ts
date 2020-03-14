@@ -3,11 +3,13 @@ import { TTask } from "../types/task";
 
 const Schema = mongoose.Schema;
 const TaskSchema = new Schema({
-  ownerId: { type: "ObjectId", ref: "User" },
-
   // basic profile
-  name: { type: String },
-
+  title: { type: String },
+  ownerId: { type: "ObjectId", ref: "User" },
+  rrule: { type: String },
+  due: { type: Date },
+  contacts: { type: [String] },
+  done: Boolean,
   // systematic
   createAt: { type: Date, default: Date.now },
   updateAt: { type: Date, default: Date.now }
@@ -15,7 +17,6 @@ const TaskSchema = new Schema({
 
 type TTaskDoc = mongoose.Document &
   TTask & {
-    userId: string;
     createAt: Date;
     updateAt: Date;
   };
@@ -44,5 +45,33 @@ export class TaskModel {
     });
 
     this.Model = mongoose.model("Task", TaskSchema);
+  }
+
+  public async getTaskByUser(userId: string): Promise<Array<TTask>> {
+    return this.Model.find({ ownerId: userId });
+  }
+
+  public async createTask(task: TTask): Promise<TTask> {
+    return new this.Model(task).save();
+  }
+
+  public async upsert(task: TTask): Promise<TTask | null> {
+    return this.Model.findOneAndUpdate(
+      {
+        _id: task.id
+      },
+      task,
+      {
+        new: true
+      }
+    );
+  }
+
+  public async deleteTask(id: string, userId: string): Promise<Boolean> {
+    const resp = await this.Model.deleteOne({
+      _id: id,
+      ownerId: userId
+    });
+    return Boolean(resp && resp.ok);
   }
 }

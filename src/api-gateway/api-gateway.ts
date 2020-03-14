@@ -14,6 +14,7 @@ import { ContactResolver } from "./resolvers/contact-resolver";
 import { MetaResolver } from "./resolvers/meta-resolver";
 import { PlaybookResolver } from "./resolvers/playbook-resolver";
 import { TagResolver } from "./resolvers/tag-resolver";
+import { TaskResolver } from "./resolvers/task-resolver";
 
 export type Context = {
   model: Model;
@@ -30,7 +31,8 @@ export async function setApiGateway(server: MyServer): Promise<void> {
     ContactResolver,
     AccountResolver,
     TagResolver,
-    PlaybookResolver
+    PlaybookResolver,
+    TaskResolver
   ];
   server.resolvers = resolvers;
 
