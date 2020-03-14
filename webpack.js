@@ -8,7 +8,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
 const process = require("global/process");
 const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
 
-const ANALYZE = false;
+const ANALYZE = true;
 const PROD = process.env.NODE_ENV === "production";
 const OUTPUT_DIR = "dist/";
 
