@@ -13,20 +13,6 @@ import {
 import { TTask } from "../../types/task";
 import { Context } from "../api-gateway";
 
-@InputType()
-class CreateTaskInput {
-  @Field(_ => String)
-  public title: string;
-  @Field(_ => Boolean)
-  public done: boolean;
-  @Field(_ => String)
-  public rrule: string;
-  @Field(_ => Date)
-  public due: Date;
-  @Field(_ => [String])
-  public contacts: Array<string>;
-}
-
 @ArgsType()
 class DeleteTaskInput {
   @Field(_ => String)
@@ -35,8 +21,8 @@ class DeleteTaskInput {
 
 @InputType()
 class UpsertTaskInput {
-  @Field(_ => String)
-  public id: string;
+  @Field(_ => String, { nullable: true })
+  public id?: string;
   @Field(_ => String)
   public title: string;
   @Field(_ => Boolean)
@@ -90,26 +76,18 @@ export class TaskResolver {
   }
 
   @Mutation(_ => Task)
-  public async createTask(
-    @Arg("createTaskInput") createTaskInput: CreateTaskInput,
-    @Ctx() { model, userId }: Context
-  ): Promise<TTask> {
-    if (!userId) {
-      throw new AuthenticationError(`please login to createTask`);
-    }
-    return model.task.createTask({
-      ...createTaskInput,
-      ownerId: userId
-    });
-  }
-
-  @Mutation(_ => Task)
   public async upsertTask(
     @Arg("upsertTaskInput") upsertTaskInput: UpsertTaskInput,
     @Ctx() { model, userId }: Context
   ): Promise<TTask | null> {
     if (!userId) {
       throw new AuthenticationError(`please login to upsertTask`);
+    }
+    if (!upsertTaskInput.id) {
+      return model.task.createTask({
+        ...upsertTaskInput,
+        ownerId: userId
+      });
     }
     return model.task.upsert({
       ...upsertTaskInput,

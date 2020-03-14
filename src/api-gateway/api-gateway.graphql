@@ -100,14 +100,6 @@ input CreateTagTemplateInput {
   hasRate: Boolean!
 }
 
-input CreateTaskInput {
-  title: String!
-  done: Boolean!
-  rrule: String!
-  due: DateTime!
-  contacts: [String!]!
-}
-
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
 scalar DateTime
 
@@ -174,7 +166,6 @@ type Mutation {
   deleteTagTemplate(deleteTagTemplateInput: DeleteTagTemplateInput!): Boolean!
   rateTag(rateTagInput: RateTagInput!): ContactTag!
   deleteTask(id: String!): Boolean!
-  createTask(createTaskInput: CreateTaskInput!): Task!
   upsertTask(upsertTaskInput: UpsertTaskInput!): Task!
 }
 
@@ -299,7 +290,7 @@ input UpsertInteraction {
 }
 
 input UpsertTaskInput {
-  id: String!
+  id: String
   title: String!
   done: Boolean!
   rrule: String!
