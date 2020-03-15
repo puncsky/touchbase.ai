@@ -56,15 +56,18 @@ export class TaskModel {
   }
 
   public async upsert(task: TTask): Promise<TTask | null> {
-    return this.Model.findOneAndUpdate(
-      {
-        _id: task.id
-      },
-      task,
-      {
-        new: true
-      }
-    );
+    if (task.id) {
+      return this.Model.findOneAndUpdate(
+        {
+          _id: task.id
+        },
+        task,
+        {
+          new: true
+        }
+      );
+    }
+    return new this.Model(task).save();
   }
 
   public async deleteTask(id: string, userId: string): Promise<Boolean> {

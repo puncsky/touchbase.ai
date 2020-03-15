@@ -13,20 +13,6 @@ import {
 import { TTask } from "../../types/task";
 import { Context } from "../api-gateway";
 
-@InputType()
-class CreateTaskInput {
-  @Field(_ => String)
-  public title: string;
-  @Field(_ => Boolean)
-  public done: boolean;
-  @Field(_ => String)
-  public rrule: string;
-  @Field(_ => Date)
-  public due: Date;
-  @Field(_ => [String])
-  public contacts: Array<string>;
-}
-
 @ArgsType()
 class DeleteTaskInput {
   @Field(_ => String)
@@ -35,8 +21,8 @@ class DeleteTaskInput {
 
 @InputType()
 class UpsertTaskInput {
-  @Field(_ => String)
-  public id: string;
+  @Field(_ => String, { nullable: true })
+  public id?: string;
   @Field(_ => String)
   public title: string;
   @Field(_ => Boolean)
@@ -87,20 +73,6 @@ export class TaskResolver {
       throw new AuthenticationError(`please login to deleteTask`);
     }
     return model.task.deleteTask(id, userId);
-  }
-
-  @Mutation(_ => Task)
-  public async createTask(
-    @Arg("createTaskInput") createTaskInput: CreateTaskInput,
-    @Ctx() { model, userId }: Context
-  ): Promise<TTask> {
-    if (!userId) {
-      throw new AuthenticationError(`please login to createTask`);
-    }
-    return model.task.createTask({
-      ...createTaskInput,
-      ownerId: userId
-    });
   }
 
   @Mutation(_ => Task)
