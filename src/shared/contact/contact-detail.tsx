@@ -135,6 +135,7 @@ export const ContactDetailContainer = withRouter<IProps>(
             <Padding />
 
             <Query
+              ssr={false}
               query={GET_CONTACT}
               variables={{
                 id: props.isSelf ? ownerHumanId : id,

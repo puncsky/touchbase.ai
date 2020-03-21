@@ -10,16 +10,21 @@ type TNewUser = {
   ip: string;
 };
 
-type TUser = TNewUser & {
-  id: string;
-  avatar: string;
-
-  isBlocked: boolean;
-  lifetimeHumanId: string;
-
-  createAt: Date;
-  updateAt: Date;
+type TDidUser = {
+  did: string;
 };
+
+type TUser = TNewUser &
+  TDidUser & {
+    id: string;
+    avatar: string;
+
+    isBlocked: boolean;
+    lifetimeHumanId: string;
+
+    createAt: Date;
+    updateAt: Date;
+  };
 
 export type TUserDoc = mongoose.Document & TUser;
 
@@ -36,6 +41,8 @@ export class UserModel {
       lifetimeHumanId: { type: "ObjectId", ref: "LifetimeHuman" },
 
       isBlocked: { type: Boolean, default: false },
+
+      did: { type: String },
 
       createAt: { type: Date, default: Date.now },
       updateAt: { type: Date, default: Date.now }
@@ -63,6 +70,7 @@ export class UserModel {
     });
 
     UserSchema.index({ email: 1 }, { unique: true });
+    UserSchema.index({ did: 1 }, { unique: true });
 
     UserSchema.plugin(baseModel);
     UserSchema.pre("save", function onSave(next: Function): void {
@@ -83,6 +91,10 @@ export class UserModel {
     return this.Model.findOne({ _id: id });
   }
 
+  public async getByDid(did: string): Promise<TUser | null> {
+    return this.Model.findOne({ did });
+  }
+
   public async getByMail(email: string): Promise<TUser | null> {
     return this.Model.findOne({ email });
   }
@@ -93,6 +105,12 @@ export class UserModel {
       password: await tools.bhash(user.password)
     };
     return new this.Model(hashed).save();
+  }
+
+  async newAndSaveDidUser(user: TDidUser): Promise<TUser | null> {
+    return new this.Model({
+      ...user
+    }).save();
   }
 
   public async updateAssocProfileId(

@@ -13,6 +13,7 @@ export type MyServer = Server & {
   [key: string]: any;
   gateways: Gateways;
   model: Model;
+  auth: OnefxAuth;
 };
 
 export async function startServer(): Promise<Server> {

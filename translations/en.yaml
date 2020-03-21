@@ -2,17 +2,20 @@ add_event: Add Event
 add_interaction: Add Interaction
 auth/button_submit: Submit
 auth/consent: By clicking "SUBMIT", you agree to Beancount.io's <a href="${tosUrl}">Terms of Use</a> and acknowledge you have read the <a href="${policyUrl}">Privacy Policy</a>.
+auth/continue_with_blockstack: Continue with Blockstack
 auth/email-already-in-use: Email is already in use
 auth/forgot_password.back: ← Back to Login
 auth/forgot_password.desc: Enter the email address associated with your account, and we’ll email you a link to reset your password.
 auth/forgot_password.email_content: Hi, we’ve received a request to reset your password. If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using the following link.
-auth/forgot_password.email_title: Reset your Password
 auth/forgot_password.email_cta: RESET YOUR PASSWORD
+auth/forgot_password.email_title: Reset your Password
 auth/forgot_password.email_token_failure: Your request to reset password has already expired. Please try again.
 auth/forgot_password.send: SEND RESET LINK
 auth/forgot_password.sent: A link to reset your password has been sent to ${email}.
 auth/forgot_password: Forgot Password
 auth/invalid-email: Email is invalid
+auth/new-password: New Password
+auth/password: Password
 auth/reset_password.desc: Your password needs to have at least one symbol or number, and have at least 6 characters.
 auth/reset_password.success: Your password has been updated.
 auth/reset_password: Reset password
@@ -24,8 +27,6 @@ auth/user-disabled: User is banned
 auth/user-not-found: User is not found
 auth/weak-password: Please use at least 8 characters as the password
 auth/wrong-password: Password is incorrect
-auth/password: Password
-auth/new-password: New Password
 bornAddress: From
 bornAt: Birthday
 close: CLOSE

@@ -23,6 +23,23 @@ export function setServerRoutes(server: MyServer): void {
     });
   });
 
+  server.get("manifest", "/manifest.json", async ctx => {
+    ctx.set("content-type", "application/json");
+    ctx.set("Access-Control-Allow-Origin", "*");
+    ctx.response.body = {
+      name: "Touchbase.AI",
+      start_url: "https://touchbase.ai/",
+      description: "To be a better friend",
+      icons: [
+        {
+          src: "https://touchbase.ai/favicon.png",
+          sizes: "400x400",
+          type: "image/png"
+        }
+      ]
+    };
+  });
+
   setEmailPasswordIdentityProviderRoutes(server);
   setHumanHandlers(server);
 

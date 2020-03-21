@@ -1,10 +1,12 @@
+import { makeDIDFromAddress, publicKeyToAddress } from "blockstack";
+import { logger } from "onefx/lib/integrated-gateways/logger";
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import * as React from "react";
 import { combineReducers } from "redux";
 import validator from "validator";
 import { MyServer } from "../../../server/start-server";
 import { MyContext } from "../../../types/global";
-import { TUserDoc } from "../../onefx-auth/model/user-model";
+import { verifyDidToken } from "../../common/did-token/verify-did-token";
 import { IdentityAppContainer } from "./view/identity-app-container";
 
 const PASSWORD_MIN_LENGTH = 6;
@@ -122,6 +124,10 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     server.auth.postAuthentication
   );
 
+  server.get("login-blockstack", "/login/blockstack-success", async ctx => {
+    return isoRender(ctx);
+  });
+
   // API routes
   server.post(
     "api-sign-up",
@@ -131,12 +137,12 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     async (ctx: MyContext, next: Function) => {
       const { email, password } = ctx.request.body;
       try {
-        const user: TUserDoc = await server.auth.user.newAndSave({
+        const user = await server.auth.user.newAndSave({
           email,
           password,
           ip: ctx.headers["x-forward-for"]
         });
-        ctx.state.userId = user && user._id;
+        ctx.state.userId = user && user.id;
         await next();
       } catch (err) {
         if (err.name === "MongoError" && err.code === 11000) {
@@ -172,7 +178,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
         return;
       }
       const isPasswordVerified = await server.auth.user.verifyPassword(
-        user._id,
+        user.id,
         password
       );
       if (!isPasswordVerified) {
@@ -195,7 +201,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
         };
         return;
       }
-      ctx.state.userId = user._id;
+      ctx.state.userId = user.id;
       await next();
     },
     server.auth.postAuthentication
@@ -217,6 +223,39 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
         ok: true
       });
     }
+  );
+
+  server.post(
+    "did-token-exchange",
+    "/api/did-token-exchange",
+    async (ctx, next) => {
+      const { didToken } = ctx.request.body;
+      let payload;
+      try {
+        payload = verifyDidToken(didToken);
+      } catch (e) {
+        logger.debug(`failed to verify did token: ${e}`);
+        return;
+      }
+      const address = publicKeyToAddress(payload.iss);
+      const did = makeDIDFromAddress(address);
+
+      // sign in or sign up
+      let user = await server.auth.user.getByDid(did);
+      if (!user) {
+        user = await server.auth.user.newAndSaveDidUser({
+          did
+        });
+        if (!user) {
+          return;
+        }
+      }
+
+      ctx.state.userId = user.id;
+
+      await next();
+    },
+    server.auth.postAuthentication
   );
 
   server.post(

@@ -57,7 +57,7 @@ export async function setApiGateway(server: MyServer): Promise<void> {
     playground: true,
     context: async ({ ctx }): Promise<Context> => {
       const token = server.auth.tokenFromCtx(ctx);
-      const userId = await server.auth.jwt.verify(token);
+      const userId = await server.auth.jwt.verify(token || "");
       return {
         userId,
         model: server.model,

@@ -25,6 +25,7 @@ auth/weak-password: 请至少使用 6 个字符作为密码
 auth/wrong-password: 密码不正确
 auth/password: 密码
 auth/new-password: 新密码
+auth/continue_with_blockstack: 用 Blockstack 登录
 bornAddress: 来自
 bornAt: 生日
 close: 关闭
