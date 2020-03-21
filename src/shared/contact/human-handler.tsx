@@ -1,3 +1,4 @@
+/* tslint:disable:no-non-null-assertion */
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import React from "react";
 import { combineReducers } from "redux";
@@ -11,6 +12,7 @@ import { EMPTY_HUMAN } from "./profile-creator";
 
 // tslint:disable-next-line:max-func-body-length
 export function setHumanHandlers(server: MyServer): void {
+  // @ts-ignore
   server.get("/onboard/", server.auth.authRequired, async (ctx: MyContext) => {
     // @ts-ignore
     ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
@@ -36,8 +38,8 @@ export function setHumanHandlers(server: MyServer): void {
       }
       const user = await server.auth.user.getById(ctx.state.userId);
       let selfProfile = await server.model.human.getById(
-        user.id,
-        user.lifetimeHumanId
+        user!.id,
+        user!.lifetimeHumanId
       );
       if (!selfProfile) {
         // TODO(tian): just create a default one for now. should lead to onboarding steps.
@@ -83,10 +85,10 @@ export function setHumanHandlers(server: MyServer): void {
       const nameDot = ctx.path.split("/")[1].toLowerCase();
       const user = await server.auth.user.getById(ctx.state.userId);
       const name = nameDot.replace(/-/g, " ").replace(/\./g, " ");
-      const human = await server.model.human.getByName(user.id, name);
+      const human = await server.model.human.getByName(user!.id, name);
       ctx.setState("human", human);
-      ctx.setState("base.ownerHumanId", user.lifetimeHumanId);
-      ctx.setState("base.userId", user.id);
+      ctx.setState("base.ownerHumanId", user!.lifetimeHumanId);
+      ctx.setState("base.userId", user!.id);
       // @ts-ignore
       ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
         VDom: <AppContainer />,

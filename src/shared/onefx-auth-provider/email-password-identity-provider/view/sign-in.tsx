@@ -3,7 +3,6 @@ import serialize from "form-serialize";
 import { t } from "onefx/lib/iso-i18n";
 // @ts-ignore
 import Helmet from "onefx/lib/react-helmet";
-// @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -11,6 +10,7 @@ import { Flex } from "../../../common/flex";
 import { fullOnPalm } from "../../../common/styles/style-media";
 import { ContentPadding } from "../../../common/styles/style-padding";
 import { axiosInstance } from "./axios-instance";
+import { ContinueWithBlockstack } from "./continue-with-blockstack";
 import { EmailField } from "./email-field";
 import { FieldMargin } from "./field-margin";
 import { FormContainer } from "./form-container";
@@ -142,6 +142,10 @@ class SignInInner extends Component<Props, State> {
               <StyleLink to="/sign-up">
                 {t("auth/sign_in.switch_to_sign_up")}
               </StyleLink>
+            </FieldMargin>
+
+            <FieldMargin>
+              <ContinueWithBlockstack />
             </FieldMargin>
           </Form>
         </Flex>

@@ -14,6 +14,7 @@ import { colors } from "../../../common/styles/style-color";
 import { fonts } from "../../../common/styles/style-font";
 import { ContentPadding } from "../../../common/styles/style-padding";
 import { TopBar } from "../../../common/top-bar";
+import { BlockstackSuccess } from "./blockstack-success";
 import { ForgotPassword } from "./forgot-password";
 import { ResetPasswordContainer } from "./reset-password";
 import { SignIn } from "./sign-in";
@@ -42,6 +43,11 @@ export class IdentityApp extends Component<Props> {
             <Route exact path="/sign-up" component={SignUp} />
             <Route exact path="/forgot-password" component={ForgotPassword} />
             <Route exact path="/email-token/*" component={ForgotPassword} />
+            <Route
+              exact
+              path="/login/blockstack-success"
+              component={BlockstackSuccess}
+            />
             <Route
               exact
               path="/reset-password/*"
