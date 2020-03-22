@@ -83,6 +83,8 @@ const ContactSchema = new Schema({
     max: 5
   },
 
+  hmacs: { type: [String] },
+
   // systematic
   createAt: { type: Date, default: Date.now },
   updateAt: { type: Date, default: Date.now }
@@ -101,6 +103,7 @@ export class ContactModel {
   constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
     ContactSchema.index({ name: "text" });
     ContactSchema.index({ ownerId: 1 });
+    ContactSchema.index({ hmacs: 1 });
 
     ContactSchema.virtual("id").get(function onId(): void {
       // @ts-ignore
@@ -201,6 +204,18 @@ export class ContactModel {
     ownerId: string;
   }): Promise<Array<TContact>> {
     return this.Model.find({ $text: { $search: name }, ownerId }).select(
+      "name _id"
+    );
+  }
+
+  async findHmacs({
+    hmacs,
+    ownerId
+  }: {
+    hmacs: Array<string>;
+    ownerId: string;
+  }): Promise<Array<TContact>> {
+    return this.Model.find({ hmacs: { $in: hmacs }, ownerId }).select(
       "name _id"
     );
   }

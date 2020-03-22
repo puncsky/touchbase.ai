@@ -85,6 +85,7 @@ input CreateContactInput {
   linkedin: String
   facebook: String
   github: String
+  hmacs: [String!]
   createAt: DateTime
   updateAt: DateTime
 }
@@ -197,7 +198,7 @@ type Query {
     limit: Float
   ): InteractionConnection!
   note(id: String!): Interaction
-  search(name: String!): [SearchResult!]!
+  search(name: String!, hmacs: [String!]): [SearchResult!]!
   contacts(offset: Float, limit: Float): [Contact!]
   contact(id: String, userId: String, isSelf: Boolean): Contact
   interactionCounts(isSelf: Boolean, contactId: String): [InteractionCount!]
@@ -277,6 +278,7 @@ input UpdateContactInput {
   linkedin: String
   facebook: String
   github: String
+  hmacs: [String!]
   createAt: DateTime
   updateAt: DateTime
 }
