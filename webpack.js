@@ -1,5 +1,5 @@
 const path = require("path");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const UglifyJSPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const glob = require("glob");
@@ -73,14 +73,7 @@ module.exports = {
       ? [
           new UglifyJSPlugin({
             cache: true,
-            parallel: true,
-            uglifyOptions: {
-              compress: true,
-              ecma: 6,
-              mangle: true,
-              comments: false
-            },
-            extractComments: true
+            parallel: true
           }),
           new webpack.DefinePlugin({
             "process.env": {
