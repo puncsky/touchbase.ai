@@ -1,6 +1,7 @@
 import { Operation } from "apollo-link";
 import { decryptECIES, encryptECIES } from "blockstack/lib/encryption";
 import dottie from "dottie";
+import { createHmacs } from "./get-hmac";
 import { getLocalKeyPair } from "./get-local-key-pair";
 
 const PIIs = [
@@ -51,6 +52,8 @@ function decryptContact(contact: any): any {
 }
 
 function encryptContact(contact: any): any {
+  contact.hmacs = createHmacs(contact.name, privateKey);
+
   for (const pii of PIIs) {
     // @ts-ignore
     const piiVal = dottie.get(contact, pii) || "";
@@ -113,11 +116,58 @@ class AdaptorContact extends AdaptorGeneral {
   }
 }
 
+class AdaptorCreateContact extends AdaptorGeneral {
+  name: string = "createContact";
+  forward(operation: Operation): Operation {
+    let contact = dottie.get(operation, `variables.createContactInput`) || {};
+    contact = encryptContact(contact);
+    dottie.set(operation, `variables.createContactInput`, contact);
+    return operation;
+  }
+
+  map(response: any): any {
+    let contact = dottie.get(response, `data.${this.name}`);
+    contact = decryptContact(contact);
+    dottie.set(response, `data.${this.name}`, contact);
+    return response;
+  }
+}
+
+class AdaptorSearch extends AdaptorDefault {
+  static decryptSearch(search: any): any {
+    for (const it of search) {
+      try {
+        const val = JSON.parse(String(it.name));
+        it.name = decryptECIES(privateKey, val);
+      } catch (e) {
+        if (process.env.NODE_ENV !== "production") {
+          window.console.error(`failed to decrypt: ${e}`);
+        }
+      }
+    }
+    return search;
+  }
+
+  name: string = "search";
+  forward(operation: Operation): Operation {
+    const search = operation.variables;
+    search.hmacs = createHmacs(search.name, privateKey);
+    return operation;
+  }
+  map(response: any): any {
+    const search = response.data.search;
+    response.data.search = AdaptorSearch.decryptSearch(search);
+    return response;
+  }
+}
+
 const adapterArray = [
   new AdaptorDefault(),
   new AdaptorUpdateContact(),
   new AdaptorContact(),
-  new AdaptorContacts()
+  new AdaptorContacts(),
+  new AdaptorSearch(),
+  new AdaptorCreateContact()
 ];
 
 const adapters: Record<string, AdaptorDefault> = adapterArray.reduce(

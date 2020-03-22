@@ -86,6 +86,8 @@ class CreateContactInput implements TContact2 {
   public facebook: string;
   @Field(_ => String, { nullable: true })
   public github: string;
+  @Field(_ => [String], { nullable: true })
+  hmacs: Array<string>;
   @Field(_ => Date, { nullable: true })
   public createAt?: Date;
   @Field(_ => Date, { nullable: true })
@@ -151,6 +153,8 @@ class UpdateContactInput implements TContact2 {
   public facebook: string;
   @Field(_ => String, { nullable: true })
   public github: string;
+  @Field(_ => [String], { nullable: true })
+  hmacs: Array<string>;
   @Field(_ => Date, { nullable: true })
   public createAt?: Date;
   @Field(_ => Date, { nullable: true })
@@ -292,6 +296,8 @@ class GetNote {
 class SearchRequest {
   @Field(_ => String)
   public name: string;
+  @Field(_ => [String], { nullable: true })
+  hmacs: Array<string>;
 }
 
 @ArgsType()
@@ -459,13 +465,17 @@ export class ContactResolver {
 
   @Query(_ => [SearchResult])
   public async search(
-    @Args() { name }: SearchRequest,
+    @Args() { name, hmacs }: SearchRequest,
     @Ctx() { model, userId }: Context
   ): Promise<Array<SearchResult>> {
     if (!userId) {
       throw new AuthenticationError(`please login to search`);
     }
-    const entries = await model.contact.findName({ name, ownerId: userId });
+    const [en1, en2] = await Promise.all([
+      model.contact.findName({ name, ownerId: userId }),
+      model.contact.findHmacs({ hmacs, ownerId: userId })
+    ]);
+    const entries = en1.concat(en2);
     return entries.map(en => ({
       name: en.name,
       path: `/${en._id}/`

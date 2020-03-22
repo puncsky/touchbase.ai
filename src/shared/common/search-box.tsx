@@ -12,8 +12,8 @@ import { loadScript } from "./load-script";
 const { Option } = AutoComplete;
 
 const SEARCH = gql`
-  query search($name: String!) {
-    search(name: $name) {
+  query search($name: String!, $hmacs: [String!]) {
+    search(name: $name, hmacs: $hmacs) {
       name
       path
     }
