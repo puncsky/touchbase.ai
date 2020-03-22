@@ -15,6 +15,7 @@ import { EmailField } from "./email-field";
 import { FieldMargin } from "./field-margin";
 import { FormContainer } from "./form-container";
 import { PasswordField } from "./password-field";
+import { postSignInLocal } from "./post-auth-local";
 import { StyleLink } from "./sign-up";
 
 const LOGIN_FORM = "login";
@@ -44,7 +45,7 @@ class SignInInner extends Component<Props, State> {
     disableButton: false
   };
 
-  public onSubmit(e: Event): void {
+  public async onSubmit(e: Event): Promise<void> {
     e.preventDefault();
     const el = window.document.getElementById(LOGIN_FORM) as HTMLFormElement;
     if (!el) {
@@ -62,43 +63,41 @@ class SignInInner extends Component<Props, State> {
       valueEmail: email,
       valuePassword: password
     });
-    axiosInstance
-      .post("/api/sign-in/", {
-        email,
-        password,
-        next
-      })
-      .then(r => {
-        if (r.data.ok && r.data.shouldRedirect && !r.data.authToken) {
-          return (window.location.href = r.data.next);
-        } else if (r.data.ok && r.data.authToken) {
-          // web view login in
-          // @ts-ignore
-          window.postMessage(JSON.stringify({ authToken: r.data.authToken }));
-        } else if (r.data.error) {
-          const error = r.data.error;
-          const errorState = {
-            valueEmail: email,
-            valuePassword: this.state.valuePassword,
-            errorEmail: "",
-            errorPassword: "",
-            disableButton: false
-          };
-          switch (error.code) {
-            case "auth/invalid-email":
-            case "auth/user-disabled":
-            case "auth/user-not-found": {
-              errorState.errorEmail = error.message;
-              break;
-            }
-            default:
-            case "auth/wrong-password": {
-              errorState.errorPassword = error.message;
-            }
-          }
-          this.setState(errorState);
+    const r = await axiosInstance.post("/api/sign-in/", {
+      email,
+      password,
+      next
+    });
+    if (r.data.ok && r.data.shouldRedirect && !r.data.authToken) {
+      await postSignInLocal(password);
+      return (window.location.href = r.data.next);
+    } else if (r.data.ok && r.data.authToken) {
+      // web view login in
+      // @ts-ignore
+      window.postMessage(JSON.stringify({ authToken: r.data.authToken }));
+    } else if (r.data.error) {
+      const error = r.data.error;
+      const errorState = {
+        valueEmail: email,
+        valuePassword: this.state.valuePassword,
+        errorEmail: "",
+        errorPassword: "",
+        disableButton: false
+      };
+      switch (error.code) {
+        case "auth/invalid-email":
+        case "auth/user-disabled":
+        case "auth/user-not-found": {
+          errorState.errorEmail = error.message;
+          break;
         }
-      });
+        default:
+        case "auth/wrong-password": {
+          errorState.errorPassword = error.message;
+        }
+      }
+      this.setState(errorState);
+    }
   }
 
   public render(): JSX.Element {

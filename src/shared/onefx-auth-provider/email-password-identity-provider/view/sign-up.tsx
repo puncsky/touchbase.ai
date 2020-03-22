@@ -20,6 +20,7 @@ import { EmailField } from "./email-field";
 import { FieldMargin } from "./field-margin";
 import { FormContainer } from "./form-container";
 import { PasswordField } from "./password-field";
+import { postSignUpLocal } from "./post-auth-local";
 
 const LOGIN_FORM = "signup";
 
@@ -48,7 +49,7 @@ export class SignUpInner extends Component<Props, State> {
     disableButton: false
   };
 
-  public onSubmit(e: Event): void {
+  public async onSubmit(e: Event): Promise<void> {
     e.preventDefault();
     const el = window.document.getElementById(LOGIN_FORM) as HTMLFormElement;
     const { email = "", password = "", next = "" } = serialize(el, {
@@ -63,41 +64,39 @@ export class SignUpInner extends Component<Props, State> {
       valueEmail: email,
       valuePassword: password
     });
-    axiosInstance
-      .post("/api/sign-up/", {
-        email,
-        password,
-        next
-      })
-      .then(r => {
-        if (r.data.ok && r.data.shouldRedirect && !r.data.authToken) {
-          return (window.location.href = r.data.next);
-        } else if (r.data.ok && r.data.authToken) {
-          // web view login in
-          // @ts-ignore
-          window.postMessage(JSON.stringify({ authToken: r.data.authToken }));
-        } else if (r.data.error) {
-          const error = r.data.error;
-          const errorState = {
-            valueEmail: email,
-            errorEmail: "",
-            errorPassword: "",
-            disableButton: false
-          };
-          switch (error.code) {
-            case "auth/email-already-in-use":
-            case "auth/invalid-email": {
-              errorState.errorEmail = error.message;
-              break;
-            }
-            default:
-            case "auth/weak-password": {
-              errorState.errorPassword = error.message;
-            }
-          }
-          this.setState(errorState);
+    const r = await axiosInstance.post("/api/sign-up/", {
+      email,
+      password,
+      next
+    });
+    if (r.data.ok && r.data.shouldRedirect && !r.data.authToken) {
+      await postSignUpLocal(password);
+      return (window.location.href = r.data.next);
+    } else if (r.data.ok && r.data.authToken) {
+      // web view login in
+      // @ts-ignore
+      window.postMessage(JSON.stringify({ authToken: r.data.authToken }));
+    } else if (r.data.error) {
+      const error = r.data.error;
+      const errorState = {
+        valueEmail: email,
+        errorEmail: "",
+        errorPassword: "",
+        disableButton: false
+      };
+      switch (error.code) {
+        case "auth/email-already-in-use":
+        case "auth/invalid-email": {
+          errorState.errorEmail = error.message;
+          break;
         }
-      });
+        default:
+        case "auth/weak-password": {
+          errorState.errorPassword = error.message;
+        }
+      }
+      this.setState(errorState);
+    }
   }
 
   public render(): JSX.Element {

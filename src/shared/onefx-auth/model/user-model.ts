@@ -22,6 +22,8 @@ type TUser = TNewUser &
     isBlocked: boolean;
     lifetimeHumanId: string;
 
+    privateKeyCipher?: string;
+
     createAt: Date;
     updateAt: Date;
   };
@@ -43,6 +45,7 @@ export class UserModel {
       isBlocked: { type: Boolean, default: false },
 
       did: { type: String },
+      privateKeyCipher: { type: String },
 
       createAt: { type: Date, default: Date.now },
       updateAt: { type: Date, default: Date.now }
@@ -146,5 +149,21 @@ export class UserModel {
   public async deleteById(id: string): Promise<boolean> {
     const resp = await this.Model.deleteOne({ _id: id });
     return Boolean(resp && resp.ok);
+  }
+
+  public async updatePrivateKeyCipher(
+    userId: string,
+    privateKeyCipher: string
+  ): Promise<void> {
+    await this.Model.findOneAndUpdate({ _id: userId }, { privateKeyCipher });
+  }
+
+  public async getPrivateKeyCipher(
+    userId: string
+  ): Promise<string | undefined | null> {
+    const resp = await this.Model.findOne({ _id: userId }).select(
+      "privateKeyCipher"
+    );
+    return resp && resp.privateKeyCipher;
   }
 }
