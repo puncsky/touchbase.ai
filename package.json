@@ -88,7 +88,7 @@
     "prettier": "1.19.1",
     "pretty-quick": "2.0.1",
     "source-map-loader": "0.2.4",
-    "sw-precache-webpack-plugin": "0.11.5",
+    "sw-precache-webpack-plugin": "1.0.0",
     "terser-webpack-plugin": "2.3.5",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
