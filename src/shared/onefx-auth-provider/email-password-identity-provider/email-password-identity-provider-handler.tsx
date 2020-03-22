@@ -259,6 +259,32 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
   );
 
   server.post(
+    "update-private-key-cipher",
+    "/api/private-key-cipher",
+    server.auth.authRequired,
+    async ctx => {
+      const { privateKeyCipher } = ctx.request.body;
+      await server.auth.user.updatePrivateKeyCipher(
+        ctx.state.userId,
+        privateKeyCipher
+      );
+      ctx.response.body = { ok: true };
+    }
+  );
+
+  server.get(
+    "get-private-key-cipher",
+    "/api/private-key-cipher",
+    server.auth.authRequired,
+    async ctx => {
+      const privateKeyCipher = await server.auth.user.getPrivateKeyCipher(
+        ctx.state.userId
+      );
+      ctx.response.body = { ok: true, privateKeyCipher };
+    }
+  );
+
+  server.post(
     "reset-password",
     "/api/reset-password/",
     server.auth.authRequired,
