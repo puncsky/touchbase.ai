@@ -232,7 +232,7 @@ export const ContactsTableContainer = withRouter(
               className="ag-theme-balham"
               style={{ width: "100%", height: FOOTER_ABOVE.minHeight }}
             >
-              <Query query={GET_CONTACTS}>
+              <Query query={GET_CONTACTS} ssr={false}>
                 {({
                   data,
                   error,
