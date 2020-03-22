@@ -506,9 +506,10 @@ export class ContactResolver {
         return null;
       }
       if (
-        !contact.emails ||
-        contact.emails.length === 0 ||
-        !contact.emails[0]
+        (!contact.emails ||
+          contact.emails.length === 0 ||
+          !contact.emails[0]) &&
+        user.email
       ) {
         contact.emails = [user.email];
       }
