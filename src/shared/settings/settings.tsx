@@ -1,21 +1,21 @@
 import Button from "antd/lib/button/button";
 import Tabs from "antd/lib/tabs";
-import Typography from "antd/lib/typography";
 import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import Helmet from "react-helmet";
-import { RouterProps, withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
 import { colors } from "../common/styles/style-color";
 import { ContentPadding } from "../common/styles/style-padding";
 import { ResetPasswordContainer } from "../onefx-auth-provider/email-password-identity-provider/view/reset-password";
 import { DangerZone } from "./danger-zone";
-
-const { Title } = Typography;
+import { connect } from "react-redux";
 
 const RESET_PW = "/settings/self-reset-password";
 
-type Props = RouterProps;
+type Props = RouteComponentProps & {
+  userDid: string;
+};
 
 class SettingsInner extends Component<Props> {
   public onTabChange = (key: string) => {
@@ -23,14 +23,14 @@ class SettingsInner extends Component<Props> {
   };
 
   public render(): JSX.Element {
-    const title = t("settings.manage_your_account");
+    const title = t("settings.manage_account");
     return (
       <div style={{ backgroundColor: colors.white, minHeight: "100vh" }}>
         <PageHeader>
           <ContentPadding>
-            <Title>{title}</Title>
+            <h1>{title}</h1>
             <Helmet>
-              <title>{`${title} - ${t("")}`}</title>
+              <title>{`${title} - ${t("meta.title")}`}</title>
             </Helmet>
           </ContentPadding>
         </PageHeader>
@@ -39,23 +39,32 @@ class SettingsInner extends Component<Props> {
           <Tabs activeKey={RESET_PW} onTabClick={this.onTabChange} type="card">
             <Tabs.TabPane key={RESET_PW} tab={t("settings.security")}>
               <TitleMargin>
-                <Title level={3}>{t("settings.sessions")}</Title>
+                <h2>{t("settings.sessions")}</h2>
               </TitleMargin>
 
-              <Button href="/logout">{t("settings.logout")}</Button>
+              <Button
+                onClick={() => {
+                  localStorage.clear();
+                  window.location.href = "/logout";
+                }}
+              >
+                {t("settings.logout")}
+              </Button>
 
               <TitleMargin>
-                <Title level={3}>{t("auth/reset_password")}</Title>
+                <h2>{t("auth/reset_password")}</h2>
               </TitleMargin>
 
-              <div style={{ maxWidth: "320px" }}>
-                <ResetPasswordContainer isEmbedded={true} />
-              </div>
+              {!this.props.userDid && (
+                <div style={{ maxWidth: "320px" }}>
+                  <ResetPasswordContainer isEmbedded={true} />
+                </div>
+              )}
 
               <TitleMargin>
-                <Title level={3} type="danger">
+                <h2 style={{ color: colors.error }}>
                   {t("settings.dangerZone")}
-                </Title>
+                </h2>
               </TitleMargin>
 
               <Zone>
@@ -84,5 +93,10 @@ const TitleMargin = styled("div", {
   margin: "48px 0 24px 0"
 });
 
-// @ts-ignore
-export const Settings = withRouter(SettingsInner);
+export const Settings = withRouter(
+  connect((state: { base: { userDid: string } }) => {
+    return {
+      userDid: state.base.userDid
+    };
+  })(SettingsInner)
+);

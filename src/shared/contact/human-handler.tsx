@@ -89,6 +89,7 @@ export function setHumanHandlers(server: MyServer): void {
       ctx.setState("human", human);
       ctx.setState("base.ownerHumanId", user!.lifetimeHumanId);
       ctx.setState("base.userId", user!.id);
+      ctx.setState("base.userDid", user!.did);
       // @ts-ignore
       ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
         VDom: <AppContainer />,

@@ -1,7 +1,7 @@
 add_event: Add Event
 add_interaction: Add Interaction
 auth/button_submit: Submit
-auth/consent: By clicking "SUBMIT", you agree to Beancount.io's <a href="${tosUrl}">Terms of Use</a> and acknowledge you have read the <a href="${policyUrl}">Privacy Policy</a>.
+auth/consent: By clicking "SUBMIT", you agree to our <a href="${tosUrl}">Terms of Use</a> and acknowledge you have read the <a href="${policyUrl}">Privacy Policy</a>.
 auth/continue_with_blockstack: Continue with Blockstack
 auth/email-already-in-use: Email is already in use
 auth/forgot_password.back: ← Back to Login
@@ -119,7 +119,7 @@ field.phone: Phone
 field.error.required.name: Please enter the name of the contact.
 field.error.required: This field is required.
 field.error.phone.format: Please enter a valid phone number.
-settings.manage_your_account: Manage Your Account
+settings.manage_account: Manage Account
 settings.sessions: Sessions
 settings.security: Security
 settings.logout: Logout

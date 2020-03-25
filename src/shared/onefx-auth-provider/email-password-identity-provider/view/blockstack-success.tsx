@@ -21,6 +21,7 @@ export class BlockstackSuccess extends PureComponent {
       }
     }
     if (!userData) {
+      window.location.href = "/login/";
       return;
     }
 

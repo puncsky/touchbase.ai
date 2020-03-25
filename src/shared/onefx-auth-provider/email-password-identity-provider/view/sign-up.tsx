@@ -21,6 +21,7 @@ import { FieldMargin } from "./field-margin";
 import { FormContainer } from "./form-container";
 import { PasswordField } from "./password-field";
 import { postSignUpLocal } from "./post-auth-local";
+import { ContinueWithBlockstack } from "./continue-with-blockstack";
 
 const LOGIN_FORM = "signup";
 
@@ -147,6 +148,10 @@ export class SignUpInner extends Component<Props, State> {
               <StyleLink to="/login/">
                 {t("auth/sign_up.switch_to_sign_in")}
               </StyleLink>
+            </FieldMargin>
+
+            <FieldMargin>
+              <ContinueWithBlockstack />
             </FieldMargin>
           </Form>
         </Flex>

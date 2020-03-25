@@ -118,7 +118,7 @@ field.phone: 手机号
 field.error.required.name: 请输入联系人姓名.
 field.error.required: 该字段必填.
 field.error.phone.format: 请输入一个有效的手机号.
-settings.manage_your_account: 管理你的账户
+settings.manage_account: 管理账户
 settings.sessions: 会话
 settings.security: 安全
 settings.logout: 退出登录
