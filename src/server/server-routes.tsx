@@ -1,3 +1,4 @@
+import { t } from "onefx/lib/iso-i18n";
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import * as React from "react";
 import { setApiGateway } from "../api-gateway/api-gateway";
@@ -27,12 +28,12 @@ export function setServerRoutes(server: MyServer): void {
     ctx.set("content-type", "application/json");
     ctx.set("Access-Control-Allow-Origin", "*");
     ctx.response.body = {
-      name: "Touchbase.AI",
-      start_url: "https://touchbase.ai/",
-      description: "To be a better friend",
+      name: t("meta.title"),
+      start_url: ctx.origin,
+      description: t("meta.description"),
       icons: [
         {
-          src: "https://touchbase.ai/favicon.png",
+          src: `${ctx.origin}/favicon.png`,
           sizes: "400x400",
           type: "image/png"
         }

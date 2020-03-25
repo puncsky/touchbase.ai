@@ -79,8 +79,8 @@ executor: 执行者
 flexor: 协调者
 ipq: IPQ
 knownSource: 通过
-meta.description: 更智能地加入到有意义的关系中
-meta.title: 关系实验室
+meta.description: 保护隐私的个人关系管理，帮你轻轻松松，搞定人际关系管理
+meta.title: 关系io
 not_found.bar: 未找到
 not_found.info: 我们无法为您找到这个页面...
 not_found.title: 哎呀！
@@ -93,7 +93,7 @@ profile_editor.pii: 个人
 profile_editor.upload: Click to Upload
 tdp: 团队维度简介
 thinkingFeeling: 判断
-topbar.brand: 关系实验室
+topbar.brand: 关系io
 topbar.contacts: 联系人
 topbar.create: 添加
 topbar.edit: 编辑
@@ -134,13 +134,17 @@ settings.forbidden_action: 操作被拒绝
 settings.invalid_code: 输入校验失败
 settings.verification_code: 删除我的账号
 settings.empty_code:  字段不能为空
-home.title: 更智能地加入到有意义的关系中
-home.desc: 打开开源个人CRM。利用数据和 AI 来构建关系。快速并高质量地拓展个人网络。
+home.title: 轻轻松松，搞定人际关系管理
+home.desc:
+  <p>保护隐私的个人关系管理，帮你更智能地打理关系，成为社交达人。</p>
+  <ul><li>端到端加密 - 你的个人身份信息 (PII) 只有你自己才能解密</li></ul>
+  <ul><li>开源与开放 - 听取你的即时反馈，接受全世界的监督</li></ul>
+  <ul><li>只为你而生 - 专注服务个人关系的记录、提醒、咨询</li></ul>
 home.get_started: 注册以构建关系
-home.section1.title: 过丰富精彩的社交生活
+home.section1.title: 治关系若烹小鲜
 home.section1.desc:
-  <p>关系就像园艺。你如果勤奋工作，它们就会成长，如果忽视，它们就会凋零，如果给予了太多关注，它们则会死去。</p>
-  <p>guanxilab.com 让关系容易去懂得人们，增长网络，加入到有意义的关系中去。</p>
+  <p>关系就像园艺。你如果勤奋耕耘，它们就会成长；如果不理不睬，它们就会凋零；如果用力过猛，它们则会死去。</p>
+  <p>关系io 帮助你增长社交网络，有条不紊地构建有意义的关系。</p>
 fetch_more: 获取更多
 topbar.search_everything: 搜索联系人...
 field.delete_contact.title: 移除联系人?

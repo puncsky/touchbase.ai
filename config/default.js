@@ -2,7 +2,7 @@ const { config } = require("dotenv");
 config();
 
 module.exports = {
-  project: "guanxilab",
+  project: "touchbase.ai",
   server: {
     port: process.env.PORT || 4103,
     staticDir: "./dist",
@@ -36,7 +36,7 @@ module.exports = {
   },
   analytics: {
     googleTid: "UA-149377173-1"
-  },
+  }
   // csp: {
   //   "default-src": ["none"],
   //   "manifest-src": ["self"],
@@ -50,6 +50,4 @@ module.exports = {
   //   "object-src": ["self"],
   //   "script-src": ["self", "https://www.google-analytics.com/"]
   // },
-  apiGatewayUrl:
-    process.env.API_GATEWAY_URL || "http://localhost:4103/api-gateway/"
 };

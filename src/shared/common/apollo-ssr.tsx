@@ -1,6 +1,7 @@
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
+import config from "config";
 import fetch from "isomorphic-unfetch";
 import { initAssetURL } from "onefx/lib/asset-url";
 import { logger } from "onefx/lib/integrated-gateways/logger";
@@ -22,14 +23,14 @@ type Opts = {
 
 export async function apolloSSR(
   ctx: MyContext,
-  uri: string,
+  _: string,
   { VDom, reducer, clientScript }: Opts
 ): Promise<string> {
-  ctx.setState("base.apiGatewayUrl", uri);
+  ctx.setState("base.apiGatewayUrl", `${ctx.origin}/api-gateway/`);
   const apolloClient = new ApolloClient({
     ssrMode: true,
     link: createHttpLink({
-      uri,
+      uri: `http://localhost:${config.get("server.port")}/api-gateway/`,
       fetch,
       credentials: "same-origin",
       headers: {

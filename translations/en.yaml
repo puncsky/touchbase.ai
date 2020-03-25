@@ -80,8 +80,8 @@ executor: Executor
 flexor: Flexor
 ipq: IPQ
 knownSource: Source
-meta.description: Smartly engage more in meaningful relationships
-meta.title: GuanxiLab
+meta.description: Privacy-preserving personal CRM - smartly engaged more in meaningful relationships
+meta.title: touchbase.ai
 not_found.bar: Not Found
 not_found.info: We cannot find the page for you...
 not_found.title: Oops!
@@ -94,7 +94,7 @@ profile_editor.pii: Personal
 profile_editor.upload: Click to Upload
 tdp: Team Dimension Profile
 thinkingFeeling: Judging
-topbar.brand: GuanxiLab
+topbar.brand: touchbase.ai
 topbar.contacts: Contacts
 topbar.create: ADD
 topbar.edit: EDIT
@@ -141,7 +141,7 @@ home.get_started: Sign Up to Build Relationships
 home.section1.title: Live a thriving social life
 home.section1.desc:
   <p>Relationships are like gardening. They grow if you work diligently, starve if they are ignored, and die if they get too much attention.</p>
-  <p>guanxilab.com makes it easy to understand people, grow networks, and engage in meaningful relationships.</p>
+  <p>touchbase.ai makes it easy to understand people, grow networks, and engage in meaningful relationships.</p>
 fetch_more: Fetch More
 topbar.search_everything: Search Contact...
 field.delete_contact.title: Remove contact?
