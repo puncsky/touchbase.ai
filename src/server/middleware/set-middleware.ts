@@ -4,5 +4,6 @@ import { multiDomainMiddleware } from "./multi-domain-middleware";
 
 export function setMiddleware(server: Server): void {
   server.use(multiDomainMiddleware(server));
+  server.initMiddleware();
   server.use(baseStateMiddleware(server));
 }

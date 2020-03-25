@@ -18,6 +18,7 @@ export type MyServer = Server & {
 
 export async function startServer(): Promise<Server> {
   const server: MyServer = new Server((config as any) as Config) as MyServer;
+  server.app.proxy = config.get("server.proxy");
   setGateways(server);
   server.auth = new OnefxAuth(server, authConfig);
   setMiddleware(server);

@@ -5,8 +5,9 @@ module.exports = {
   project: "touchbase.ai",
   server: {
     port: process.env.PORT || 4103,
+    proxy: false,
     staticDir: "./dist",
-    delayInitMiddleware: false,
+    delayInitMiddleware: true,
     cookie: {
       secrets: ["insecure plain text", "insecure secret here"]
     },
