@@ -16,12 +16,12 @@ import { colors } from "../../../common/styles/style-color";
 import { fullOnPalm } from "../../../common/styles/style-media";
 import { ContentPadding } from "../../../common/styles/style-padding";
 import { axiosInstance } from "./axios-instance";
+import { ContinueWithBlockstack } from "./continue-with-blockstack";
 import { EmailField } from "./email-field";
 import { FieldMargin } from "./field-margin";
 import { FormContainer } from "./form-container";
 import { PasswordField } from "./password-field";
 import { postSignUpLocal } from "./post-auth-local";
-import { ContinueWithBlockstack } from "./continue-with-blockstack";
 
 const LOGIN_FORM = "signup";
 

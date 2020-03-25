@@ -4,12 +4,12 @@ import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import Helmet from "react-helmet";
+import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { colors } from "../common/styles/style-color";
 import { ContentPadding } from "../common/styles/style-padding";
 import { ResetPasswordContainer } from "../onefx-auth-provider/email-password-identity-provider/view/reset-password";
 import { DangerZone } from "./danger-zone";
-import { connect } from "react-redux";
 
 const RESET_PW = "/settings/self-reset-password";
 
