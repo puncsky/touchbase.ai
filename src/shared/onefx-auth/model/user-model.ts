@@ -72,8 +72,8 @@ export class UserModel {
       return url;
     });
 
-    UserSchema.index({ email: 1 }, { unique: true });
-    UserSchema.index({ did: 1 }, { unique: true });
+    UserSchema.index({ email: 1 }, { unique: true, sparse: true });
+    UserSchema.index({ did: 1 }, { unique: true, sparse: true });
 
     UserSchema.plugin(baseModel);
     UserSchema.pre("save", function onSave(next: Function): void {
