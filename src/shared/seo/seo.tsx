@@ -6,11 +6,12 @@ import { ReactSEOMetaTags } from "react-seo-meta-tags";
 
 type Props = {
   locale: string;
+  origin: string;
 };
 
 class Seo extends React.Component<Props> {
   public render(): JSX.Element {
-    const { locale } = this.props;
+    const { locale, origin } = this.props;
     return (
       <ReactSEOMetaTags
         render={(el: React.ReactNode) => <Helmet>{el}</Helmet>}
@@ -21,19 +22,19 @@ class Seo extends React.Component<Props> {
         organization={{
           name: t("topbar.brand"),
           legalName: t("topbar.brand"),
-          url: "https://www.guanxilab.com/",
-          logo: "https://www.guanxilab.com/favicon.svg"
+          url: origin,
+          logo: `${origin}/favicon.svg`
         }}
       />
     );
   }
 }
 
-export const SeoContainer = connect<Props>(
-  (state: {}): Props => {
+export const SeoContainer = connect(
+  (state: { base: { locale: string; origin: string } }): Props => {
     return {
-      // @ts-ignore
-      locale: state.base.locale
+      locale: state.base.locale,
+      origin: state.base.origin
     };
   },
   {}

@@ -1,4 +1,6 @@
 interface ITemplate {
+  brand: string;
+  origin: string;
   logoSrc: string;
   forgotPasswordText: string;
   forgotPasswordDes: string;
@@ -9,6 +11,8 @@ interface ITemplate {
 // tslint:disable-next-line: max-func-body-length
 export const template = (data: ITemplate) => {
   const {
+    brand,
+    origin,
     logoSrc,
     forgotPasswordText,
     forgotPasswordDes,
@@ -26,7 +30,7 @@ export const template = (data: ITemplate) => {
               <td height="25" style="height:25px;" class="em_h20">&nbsp;</td>
             </tr>
             <tr>
-              <td align="center" valign="top"><a href="#" target="_blank" style="text-decoration:none;"><img src="${logoSrc}" width="42" height="42" alt="guanxilab" border="0" style="display:block; font-family:Arial, sans-serif; font-size:18px; line-height:25px; text-align:center; color:#1d4685; font-weight:bold; max-width:208px;" class="em_w150" /></a></td>
+              <td align="center" valign="top"><a href="#" target="_blank" style="text-decoration:none;"><img src="${logoSrc}" width="42" height="42" alt="${brand}" border="0" style="display:block; font-family:Arial, sans-serif; font-size:18px; line-height:25px; text-align:center; color:#1d4685; font-weight:bold; max-width:208px;" class="em_w150" /></a></td>
             </tr>
             <tr>
               <td height="28" style="height:28px;" class="em_h20">&nbsp;</td>
@@ -106,7 +110,7 @@ export const template = (data: ITemplate) => {
                 <tr>
                   <td width="12" align="left" valign="middle" style="font-size:0px; line-height:0px; width:12px;"><a href="#" target="_blank" style="text-decoration:none;"><img src="/assets/pilot/images/templates/img_1.png" width="12" height="16" alt="" border="0" style="display:block; max-width:12px;" /></a></td>
                   <td width="7" style="width:7px; font-size:0px; line-height:0px;" class="em_w5">&nbsp;</td>
-                  <td class="em_grey em_font_11" align="left" valign="middle" style="font-family: Arial, sans-serif; font-size: 13px; line-height: 15px; color:#434343;"><a href="https://guanxilab.com" target="_blank" style="text-decoration:none; color:#434343;">guanxilab</a> &bull; 68 Willow Road &bull; Menlo Park, CA 94025</td>
+                  <td class="em_grey em_font_11" align="left" valign="middle" style="font-family: Arial, sans-serif; font-size: 13px; line-height: 15px; color:#434343;"><a href="${origin}" target="_blank" style="text-decoration:none; color:#434343;">${brand}</a> &bull; 68 Willow Road &bull; Menlo Park, CA 94025</td>
                 </tr>
               </table>
               </td>
@@ -128,7 +132,7 @@ export const template = (data: ITemplate) => {
             <tr>
               <td align="center" valign="top"><table border="0" cellspacing="0" cellpadding="0" align="left" class="em_wrapper">
                 <tr>
-                  <td class="em_grey" align="center" valign="middle" style="font-family: Arial, sans-serif; font-size: 11px; line-height: 16px; color:#434343;">&copy; guanxilab 2019 </td>
+                  <td class="em_grey" align="center" valign="middle" style="font-family: Arial, sans-serif; font-size: 11px; line-height: 16px; color:#434343;">&copy; ${brand} ${new Date().getFullYear()} </td>
                 </tr>
               </table>
               </td>

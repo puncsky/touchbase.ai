@@ -32,7 +32,9 @@ class HomeInner extends PureComponent<{ userId: string }> {
             <Row style={{ margin: "80px 0" }}>
               <Col md={12} xs={24}>
                 <HeroH1>{t("home.title")}</HeroH1>
-                <HeroP>{t("home.desc")}</HeroP>
+                <HeroP>
+                  <div dangerouslySetInnerHTML={{ __html: t("home.desc") }} />
+                </HeroP>
                 {this.props.userId ? (
                   <Flex justifyContent="flex-start!important">
                     <Button type="primary" size="large" href="/login/">
@@ -136,7 +138,7 @@ const HeroH1 = styled("h1", {
   }
 });
 
-const HeroP = styled("p", {
+const HeroP = styled("div", {
   fontSize: "18px",
   margin: "36px 0",
   [media.palm]: {

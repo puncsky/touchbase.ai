@@ -1,10 +1,10 @@
-# GuanxiLab
+# touchbase.ai
 
-GuanxiLab is the easy, open source way for everyone to smartly engage more in meaningful relationships.
+touchbase.ai is the easy, open source way for everyone to smartly engage more in meaningful relationships.
 
-[![CircleCI](https://circleci.com/gh/puncsky/guanxilab/tree/master.svg?style=svg)](https://circleci.com/gh/puncsky/guanxilab/tree/master)
+[![CircleCI](https://circleci.com/gh/puncsky/touchbase.ai/tree/master.svg?style=svg)](https://circleci.com/gh/puncsky/touchbase.ai/tree/master)
 
-![guanxilab screenshot](https://res.cloudinary.com/dohtidfqh/image/upload/v1570181029/web-guiguio/guanxilab-screenshot.png)
+![touchbase.ai screenshot](https://res.cloudinary.com/dohtidfqh/image/upload/v1570181029/web-guiguio/touchbase.ai-screenshot.png)
 
 - [Documentation](https://onefx.js.org/doc.html?utm_source=github-iotex-explorer)
 - [Contributing](https://onefx.js.org/contributing.html?utm_source=github-iotex-explorer)
@@ -12,7 +12,7 @@ GuanxiLab is the easy, open source way for everyone to smartly engage more in me
 ## Getting Started
 
 ```bash
-git clone git@github.com:puncsky/guanxilab.git
+git clone git@github.com:puncsky/touchbase.ai.git
 ```
 
 ### Run your project
@@ -20,7 +20,7 @@ git clone git@github.com:puncsky/guanxilab.git
 This is intended for \*nix users. If you use Windows, go to [Run on Windows](#run-on-windows). Let's first prepare the environment.
 
 ```bash
-cd guanxilab
+cd touchbase.ai
 
 nvm use 10.15.0
 npm install
@@ -29,7 +29,7 @@ npm install
 cp ./.env.tmpl ./.env
 ```
 
-Note: please provide your MongoDB URI like `MONGODB_URI=mongodb://localhost:27017/guanxilab` in `./.env` file.
+Note: please provide your MongoDB URI like `MONGODB_URI=mongodb://localhost:27017/touchbase` in `./.env` file.
 
 #### Development mode
 

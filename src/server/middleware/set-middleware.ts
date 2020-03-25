@@ -1,6 +1,8 @@
 import { Server } from "onefx/lib/server";
-import { manifestMiddleware } from "./manifest-middleware";
+import { baseStateMiddleware } from "./base-state-middleware";
+import { multiDomainMiddleware } from "./multi-domain-middleware";
 
 export function setMiddleware(server: Server): void {
-  server.use(manifestMiddleware(server));
+  server.use(multiDomainMiddleware(server));
+  server.use(baseStateMiddleware(server));
 }

@@ -49,14 +49,17 @@ export class OnefxAuth {
   public async sendResetPasswordLink(
     userId: string,
     email: string,
-    t: Function
+    t: Function,
+    origin: string
   ): Promise<void> {
     const { token } = await this.emailToken.newAndSave(userId);
-    const link = `${this.config.emailTokenLink}${token}`;
+    const link = `${origin}${this.config.emailTokenLink}${token}`;
     logger.debug(`sending out password reset email ${link}`);
 
     const emailContent = template({
-      logoSrc: "https://www.guanxilab.com/favicon.png",
+      brand: t("meta.title"),
+      origin,
+      logoSrc: `${origin}/favicon.png`,
       forgotPasswordText: t("auth/forgot_password"),
       forgotPasswordDes: t("auth/forgot_password.email_content"),
       forgotPasswordBtnText: t("auth/forgot_password.email_cta"),

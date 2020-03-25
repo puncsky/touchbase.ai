@@ -158,8 +158,7 @@ export const UpsertEventContainer = Form.create<
                   )}
 
                   {isPublic && (
-                    <span>{`https://guanxilab.com/note/${eventId ||
-                      String(this.state.id)}`}</span>
+                    <PublicUrl id={eventId || String(this.state.id)} />
                   )}
                 </Form.Item>
               </Form>
@@ -176,3 +175,9 @@ export const UpsertEventContainer = Form.create<
     }
   )
 );
+
+const PublicUrl = connect((state: { base: { origin: string } }) => ({
+  origin: state.base.origin
+}))(function({ id, origin }: { id: string; origin: string }): JSX.Element {
+  return <span>{`${origin}/note/${id}`}</span>;
+});

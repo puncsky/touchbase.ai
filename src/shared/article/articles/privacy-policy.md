@@ -6,7 +6,7 @@ title: "Privacy Policy - How we secure and protect your information."
 
 Effective Date: 2019-07-11
 
-This Privacy Policy (“Policy”) describes how Hyperconnect Lab (“Company” or “we” or “our”) treats information collected or provided in connection with an end user’s (“you” or “your” or “user”) use of the services available via Company’s website at guanxilab.com (“Site”) and/or our mobile application (“App”, and collectively with the Site, the “Service”). Please note that your use of the Service constitutes your acceptance of this Policy as set forth below:
+This Privacy Policy (“Policy”) describes how Hyperconnect Lab (“Company” or “we” or “our”) treats information collected or provided in connection with an end user’s (“you” or “your” or “user”) use of the services available via Company’s website at touchbase.ai, guanxi.io (“Site”) and/or our mobile application (“App”, and collectively with the Site, the “Service”). Please note that your use of the Service constitutes your acceptance of this Policy as set forth below:
 
 ## 1. Effective Date; Changes Made To This Privacy Policy.
 

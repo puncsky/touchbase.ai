@@ -216,7 +216,12 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
 
       const user = await server.auth.user.getByMail(email);
       if (user) {
-        await server.auth.sendResetPasswordLink(user.id, user.email, ctx.t);
+        await server.auth.sendResetPasswordLink(
+          user.id,
+          user.email,
+          ctx.t,
+          ctx.origin
+        );
       }
 
       return (ctx.response.body = {

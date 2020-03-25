@@ -13,6 +13,10 @@ export async function postSignUpLocal(password: string): Promise<void> {
 
 export async function postSignInLocal(password: string): Promise<void> {
   const { data } = await axiosInstance.get("/api/private-key-cipher");
+  if (!data.privateKeyCipher) {
+    await postSignUpLocal(password);
+    return;
+  }
   const privateKey = aesDecrypt(password, data.privateKeyCipher);
   localStorage.setItem(PRIVATE_KEY_LOCAL, privateKey);
 }

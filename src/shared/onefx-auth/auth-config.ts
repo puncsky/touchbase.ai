@@ -45,13 +45,10 @@ export const authConfig = {
   allowedLogoutNext: ["/"],
   secret,
   emailTokenTtl: 5, // mins
-  emailTokenLink:
-    String(process.env.NODE_ENV).indexOf("production") === -1
-      ? "http://localhost:4103/email-token/"
-      : "https://guanxilab.com/email-token/",
+  emailTokenLink: "/email-token/",
   mailgun: {
     apiKey: String(process.env.MAILGUN_API_KEY),
-    domain: "mail.guanxilab.com",
+    domain: "mail.touchbase.ai",
     retryLimit: 2
   },
   emailTokenNext: "/reset-password/"
