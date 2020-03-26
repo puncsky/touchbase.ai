@@ -163,6 +163,9 @@ export class ContactModel {
       { _id: id, ownerId },
       {
         $set: human
+      },
+      {
+        new: true
       }
     );
   }
