@@ -18,6 +18,7 @@ import { FormContainer } from "./form-container";
 import { InputError } from "./input-error";
 import { InputLabel } from "./input-label";
 import { PasswordField } from "./password-field";
+import { postResetPassword } from "./post-auth-local";
 import { TextInput } from "./text-input";
 
 const LOGIN_FORM = "reset-password";
@@ -62,7 +63,7 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
       };
     }
 
-    public onSubmit(e: Event): void {
+    public async onSubmit(e: Event): Promise<void> {
       e.preventDefault();
       const el = window.document.getElementById(LOGIN_FORM) as HTMLFormElement;
       if (!el) {
@@ -76,53 +77,45 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
         valueNewPassword: newPassword,
         valuePassword: password
       });
-      axiosInstance
-        .post("/api/reset-password/", {
-          password,
-          newPassword,
-          token
-        })
-        .then(r => {
-          if (r.data.ok) {
-            this.setState({
-              message: t("auth/reset_password.success"),
-              errorPassword: "",
-              errorNewPassword: "",
-              valuePassword: "",
-              valueNewPassword: "",
-              disableButton: false
-            });
-            if (r.data.shouldRedirect) {
-              window.setInterval(
-                () => (window.location.href = r.data.next),
-                3000
-              );
-
-              return;
-            }
-          } else if (r.data.error) {
-            const error = r.data.error;
-            const errorState = {
-              valuePassword: password,
-              valueNewPassword: newPassword,
-              errorPassword: "",
-              errorNewPassword: "",
-              message: "",
-              disableButton: false
-            };
-            if (error.code === "auth/wrong-password") {
-              errorState.errorPassword = error.message;
-            }
-            if (error.code === "auth/weak-password") {
-              errorState.errorNewPassword = error.message;
-            }
-
-            this.setState(errorState);
-          }
-        })
-        .catch(err => {
-          window.console.error(`failed to post reset-password: ${err}`);
+      const r = await axiosInstance.post("/api/reset-password/", {
+        password,
+        newPassword,
+        token
+      });
+      if (r.data.ok) {
+        await postResetPassword(newPassword);
+        this.setState({
+          message: t("auth/reset_password.success"),
+          errorPassword: "",
+          errorNewPassword: "",
+          valuePassword: "",
+          valueNewPassword: "",
+          disableButton: false
         });
+        if (r.data.shouldRedirect) {
+          window.setInterval(() => (window.location.href = r.data.next), 3000);
+
+          return;
+        }
+      } else if (r.data.error) {
+        const error = r.data.error;
+        const errorState = {
+          valuePassword: password,
+          valueNewPassword: newPassword,
+          errorPassword: "",
+          errorNewPassword: "",
+          message: "",
+          disableButton: false
+        };
+        if (error.code === "auth/wrong-password") {
+          errorState.errorPassword = error.message;
+        }
+        if (error.code === "auth/weak-password") {
+          errorState.errorNewPassword = error.message;
+        }
+
+        this.setState(errorState);
+      }
     }
 
     public renderForm(): JSX.Element {

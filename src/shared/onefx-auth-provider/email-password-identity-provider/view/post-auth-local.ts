@@ -11,6 +11,16 @@ export async function postSignUpLocal(password: string): Promise<void> {
   await axiosInstance.post("/api/private-key-cipher", { privateKeyCipher });
 }
 
+export async function postResetPassword(password: string): Promise<void> {
+  const privateKey = localStorage.getItem(PRIVATE_KEY_LOCAL);
+  if (!privateKey) {
+    await postSignUpLocal(password);
+    return;
+  }
+  const privateKeyCipher = aesEncrypt(password, privateKey);
+  await axiosInstance.post("/api/private-key-cipher", { privateKeyCipher });
+}
+
 export async function postSignInLocal(password: string): Promise<void> {
   const { data } = await axiosInstance.get("/api/private-key-cipher");
   if (!data.privateKeyCipher) {
