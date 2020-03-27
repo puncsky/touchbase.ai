@@ -108,8 +108,9 @@ class ProfileEditorContainer extends Component<Props, State> {
       // ui rendered with the old contacts look like more reasonable.
       phones: (result.phones || []).filter((e: any) => e)
     };
+    window.console.log(clone);
     actionUpdateHuman(
-      omitBy(clone, (val: any) => !val && val !== 0),
+      omitBy(clone, (val: any) => val === null),
       false
     );
 
