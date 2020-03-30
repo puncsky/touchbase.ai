@@ -14,6 +14,7 @@ import { NotFound } from "./common/not-found";
 import { ScrollToTop } from "./common/scroll-top";
 import { colors } from "./common/styles/style-color";
 import { fonts } from "./common/styles/style-font";
+import { subscribeWebPush } from "./common/subscribe-web-push";
 import { TopBar } from "./common/top-bar";
 import { ContactDetailContainer } from "./contact/contact-detail";
 import { ProfileCreatorContainer } from "./contact/profile-creator";
@@ -32,8 +33,9 @@ type Props = {
 };
 
 export class App extends Component<Props> {
-  public componentDidMount(): void {
+  public async componentDidMount(): Promise<void> {
     initGoogleTagmanager({ tid: this.props.googleTid });
+    await subscribeWebPush();
   }
 
   public render(): JSX.Element {

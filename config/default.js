@@ -33,7 +33,14 @@ module.exports = {
     },
     fullContactApiKey:
       process.env.FULLCONTACT_API_KEY ||
-      console.warn("FULLCONTACT_API_KEY is empty")
+      console.warn("FULLCONTACT_API_KEY is empty"),
+    webPush: {
+      privateKey: process.env.WEB_PUSH_PRIVATE_KEY,
+      publicKey:
+        "BDWKLyZV1ynrpg1E6SSpx25-NR-GmUiFI5UskaPFltyivyVtOkkZzM4raj4-KVdU6WjX4ZMDEsQP6vmI_cGoLSw",
+      mailto: "mailto:me@touchbase.ai",
+      gcmApiKey: "TODO"
+    }
   },
   analytics: {
     googleTid: "UA-149377173-1"

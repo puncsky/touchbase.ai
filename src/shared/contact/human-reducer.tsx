@@ -1,16 +1,12 @@
 // @flow
 import axios from "axios";
 import gql from "graphql-tag";
-import isBrowser from "is-browser";
-// @ts-ignore
-import JsonGlobal from "safe-json-globals/get";
 import { TInteraction } from "../../types/human";
 import { TContact2 } from "../../types/human";
 import { apolloClient } from "../common/apollo-client";
+import { csrfToken } from "../common/browser-state";
 import { GET_CONTACTS } from "../contacts/contacts-table";
 import { GET_CONTACT, GET_INTERACTIONS } from "./contact-detail";
-
-const csrfToken = isBrowser && JsonGlobal("state").base.csrfToken;
 
 export const axiosInstance = axios.create({
   timeout: 10000,
