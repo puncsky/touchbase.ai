@@ -6,7 +6,6 @@ const glob = require("glob");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 const process = require("global/process");
-const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
 
 const ANALYZE = false;
 const PROD = process.env.NODE_ENV === "production";
@@ -81,22 +80,6 @@ module.exports = {
             }
           })
         ]
-      : []),
-    new SWPrecacheWebpackPlugin({
-      mergeStaticsConfig: true,
-      dontCacheBustUrlsMatching: /\.\w{8}\./,
-      filename: "service-worker.js",
-      minify: false,
-      navigateFallback: "/",
-      navigateFallbackWhitelist: [/^(?!\/__).*/],
-      staticFileGlobs: [`${OUTPUT_DIR}/**`],
-      stripPrefix: OUTPUT_DIR,
-      staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
-      dynamicUrlToDependencies: {
-        "/index.html": glob.sync(path.resolve(`${OUTPUT_DIR}/**/*.js`)),
-        "/notes": glob.sync(path.resolve(`${OUTPUT_DIR}/**/*.js`)),
-        "/notes/": glob.sync(path.resolve(`${OUTPUT_DIR}/**/*.js`))
-      }
-    })
+      : [])
   ]
 };

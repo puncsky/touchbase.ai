@@ -5,14 +5,8 @@ import { HttpLink } from "apollo-link-http";
 
 import isBrowser from "is-browser";
 import fetch from "isomorphic-unfetch";
-// @ts-ignore
-import JsonGlobal from "safe-json-globals/get";
 import { getAdapter } from "./apollo-client-adapter";
-
-const state = isBrowser && JsonGlobal("state");
-const apolloState = isBrowser && state.apolloState;
-const apiGatewayUrl = isBrowser && state.base.apiGatewayUrl;
-const csrfToken = isBrowser && state.base.csrfToken;
+import { apiGatewayUrl, apolloState, csrfToken } from "./browser-state";
 
 const middlewareLink = new ApolloLink((operation, forward) => {
   const adapter = getAdapter(operation);

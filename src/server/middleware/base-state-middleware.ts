@@ -1,3 +1,4 @@
+import config from "config";
 import { Server } from "onefx";
 import { logger } from "onefx/lib/integrated-gateways/logger";
 import { MyContext } from "../../types/global";
@@ -12,6 +13,10 @@ export function baseStateMiddleware(_: Server): Function {
     }
     ctx.setState("base.manifest", manifest);
     ctx.setState("base.origin", ctx.origin);
+    ctx.setState(
+      "base.webPushPublicKey",
+      config.get("gateways.webPush.publicKey")
+    );
     await next();
   };
 }

@@ -1,6 +1,7 @@
 import { MyServer } from "../server/start-server";
 import { ContactModel } from "./contact-model";
 import { PersonalNoteModel } from "./personal-note-model";
+import { PushTokenModel } from "./push-token-model";
 import { TagModel } from "./tag-model";
 import { TaskModel } from "./task-model";
 
@@ -11,6 +12,7 @@ export type Model = {
   event: PersonalNoteModel;
   tag: TagModel;
   task: TaskModel;
+  pushToken: PushTokenModel;
 };
 
 export function setModel(server: MyServer): void {
@@ -21,4 +23,5 @@ export function setModel(server: MyServer): void {
   server.model.event = server.model.personalNote;
   server.model.tag = new TagModel(server.gateways);
   server.model.task = new TaskModel(server.gateways);
+  server.model.pushToken = new PushTokenModel(server.gateways);
 }

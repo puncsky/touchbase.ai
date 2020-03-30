@@ -16,13 +16,25 @@ export function setServerRoutes(server: MyServer): void {
   });
 
   server.get("legal", "/page/*", async (ctx: MyContext) => {
-    // @ts-ignore
-    ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
+    ctx.body = await apolloSSR(ctx, "", {
       VDom: <AppContainer />,
       reducer: noopReducer,
       clientScript: "/main.js"
     });
   });
+
+  server.post(
+    "update-web-push-token",
+    "/api/web-push-token",
+    server.auth.authRequired,
+    async ctx => {
+      await server.model.pushToken.upsert({
+        ownerId: ctx.state.userId,
+        web: JSON.stringify(ctx.request.body)
+      });
+      ctx.response.body = "OK";
+    }
+  );
 
   server.get("manifest", "/manifest.json", async ctx => {
     ctx.set("content-type", "application/json");
@@ -46,19 +58,8 @@ export function setServerRoutes(server: MyServer): void {
 
   setApiGateway(server);
 
-  server.get("manifest", "/manifest.json", async (ctx: MyContext) => {
-    const manifest = require("./manifest.json") || {};
-    const translationKeys = ["short_name", "name", "description"];
-    for (const key of translationKeys) {
-      manifest[key] = ctx.t(manifest[key]);
-    }
-    ctx.body = JSON.stringify(manifest);
-  });
-
-  // @ts-ignore
   server.get("SPA", /^(?!\/?api-gateway\/).+$/, async (ctx: MyContext) => {
-    // @ts-ignore
-    ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
+    ctx.body = await apolloSSR(ctx, "", {
       VDom: <AppContainer />,
       reducer: noopReducer,
       clientScript: "/main.js"
