@@ -1,5 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
+import { Flex } from "./flex";
 import { colors } from "./styles/style-color";
 
 export function Preloader(): JSX.Element {
@@ -44,9 +45,11 @@ circle {
 }
         `}</style>
       </Helmet>
-      <svg className="preloader" viewBox="25 25 50 50">
-        <circle cx="50" cy="50" r="20"></circle>
-      </svg>
+      <Flex width="100%" center={true}>
+        <svg className="preloader" viewBox="25 25 50 50">
+          <circle cx="50" cy="50" r="20"></circle>
+        </svg>
+      </Flex>
     </>
   );
 }

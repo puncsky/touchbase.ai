@@ -5,5 +5,6 @@ export type TTask = {
   rrule?: string;
   due?: Date;
   contacts?: Array<string>;
-  done: boolean;
+  done?: Date;
+  delayed?: Date;
 };

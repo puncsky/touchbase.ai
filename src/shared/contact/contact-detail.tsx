@@ -31,6 +31,7 @@ import { UpsertEventContainer } from "./event/upsert-event";
 import { HeatmapCalendar } from "./heatmap-calendar";
 import { KeyMetrics } from "./key-metrics";
 import { ProfileEditorContainer } from "./profile-editor/profile-editor";
+import { ReminderCard } from "./reminder-card";
 import { TagsContainer } from "./tags";
 
 function currentTitle(human: TContact2): string {
@@ -278,6 +279,13 @@ function Contact({
         <Padding />
       </Col>
       <Col sm={6} xs={24}>
+        {!isSelf && (
+          <>
+            <ReminderCard contactId={human._id || ""} />
+            <Padding />
+          </>
+        )}
+
         <Flex column={true} {...SECTION}>
           <Flex width="100%">
             <strong>{t("personality")}</strong>

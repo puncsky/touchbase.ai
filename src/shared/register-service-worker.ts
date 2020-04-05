@@ -12,8 +12,6 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
       )
   );
 
-  await unregister();
-
   return new Promise(resolve => {
     let registration: ServiceWorkerRegistration | null = null;
     if ("serviceWorker" in navigator) {
@@ -98,12 +96,5 @@ async function isServiceWorkerValid(swUrl: string): Promise<boolean> {
       "No internet connection found. App is running in offline mode."
     );
     return false;
-  }
-}
-
-export async function unregister(): Promise<void> {
-  if ("serviceWorker" in navigator) {
-    const registration = await navigator.serviceWorker.ready;
-    await registration.unregister();
   }
 }

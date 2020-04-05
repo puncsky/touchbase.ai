@@ -9,7 +9,8 @@ const TaskSchema = new Schema({
   rrule: { type: String },
   due: { type: Date },
   contacts: { type: [String] },
-  done: Boolean,
+  done: Date,
+  delayed: Date,
   // systematic
   createAt: { type: Date, default: Date.now },
   updateAt: { type: Date, default: Date.now }
@@ -49,6 +50,13 @@ export class TaskModel {
 
   public async getTaskByUser(userId: string): Promise<Array<TTask>> {
     return this.Model.find({ ownerId: userId });
+  }
+
+  async getTaskByUserAndContactId(
+    userId: string,
+    contactId: string
+  ): Promise<Array<TTask>> {
+    return this.Model.find({ ownerId: userId, contacts: { $in: [contactId] } });
   }
 
   public async createTask(task: TTask): Promise<TTask> {

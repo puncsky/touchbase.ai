@@ -119,7 +119,8 @@
     "no-suspicious-comment": false,
     "no-use-before-declare": false,
     "react-unused-props-and-state": false,
-    "member-access": false
+    "member-access": false,
+    "no-non-null-assertion": false
   },
   "jsRules": {
     "quotemark": [true, "double", "jsx-double"],

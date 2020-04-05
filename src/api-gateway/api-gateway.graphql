@@ -219,7 +219,7 @@ type Query {
   ): [PlayBook!]!
   getUserTagTemplates: [TagTemplate!]!
   getContactTags(contactId: String!): [ContactTag!]!
-  getUserTasks: [Task!]!
+  getUserTasks(contactId: String): [Task!]!
 }
 
 input RateTagInput {
@@ -244,10 +244,10 @@ type TagTemplate {
 type Task {
   id: String!
   title: String!
-  done: Boolean!
-  contacts: [String!]!
-  rrule: String!
-  due: DateTime!
+  done: DateTime
+  contacts: [String!]
+  rrule: String
+  due: DateTime
   ownerId: String!
 }
 
@@ -294,10 +294,11 @@ input UpsertInteraction {
 input UpsertTaskInput {
   id: String
   title: String!
-  done: Boolean!
-  rrule: String!
-  due: DateTime!
-  contacts: [String!]!
+  done: DateTime
+  delayed: DateTime
+  rrule: String
+  due: DateTime
+  contacts: [String!]
 }
 
 type UserProfileResponse {

@@ -2,13 +2,18 @@ import { axiosInstance } from "../onefx-auth-provider/email-password-identity-pr
 import { registerServiceWorker } from "../register-service-worker";
 import { userId, webPushPublicKey } from "./browser-state";
 
-export async function subscribeWebPush(): Promise<void> {
-  const registration = await registerServiceWorker();
+let registration: ServiceWorkerRegistration | null;
+
+export async function setupSW(): Promise<void> {
+  registration = await registerServiceWorker();
+}
+
+export async function subscribePush(): Promise<boolean> {
   if (!registration) {
-    return;
+    return false;
   }
   if (!userId) {
-    return;
+    return false;
   }
 
   const pushSubscription = await registration.pushManager.subscribe({
@@ -17,4 +22,5 @@ export async function subscribeWebPush(): Promise<void> {
   });
 
   await axiosInstance.post("/api/web-push-token", pushSubscription);
+  return true;
 }
