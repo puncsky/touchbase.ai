@@ -12,8 +12,8 @@ const PII = [
   "linkedin",
   "wechat",
   "facebook",
-  "github"
-  // "phones",
+  "github",
+  "bornAt"
 ];
 
 const NESTED_PII = ["emails", "phones"];

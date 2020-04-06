@@ -10,7 +10,7 @@ const ContactSchema = new Schema({
   alias: { type: String },
   avatarUrl: { type: String },
   address: { type: String },
-  bornAt: { type: Date },
+  bornAt: { type: String },
   bornAddress: { type: String },
   blurb: { type: String },
   gender: { type: String, enum: ["F", "M"] },

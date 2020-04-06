@@ -109,7 +109,7 @@ class UpdateContactInput implements TContact2 {
   public avatarUrl: string;
   @Field(_ => String, { nullable: true })
   public address: string;
-  @Field(_ => Date, { nullable: true })
+  @Field(_ => String, { nullable: true })
   public bornAt: string;
   @Field(_ => String, { nullable: true })
   public bornAddress: string;
@@ -177,7 +177,7 @@ class Contact implements TContact2 {
   public avatarUrl: string;
   @Field(_ => String, { nullable: true })
   public address: string;
-  @Field(_ => Date, { nullable: true })
+  @Field(_ => String, { nullable: true })
   public bornAt: string;
   @Field(_ => String, { nullable: true })
   public bornAddress: string;
