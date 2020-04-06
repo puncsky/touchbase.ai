@@ -44,7 +44,8 @@ module.exports = {
   },
   analytics: {
     googleTid: "UA-149377173-1"
-  }
+  },
+  remindToken: process.env.REMIND_TOKEN || ""
   // csp: {
   //   "default-src": ["none"],
   //   "manifest-src": ["self"],

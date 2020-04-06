@@ -57,4 +57,8 @@ export class PushTokenModel {
       }
     );
   }
+
+  async getByUser(ownerId: string): Promise<TPushToken | null> {
+    return this.Model.findOne({ ownerId });
+  }
 }

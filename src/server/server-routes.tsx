@@ -1,3 +1,5 @@
+import config from "config";
+import { logger } from "onefx/lib/integrated-gateways/logger";
 import { t } from "onefx/lib/iso-i18n";
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import * as React from "react";
@@ -22,6 +24,33 @@ export function setServerRoutes(server: MyServer): void {
       clientScript: "/main.js"
     });
   });
+
+  server.get(
+    "api-remind-subscriptions",
+    `/api/remind-subscriptions/${config.get("remindToken")}`,
+    async (ctx: MyContext) => {
+      const tasks = await server.model.task.getTaskDued();
+      if (!tasks) {
+        ctx.response.body = 0;
+        return;
+      }
+      for (const task of tasks) {
+        const token = await server.model.pushToken.getByUser(task.ownerId);
+        if (token && token.web) {
+          try {
+            await server.gateways.webPush.pushMessage(token.web, {
+              text: "You have a contact...",
+              body: "to touch base with!",
+              url: `${ctx.origin}/${(task.contacts && task.contacts[0]) || ""}/`
+            });
+          } catch (e) {
+            logger.warn(`failed to pushMessage: ${e}`);
+          }
+        }
+      }
+      ctx.response.body = tasks.length;
+    }
+  );
 
   server.post(
     "update-web-push-token",

@@ -82,4 +82,10 @@ export class TaskModel {
     });
     return Boolean(resp && resp.ok);
   }
+
+  async getTaskDued(): Promise<Array<TTask> | null> {
+    const tmr = new Date();
+    tmr.setDate(tmr.getDate() + 1);
+    return this.Model.find({ due: { $lte: tmr, $gte: new Date() } }).lean();
+  }
 }

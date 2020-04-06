@@ -1,5 +1,6 @@
 // @ts-ignore
 import window from "global/window";
+import { assetURL } from "onefx/lib/asset-url";
 
 export async function registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
   const isLocalhost = Boolean(
@@ -16,7 +17,7 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
     let registration: ServiceWorkerRegistration | null = null;
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", async () => {
-        const swUrl = "/service-worker.js";
+        const swUrl = assetURL("/service-worker.js");
 
         if (isLocalhost) {
           // This is running on localhost. Lets check if a service worker still exists or not.

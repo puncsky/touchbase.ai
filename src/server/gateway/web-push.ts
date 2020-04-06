@@ -23,10 +23,10 @@ export class WebPush {
     logger.debug(JSON.stringify(vapidKeys));
   }
 
-  async pushMessage(token: string): Promise<SendResult> {
-    return webpush.sendNotification(
-      JSON.parse(token),
-      JSON.stringify({ text: "asdjfasjdlfk" })
-    );
+  async pushMessage(
+    token: string,
+    msg: { text: string; body: string; url: string }
+  ): Promise<SendResult> {
+    return webpush.sendNotification(JSON.parse(token), JSON.stringify(msg));
   }
 }
