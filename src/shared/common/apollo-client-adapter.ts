@@ -4,20 +4,19 @@ import dottie from "dottie";
 import { createHmacs } from "./get-hmac";
 import { getLocalKeyPair } from "./get-local-key-pair";
 
-const PIIs = [
+const PII = [
   "name",
-  "avatarUrl",
   "address",
-  // "bornAt",
   "bornAddress",
   "gender",
-  // "emails",
   "linkedin",
   "wechat",
   "facebook",
   "github"
   // "phones",
 ];
+
+const NESTED_PII = ["emails", "phones"];
 
 const { privateKey, publicKey } = getLocalKeyPair();
 
@@ -32,7 +31,7 @@ export class AdaptorDefault {
 }
 
 function decryptContact(contact: any): any {
-  for (const pii of PIIs) {
+  for (const pii of PII) {
     // @ts-ignore
     const piiVal = dottie.get(contact, pii) || "";
     if (piiVal) {
@@ -48,13 +47,28 @@ function decryptContact(contact: any): any {
       }
     }
   }
+  for (const pii of NESTED_PII) {
+    // @ts-ignore
+    const piiVal: Array<string> = dottie.get(contact, pii) || [];
+    if (piiVal) {
+      try {
+        contact[pii] = piiVal.map(it => {
+          return decryptECIES(privateKey, JSON.parse(it));
+        });
+      } catch (e) {
+        if (process.env.NODE_ENV !== "production") {
+          window.console.error(`failed to decrypt: ${e}`);
+        }
+      }
+    }
+  }
   return contact;
 }
 
 function encryptContact(contact: any): any {
   contact.hmacs = createHmacs(contact.name, privateKey);
 
-  for (const pii of PIIs) {
+  for (const pii of PII) {
     // @ts-ignore
     const piiVal = dottie.get(contact, pii) || "";
     if (piiVal) {
@@ -68,6 +82,24 @@ function encryptContact(contact: any): any {
       }
     }
   }
+
+  for (const pii of NESTED_PII) {
+    // @ts-ignore
+    const piiVal: Array<string> = dottie.get(contact, pii) || [];
+    if (piiVal) {
+      try {
+        contact[pii] = piiVal.map(it => {
+          const cipherObj = encryptECIES(publicKey, it);
+          return JSON.stringify(cipherObj);
+        });
+      } catch (e) {
+        if (process.env.NODE_ENV !== "production") {
+          window.console.error(`failed to decrypt: ${e}`);
+        }
+      }
+    }
+  }
+
   return contact;
 }
 
