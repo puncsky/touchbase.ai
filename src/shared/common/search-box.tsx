@@ -101,6 +101,7 @@ export const SearchBox = withRouter(
             dropdownStyle={{ width: 300 }}
             size="large"
             style={{ width: "100%" }}
+            // @ts-ignore
             dataSource={children}
             placeholder={t("topbar.search_everything")}
             onSearch={this.handleSearch}

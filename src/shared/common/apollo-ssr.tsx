@@ -49,6 +49,7 @@ export async function apolloSSR(
 
   try {
     await getDataFromTree(
+      // @ts-ignore
       <RootServer
         store={store}
         location={ctx.url}
