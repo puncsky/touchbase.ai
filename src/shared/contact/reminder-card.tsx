@@ -1,9 +1,14 @@
+import {
+  BellOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  EllipsisOutlined
+} from "@ant-design/icons";
 import { notification } from "antd";
 import Button from "antd/lib/button";
 import Card from "antd/lib/card";
 import Meta from "antd/lib/card/Meta";
 import Dropdown from "antd/lib/dropdown";
-import Icon from "antd/lib/icon";
 import Menu from "antd/lib/menu";
 import Skeleton from "antd/lib/skeleton";
 import gql from "graphql-tag";
@@ -150,16 +155,14 @@ const subscribeFn = (contactId: string) => async () => {
 const getActions = (task: TTask | undefined | null) =>
   task && task.id
     ? [
-        <Icon
-          type="check-circle"
+        <CheckCircleOutlined
           key="1"
           onClick={upsertTaskFn({
             taskId: task.id,
             doneFn: () => new Date()
           })}
         />,
-        <Icon
-          type="clock-circle"
+        <ClockCircleOutlined
           key="2"
           onClick={upsertTaskFn({
             taskId: task.id,
@@ -184,7 +187,7 @@ const getActions = (task: TTask | undefined | null) =>
               </Menu>
             }
           >
-            <Icon type="ellipsis" />
+            <EllipsisOutlined />
           </Dropdown>
         </div>
       ]
@@ -235,13 +238,13 @@ export function ReminderCard({
                       }}
                       onClick={deleteTaskFn(task.id, contactId)}
                       shape="circle"
-                      icon="bell"
+                      icon={<BellOutlined />}
                     />
                   ) : (
                     <Button
                       onClick={subscribeFn(contactId)}
                       shape="circle"
-                      icon="bell"
+                      icon={<BellOutlined />}
                     />
                   )
                 }

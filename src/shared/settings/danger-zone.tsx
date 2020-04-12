@@ -1,7 +1,7 @@
 import { notification } from "antd";
 import Button from "antd/lib/button/button";
 import Form from "antd/lib/form";
-import { WrappedFormUtils } from "antd/lib/form/Form";
+import { FormInstance } from "antd/lib/form/Form";
 import Input from "antd/lib/input";
 import Modal from "antd/lib/modal";
 import Typography from "antd/lib/typography";
@@ -33,7 +33,9 @@ type State = {
 type Props = {};
 
 export class DangerZone extends Component<Props, State> {
-  private formRef: any;
+  private readonly formRef: React.RefObject<FormInstance> = React.createRef<
+    FormInstance
+  >();
   public constructor(props: any) {
     super(props);
     this.state = {
@@ -56,56 +58,51 @@ export class DangerZone extends Component<Props, State> {
   };
 
   public submit = async (func: MutationFn<{ email: string }>) => {
-    const { form } = this.formRef.props;
-    form.validateFields(
-      async (err: any, { code, email }: { code: string; email: string }) => {
-        if (err) {
-          return;
-        }
-        this.hideModal();
-        form.resetFields();
+    if (!this.formRef.current) {
+      return;
+    }
 
-        if (code !== t("settings.verification_code")) {
-          notification.error({
-            message: t("settings.forbidden_action"),
-            description: t("settings.invalid_code"),
-            duration: 3
-          });
-          return;
-        }
-        if (!validateEmail(email)) {
-          notification.error({
-            message: t("settings.forbidden_action"),
-            description: t("auth/invalid-email"),
-            duration: 3
-          });
-          return;
-        }
+    const { code, email } = await this.formRef.current.validateFields();
+    this.hideModal();
+    if (this.formRef.current) {
+      this.formRef.current.resetFields();
+    }
 
-        const result: any = await func({
-          variables: { email }
-        });
+    if (code !== t("settings.verification_code")) {
+      notification.error({
+        message: t("settings.forbidden_action"),
+        description: t("settings.invalid_code"),
+        duration: 3
+      });
+      return;
+    }
+    if (!validateEmail(email)) {
+      notification.error({
+        message: t("settings.forbidden_action"),
+        description: t("auth/invalid-email"),
+        duration: 3
+      });
+      return;
+    }
 
-        this.setState({
-          modalShow: false
-        });
+    const result: any = await func({
+      variables: { email }
+    });
 
-        if (result.data.deleteAccount) {
-          window.location.href = "/logout";
-          window.console.log(result);
-        } else {
-          notification.error({
-            message: t("settings.forbidden_action"),
-            description: t("auth/invalid-email"),
-            duration: 3
-          });
-        }
-      }
-    );
-  };
+    this.setState({
+      modalShow: false
+    });
 
-  saveFormRef = (formRef: any) => {
-    this.formRef = formRef;
+    if (result.data.deleteAccount) {
+      window.location.href = "/logout";
+      window.console.log(result);
+    } else {
+      notification.error({
+        message: t("settings.forbidden_action"),
+        description: t("auth/invalid-email"),
+        duration: 3
+      });
+    }
   };
 
   public render(): JSX.Element {
@@ -121,17 +118,13 @@ export class DangerZone extends Component<Props, State> {
           </Text>
           <Text>{t("settings.deleteAccountDesc")}</Text>
         </Flex>
-        <Button
-          type="danger"
-          onClick={this.showModal}
-          style={{ margin: "8px 0" }}
-        >
+        <Button danger onClick={this.showModal} style={{ margin: "8px 0" }}>
           {t("settings.deleteAccount")}
         </Button>
         {/*
          // @ts-ignore */}
         <DangerZoneForm
-          wrappedComponentRef={this.saveFormRef}
+          ref={this.formRef}
           modalShow={this.state.modalShow}
           submit={(func: MutationFn) => {
             this.submit(func);
@@ -147,80 +140,75 @@ export class DangerZone extends Component<Props, State> {
 
 type FormProps = {
   modalShow: boolean;
-  form: WrappedFormUtils;
   submit: any;
   hide: any;
 };
 
-const DangerZoneForm = Form.create({
-  name: "danger_zone_form"
-})(
-  class extends React.Component<FormProps> {
-    public render(): JSX.Element {
-      const { form, modalShow, submit, hide } = this.props;
-      const { getFieldDecorator } = form;
-      return (
-        <Modal
-          title={t("settings.modal_title")}
-          visible={modalShow}
-          footer={null}
-          onCancel={hide}
-        >
-          <Mutation mutation={DELETE_ACCOUNT}>
-            {(
-              deleteContact: MutationFn<{ email: string }>,
-              { loading }: { loading: boolean }
-            ) => {
-              return (
-                <Form layout="vertical">
-                  <Text mark>{t("settings.modal_danger")}</Text>
-                  <p>
-                    <Text>{t("settings.modal_email_delete_desc")}</Text>
-                  </p>
-                  <Form.Item label="Email">
-                    {getFieldDecorator("email", {
-                      rules: [
-                        {
-                          required: true,
-                          type: "email",
-                          message: t("auth/invalid-email")
-                        }
-                      ]
-                    })(<Input />)}
-                  </Form.Item>
-                  <Form.Item
-                    label={`${t("settings.code_verify_prompt")} ${t(
-                      "settings.verification_code"
-                    )}`}
+const DangerZoneForm = React.forwardRef(
+  ({ modalShow, submit, hide }: FormProps, ref: any) => {
+    return (
+      <Modal
+        title={t("settings.modal_title")}
+        visible={modalShow}
+        footer={null}
+        onCancel={hide}
+      >
+        <Mutation mutation={DELETE_ACCOUNT}>
+          {(
+            deleteContact: MutationFn<{ email: string }>,
+            { loading }: { loading: boolean }
+          ) => {
+            return (
+              <Form layout="vertical" ref={ref}>
+                <Text mark>{t("settings.modal_danger")}</Text>
+                <p>
+                  <Text>{t("settings.modal_email_delete_desc")}</Text>
+                </p>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[
+                    {
+                      required: true,
+                      type: "email",
+                      message: t("auth/invalid-email")
+                    }
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label={`${t("settings.code_verify_prompt")} ${t(
+                    "settings.verification_code"
+                  )}`}
+                  name="code"
+                  rules={[
+                    { required: true, message: t("settings.empty_code") }
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    danger
+                    htmlType="submit"
+                    // @ts-ignore
+                    onClick={(e: Event) => {
+                      e.preventDefault();
+                      submit(deleteContact);
+                    }}
+                    style={{ width: "100%" }}
+                    size="large"
+                    loading={loading}
                   >
-                    {getFieldDecorator("code", {
-                      rules: [
-                        { required: true, message: t("settings.empty_code") }
-                      ]
-                    })(<Input />)}
-                  </Form.Item>
-                  <Form.Item>
-                    <Button
-                      type="danger"
-                      htmlType="submit"
-                      // @ts-ignore
-                      onClick={(e: Event) => {
-                        e.preventDefault();
-                        submit(deleteContact);
-                      }}
-                      style={{ width: "100%" }}
-                      size="large"
-                      loading={loading}
-                    >
-                      {t("settings.deleteAccount")}
-                    </Button>
-                  </Form.Item>
-                </Form>
-              );
-            }}
-          </Mutation>
-        </Modal>
-      );
-    }
+                    {t("settings.deleteAccount")}
+                  </Button>
+                </Form.Item>
+              </Form>
+            );
+          }}
+        </Mutation>
+      </Modal>
+    );
   }
 );

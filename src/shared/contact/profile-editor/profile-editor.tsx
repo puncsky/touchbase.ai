@@ -1,17 +1,17 @@
 // @flow
+import { UploadOutlined } from "@ant-design/icons";
 import {
   Button,
   DatePicker,
   Divider,
   Form,
-  Icon,
   Input,
   Modal,
   notification,
   Tabs,
   Upload
 } from "antd";
-import { WrappedFormUtils } from "antd/lib/form/Form";
+import { FormInstance } from "antd/lib/form/Form";
 import Popover from "antd/lib/popover";
 // @ts-ignore
 import window from "global/window";
@@ -57,13 +57,10 @@ type Props = {
   human: TContact2;
   actionUpdateHuman?(payload: any, remoteOnly: boolean): void;
   history?: any;
-  form?: WrappedFormUtils;
 };
 
 type State = { visible: boolean };
 
-// @ts-ignore
-@Form.create({ name: "profile-editor" })
 // @ts-ignore
 @withRouter
 // @ts-ignore
@@ -81,6 +78,8 @@ class ProfileEditorContainer extends Component<Props, State> {
   };
   public ref: any;
 
+  formRef: React.RefObject<FormInstance> = React.createRef<FormInstance>();
+
   public close(): void {
     const { history } = this.props;
 
@@ -89,32 +88,44 @@ class ProfileEditorContainer extends Component<Props, State> {
   }
 
   public onOk(): void {
-    const { form, human, actionUpdateHuman } = this.props;
+    const { human, actionUpdateHuman } = this.props;
 
-    if (!form || !actionUpdateHuman) {
+    if (!actionUpdateHuman) {
       return;
     }
 
-    const result = form.getFieldsValue();
-    const clone = {
-      ...human,
-      ...result,
-      // @ts-ignore
-      emails: result.emails.split(","),
-      experience: (result.experience || []).filter((e: any) => e),
-      education: (result.education || []).filter((e: any) => e),
-      // Remove the next line codes if it's no need to handle the old contacts
-      // created before the phones features was added. This makes the phone input
-      // ui rendered with the old contacts look like more reasonable.
-      phones: (result.phones || []).filter((e: any) => e)
-    };
-    window.console.log(clone);
-    actionUpdateHuman(
-      omitBy(clone, (val: any) => val === null),
-      false
-    );
+    if (!this.formRef.current) {
+      return;
+    }
 
-    this.close();
+    this.formRef.current
+      .validateFields()
+      .then(result => {
+        const clone = {
+          ...human,
+          ...result,
+          // @ts-ignore
+          emails: result.emails.split(","),
+          experience: (result.experience || []).filter((e: any) => e),
+          education: (result.education || []).filter((e: any) => e),
+          // Remove the next line codes if it's no need to handle the old contacts
+          // created before the phones features was added. This makes the phone input
+          // ui rendered with the old contacts look like more reasonable.
+          phones: (result.phones || []).filter((e: any) => e)
+        };
+        window.console.log(clone);
+        actionUpdateHuman(
+          omitBy(clone, (val: any) => val === null),
+          false
+        );
+
+        this.close();
+      })
+      .catch(({ errorFields }) => {
+        if (this.formRef.current) {
+          this.formRef.current.scrollToField(errorFields[0].name);
+        }
+      });
   }
 
   public componentDidMount(): void {
@@ -125,7 +136,7 @@ class ProfileEditorContainer extends Component<Props, State> {
   }
 
   public render(): JSX.Element {
-    const { human, form } = this.props;
+    const { human } = this.props;
     const { visible } = this.state;
 
     return (
@@ -137,37 +148,62 @@ class ProfileEditorContainer extends Component<Props, State> {
         onCancel={() => this.close()}
         width={600}
       >
-        <ProfileEditorForm human={human} form={form} />
+        <ProfileEditorForm human={human} ref={this.formRef} />
       </Modal>
     );
   }
 }
 
 export { ProfileEditorContainer };
+export { ProfileEditorForm };
 
-export class ProfileEditorForm extends Component<{
-  form?: WrappedFormUtils;
-  human: TContact2;
-}> {
-  public render(): JSX.Element {
-    const { form, human } = this.props;
+const ProfileEditorForm = React.forwardRef(
+  ({ human }: { human: TContact2 }, ref: any) => {
     return (
-      <Form>
+      <Form
+        ref={ref}
+        initialValues={{
+          phones: human.phones,
+          name: human.name,
+          emails: human.emails.join(", "),
+          avatarUrl: human.avatarUrl,
+          address: human.address,
+          bornAt: human.bornAt && moment(human.bornAt),
+          bornAddress: human.bornAddress,
+          facebook: human.facebook,
+          linkedin: human.linkedin,
+          github: human.github,
+          knownAt: moment(human.knownAt),
+          knownSource: human.knownSource,
+          blurb: human.blurb,
+          workingOn: human.workingOn,
+          desire: human.desire,
+          experience: human.experience,
+          education: human.education,
+          inboundTrust: human.inboundTrust,
+          outboundTrust: human.outboundTrust,
+          extraversionIntroversion: human.extraversionIntroversion,
+          intuitingSensing: human.intuitingSensing,
+          thinkingFeeling: human.thinkingFeeling,
+          planingPerceiving: human.planingPerceiving,
+          tdp: human.tdp
+        }}
+      >
         <Tabs defaultActiveKey="1">
           <TabPane forceRender tab={t("profile_editor.pii")} key="1">
-            <PersonalForm form={form} human={human} />
+            <PersonalForm human={human} formRef={ref} />
           </TabPane>
           <TabPane forceRender tab={t("profile_editor.experience")} key="2">
-            <ExperienceForm form={form} human={human} />
+            <ExperienceForm />
           </TabPane>
           <TabPane forceRender tab={t("profile_editor.observation")} key="3">
-            <ObservationForm form={form} human={human} />
+            <ObservationForm />
           </TabPane>
         </Tabs>
       </Form>
     );
   }
-}
+);
 
 interface PersonalFormState {
   avatarUrl: string;
@@ -176,92 +212,87 @@ interface PersonalFormState {
 class PersonalForm extends Component<
   {
     human: TContact2;
-    form?: WrappedFormUtils;
+    formRef: any;
   },
   PersonalFormState
 > {
   state: PersonalFormState = { avatarUrl: "" };
 
   renderPhoneNumbers(): JSX.Element | null {
-    const { human, form } = this.props;
     return (
       <DynamicFormItems
-        itemSize={human.phones.length}
+        name="phones"
         label={t("field.phone")}
-        renderItem={(key, i) =>
-          (form as WrappedFormUtils).getFieldDecorator(`phones[${i}]`, {
-            initialValue: human.phones[key],
-            // validateTrigger: "onBlur",
-            getValueFromEvent: event => {
+        renderItem={field => (
+          <Form.Item
+            {...field}
+            rules={[
+              {
+                validator(_: any, val: any): Promise<string | void> {
+                  if (val && formatToE164(val || "").length < 9) {
+                    return Promise.reject(t("field.error.phone.format"));
+                  }
+                  return Promise.resolve();
+                }
+              }
+            ]}
+            getValueFromEvent={event => {
               if (event.value === `+${event.callingCode}`) {
                 return "";
               } else {
                 return event.value;
               }
-            },
-            rules: [
-              {
-                // @ts-ignore
-                validator(rule: any, val: any, cb: any): void {
-                  if (val && formatToE164(val || "").length < 9) {
-                    cb(t("field.error.phone.format"));
-                  } else {
-                    cb();
-                  }
-                }
-              }
-            ]
-          })(<PhoneInput />)
-        }
+            }}
+            noStyle
+          >
+            <PhoneInput />
+          </Form.Item>
+        )}
       />
     );
   }
 
   render(): JSX.Element | null {
-    const { human, form } = this.props;
-
-    if (!form) {
-      return null;
-    }
-    const { getFieldDecorator } = form;
+    const { human, formRef } = this.props;
 
     const beforeUpload = async ({ file, onSuccess }: any) => {
       const fieldName = "avatarUrl";
       const data = await upload(file, fieldName);
-      form.setFieldsValue({
-        [fieldName]: data.secure_url
-      });
-      this.setState({ [fieldName]: data.secure_url });
-      onSuccess(data, file);
+      if (formRef && formRef.current) {
+        formRef.current.setFieldsValue({
+          [fieldName]: data.secure_url
+        });
+        this.setState({ [fieldName]: data.secure_url });
+        onSuccess(data, file);
+      }
     };
 
     return (
       <>
-        <Form.Item {...formItemLayout} label={t("field.name")}>
-          {getFieldDecorator("name", {
-            initialValue: human.name,
-            rules: [
-              {
-                required: true,
-                message: t("field.error.required.name")
-              }
-            ]
-          })(<Input placeholder={t("field.jane_doe")} />)}
+        <Form.Item
+          {...formItemLayout}
+          label={t("field.name")}
+          rules={[
+            {
+              required: true,
+              message: t("field.error.required.name")
+            }
+          ]}
+          name="name"
+        >
+          <Input placeholder={t("field.jane_doe")} />
         </Form.Item>
 
         {this.renderPhoneNumbers()}
 
-        <Form.Item {...formItemLayout} label={t("field.emails")}>
-          {getFieldDecorator("emails", {
-            initialValue: human.emails.join(", "),
-            rules: []
-          })(<Input placeholder={t("field.emails")} />)}
+        <Form.Item {...formItemLayout} label={t("field.emails")} name="emails">
+          <Input placeholder={t("field.emails")} />
         </Form.Item>
 
         <Form.Item {...formItemLayout} label={t("field.avatar_url")}>
-          {getFieldDecorator("avatarUrl", {
-            initialValue: human.avatarUrl
-          })(<Input hidden={true} />)}
+          <Form.Item name="avatarUrl" noStyle>
+            <Input hidden={true} />
+          </Form.Item>
           <Upload customRequest={beforeUpload}>
             {human.avatarUrl ? (
               <img
@@ -271,36 +302,39 @@ class PersonalForm extends Component<
               />
             ) : (
               <Button>
-                <Icon type="upload" /> Click to Upload
+                <UploadOutlined /> Click to Upload
               </Button>
             )}
           </Upload>
         </Form.Item>
 
-        <Form.Item {...formItemLayout} label={t("field.address")}>
-          {getFieldDecorator("address", {
-            initialValue: human.address,
-            rules: []
-          })(<Input placeholder={t("field.address")} />)}
+        <Form.Item
+          {...formItemLayout}
+          label={t("field.address")}
+          name="address"
+        >
+          <Input placeholder={t("field.address")} />
         </Form.Item>
 
-        <Form.Item {...formItemLayout} label={t("field.dateOfBirth")}>
-          {getFieldDecorator("bornAt", {
-            initialValue: human.bornAt && moment(human.bornAt),
-            rules: []
-          })(<DatePicker placeholder={t("field.dateOfBirth")} />)}
+        <Form.Item
+          {...formItemLayout}
+          label={t("field.dateOfBirth")}
+          name="bornAt"
+        >
+          <DatePicker placeholder={t("field.dateOfBirth")} />
         </Form.Item>
 
-        <Form.Item {...formItemLayout} label={t("field.birthplace")}>
-          {getFieldDecorator("bornAddress", {
-            initialValue: human.bornAddress,
-            rules: []
-          })(<Input placeholder={t("field.birthplace")} />)}
+        <Form.Item
+          {...formItemLayout}
+          label={t("field.birthplace")}
+          name="bornAddress"
+        >
+          <Input placeholder={t("field.birthplace")} />
         </Form.Item>
 
-        <SocialNetworkForm form={form} human={human} />
+        <SocialNetworkForm />
 
-        <SourceForm form={form} human={human} />
+        <SourceForm />
         {human._id && (
           <DeleteContactPopover
             name={human.name}
@@ -346,7 +380,7 @@ const DeleteContactPopover = withRouter(
                     return (
                       // @ts-ignore
                       <Button
-                        type="danger"
+                        danger
                         loading={loading}
                         onClick={async () => {
                           try {
@@ -411,72 +445,47 @@ const PopoverContent = styled("div", {
   maxWidth: "350px"
 });
 
-function SocialNetworkForm({
-  human,
-  form
-}: {
-  human: TContact2;
-  form?: WrappedFormUtils;
-}): JSX.Element | null {
-  if (!form) {
-    return null;
-  }
-  const { getFieldDecorator } = form;
+function SocialNetworkForm(): JSX.Element | null {
   return (
     <>
       <Divider>{t("social_network")}</Divider>
-      <Form.Item {...formItemLayout} label={t("field.facebook")}>
-        {getFieldDecorator("facebook", {
-          initialValue: human.facebook,
-          rules: []
-        })(<Input />)}
+      <Form.Item
+        {...formItemLayout}
+        label={t("field.facebook")}
+        name="facebook"
+      >
+        <Input />
       </Form.Item>
 
-      <Form.Item {...formItemLayout} label={t("field.linkedin")}>
-        {getFieldDecorator("linkedin", {
-          initialValue: human.linkedin,
-          rules: []
-        })(<Input />)}
+      <Form.Item
+        {...formItemLayout}
+        label={t("field.linkedin")}
+        name="linkedin"
+      >
+        <Input />
       </Form.Item>
 
-      <Form.Item {...formItemLayout} label={t("field.github")}>
-        {getFieldDecorator("github", {
-          initialValue: human.github,
-          rules: []
-        })(<Input />)}
+      <Form.Item {...formItemLayout} label={t("field.github")} name="github">
+        <Input />
       </Form.Item>
     </>
   );
 }
 
-function SourceForm({
-  human,
-  form
-}: {
-  human: TContact2;
-  form?: WrappedFormUtils;
-}): JSX.Element | null {
-  if (!form) {
-    return null;
-  }
-
-  const { getFieldDecorator } = form;
-
+function SourceForm(): JSX.Element | null {
   return (
     <>
       <Divider>{t("source")}</Divider>
-      <Form.Item {...formItemLayout} label={t("field.known_at")}>
-        {getFieldDecorator("knownAt", {
-          initialValue: moment(human.knownAt),
-          rules: []
-        })(<DatePicker />)}
+      <Form.Item {...formItemLayout} label={t("field.known_at")} name="knownAt">
+        <DatePicker />
       </Form.Item>
 
-      <Form.Item {...formItemLayout} label={t("field.known_source")}>
-        {getFieldDecorator("knownSource", {
-          initialValue: human.knownSource,
-          rules: []
-        })(<Input />)}
+      <Form.Item
+        {...formItemLayout}
+        label={t("field.known_source")}
+        name="knownSource"
+      >
+        <Input />
       </Form.Item>
     </>
   );

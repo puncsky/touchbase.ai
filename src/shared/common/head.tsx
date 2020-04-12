@@ -30,19 +30,19 @@ function HeadInner({ locale }: { locale: string }): JSX.Element {
           rel: "icon",
           type: "image/png",
           sizes: "any",
-          href: assetURL("/favicon.png")
+          href: assetURL("./favicon.png")
         },
 
         // styles
         {
           rel: "stylesheet",
           type: "text/css",
-          href: assetURL("/stylesheets/main1.css")
+          href: assetURL("./stylesheets/main1.css")
         },
         {
           rel: "stylesheet",
           type: "text/css",
-          href: assetURL("/stylesheets/antd.css")
+          href: assetURL("./stylesheets/antd.css")
         },
         {
           href:

@@ -224,7 +224,7 @@ export const ContactsTableContainer = withRouter(
                 {
                   rel: "stylesheet",
                   type: "text/css",
-                  href: assetURL("/stylesheets/all-table-main.css")
+                  href: assetURL("./stylesheets/all-table-main.css")
                 }
               ]}
             />

@@ -1,6 +1,6 @@
 import { ConfigProvider } from "antd";
-import enUS from "antd/lib/locale-provider/en_US";
-import zhCN from "antd/lib/locale-provider/zh_CN";
+import enUS from "antd/lib/locale/en_US";
+import zhCN from "antd/lib/locale/zh_CN";
 import { styled } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import { Switch } from "react-router";
