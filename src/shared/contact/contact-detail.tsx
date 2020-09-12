@@ -1,6 +1,7 @@
+import { DownOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 import Button from "antd/lib/button";
 import Col from "antd/lib/col";
-import Icon from "antd/lib/icon";
 import Row from "antd/lib/row";
 import dateFormat from "dateformat";
 import gql from "graphql-tag";
@@ -200,7 +201,7 @@ function Contact({
                 src={human.avatarUrl || "/favicon-light.svg"}
               />
               <Link to="./edit/">
-                <Icon1 type="edit" />
+                <Icon1 />
               </Link>
               <Route
                 exact
@@ -351,7 +352,7 @@ function TitleContent({ title, human }: any): JSX.Element | null {
   );
 }
 
-const Icon1 = styled(Icon, {
+const Icon1 = styled(EditOutlined, {
   ...{
     position: "absolute",
     bottom: "8px",
@@ -517,7 +518,7 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                     });
                   }}
                 >
-                  <Icon type="down" />
+                  <DownOutlined />
                   {t("fetch_more")}
                 </Button>
               )}

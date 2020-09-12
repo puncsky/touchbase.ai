@@ -1,5 +1,5 @@
 // @ts-ignore
-import AntIcon from "antd/lib/icon";
+import { SettingFilled } from "@ant-design/icons";
 import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import { styled, StyleObject } from "onefx/lib/styletron-react";
@@ -110,7 +110,7 @@ export const TopBar = connect((state: any) => ({
               {t("topbar.contacts")}
             </StyledLink>
             <StyledLink to="/settings/" onClick={this.hideMobileMenu}>
-              <AntIcon type="setting" theme="filled" />
+              <SettingFilled />
             </StyledLink>
           </Dropdown>
         </OutsideClickHandler>
@@ -129,14 +129,14 @@ export const TopBar = connect((state: any) => ({
                 <LinkLogoWrapper to={`/me/`}>
                   <Icon
                     width={`${TOP_BAR_HEIGHT}px`}
-                    url={assetURL("/favicon.svg")}
+                    url={assetURL("./favicon.svg")}
                   />
                 </LinkLogoWrapper>
               ) : (
                 <LogoWrapper href="/">
                   <Icon
                     width={`${TOP_BAR_HEIGHT}px`}
-                    url={assetURL("/favicon.svg")}
+                    url={assetURL("./favicon.svg")}
                   />
                 </LogoWrapper>
               )}
@@ -155,7 +155,7 @@ export const TopBar = connect((state: any) => ({
                       {t("topbar.contacts")}
                     </BrandLink>
                     <BrandLink to="/settings/" onClick={this.hideMobileMenu}>
-                      <AntIcon type="setting" theme="filled" />
+                      <SettingFilled />
                     </BrandLink>
                   </HiddenOnMobile>
                 </>

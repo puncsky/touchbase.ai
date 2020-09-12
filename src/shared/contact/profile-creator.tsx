@@ -1,6 +1,5 @@
 // @flow
-import Form from "antd/lib/form/Form";
-import { WrappedFormUtils } from "antd/lib/form/Form";
+import { FormInstance } from "antd/lib/form/Form";
 import Modal from "antd/lib/modal";
 import notification from "antd/lib/notification";
 // @ts-ignore
@@ -57,59 +56,54 @@ export const EMPTY_HUMAN: TContact2 = {
 type Props = {
   human: TContact2;
   actionCreateHuman(payload: any, history: any): void;
-  form?: WrappedFormUtils;
 } & RouterProps;
 
 type State = { visible: boolean };
 
-export const ProfileCreatorContainer = Form.create({ name: "profile-creator" })(
+export const ProfileCreatorContainer = withRouter(
   // @ts-ignore
-  withRouter(
-    // @ts-ignore
-    connect(
-      () => ({ human: EMPTY_HUMAN }),
-      (dispatch: any) => ({
-        actionCreateHuman: (payload: any, history: any) =>
-          dispatch(actionCreateHuman(payload, history))
-      })
-    )(
-      class ProfileCreator extends Component<Props, State> {
-        public props: Props;
-        public state: State = { visible: false };
-        public ref: any;
+  connect(
+    () => ({ human: EMPTY_HUMAN }),
+    (dispatch: any) => ({
+      actionCreateHuman: (payload: any, history: any) =>
+        dispatch(actionCreateHuman(payload, history))
+    })
+  )(
+    class ProfileCreator extends Component<Props, State> {
+      public props: Props;
+      public state: State = { visible: false };
+      public ref: any;
 
-        public componentDidMount(): void {
-          const { history } = this.props;
-          this.setState({
-            visible: history.location.pathname.endsWith("/create/")
-          });
+      formRef: React.RefObject<FormInstance> = React.createRef<FormInstance>();
+
+      public componentDidMount(): void {
+        const { history } = this.props;
+        this.setState({
+          visible: history.location.pathname.endsWith("/create/")
+        });
+      }
+
+      public close(): void {
+        const { history } = this.props;
+
+        this.setState({ visible: false });
+        window.setTimeout(() => history.push("../"), 200);
+      }
+
+      public onOk(): void {
+        const { human, actionCreateHuman, history } = this.props;
+
+        if (!this.formRef.current) {
+          return;
         }
 
-        public close(): void {
-          const { history } = this.props;
-
-          this.setState({ visible: false });
-          window.setTimeout(() => history.push("../"), 200);
-        }
-
-        public onOk(): void {
-          const { form, human, actionCreateHuman, history } = this.props;
-
-          if (!form) {
-            return;
-          }
-
-          form.validateFields((errors: any, result: any) => {
-            if (errors) {
-              notification.error({ message: t("field.error.required.name") });
-              return;
-            }
-
+        this.formRef.current
+          .validateFields()
+          .then(values => {
             const clone = {
               ...human,
-              ...result,
-              // @ts-ignore
-              emails: result.emails.split(",")
+              ...values,
+              emails: values.emails.split(",")
             };
             actionCreateHuman(
               omitBy(clone, (val: any) => !val && val !== 0),
@@ -117,26 +111,31 @@ export const ProfileCreatorContainer = Form.create({ name: "profile-creator" })(
             );
 
             this.setState({ visible: false });
+          })
+          .catch(({ errorFields }) => {
+            if (this.formRef.current) {
+              this.formRef.current.scrollToField(errorFields[0].name);
+            }
+            notification.error({ message: t("field.error.required.name") });
           });
-        }
-
-        public render(): JSX.Element {
-          const { human, form } = this.props;
-          const { visible } = this.state;
-          return (
-            <Modal
-              style={{ top: TOP_BAR_HEIGHT }}
-              title={t("auth/button_submit")}
-              visible={visible}
-              onOk={() => this.onOk()}
-              onCancel={() => this.close()}
-              width={600}
-            >
-              <ProfileEditorForm human={human} form={form} />
-            </Modal>
-          );
-        }
       }
-    )
+
+      public render(): JSX.Element {
+        const { human } = this.props;
+        const { visible } = this.state;
+        return (
+          <Modal
+            style={{ top: TOP_BAR_HEIGHT }}
+            title={t("auth/button_submit")}
+            visible={visible}
+            onOk={() => this.onOk()}
+            onCancel={() => this.close()}
+            width={600}
+          >
+            <ProfileEditorForm human={human} ref={this.formRef} />
+          </Modal>
+        );
+      }
+    }
   )
 );

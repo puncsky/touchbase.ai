@@ -1,7 +1,7 @@
+import { ArrowRightOutlined } from "@ant-design/icons";
 import Button from "antd/lib/button";
 import Col from "antd/lib/grid/col";
 import Row from "antd/lib/grid/row";
-import Icon from "antd/lib/icon";
 import Layout from "antd/lib/layout";
 // @ts-ignore
 import { assetURL } from "onefx/lib/asset-url";
@@ -69,7 +69,7 @@ class HomeInner extends PureComponent<{ userId: string }> {
                     <Button type="primary" size="large" href="/sign-up/">
                       {t("home.get_started")}
 
-                      <Icon type="arrow-right" />
+                      <ArrowRightOutlined />
                     </Button>
                     <CommonMargin />
                     <Button
@@ -86,7 +86,10 @@ class HomeInner extends PureComponent<{ userId: string }> {
               </Col>
               <Col md={12} xs={24}>
                 <Flex center={true} width="100%">
-                  <Img src={assetURL("/social-media.svg")} alt="social media" />
+                  <Img
+                    src={assetURL("./social-media.svg")}
+                    alt="social media"
+                  />
                 </Flex>
               </Col>
             </Row>
@@ -99,7 +102,7 @@ class HomeInner extends PureComponent<{ userId: string }> {
               <Col md={12} xs={24}>
                 <Flex center={true} width="100%">
                   <Img
-                    src={assetURL("/mission122.svg")}
+                    src={assetURL("./mission122.svg")}
                     alt="live a thriving social life"
                   />
                 </Flex>

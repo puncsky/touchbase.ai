@@ -82,7 +82,7 @@ export const DeleteNotePopover = withRouter(
                     return (
                       // @ts-ignore
                       <Button
-                        type="danger"
+                        danger
                         loading={loading}
                         onClick={async () => {
                           try {

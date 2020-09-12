@@ -1,3 +1,4 @@
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form } from "antd";
 import React from "react";
 import { styled } from "styletron-react";
@@ -30,60 +31,47 @@ const ItemChildrenContainer = styled(
   })
 );
 
-class DynamicFormItems extends React.Component<
-  {
-    renderItem(key: number, index: number): React.ReactNode;
-    itemSize: number;
-    label: string;
-  },
-  { fieldKeys: Array<number> }
-> {
-  fieldId: number = 0;
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      fieldKeys: Array.from({ length: props.itemSize || 1 }).map(
-        () => this.fieldId++
-      )
-    };
-  }
-  addField = () => {
-    this.setState({
-      fieldKeys: this.state.fieldKeys.concat(this.fieldId++)
-    });
-  };
-  removeField = (key: number) => {
-    this.setState({
-      fieldKeys: this.state.fieldKeys.filter(k => k !== key)
-    });
-  };
+class DynamicFormItems extends React.Component<{
+  renderItem(value: any): React.ReactNode;
+  label: string;
+  name: string;
+}> {
   render(): JSX.Element {
-    const { label, renderItem } = this.props;
+    const { label, renderItem, name } = this.props;
     return (
-      <>
-        {this.state.fieldKeys.map((key, i) => (
-          <Form.Item
-            key={key}
-            style={{ marginBottom: 4 }}
-            {...(i === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-            label={i === 0 && label}
-          >
-            <ItemChildrenContainer $isSingle={this.state.fieldKeys.length < 2}>
-              {renderItem(key, i)}
-            </ItemChildrenContainer>
-            {this.state.fieldKeys.length > 1 && (
-              <Button
-                shape="circle"
-                icon="delete"
-                onClick={() => this.removeField(key)}
-              />
-            )}
-          </Form.Item>
-        ))}
-        <Form.Item {...formItemLayoutWithOutLabel}>
-          <Button shape="circle" icon="plus" onClick={this.addField} />
-        </Form.Item>
-      </>
+      <Form.List name={name}>
+        {(fields, { add, remove }) => {
+          return (
+            <>
+              {fields.map((field, index) => (
+                <Form.Item
+                  key={index}
+                  style={{ marginBottom: 4 }}
+                  {...(index === 0
+                    ? formItemLayout
+                    : formItemLayoutWithOutLabel)}
+                  label={index === 0 && label}
+                >
+                  <ItemChildrenContainer $isSingle={fields.length < 2}>
+                    {renderItem(field)}
+                  </ItemChildrenContainer>
+
+                  {fields.length > 1 && (
+                    <Button
+                      shape="circle"
+                      icon={<DeleteOutlined />}
+                      onClick={() => remove(field.name)}
+                    />
+                  )}
+                </Form.Item>
+              ))}
+              <Form.Item {...formItemLayoutWithOutLabel}>
+                <Button shape="circle" icon={<PlusOutlined />} onClick={add} />
+              </Form.Item>
+            </>
+          );
+        }}
+      </Form.List>
     );
   }
 }

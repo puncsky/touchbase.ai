@@ -63,7 +63,6 @@ class DialCodeSelect extends React.Component<DialCodeSelectProps> {
           onChange={this.props.onChange}
           onDropdownVisibleChange={open => this.setState({ open })}
           dropdownRender={menu => <DropdownWrap>{menu}</DropdownWrap>}
-          dropdownMenuStyle={{ padding: 0, background: "white" }}
           showSearch
           filterOption
           optionFilterProp="title"

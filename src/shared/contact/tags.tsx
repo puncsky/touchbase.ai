@@ -1,9 +1,8 @@
+import { PlusOutlined, StarFilled, StarOutlined } from "@ant-design/icons";
 import {
   AutoComplete,
   Button,
   Dropdown,
-  Form,
-  Icon,
   Input,
   Menu,
   Modal,
@@ -11,7 +10,6 @@ import {
   Tag
 } from "antd";
 import Divider from "antd/lib/divider";
-import { FormProps, WrappedFormUtils } from "antd/lib/form/Form";
 import { ApolloQueryResult } from "apollo-client";
 import gql from "graphql-tag";
 import { t } from "onefx/lib/iso-i18n";
@@ -49,8 +47,7 @@ type RefetchTagType = () => Promise<
 
 type Props = {
   contactId: string;
-  form: WrappedFormUtils;
-} & FormProps;
+};
 
 const CREATE_TEMPLATE_TAG = gql`
   mutation createTagTemplateInput(
@@ -330,7 +327,7 @@ class Tags extends React.Component<Props, State> {
         </Menu.Item>
         <Menu.Item>
           <Button
-            type="danger"
+            danger
             ghost
             onClick={() => {
               this.setState({
@@ -353,13 +350,13 @@ class Tags extends React.Component<Props, State> {
             {item.rate > 0 &&
               Array.from({
                 length: 5
-              }).map((_, index) => (
-                <Icon
-                  key={`tag${index}`}
-                  type="star"
-                  theme={index < item.rate ? "filled" : "outlined"}
-                />
-              ))}
+              }).map((_, index) =>
+                index < item.rate ? (
+                  <StarFilled key={`tag${index}`} />
+                ) : (
+                  <StarOutlined key={`tag${index}`} />
+                )
+              )}
           </Tag>
         </Dropdown>
       </TagWrapper>
@@ -388,7 +385,7 @@ class Tags extends React.Component<Props, State> {
                     onSelect={value => {
                       this.onSelect(
                         createTag,
-                        value as string,
+                        value,
                         unselectedTemplates,
                         refetch
                       );
@@ -396,7 +393,7 @@ class Tags extends React.Component<Props, State> {
                     placeholder={t("tag.create_tag")}
                     onBlur={this.onInputBlur}
                     onChange={value => {
-                      this.onChange(value as string, unselectedTemplates);
+                      this.onChange(value, unselectedTemplates);
                     }}
                   >
                     <Input
@@ -424,7 +421,7 @@ class Tags extends React.Component<Props, State> {
               cursor: "pointer"
             }}
           >
-            <Icon type="plus" />
+            <PlusOutlined />
             {t("tag.add_tag")}
           </Tag>
         )}
@@ -433,6 +430,4 @@ class Tags extends React.Component<Props, State> {
   };
 }
 
-export const TagsContainer = Form.create<Props & { form: WrappedFormUtils }>({
-  name: "createTagForm"
-})(Tags);
+export const TagsContainer = Tags;

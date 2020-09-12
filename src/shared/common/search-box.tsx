@@ -1,5 +1,5 @@
+import { SearchOutlined } from "@ant-design/icons";
 import AutoComplete from "antd/lib/auto-complete";
-import Icon from "antd/lib/icon";
 import Input from "antd/lib/input";
 import gql from "graphql-tag";
 import { assetURL } from "onefx/lib/asset-url";
@@ -63,7 +63,7 @@ export const SearchBox = withRouter(
     };
 
     public componentDidMount(): void {
-      loadScript(assetURL("/keypress-2.1.5.min.js"), () => {
+      loadScript(assetURL("./keypress-2.1.5.min.js"), () => {
         // @ts-ignore
         this.listener = new window.keypress.Listener();
         this.listener.simple_combo(
@@ -101,6 +101,7 @@ export const SearchBox = withRouter(
             dropdownStyle={{ width: 300 }}
             size="large"
             style={{ width: "100%" }}
+            // @ts-ignore
             dataSource={children}
             placeholder={t("topbar.search_everything")}
             onSearch={this.handleSearch}
@@ -108,7 +109,7 @@ export const SearchBox = withRouter(
           >
             <Input
               ref={ref => (this.inputRef = ref)}
-              suffix={<Icon type="search" className="certain-category-icon" />}
+              suffix={<SearchOutlined className="certain-category-icon" />}
             />
           </AutoComplete>
         </div>
