@@ -43,6 +43,7 @@ export const SearchBox = withRouter(
     private listener: any;
 
     public handleSearch = async (inputText: string) => {
+      this.setState({ inputValue: inputText });
       const { data } = await apolloClient.query<{
         search: Array<ISearchResult>;
       }>({
@@ -51,7 +52,7 @@ export const SearchBox = withRouter(
         },
         query: SEARCH
       });
-      this.setState({ searchResults: data.search, inputValue: inputText });
+      this.setState({ searchResults: data.search });
     };
 
     public handleSelect = (value: any, option: any) => {
