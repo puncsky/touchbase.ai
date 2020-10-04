@@ -1,169 +1,334 @@
 add_event: Add Event
+
 add_interaction: Add Interaction
-auth/button_submit: Submit
-auth/consent: By clicking "SUBMIT", you agree to our <a href="${tosUrl}">Terms of Use</a> and acknowledge you have read the <a href="${policyUrl}">Privacy Policy</a>.
-auth/continue_with_blockstack: Continue with Blockstack
-auth/email-already-in-use: Email is already in use
-auth/forgot_password.back: ← Back to Login
-auth/forgot_password.desc: Enter the email address associated with your account, and we’ll email you a link to reset your password.
-auth/forgot_password.email_content: Hi, we’ve received a request to reset your password. If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using the following link.
-auth/forgot_password.email_cta: RESET YOUR PASSWORD
-auth/forgot_password.email_title: Reset your Password
-auth/forgot_password.email_token_failure: Your request to reset password has already expired. Please try again.
-auth/forgot_password.send: SEND RESET LINK
-auth/forgot_password.sent: A link to reset your password has been sent to ${email}.
-auth/forgot_password: Forgot Password
-auth/invalid-email: Email is invalid
-auth/new-password: New Password
-auth/password: Password
-auth/reset_password.desc: Your password needs to have at least one symbol or number, and have at least 6 characters.
-auth/reset_password.success: Your password has been updated.
-auth/reset_password: Reset password
-auth/sign_in.forgot_password: Forgot password? Reset
-auth/sign_in.switch_to_sign_up: Don’t have an account? Sign up
-auth/sign_in.title: Sign In
-auth/sign_up.switch_to_sign_in: Already have an account? Log in
-auth/user-disabled: User is banned
-auth/user-not-found: User is not found
-auth/weak-password: Please use at least 8 characters as the password
-auth/wrong-password: Password is incorrect
-bornAddress: From
-bornAt: Birthday
-close: CLOSE
-desire: Desire
-edit_event: Edit Event
-make_public: Make public?
-education: Education
-experience: Experience
-extraversionIntroversion: Attitude
-extroversion: Extroversion
-field.address: Address
-field.avatar_url: Avatar
-field.birthplace: Birthplace
-field.blurb: Blurb
-field.dateOfBirth: Date of Birth
-field.desire: Desire
-field.email: Email
-field.emails: Emails
-field.extroversion_introversion.help: Extroverts prefer external people and things and drawing energy from action. Introverts prefer their own thinking and gaining energy from reflection.
-field.extroversion_introversion: Attitudes
-field.inbound_trust: Inbound
-field.intuiting_sensing.help: People who prefer sensing are more likely to trust information that is in the present, tangible, and concrete. Those who prefer intuition tend to trust information that is less dependent upon the senses.
-field.intuiting_sensing: Perceiving
-field.name: Name
-field.note_placeholder: Type your note here...
-field.outbound_trust: Outbound
-field.planing_perceiving.help: Those types who prefer perception show the world their preferred perceiving function (sensing or intuition); otherwise, they prefer planing/judging.
-field.planing_perceiving: Lifestyle
-field.tdp: TDP
-field.thinking_feeling.help: Those who prefer thinking tend to decide things from a more detached standpoint. Those who prefer feeling tend to come to decisions by associating or empathizing with the situation and the needs of the people involved.
-field.thinking_feeling: Judging
-field.working_on: Working on
-observation.trust.title: Trust
-observation.style.title: Cognitive learning styles
-home.create_account: CREATE ACCOUNT
-inbound_trust: Inbound Trust
-interactions: Interactions
-personality: Personality
-introversion: Introversion
-intuitingSensing: Perceiving
-intuiting: Intuiting
-sensing: Sensing
-thinking: Thinking
-feeling: Feeling
-planning: Planning
-perceiving: Perceiving
-creator: Creator
-refiner: Refiner
+
 advancer: Advancer
-executor: Executor
-flexor: Flexor
-ipq: IPQ
-knownSource: Source
-meta.description: Privacy-preserving personal CRM - smartly engaged more in meaningful relationships
-meta.title: touchbase.ai
-not_found.bar: Not Found
-not_found.info: We cannot find the page for you...
-not_found.title: Oops!
-outbound_trust: Outbound Trust
-planingPerceiving: Lifestyle
-profile.prefill: Prefill other fields
-profile_editor.experience: Experience
-profile_editor.observation: Observation
-profile_editor.pii: Personal
-profile_editor.upload: Click to Upload
-tdp: Team Dimension Profile
-thinkingFeeling: Judging
-topbar.brand: touchbase.ai
-topbar.contacts: Contacts
-topbar.create: ADD
-topbar.edit: EDIT
-topbar.home: HOME
-topbar.login: LOG IN
-topbar.sign_up: SIGN UP
-workingOn: Working on
-years_known: Years Known
-tos.privacy: Privacy Policy
-tos.tos: Terms of Service
-social_network: Social Network
-field.facebook: Facebook
-field.linkedin: Linkedin
-field.github: Github
-source: Source
-field.known_at: Known at
-field.known_source: via
-field.experience: Experience
-field.education: Education
-field.jane_doe: Jane Doe
-field.phone: Phone
-field.error.required.name: Please enter the name of the contact.
-field.error.required: This field is required.
-field.error.phone.format: Please enter a valid phone number.
-settings.manage_account: Manage Account
-settings.sessions: Sessions
-settings.security: Security
-settings.logout: Logout
-settings.dangerZone: Danger Zone
-settings.deleteAccount: Delete This Account
-settings.deleteAccountDesc: Once deleted, it will be gone forever. Please be certain.
-settings.modal_title: Are you sure you want to delete this?
-settings.modal_email_input_label: Your Email
-settings.code_verify_prompt: To verify, type
-settings.modal_email_delete_desc: We will immediately delete all of your profiles, along with all of your notes, reminders, and timelines.
-settings.modal_danger: This is extremely important
-settings.forbidden_action: Forbidden Action
-settings.verification_code: delete my account
-settings.invalid_code: Invalid Code
-settings.empty_code: Empty Code Field
-home.title: Smartly engage more in meaningful relationships
-home.desc: Open source personal CRM. Empowering relation builders with data and AI. Growing personal network with speed and quality.
-home.get_started: Sign Up to Build Relationships
-home.section1.title: Live a thriving social life
-home.section1.desc:
-  <p>Relationships are like gardening. They grow if you work diligently, starve if they are ignored, and die if they get too much attention.</p>
-  <p>touchbase.ai makes it easy to understand people, grow networks, and engage in meaningful relationships.</p>
-fetch_more: Fetch More
-topbar.search_everything: Search Contact...
-field.delete_contact.title: Remove contact?
-field.delete_contact.content: "Most information you've added to ${name}'s contact will be deleted. However, your notes associated with this contact will not and you can still find them in your own timeline."
-field.delete_contact.deleted: Deleted the contact ${name}
-field.delete_contact.failed: "failed to delete user: ${e}"
-field.delete_contact.yes: Yes, remove contact
-field.delete_contact.cancel: Cancel
-field.delete_contact.error_self: Cannot delete your own profile
-field.delete_note.title: Delete note?
-field.delete_note.content: "This note will be deleted and cannot be recovered in the future."
-field.delete_note.deleted: Deleted the note
-field.delete_note.failed: "failed to delete note: ${e}"
-field.delete_note.yes: Yes, delete note
-field.delete_note.cancel: Cancel
-experience.title: Title
-experience.org: Orgnization
-edit: Edit
+
+auth/button_submit: Submit
+
+auth/consent: 'By clicking "SUBMIT", you agree to our <a href="${tosUrl}">Terms of Use</a> and acknowledge you have read the <a href="${policyUrl}">Privacy Policy</a>.'
+
+auth/continue_with_blockstack: Continue with Blockstack
+
+auth/email-already-in-use: Email is already in use
+
+auth/forgot_password: Forgot Password
+
+auth/forgot_password.back: ← Back to Login
+
+auth/forgot_password.desc: 'Enter the email address associated with your account, and we’ll email you a link to reset your password.'
+
+auth/forgot_password.email_content: 'Hi, we’ve received a request to reset your password. If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using the following link.'
+
+auth/forgot_password.email_cta: RESET YOUR PASSWORD
+
+auth/forgot_password.email_title: Reset your Password
+
+auth/forgot_password.email_token_failure: Your request to reset password has already expired. Please try again.
+
+auth/forgot_password.send: SEND RESET LINK
+
+auth/forgot_password.sent: 'A link to reset your password has been sent to ${email}.'
+
+auth/invalid-email: Email is invalid
+
+auth/new-password: New Password
+
+auth/password: Password
+
+auth/reset_password: Reset password
+
+auth/reset_password.desc: 'Your password needs to have at least one symbol or number, and have at least 6 characters.'
+
+auth/reset_password.success: Your password has been updated.
+
+auth/sign_in.forgot_password: Forgot password? Reset
+
+auth/sign_in.switch_to_sign_up: Don’t have an account? Sign up
+
+auth/sign_in.title: Sign In
+
+auth/sign_up.switch_to_sign_in: Already have an account? Log in
+
+auth/user-disabled: User is banned
+
+auth/user-not-found: User is not found
+
+auth/weak-password: Please use at least 8 characters as the password
+
+auth/wrong-password: Password is incorrect
+
+bornAddress: From
+
+bornAt: Birthday
+
+close: CLOSE
+
+creator: Creator
+
 delete: Delete
-tag.create_tag: input here
+
+desire: Desire
+
+edit: Edit
+
+edit_event: Edit Event
+
+education: Education
+
+executor: Executor
+
+experience: Experience
+
+experience.org: Orgnization
+
+experience.title: Title
+
+extraversionIntroversion: Attitude
+
+extroversion: Extroversion
+
+feeling: Feeling
+
+fetch_more: Fetch More
+
+field.address: Address
+
+field.avatar_url: Avatar
+
+field.birthplace: Birthplace
+
+field.blurb: Blurb
+
+field.dateOfBirth: Date of Birth
+
+field.delete_contact.cancel: Cancel
+
+field.delete_contact.content: 'Most information you''ve added to ${name}''s contact will be deleted. However, your notes associated with this contact will not and you can still find them in your own timeline.'
+
+field.delete_contact.deleted: 'Deleted the contact ${name}'
+
+field.delete_contact.error_self: Cannot delete your own profile
+
+field.delete_contact.failed: 'failed to delete user: ${e}'
+
+field.delete_contact.title: Remove contact?
+
+field.delete_contact.yes: 'Yes, remove contact'
+
+field.delete_note.cancel: Cancel
+
+field.delete_note.content: This note will be deleted and cannot be recovered in the future.
+
+field.delete_note.deleted: Deleted the note
+
+field.delete_note.failed: 'failed to delete note: ${e}'
+
+field.delete_note.title: Delete note?
+
+field.delete_note.yes: 'Yes, delete note'
+
+field.desire: Desire
+
+field.education: Education
+
+field.email: Email
+
+field.emails: Emails
+
+field.error.phone.format: Please enter a valid phone number.
+
+field.error.required: This field is required.
+
+field.error.required.name: Please enter the name of the contact.
+
+field.experience: Experience
+
+field.extroversion_introversion: Attitudes
+
+field.extroversion_introversion.help: Extroverts prefer external people and things and drawing energy from action. Introverts prefer their own thinking and gaining energy from reflection.
+
+field.facebook: Facebook
+
+field.github: Github
+
+field.inbound_trust: Inbound
+
+field.intuiting_sensing: Perceiving
+
+field.intuiting_sensing.help: 'People who prefer sensing are more likely to trust information that is in the present, tangible, and concrete. Those who prefer intuition tend to trust information that is less dependent upon the senses.'
+
+field.jane_doe: Jane Doe
+
+field.known_at: Known at
+
+field.known_source: via
+
+field.linkedin: Linkedin
+
+field.name: Name
+
+field.note_placeholder: Type your note here...
+
+field.outbound_trust: Outbound
+
+field.phone: Phone
+
+field.planing_perceiving: Lifestyle
+
+field.planing_perceiving.help: 'Those types who prefer perception show the world their preferred perceiving function (sensing or intuition); otherwise, they prefer planing/judging.'
+
+field.tdp: TDP
+
+field.thinking_feeling: Judging
+
+field.thinking_feeling.help: Those who prefer thinking tend to decide things from a more detached standpoint. Those who prefer feeling tend to come to decisions by associating or empathizing with the situation and the needs of the people involved.
+
+field.working_on: Working on
+
+flexor: Flexor
+
+home.create_account: CREATE ACCOUNT
+
+home.desc: Open source personal CRM. Empowering relation builders with data and AI. Growing personal network with speed and quality.
+
+home.get_started: Sign Up to Build Relationships
+
+home.section1.desc: '<p>Relationships are like gardening. They grow if you work diligently, starve if they are ignored, and die if they get too much attention.</p> <p>touchbase.ai makes it easy to understand people, grow networks, and engage in meaningful relationships.</p>'
+
+home.section1.title: Live a thriving social life
+
+home.title: Smartly engage more in meaningful relationships
+
+inbound_trust: Inbound Trust
+
+interactions: Interactions
+
+introversion: Introversion
+
+intuiting: Intuiting
+
+intuitingSensing: Perceiving
+
+ipq: IPQ
+
+knownSource: Source
+
+make_public: Make public?
+
+meta.description: Privacy-preserving personal CRM - smartly engaged more in meaningful relationships
+
+meta.title: touchbase.ai
+
+not_found.bar: Not Found
+
+not_found.info: We cannot find the page for you...
+
+not_found.title: Oops!
+
+observation.style.title: Cognitive learning styles
+
+observation.trust.title: Trust
+
+outbound_trust: Outbound Trust
+
+perceiving: Perceiving
+
+personality: Personality
+
+planingPerceiving: Lifestyle
+
+planning: Planning
+
+profile.prefill: Prefill other fields
+
+profile_editor.experience: Experience
+
+profile_editor.observation: Observation
+
+profile_editor.pii: Personal
+
+profile_editor.upload: Click to Upload
+
+refiner: Refiner
+
+sensing: Sensing
+
+settings.code_verify_prompt: 'To verify, type'
+
+settings.dangerZone: Danger Zone
+
+settings.deleteAccount: Delete This Account
+
+settings.deleteAccountDesc: 'Once deleted, it will be gone forever. Please be certain.'
+
+settings.empty_code: Empty Code Field
+
+settings.forbidden_action: Forbidden Action
+
+settings.invalid_code: Invalid Code
+
+settings.logout: Logout
+
+settings.manage_account: Manage Account
+
+settings.modal_danger: This is extremely important
+
+settings.modal_email_delete_desc: 'We will immediately delete all of your profiles, along with all of your notes, reminders, and timelines.'
+
+settings.modal_email_input_label: Your Email
+
+settings.modal_title: Are you sure you want to delete this?
+
+settings.security: Security
+
+settings.sessions: Sessions
+
+settings.verification_code: delete my account
+
+social_network: Social Network
+
+source: Source
+
 tag.add_tag: add tag
+
+tag.create_tag: input here
+
 tag.delete: Delete
+
 tag.delete_confirm: Are you sure to remove this tag?
-tag.delete_confirm.ok: Yes, remove tag
+
 tag.delete_confirm.cancel: Cancel
+
+tag.delete_confirm.ok: 'Yes, remove tag'
+
+tdp: Team Dimension Profile
+
+thinking: Thinking
+
+thinkingFeeling: Judging
+
+topbar.brand: touchbase.ai
+
+topbar.contacts: Contacts
+
+topbar.create: ADD
+
+topbar.edit: EDIT
+
+topbar.home: HOME
+
+topbar.login: LOG IN
+
+topbar.search_everything: Search Contact...
+
+topbar.sign_up: SIGN UP
+
+tos.privacy: Privacy Policy
+
+tos.tos: Terms of Service
+
+workingOn: Working on
+
+years_known: Years Known
+

@@ -1,172 +1,332 @@
 add_event: 添加事件
+
 add_interaction: 添加交互
-auth/button_submit: 提交
-auth/consent: 通过点击提交，即表示您同意 Beancount.io 的<a href="${tosUrl}">使用条款</a>， 并确认您已读过此<a href="${policyUrl}">隐私协议</a>。
-auth/email-already-in-use: 邮箱已被占用
-auth/forgot_password.back: ← 返回至登录
-auth/forgot_password.desc: 请输入与您账号所关联的邮箱地址，我们将通过邮件发送给您重置密码的链接。
-auth/forgot_password.email_content: "嗨，我们收到一个重置您密码的请求。如果您没有发起过这样的请求，请忽略此消息。否则，您可以通过下面的链接来重置您的密码: ${link}。"
-auth/forgot_password.email_title: 重置您的密码
-auth/forgot_password.email_token_failure: 您重置密码的请求已经过期。请重试。
-auth/forgot_password.send: 发送重置链接
-auth/forgot_password.sent: 重置您密码的链接已经发送至 ${email} 。
-auth/forgot_password: 忘记密码
-auth/invalid-email: 邮箱无效
-auth/reset_password.desc: 您的密码至少需要包含一个特殊符号或数字，并且不能少于 6 个字符。
-auth/reset_password.success: 您的密码已经更新。
-auth/reset_password: 重置密码
-auth/sign_in.forgot_password: 忘记密码？重置
-auth/sign_in.switch_to_sign_up: 没有账号？注册
-auth/sign_in.title: 登录
-auth/sign_up.switch_to_sign_in: 已有账号？登录
-auth/user-disabled: 用户被禁
-auth/user-not-found: 用户未找到
-auth/weak-password: 请至少使用 6 个字符作为密码
-auth/wrong-password: 密码不正确
-auth/password: 密码
-auth/new-password: 新密码
-auth/continue_with_blockstack: 用 Blockstack 登录
-bornAddress: 来自
-bornAt: 生日
-close: 关闭
-desire: 期望
-edit_event: 编辑事件
-make_public: 公开？
-education: 教育
-experience: 经历
-extraversionIntroversion: 态度
-extroversion: 外向型
-field.address: 地址
-field.avatar_url: 头像
-field.birthplace: 出生地
-field.blurb: 简介
-field.dateOfBirth: 生日
-field.desire: 期望
-field.email: 邮箱
-field.emails: 邮箱
-field.extroversion_introversion.help: 外向型的人偏向专注于外在的人和事，从行动中汲取能量。内向型的人则专注于自己的思想，从反思中获得能量。
-field.extroversion_introversion: 态度
-field.inbound_trust: 入站
-field.intuiting_sensing.help: 实感型的人倾向于相信当前的，明确的，具体的信息。直觉型的人所相信的信息会更少地依赖于感观。
-field.intuiting_sensing: 感知
-field.name: 名字
-field.note_placeholder: 在此输入你的备注...
-field.outbound_trust: 出站
-field.planing_perceiving.help: 感知型的人展示给外界的是他们所偏好的实感或直觉；相反, 计划型的人则倾向于计划或判断。
-field.planing_perceiving: 生活方式
-field.tdp: TDP
-field.thinking_feeling.help: 思考型的人倾向于从一个更独立的立场去决定事物。情感型的人则倾向于根据这些人当前所处的形式或需求来作做决定。
-field.thinking_feeling: 判断
-field.working_on: 从事
-observation.trust.title: 信任
-observation.style.title: 认知学习风格
-home.create_account: 创建账户
-inbound_trust: 入站信任
-interactions: 交互
-personality: 个性
-introversion: 内向型
-intuitingSensing: 感知
-intuiting: 直觉型
-sensing: 实感型
-thinking: 思考型
-feeling: 情感型
-planning: 计划型
-perceiving: 感知型
-creator: 创造者
-refiner: 优化者
+
 advancer: 推进者
-executor: 执行者
-flexor: 协调者
-ipq: IPQ
-knownSource: 通过
-meta.description: 保护隐私的个人关系管理，帮你轻轻松松，搞定人际关系管理
-meta.title: 关系io
-not_found.bar: 未找到
-not_found.info: 我们无法为您找到这个页面...
-not_found.title: 哎呀！
-outbound_trust: 出站信任
-planingPerceiving: 生活方式
-profile.prefill: 填充其他字段
-profile_editor.experience: 经历
-profile_editor.observation: 观察
-profile_editor.pii: 个人
-profile_editor.upload: Click to Upload
-tdp: 团队维度简介
-thinkingFeeling: 判断
-topbar.brand: 关系io
-topbar.contacts: 联系人
-topbar.create: 添加
-topbar.edit: 编辑
-topbar.home: 主页
-topbar.login: 登录
-topbar.sign_up: 注册
-workingOn: 从事
-years_known: 已认识年数
-tos.privacy: 隐私协议
-tos.tos: 服务条款
-social_network: 社交网络
-field.facebook: Facebook
-field.linkedin: Linkedin
-field.github: Github
-source: 来源
-field.known_at: 认识于
-field.known_source: 通过
-field.experience: 经历
-field.education: 教育
-field.jane_doe: 张三
-field.phone: 手机号
-field.error.required.name: 请输入联系人姓名.
-field.error.required: 该字段必填.
-field.error.phone.format: 请输入一个有效的手机号.
-settings.manage_account: 管理账户
-settings.sessions: 会话
-settings.security: 安全
-settings.logout: 退出登录
-settings.dangerZone: 危险区
-settings.deleteAccount: 删除此账户
-settings.deleteAccountDesc: 注意，一旦删除，所有数据将不能恢复。
-settings.modal_title: 确定要删除吗？
-settings.modal_email_input_label: 你的邮箱
-settings.code_verify_prompt: 为了验证，在下面输入：
-settings.modal_email_delete_desc: 我们将会删除你账户的信息，包括笔记，提醒和时间线。
-settings.modal_danger: 这很危险！！！
-settings.forbidden_action: 操作被拒绝
-settings.invalid_code: 输入校验失败
-settings.verification_code: 删除我的账号
-settings.empty_code:  字段不能为空
-home.title: 轻轻松松，搞定人际关系管理
-home.desc:
-  <p>保护隐私的个人关系管理，帮你更智能地打理关系，成为社交达人。</p>
-  <ul><li>端到端加密 - 你的个人身份信息 (PII) 只有你自己才能解密</li></ul>
-  <ul><li>开源与开放 - 听取你的即时反馈，接受全世界的监督</li></ul>
-  <ul><li>只为你而生 - 专注服务个人关系的记录、提醒、咨询</li></ul>
-home.get_started: 注册以构建关系
-home.section1.title: 治关系若烹小鲜
-home.section1.desc:
-  <p>关系就像园艺。你如果勤奋耕耘，它们就会成长；如果不理不睬，它们就会凋零；如果用力过猛，它们则会死去。</p>
-  <p>关系io 帮助你增长社交网络，有条不紊地构建有意义的关系。</p>
-fetch_more: 获取更多
-topbar.search_everything: 搜索联系人...
-field.delete_contact.title: 移除联系人?
-field.delete_contact.content: "你所添加到 ${name} 的几乎所有信息将被删除. 然而，你与此联系人所关联的备注将不会被删，你依然可以在你自己的时间线中找到它们。"
-field.delete_contact.deleted: 删除联系人 ${name}
-field.delete_contact.failed: "删除此用户失败: ${e}"
-field.delete_contact.yes: 是的, 删除联系人
-field.delete_contact.cancel: 取消
-field.delete_contact.error_self: 不能删除你的简介
-field.delete_note.title: 删除此条备注?
-field.delete_note.content: "该备注被删后将无法恢复。"
-field.delete_note.deleted: 删除该备注
-field.delete_note.failed: "删除该备注失败: ${e}"
-field.delete_note.yes: 是的, 删除备注
-field.delete_note.cancel: 取消
-experience.title: 职位
-experience.org: 机构
-edit: 编辑
+
+auth/button_submit: 提交
+
+auth/consent: '通过点击提交，即表示您同意 Beancount.io 的<a href="${tosUrl}">使用条款</a>， 并确认您已读过此<a href="${policyUrl}">隐私协议</a>。'
+
+auth/continue_with_blockstack: 用 Blockstack 登录
+
+auth/email-already-in-use: 邮箱已被占用
+
+auth/forgot_password: 忘记密码
+
+auth/forgot_password.back: ← 返回至登录
+
+auth/forgot_password.desc: 请输入与您账号所关联的邮箱地址，我们将通过邮件发送给您重置密码的链接。
+
+auth/forgot_password.email_content: '嗨，我们收到一个重置您密码的请求。如果您没有发起过这样的请求，请忽略此消息。否则，您可以通过下面的链接来重置您的密码: ${link}。'
+
+auth/forgot_password.email_title: 重置您的密码
+
+auth/forgot_password.email_token_failure: 您重置密码的请求已经过期。请重试。
+
+auth/forgot_password.send: 发送重置链接
+
+auth/forgot_password.sent: '重置您密码的链接已经发送至 ${email} 。'
+
+auth/invalid-email: 邮箱无效
+
+auth/new-password: 新密码
+
+auth/password: 密码
+
+auth/reset_password: 重置密码
+
+auth/reset_password.desc: 您的密码至少需要包含一个特殊符号或数字，并且不能少于 6 个字符。
+
+auth/reset_password.success: 您的密码已经更新。
+
+auth/sign_in.forgot_password: 忘记密码？重置
+
+auth/sign_in.switch_to_sign_up: 没有账号？注册
+
+auth/sign_in.title: 登录
+
+auth/sign_up.switch_to_sign_in: 已有账号？登录
+
+auth/user-disabled: 用户被禁
+
+auth/user-not-found: 用户未找到
+
+auth/weak-password: 请至少使用 6 个字符作为密码
+
+auth/wrong-password: 密码不正确
+
+bornAddress: 来自
+
+bornAt: 生日
+
+close: 关闭
+
+creator: 创造者
+
 delete: 删除
-tag.create_tag:  输入标签
-tag.add_tag:  增加标签
+
+desire: 期望
+
+edit: 编辑
+
+edit_event: 编辑事件
+
+education: 教育
+
+executor: 执行者
+
+experience: 经历
+
+experience.org: 机构
+
+experience.title: 职位
+
+extraversionIntroversion: 态度
+
+extroversion: 外向型
+
+feeling: 情感型
+
+fetch_more: 获取更多
+
+field.address: 地址
+
+field.avatar_url: 头像
+
+field.birthplace: 出生地
+
+field.blurb: 简介
+
+field.dateOfBirth: 生日
+
+field.delete_contact.cancel: 取消
+
+field.delete_contact.content: '你所添加到 ${name} 的几乎所有信息将被删除. 然而，你与此联系人所关联的备注将不会被删，你依然可以在你自己的时间线中找到它们。'
+
+field.delete_contact.deleted: '删除联系人 ${name}'
+
+field.delete_contact.error_self: 不能删除你的简介
+
+field.delete_contact.failed: '删除此用户失败: ${e}'
+
+field.delete_contact.title: 移除联系人?
+
+field.delete_contact.yes: '是的, 删除联系人'
+
+field.delete_note.cancel: 取消
+
+field.delete_note.content: 该备注被删后将无法恢复。
+
+field.delete_note.deleted: 删除该备注
+
+field.delete_note.failed: '删除该备注失败: ${e}'
+
+field.delete_note.title: 删除此条备注?
+
+field.delete_note.yes: '是的, 删除备注'
+
+field.desire: 期望
+
+field.education: 教育
+
+field.email: 邮箱
+
+field.emails: 邮箱
+
+field.error.phone.format: 请输入一个有效的手机号.
+
+field.error.required: 该字段必填.
+
+field.error.required.name: 请输入联系人姓名.
+
+field.experience: 经历
+
+field.extroversion_introversion: 态度
+
+field.extroversion_introversion.help: 外向型的人偏向专注于外在的人和事，从行动中汲取能量。内向型的人则专注于自己的思想，从反思中获得能量。
+
+field.facebook: Facebook
+
+field.github: Github
+
+field.inbound_trust: 入站
+
+field.intuiting_sensing: 感知
+
+field.intuiting_sensing.help: 实感型的人倾向于相信当前的，明确的，具体的信息。直觉型的人所相信的信息会更少地依赖于感观。
+
+field.jane_doe: 张三
+
+field.known_at: 认识于
+
+field.known_source: 通过
+
+field.linkedin: Linkedin
+
+field.name: 名字
+
+field.note_placeholder: 在此输入你的备注...
+
+field.outbound_trust: 出站
+
+field.phone: 手机号
+
+field.planing_perceiving: 生活方式
+
+field.planing_perceiving.help: '感知型的人展示给外界的是他们所偏好的实感或直觉；相反, 计划型的人则倾向于计划或判断。'
+
+field.tdp: TDP
+
+field.thinking_feeling: 判断
+
+field.thinking_feeling.help: 思考型的人倾向于从一个更独立的立场去决定事物。情感型的人则倾向于根据这些人当前所处的形式或需求来作做决定。
+
+field.working_on: 从事
+
+flexor: 协调者
+
+home.create_account: 创建账户
+
+home.desc: <p>保护隐私的个人关系管理，帮你更智能地打理关系，成为社交达人。</p> <ul><li>端到端加密 - 你的个人身份信息 (PII) 只有你自己才能解密</li></ul> <ul><li>开源与开放 - 听取你的即时反馈，接受全世界的监督</li></ul> <ul><li>只为你而生 - 专注服务个人关系的记录、提醒、咨询</li></ul>
+
+home.get_started: 注册以构建关系
+
+home.section1.desc: <p>关系就像园艺。你如果勤奋耕耘，它们就会成长；如果不理不睬，它们就会凋零；如果用力过猛，它们则会死去。</p> <p>关系io 帮助你增长社交网络，有条不紊地构建有意义的关系。</p>
+
+home.section1.title: 治关系若烹小鲜
+
+home.title: 轻轻松松，搞定人际关系管理
+
+inbound_trust: 入站信任
+
+interactions: 交互
+
+introversion: 内向型
+
+intuiting: 直觉型
+
+intuitingSensing: 感知
+
+ipq: IPQ
+
+knownSource: 通过
+
+make_public: 公开？
+
+meta.description: 保护隐私的个人关系管理，帮你轻轻松松，搞定人际关系管理
+
+meta.title: 关系io
+
+not_found.bar: 未找到
+
+not_found.info: 我们无法为您找到这个页面...
+
+not_found.title: 哎呀！
+
+observation.style.title: 认知学习风格
+
+observation.trust.title: 信任
+
+outbound_trust: 出站信任
+
+perceiving: 感知型
+
+personality: 个性
+
+planingPerceiving: 生活方式
+
+planning: 计划型
+
+profile.prefill: 填充其他字段
+
+profile_editor.experience: 经历
+
+profile_editor.observation: 观察
+
+profile_editor.pii: 个人
+
+profile_editor.upload: Click to Upload
+
+refiner: 优化者
+
+sensing: 实感型
+
+settings.code_verify_prompt: 为了验证，在下面输入：
+
+settings.dangerZone: 危险区
+
+settings.deleteAccount: 删除此账户
+
+settings.deleteAccountDesc: 注意，一旦删除，所有数据将不能恢复。
+
+settings.empty_code: 字段不能为空
+
+settings.forbidden_action: 操作被拒绝
+
+settings.invalid_code: 输入校验失败
+
+settings.logout: 退出登录
+
+settings.manage_account: 管理账户
+
+settings.modal_danger: 这很危险！！！
+
+settings.modal_email_delete_desc: 我们将会删除你账户的信息，包括笔记，提醒和时间线。
+
+settings.modal_email_input_label: 你的邮箱
+
+settings.modal_title: 确定要删除吗？
+
+settings.security: 安全
+
+settings.sessions: 会话
+
+settings.verification_code: 删除我的账号
+
+social_network: 社交网络
+
+source: 来源
+
+tag.add_tag: 增加标签
+
+tag.create_tag: 输入标签
+
 tag.delete: 删除标签
+
 tag.delete_confirm: 确定要删除这个标签吗？
-tag.delete_confirm.ok:  确认删除
-tag.delete_confirm.cancel:  取消
+
+tag.delete_confirm.cancel: 取消
+
+tag.delete_confirm.ok: 确认删除
+
+tdp: 团队维度简介
+
+thinking: 思考型
+
+thinkingFeeling: 判断
+
+topbar.brand: 关系io
+
+topbar.contacts: 联系人
+
+topbar.create: 添加
+
+topbar.edit: 编辑
+
+topbar.home: 主页
+
+topbar.login: 登录
+
+topbar.search_everything: 搜索联系人...
+
+topbar.sign_up: 注册
+
+tos.privacy: 隐私协议
+
+tos.tos: 服务条款
+
+workingOn: 从事
+
+years_known: 已认识年数
+

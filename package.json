@@ -18,7 +18,8 @@
     "size": "ls -lh dist/",
     "bp": "npm run build-production && npm run size",
     "kill": "lsof -n -i4TCP:4103 | grep LISTEN | awk '{ print $2 }' | xargs kill",
-    "doc": "graphdoc --config ./package.json --force"
+    "doc": "graphdoc --config ./package.json --force",
+    "format-i18n": "onefx-format-translations translations"
   },
   "graphdoc": {
     "ga": "UA-XXXXXXXX",
