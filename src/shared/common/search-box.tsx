@@ -27,6 +27,7 @@ type ISearchResult = {
 
 type State = {
   searchResults: Array<ISearchResult>;
+  inputValue: string;
 };
 
 type Props = RouterProps;
@@ -35,7 +36,8 @@ export const SearchBox = withRouter(
   // @ts-ignore
   class SearchBoxInner extends Component<Props> {
     public state: State = {
-      searchResults: []
+      searchResults: [],
+      inputValue: ""
     };
 
     private listener: any;
@@ -49,11 +51,12 @@ export const SearchBox = withRouter(
         },
         query: SEARCH
       });
-      this.setState({ searchResults: data.search });
+      this.setState({ searchResults: data.search, inputValue: inputText });
     };
 
-    public handleSelect = (value: any) => {
+    public handleSelect = (value: any, option: any) => {
       this.props.history.push(value);
+      this.setState({ inputValue: option.children });
     };
 
     public inputRef: any;
@@ -106,6 +109,7 @@ export const SearchBox = withRouter(
             placeholder={t("topbar.search_everything")}
             onSearch={this.handleSearch}
             onSelect={this.handleSelect}
+            value={this.state.inputValue}
           >
             <Input
               ref={ref => (this.inputRef = ref)}
