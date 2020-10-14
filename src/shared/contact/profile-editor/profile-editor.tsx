@@ -337,6 +337,7 @@ class PersonalForm extends Component<
         <SourceForm />
         {human._id && (
           <DeleteContactPopover
+            // @ts-ignore
             name={human.name}
             contactId={String(human._id)}
           />

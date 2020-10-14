@@ -158,7 +158,7 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
               <InputLabel>{t("auth/new-password")}</InputLabel>
               <TextInput
                 defaultValue={valueNewPassword}
-                error={errorNewPassword}
+                error={!!errorNewPassword}
                 type="password"
                 aria-label="New Password"
                 name="newPassword"

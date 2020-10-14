@@ -14,7 +14,7 @@
     "build-static-html": "NODE_ENV=production ts-node ./src/server/generate-static-html.ts",
     "lint": "git add . && pretty-quick --staged && tslint --fix --project tsconfig.json -t stylish",
     "postinstall": "npm run bp && npm run doc",
-    "cover": "NODE_ENV=test tsc && nyc npm run ava",
+    "cover": "NODE_ENV=test tsc -p tsconfig.json && nyc npm run ava",
     "size": "ls -lh dist/",
     "bp": "npm run build-production && npm run size",
     "kill": "lsof -n -i4TCP:4103 | grep LISTEN | awk '{ print $2 }' | xargs kill",
