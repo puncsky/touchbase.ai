@@ -19,6 +19,13 @@ export type MyServer = Server & {
       mongoose: {
         uri: string;
       };
+      fullContactApiKey: string;
+      webPush: {
+        gcmApiKey: string;
+        mailto: string;
+        publicKey: string;
+        privateKey: string;
+      };
     };
   };
 };

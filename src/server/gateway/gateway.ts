@@ -1,4 +1,3 @@
-import config from "config";
 import mongoose from "mongoose";
 import { MyServer } from "../start-server";
 import { Fullcontact } from "./fullcontact";
@@ -26,8 +25,8 @@ export async function setGateways(server: MyServer): Promise<void> {
   }
   server.gateways.mongoose = mongoose;
   server.gateways.fullcontact = new Fullcontact(
-    config.get("gateways.fullContactApiKey")
+    server.config.gateways.fullContactApiKey
   );
 
-  server.gateways.webPush = new WebPush(config.get("gateways.webPush"));
+  server.gateways.webPush = new WebPush(server.config.gateways.webPush);
 }
