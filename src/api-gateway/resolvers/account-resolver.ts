@@ -57,9 +57,8 @@ export class AccountResolver {
         auth.user.deleteById(userId)
       ]);
       return Boolean(true);
-    } else {
-      return Boolean(false);
     }
+    return Boolean(false);
   }
 
   @Authorized()

@@ -9,8 +9,8 @@ import { configureStore } from "onefx/lib/iso-react-render/root/configure-store"
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import { RootServer } from "onefx/lib/iso-react-render/root/root-server";
 import React from "react";
-import { ApolloProvider } from "react-apollo";
-import { getDataFromTree } from "react-apollo";
+import { ApolloProvider, getDataFromTree } from "react-apollo";
+
 // @ts-ignore
 import * as engine from "styletron-engine-atomic";
 import { MyContext } from "../../types/global";

@@ -18,17 +18,22 @@ import { getExpireEpochDays } from "./utils/expire-epoch";
 
 export class OnefxAuth {
   public config: AuthConfig;
+
   public server: Server;
+
   public user: UserModel;
+
   public jwt: JwtModel;
+
   public emailToken: EmailTokenModel;
+
   public mailgun: Mailgun;
 
   constructor(server: MyServer, config: AuthConfig) {
     this.config = config || authConfig;
     this.server = server;
     // @ts-ignore
-    const mongoose = server.gateways.mongoose;
+    const { mongoose } = server.gateways;
     this.user = new UserModel({ mongoose });
     this.jwt = new JwtModel({
       mongoose,
@@ -49,7 +54,7 @@ export class OnefxAuth {
   public async sendResetPasswordLink(
     userId: string,
     email: string,
-    t: Function,
+    t: (a: string) => string,
     origin: string
   ): Promise<void> {
     const { token } = await this.emailToken.newAndSave(userId);
@@ -76,7 +81,7 @@ export class OnefxAuth {
 
   public authRequired = async (ctx: MyContext, next: Function) => {
     await this.authOptionalContinue(ctx, () => undefined);
-    const userId = ctx.state.userId;
+    const { userId } = ctx.state;
     if (!userId) {
       logger.debug("user is not authenticated but auth is required");
       return ctx.redirect(
@@ -108,7 +113,7 @@ export class OnefxAuth {
     ctx.redirect(allowedLogoutNext(ctx.query.next));
   };
 
-  public postAuthentication = async (ctx: MyContext, _: Function) => {
+  public postAuthentication = async (ctx: MyContext) => {
     if (!ctx.state.userId) {
       return;
     }
@@ -122,7 +127,7 @@ export class OnefxAuth {
       ctx.query.next || (ctx.request.body && ctx.request.body.next)
     );
     if (ctx.is("json")) {
-      const isMobileWebView = ctx.session.isMobileWebView;
+      const { isMobileWebView } = ctx.session;
       ctx.body = {
         shouldRedirect: true,
         ok: true,

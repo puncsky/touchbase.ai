@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { TPushToken } from "../types/push-token";
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 const PushTokenSchema = new Schema({
   // basic profile
   ownerId: { type: "ObjectId", ref: "User", unique: true },

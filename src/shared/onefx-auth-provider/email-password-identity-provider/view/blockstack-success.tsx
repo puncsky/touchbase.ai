@@ -16,7 +16,7 @@ export class BlockstackSuccess extends PureComponent {
         if (userSession.isSignInPending()) {
           userData = await userSession.handlePendingSignIn();
         }
-      } catch (e) {
+      } catch (error) {
         window.location.href = "/login/";
       }
     }
@@ -31,7 +31,7 @@ export class BlockstackSuccess extends PureComponent {
       next: "/"
     });
     if (data.ok && data.shouldRedirect && !data.authToken) {
-      return (window.location.href = data.next);
+      window.location.href = data.next;
     }
   }
 

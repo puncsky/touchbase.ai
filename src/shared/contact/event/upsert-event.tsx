@@ -46,6 +46,7 @@ export const UpsertEventContainer = connect(
   // @ts-ignore
   class Edit extends Component<Props, State> {
     public props: Props;
+
     public getSimpleMde: any = null;
 
     public state: State = {

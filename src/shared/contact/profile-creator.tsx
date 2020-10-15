@@ -71,7 +71,9 @@ export const ProfileCreatorContainer = withRouter(
   )(
     class ProfileCreator extends Component<Props, State> {
       public props: Props;
+
       public state: State = { visible: false };
+
       public ref: any;
 
       formRef: React.RefObject<FormInstance> = React.createRef<FormInstance>();

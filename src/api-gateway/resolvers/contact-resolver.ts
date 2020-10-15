@@ -34,62 +34,89 @@ class CreateContactInput implements TContact2 {
 
   @Field(_ => String, { nullable: true })
   public emails: Array<string>;
+
   @Field(_ => String, { nullable: true })
   public name: string;
+
   @Field(_ => String, { nullable: true })
   public phones: Array<string>;
+
   @Field(_ => String, { nullable: true })
   public avatarUrl: string;
+
   @Field(_ => String, { nullable: true })
   public address: string;
+
   @Field(_ => String, { nullable: true })
   public bornAt: string;
+
   @Field(_ => String, { nullable: true })
   public bornAddress: string;
+
   @Field(_ => Date, { nullable: true })
   public knownAt: Date;
+
   @Field(_ => String, { nullable: true })
   public knownSource: string;
+
   @Field(_ => String, { nullable: true })
   public extraversionIntroversion:
     | ""
     | "introversion"
     | "extroversion"
     | "ambiversion";
+
   @Field(_ => String, { nullable: true })
   public intuitingSensing: "" | "intuiting" | "sensing";
+
   @Field(_ => String, { nullable: true })
   public thinkingFeeling: "" | "thinking" | "feeling";
+
   @Field(_ => String, { nullable: true })
   public planingPerceiving: "" | "planing" | "perceiving";
+
   @Field(_ => String, { nullable: true })
   public tdp: "" | "creator" | "refiner" | "advancer" | "executor" | "flexor";
+
   @Field(_ => Number, { nullable: true })
   public inboundTrust: number;
+
   @Field(_ => Number, { nullable: true })
   public outboundTrust: number;
+
   @Field(_ => String, { nullable: true })
   public blurb: string;
+
   @Field(_ => String, { nullable: true })
   public workingOn: string;
+
   @Field(_ => String, { nullable: true })
   public desire: string;
+
   @Field(_ => String, { nullable: true })
   public title: string;
+
   @Field(_ => [ExperienceInput], { nullable: true })
   public experience: [ExperienceInput];
+
   @Field(_ => [ExperienceInput], { nullable: true })
   public education: [ExperienceInput];
+
   @Field(_ => String, { nullable: true })
   public linkedin: string;
+
   @Field(_ => String, { nullable: true })
   public facebook: string;
+
   @Field(_ => String, { nullable: true })
   public github: string;
+
   @Field(_ => [String], { nullable: true })
   hmacs: Array<string>;
+
   @Field(_ => Date, { nullable: true })
   public createAt?: Date;
+
   @Field(_ => Date, { nullable: true })
   public updateAt?: Date;
 }
@@ -101,62 +128,89 @@ class UpdateContactInput implements TContact2 {
 
   @Field(_ => String, { nullable: true })
   public emails: Array<string>;
+
   @Field(_ => String, { nullable: true })
   public name: string;
+
   @Field(_ => String, { nullable: true })
   public phones: Array<string>;
+
   @Field(_ => String, { nullable: true })
   public avatarUrl: string;
+
   @Field(_ => String, { nullable: true })
   public address: string;
+
   @Field(_ => String, { nullable: true })
   public bornAt: string;
+
   @Field(_ => String, { nullable: true })
   public bornAddress: string;
+
   @Field(_ => Date, { nullable: true })
   public knownAt: Date;
+
   @Field(_ => String, { nullable: true })
   public knownSource: string;
+
   @Field(_ => String, { nullable: true })
   public extraversionIntroversion:
     | ""
     | "introversion"
     | "extroversion"
     | "ambiversion";
+
   @Field(_ => String, { nullable: true })
   public intuitingSensing: "" | "intuiting" | "sensing";
+
   @Field(_ => String, { nullable: true })
   public thinkingFeeling: "" | "thinking" | "feeling";
+
   @Field(_ => String, { nullable: true })
   public planingPerceiving: "" | "planing" | "perceiving";
+
   @Field(_ => String, { nullable: true })
   public tdp: "" | "creator" | "refiner" | "advancer" | "executor" | "flexor";
+
   @Field(_ => Number, { nullable: true })
   public inboundTrust: number;
+
   @Field(_ => Number, { nullable: true })
   public outboundTrust: number;
+
   @Field(_ => String, { nullable: true })
   public blurb: string;
+
   @Field(_ => String, { nullable: true })
   public workingOn: string;
+
   @Field(_ => String, { nullable: true })
   public desire: string;
+
   @Field(_ => String, { nullable: true })
   public title: string;
+
   @Field(_ => [ExperienceInput])
   public experience: [ExperienceInput];
+
   @Field(_ => [ExperienceInput])
   public education: [ExperienceInput];
+
   @Field(_ => String, { nullable: true })
   public linkedin: string;
+
   @Field(_ => String, { nullable: true })
   public facebook: string;
+
   @Field(_ => String, { nullable: true })
   public github: string;
+
   @Field(_ => [String], { nullable: true })
   hmacs: Array<string>;
+
   @Field(_ => Date, { nullable: true })
   public createAt?: Date;
+
   @Field(_ => Date, { nullable: true })
   public updateAt?: Date;
 }
@@ -169,60 +223,86 @@ class Contact implements TContact2 {
 
   @Field(_ => String, { nullable: true })
   public emails: Array<string>;
+
   @Field(_ => String, { nullable: true })
   public name: string;
+
   @Field(_ => String, { nullable: true })
   public phones: Array<string>;
+
   @Field(_ => String, { nullable: true })
   public avatarUrl: string;
+
   @Field(_ => String, { nullable: true })
   public address: string;
+
   @Field(_ => String, { nullable: true })
   public bornAt: string;
+
   @Field(_ => String, { nullable: true })
   public bornAddress: string;
+
   @Field(_ => Date, { nullable: true })
   public knownAt: Date;
+
   @Field(_ => String, { nullable: true })
   public knownSource: string;
+
   @Field(_ => String, { nullable: true })
   public extraversionIntroversion:
     | ""
     | "introversion"
     | "extroversion"
     | "ambiversion";
+
   @Field(_ => String, { nullable: true })
   public intuitingSensing: "" | "intuiting" | "sensing";
+
   @Field(_ => String, { nullable: true })
   public thinkingFeeling: "" | "thinking" | "feeling";
+
   @Field(_ => String, { nullable: true })
   public planingPerceiving: "" | "planing" | "perceiving";
+
   @Field(_ => String, { nullable: true })
   public tdp: "" | "creator" | "refiner" | "advancer" | "executor" | "flexor";
+
   @Field(_ => Number, { nullable: true })
   public inboundTrust: number;
+
   @Field(_ => Number, { nullable: true })
   public outboundTrust: number;
+
   @Field(_ => String, { nullable: true })
   public blurb: string;
+
   @Field(_ => String, { nullable: true })
   public workingOn: string;
+
   @Field(_ => String, { nullable: true })
   public desire: string;
+
   @Field(_ => String, { nullable: true })
   public title: string;
+
   @Field(_ => [Experience])
   public experience: [Experience];
+
   @Field(_ => [Experience])
   public education: [Experience];
+
   @Field(_ => String, { nullable: true })
   public linkedin: string;
+
   @Field(_ => String, { nullable: true })
   public facebook: string;
+
   @Field(_ => String, { nullable: true })
   public github: string;
+
   @Field(_ => Date, { nullable: true })
   public createAt?: Date;
+
   @Field(_ => Date, { nullable: true })
   public updateAt?: Date;
 }
@@ -231,6 +311,7 @@ class Contact implements TContact2 {
 class Experience {
   @Field(_ => String, { nullable: true })
   public title: string;
+
   @Field(_ => String, { nullable: true })
   public name: string;
 }
@@ -239,6 +320,7 @@ class Experience {
 class ExperienceInput {
   @Field(_ => String, { nullable: true })
   public title: string;
+
   @Field(_ => String, { nullable: true })
   public name: string;
 }
@@ -247,12 +329,16 @@ class ExperienceInput {
 class Interaction implements TInteraction {
   @Field(_ => String)
   public id: string;
+
   @Field(_ => Date)
   public timestamp: Date;
+
   @Field(_ => String)
   public content: string;
+
   @Field(_ => [String])
   public relatedHumans: Array<string>;
+
   @Field(_ => Boolean, { nullable: true })
   public public?: boolean;
 }
@@ -261,12 +347,16 @@ class Interaction implements TInteraction {
 class UpsertInteraction implements TInteraction {
   @Field(_ => String)
   public id: string;
+
   @Field(_ => Date)
   public timestamp: Date;
+
   @Field(_ => String)
   public content: string;
+
   @Field(_ => [String])
   public relatedHumans: Array<string>;
+
   @Field(_ => Boolean, { nullable: true })
   public public: boolean;
 }
@@ -296,6 +386,7 @@ class GetNote {
 class SearchRequest {
   @Field(_ => String)
   public name: string;
+
   @Field(_ => [String], { nullable: true })
   hmacs: Array<string>;
 }
@@ -313,6 +404,7 @@ class InteractionCountsRequest {
 class InteractionCount {
   @Field(_ => String)
   public date: string;
+
   @Field(_ => Number)
   public count: number;
 }
@@ -321,6 +413,7 @@ class InteractionCount {
 class InteractionConnection {
   @Field(_ => [Interaction])
   public interactions: Array<Interaction>;
+
   @Field(_ => Number)
   public count: number;
 }
@@ -338,8 +431,10 @@ class ContactsRequest {
 class ContactRequest {
   @Field(_ => String, { nullable: true })
   public id?: string;
+
   @Field(_ => String, { nullable: true })
   public userId?: string;
+
   @Field(_ => Boolean, { nullable: true })
   public isSelf: boolean;
 }
@@ -425,7 +520,7 @@ export class ContactResolver {
   public async deleteNote(
     @Arg("deleteNoteInput") deleteNoteInput: DeleteNoteInput,
     @Ctx() { model, userId }: Context
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     if (!userId) {
       throw new AuthenticationError(`please login to deleteNoteInput`);
     }
@@ -535,7 +630,7 @@ export class ContactResolver {
   public async deleteContact(
     @Arg("deleteContactInput") deleteContactInput: DeleteContactInput,
     @Ctx() { model, userId, auth, ctx }: Context
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     if (!userId) {
       throw new AuthenticationError(`please login to deleteContactInput`);
     }

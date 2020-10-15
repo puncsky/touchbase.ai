@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { TTask } from "../types/task";
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 const TaskSchema = new Schema({
   // basic profile
   title: { type: String },
@@ -75,7 +75,7 @@ export class TaskModel {
     );
   }
 
-  public async deleteTask(id: string, userId: string): Promise<Boolean> {
+  public async deleteTask(id: string, userId: string): Promise<boolean> {
     const resp = await this.Model.deleteOne({
       _id: id,
       ownerId: userId

@@ -17,6 +17,7 @@ import { Context } from "../api-gateway";
 class CreateTagTemplateInput {
   @Field(_ => String)
   public name: string;
+
   @Field(_ => Boolean)
   public hasRate: boolean;
 }
@@ -25,8 +26,10 @@ class CreateTagTemplateInput {
 class CreateTagInput {
   @Field(_ => String)
   public templateId: string;
+
   @Field(_ => String)
   public contactId: string;
+
   @Field(_ => Number)
   public rate: number;
 }
@@ -47,6 +50,7 @@ class DeleteTagTemplateInput {
 class RateTagInput {
   @Field(_ => String)
   id: string;
+
   @Field(_ => Number)
   rate: number;
 }
@@ -61,14 +65,19 @@ class GetContactTags {
 class TagTemplate implements TTagTemplate {
   @Field(_ => String)
   public id?: string;
+
   @Field(_ => String)
   public name: string;
+
   @Field(_ => String)
   public ownerId: string;
+
   @Field(_ => Boolean)
   hasRate: boolean;
+
   @Field(_ => Date)
   createAt?: Date;
+
   @Field(_ => Date)
   updateAt?: Date;
 }
@@ -77,20 +86,28 @@ class TagTemplate implements TTagTemplate {
 class ContactTag implements TTag {
   @Field(_ => String)
   public id?: string;
+
   @Field(_ => String)
   public name: string;
+
   @Field(_ => String)
   public templateId: string;
+
   @Field(_ => String)
   public ownerId: string;
+
   @Field(_ => Number)
   public rate: number;
+
   @Field(_ => String)
   public contactId: string;
+
   @Field(_ => Boolean)
   public hasRate: boolean;
+
   @Field(_ => Date)
   createAt?: Date;
+
   @Field(_ => Date)
   updateAt?: Date;
 }
@@ -137,11 +154,11 @@ export class TagResolver {
   public async deleteTag(
     @Arg("deleteTagInput") deleteTagInput: DeleteTagInput,
     @Ctx() { model, userId }: Context
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     if (!userId) {
       throw new AuthenticationError(`please login to deleteTag`);
     }
-    const id = deleteTagInput.id;
+    const { id } = deleteTagInput;
     return model.tag.deleteTag(id);
   }
 
@@ -150,7 +167,7 @@ export class TagResolver {
     @Arg("deleteTagTemplateInput")
     deleteTagTemplateInput: DeleteTagTemplateInput,
     @Ctx() { model, userId }: Context
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     if (!userId) {
       throw new AuthenticationError(`please login deleteTagTemplate`);
     }

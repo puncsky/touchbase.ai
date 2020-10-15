@@ -97,7 +97,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     }
   );
   server.get("reset-password", "/reset-password/*", async (ctx: MyContext) => {
-    const token = ctx.query.token;
+    const { token } = ctx.query;
     const found = await server.auth.emailToken.findOne(token);
     ctx.setState("base.token", found && found.token);
     return isoRender(ctx);
@@ -153,7 +153,6 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
               message: ctx.t("auth/email-already-in-use")
             }
           };
-          return;
         }
       }
     },

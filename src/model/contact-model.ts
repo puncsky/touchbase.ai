@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { TContact } from "../types/contact";
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 const ContactSchema = new Schema({
   ownerId: { type: "ObjectId", ref: "User" },
 
@@ -180,7 +180,7 @@ export class ContactModel {
   }: {
     _id: string;
     ownerId: string;
-  }): Promise<Boolean> {
+  }): Promise<boolean> {
     const resp = await this.Model.deleteOne({ _id, ownerId });
     return Boolean(resp && resp.ok);
   }
@@ -189,7 +189,7 @@ export class ContactModel {
     ownerId
   }: {
     ownerId: string;
-  }): Promise<Boolean> {
+  }): Promise<boolean> {
     const resp = await this.Model.deleteMany({ ownerId });
     return Boolean(resp && resp.ok);
   }

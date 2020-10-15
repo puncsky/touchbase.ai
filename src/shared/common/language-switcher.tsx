@@ -1,7 +1,7 @@
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import { Component, FormEvent } from "react";
-import React from "react";
+import React, { Component, FormEvent } from "react";
+
 import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { Fa } from "./fa";
@@ -52,7 +52,7 @@ class LanguageSwitcher extends Component<{}, State> {
 
   public googleTranslateElementInit = () => {
     // @ts-ignore
-    const google = window.google;
+    const { google } = window;
     if (google) {
       return new google.translate.TranslateElement(
         { autoDisplay: false },
@@ -120,7 +120,7 @@ class LanguageSwitcher extends Component<{}, State> {
       <Wrapper>
         <div>
           {/*
-          // @ts-ignore*/}
+          // @ts-ignore */}
           <LanguageSwitchButton
             onclick={() =>
               this.setState({

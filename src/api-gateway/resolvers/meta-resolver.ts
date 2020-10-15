@@ -5,10 +5,13 @@ import { Context } from "../api-gateway";
 class FullContactReqeust {
   @Field(_ => String, { nullable: true })
   email: string;
+
   @Field(_ => String, { nullable: true })
   emailHash: string;
+
   @Field(_ => String, { nullable: true })
   twitter: string;
+
   @Field(_ => String, { nullable: true })
   phone: string;
 }

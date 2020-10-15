@@ -1,9 +1,8 @@
-import { TPersonalNote } from "../types/contact";
-
 import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
+import { TPersonalNote } from "../types/contact";
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 type TPersonalNoteDoc = mongoose.Document &
   TPersonalNote & {
@@ -179,7 +178,7 @@ export class PersonalNoteModel {
   }: {
     _id: string;
     ownerId: string;
-  }): Promise<Boolean> {
+  }): Promise<boolean> {
     const resp = await this.Model.deleteOne({ _id, ownerId });
     return Boolean(resp && resp.ok);
   }
@@ -188,7 +187,7 @@ export class PersonalNoteModel {
     ownerId
   }: {
     ownerId: string;
-  }): Promise<Boolean> {
+  }): Promise<boolean> {
     const resp = await this.Model.deleteMany({ ownerId });
     return Boolean(resp && resp.ok);
   }

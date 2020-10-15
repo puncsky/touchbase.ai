@@ -7,26 +7,37 @@ const SourceUrl = "https://tianpan.co/cms/guanxi-io-zh-cn/?";
 class PlayBook {
   @Field(() => String)
   id: string;
+
   @Field(() => String)
   url: string;
+
   @Field(() => Boolean)
   isFave: boolean;
+
   @Field(() => String)
   description: string;
+
   @Field(() => String)
   title: string;
+
   @Field(() => String)
   content: string;
+
   @Field(() => String)
   forwardedFor: string;
+
   @Field(() => Date)
   date: Date;
+
   @Field(() => Number)
   visitorCount: number;
+
   @Field(() => [String])
-  tags: Array<String>;
+  tags: Array<string>;
+
   @Field(() => String)
   contentHTML: string;
+
   @Field(() => String)
   language: string;
 }
@@ -35,10 +46,13 @@ class PlayBook {
 class PlaybookArticlesRequest {
   @Field(() => Number)
   skip: number;
+
   @Field(() => Number)
   limit: number;
+
   @Field(() => String, { nullable: true })
   tag: string;
+
   @Field(() => String, { nullable: true })
   locale: string;
 }

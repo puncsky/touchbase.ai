@@ -2,7 +2,7 @@ import { MyContext } from "../../types/global";
 
 export async function humanValidator(
   ctx: MyContext,
-  next: Function
+  next: () => unknown
 ): Promise<void> {
   ctx.request.body = {
     ...ctx.request.body,

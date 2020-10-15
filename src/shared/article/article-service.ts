@@ -15,7 +15,9 @@ type GetArticlesByRangeResponse = {
 
 export class ArticleService {
   public snippets: Array<Snippet>;
+
   public postsByIds: PostsByIds;
+
   public mdContentsByIds: MdContentsByIds;
 
   constructor(dir: string) {

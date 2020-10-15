@@ -13,7 +13,9 @@ type Props = {
 
 export class MdEditor extends Component<Props> {
   public simplemde: any = null;
+
   public props: Props;
+
   public ref: any;
 
   public componentDidMount(): void {

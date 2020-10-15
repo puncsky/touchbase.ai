@@ -17,7 +17,7 @@ export const ContinueWithBlockstack = connect(
         <Button
           // @ts-ignore
           type="secondary"
-          size={"large"}
+          size="large"
           onClick={() => {
             blockstack.redirectToSignIn(`${origin}/login/blockstack-success`);
           }}

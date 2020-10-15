@@ -1,7 +1,7 @@
 import { t } from "onefx/lib/iso-i18n";
 import * as React from "react";
-import { Route, RouteComponentProps } from "react-router";
-import router from "react-router";
+import router, { Route, RouteComponentProps } from "react-router";
+
 import { ErrorPage } from "./error-page";
 
 export function NotFound(): JSX.Element {

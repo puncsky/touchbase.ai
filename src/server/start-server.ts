@@ -1,8 +1,8 @@
 /* tslint:disable:no-any */
 import config from "config";
 import { Config, Server } from "onefx/lib/server";
-import { setModel } from "../model";
-import { Model } from "../model";
+import { setModel, Model } from "../model";
+
 import { OnefxAuth } from "../shared/onefx-auth";
 import { authConfig } from "../shared/onefx-auth/auth-config";
 import { Gateways, setGateways } from "./gateway/gateway";

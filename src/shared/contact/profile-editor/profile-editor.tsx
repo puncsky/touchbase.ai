@@ -39,7 +39,7 @@ import DynamicFormItems from "./dynamic-form-items";
 import { ExperienceForm } from "./experience-form";
 import { ObservationForm } from "./observation-form";
 
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 
 export const formItemLayout = {
   labelCol: {
@@ -73,9 +73,11 @@ type State = { visible: boolean };
 )
 class ProfileEditorContainer extends Component<Props, State> {
   public props: Props;
+
   public state: State = {
     visible: false
   };
+
   public ref: any;
 
   formRef: React.RefObject<FormInstance> = React.createRef<FormInstance>();
@@ -239,9 +241,8 @@ class PersonalForm extends Component<
             getValueFromEvent={event => {
               if (event.value === `+${event.callingCode}`) {
                 return "";
-              } else {
-                return event.value;
               }
+              return event.value;
             }}
             noStyle
           >

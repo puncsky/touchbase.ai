@@ -18,6 +18,7 @@ type Mail = {
 
 export class Mailgun {
   public opts: MailgunOpts;
+
   public transporter: mailer.Transporter;
 
   constructor(opts: MailgunOpts) {
@@ -33,12 +34,13 @@ export class Mailgun {
   }
 
   public async sendMail(data: Mail): Promise<void> {
-    for (let i = this.opts.retryLimit; i > 0; i--) {
+    for (let i = this.opts.retryLimit; i > 0; i -= 1) {
       try {
         return await this.transporter.sendMail(data);
       } catch (e) {
         logger.error(`failed to Mailgun.sendMail: ${e}`);
       }
     }
+    return undefined;
   }
 }

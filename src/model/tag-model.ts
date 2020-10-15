@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { TTag, TTagTemplate } from "../types/tag";
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 const TagTemplateSchema = new Schema({
   name: { type: String },
@@ -38,6 +38,7 @@ type TTagTemplateDoc = mongoose.Document &
 
 export class TagModel {
   public TagModel: mongoose.Model<TTagDoc>;
+
   public TagTemplateModel: mongoose.Model<TTagTemplateDoc>;
 
   constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
@@ -78,12 +79,12 @@ export class TagModel {
     return this.TagModel.find({ contactId });
   }
 
-  public async deleteTag(id: string): Promise<Boolean> {
+  public async deleteTag(id: string): Promise<boolean> {
     const resp = await this.TagModel.deleteOne({ _id: id });
     return Boolean(resp && resp.ok);
   }
 
-  public async deleteTemplate(id: string): Promise<Boolean> {
+  public async deleteTemplate(id: string): Promise<boolean> {
     const resp = await this.TagTemplateModel.deleteOne({ _id: id });
     return Boolean(resp && resp.ok);
   }

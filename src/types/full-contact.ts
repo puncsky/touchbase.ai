@@ -41,7 +41,7 @@ export type TFullContact = {
       label: string;
       value: string;
     }>;
-    profiles: {};
+    profiles: unknown;
     employment: Array<{
       name: string;
       title: string;
