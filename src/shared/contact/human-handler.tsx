@@ -54,6 +54,7 @@ export function setHumanHandlers(server: MyServer): void {
         );
       }
       ctx.redirect(`/${selfProfile._id}/`);
+      return undefined;
     }
   );
   server.get(

@@ -4,6 +4,22 @@ import router, { Route, RouteComponentProps } from "react-router";
 
 import { ErrorPage } from "./error-page";
 
+const Status = ({ code, children }: Props): JSX.Element => (
+  <Route
+    render={({
+      staticContext
+    }: RouteComponentProps<
+      Record<string, undefined>,
+      router.StaticContext
+    >) => {
+      if (staticContext) {
+        staticContext.statusCode = code;
+      }
+      return children;
+    }}
+  />
+);
+
 export function NotFound(): JSX.Element {
   return (
     <Status code={404}>
@@ -20,16 +36,3 @@ type Props = {
   code: number;
   children: Array<JSX.Element> | JSX.Element;
 };
-
-const Status = ({ code, children }: Props): JSX.Element => (
-  <Route
-    render={({
-      staticContext
-    }: RouteComponentProps<{}, router.StaticContext>) => {
-      if (staticContext) {
-        staticContext.statusCode = code;
-      }
-      return children;
-    }}
-  />
-);

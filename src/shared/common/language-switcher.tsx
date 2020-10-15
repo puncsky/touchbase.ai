@@ -23,7 +23,7 @@ type State = {
   displayTranslationMenu: boolean;
 };
 
-class LanguageSwitcher extends Component<{}, State> {
+class LanguageSwitcher extends Component<Record<string, undefined>, State> {
   public state: State = {
     displayTranslationMenu: false
   };
@@ -122,7 +122,7 @@ class LanguageSwitcher extends Component<{}, State> {
           {/*
           // @ts-ignore */}
           <LanguageSwitchButton
-            onclick={() =>
+            onClick={() =>
               this.setState({
                 displayTranslationMenu: !this.state.displayTranslationMenu
               })

@@ -14,7 +14,7 @@ type TPersonalNoteDoc = mongoose.Document &
 export class PersonalNoteModel {
   public Model: mongoose.Model<TPersonalNoteDoc>;
 
-  constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
+  constructor({ mongoose: instance }: { mongoose: mongoose.Mongoose }) {
     const schema = new Schema({
       ownerId: { type: "ObjectId", ref: "User" },
       relatedHumans: [{ type: "ObjectId", ref: "Contact" }],
@@ -31,18 +31,18 @@ export class PersonalNoteModel {
     schema.index({ ownerId: 1 });
     schema.index({ relatedHumans: 1 });
 
-    schema.pre("save", function onSave(next: Function): void {
+    schema.pre("save", function onSave(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    schema.pre("find", function onFind(next: Function): void {
+    schema.pre("find", function onFind(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = mongoose.model("personal_note", schema);
+    this.Model = instance.model("personal_note", schema);
   }
 
   public async getById(id: string): Promise<TPersonalNoteDoc | null> {
@@ -53,7 +53,7 @@ export class PersonalNoteModel {
     ownerId: string,
     id: string | null
   ): Promise<Array<{ date: string; count: number }>> {
-    const match: any = { ownerId };
+    const match: Record<string, unknown> = { ownerId };
     if (id) {
       match.relatedHumans = new ObjectId(id);
     }

@@ -5,4 +5,4 @@ type ReduxState = {
   base: Record<string, unknown>;
 };
 
-type MyContext = koa.ParameterizedContext<State, Context | unknown>;
+type MyContext = koa.ParameterizedContext<State, Context>;

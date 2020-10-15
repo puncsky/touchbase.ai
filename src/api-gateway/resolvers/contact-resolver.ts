@@ -439,6 +439,7 @@ class ContactRequest {
   public isSelf: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ISearchResult {}
 
 @ObjectType()

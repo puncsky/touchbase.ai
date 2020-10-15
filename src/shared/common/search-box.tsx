@@ -108,7 +108,9 @@ export const SearchBox = withRouter(
             onSelect={this.handleSelect}
           >
             <Input
-              ref={ref => (this.inputRef = ref)}
+              ref={ref => {
+                this.inputRef = ref;
+              }}
               suffix={<SearchOutlined className="certain-category-icon" />}
             />
           </AutoComplete>

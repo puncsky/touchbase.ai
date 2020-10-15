@@ -12,7 +12,7 @@ type Props = {
   id?: string;
   href?: string;
   children?: Array<JSX.Element> | JSX.Element | string;
-  onClick?: Function;
+  onClick?: (e: Event) => unknown;
   secondary?: boolean;
   disabled?: boolean;
   target?: string;
@@ -52,11 +52,15 @@ export class Button extends Component<Props> {
         width
       };
     }
-    const Button = styled(href ? "a" : "button", style as StyleObject);
+    const StyledButton = styled(href ? "a" : "button", style as StyleObject);
 
     return (
-      <div ref={r => (this.wrapper = r)}>
-        <Button
+      <div
+        ref={r => {
+          this.wrapper = r;
+        }}
+      >
+        <StyledButton
           id={id}
           href={href}
           // @ts-ignore
@@ -69,7 +73,7 @@ export class Button extends Component<Props> {
           target={target}
         >
           {children}
-        </Button>
+        </StyledButton>
       </div>
     );
   }

@@ -193,7 +193,6 @@ const Bar = styled("div", {
   position: "fixed",
   top: "0px",
   left: "0px",
-  width: "100%",
   "z-index": "70",
   ...contentPadding,
   boxSizing: "border-box",
@@ -216,7 +215,7 @@ function HamburgerBtn({
 }: {
   displayMobileMenu: boolean;
   children: Array<JSX.Element> | JSX.Element;
-  onClick: Function;
+  onClick: (e: Event) => unknown;
 }): JSX.Element {
   const Styled = styled("div", {
     ":hover": {

@@ -25,7 +25,7 @@ type TTaskDoc = mongoose.Document &
 export class TaskModel {
   public Model: mongoose.Model<TTaskDoc>;
 
-  constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
+  constructor({ mongoose: instance }: { mongoose: mongoose.Mongoose }) {
     TaskSchema.index({ name: "text" });
     TaskSchema.index({ ownerId: 1 });
 
@@ -34,18 +34,18 @@ export class TaskModel {
       return this._id;
     });
 
-    TaskSchema.pre("save", function onSave(next: Function): void {
+    TaskSchema.pre("save", function onSave(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    TaskSchema.pre("find", function onFind(next: Function): void {
+    TaskSchema.pre("find", function onFind(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = mongoose.model("Task", TaskSchema);
+    this.Model = instance.model("Task", TaskSchema);
   }
 
   public async getTaskByUser(userId: string): Promise<Array<TTask>> {

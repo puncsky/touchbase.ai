@@ -3,5 +3,5 @@
       "@puncsky/eslint-config-onefx-react",
       "@puncsky/eslint-config-onefx"
     ],
-    "ignorePatterns": ["src/client/static/*", "src/client/static/**/*"]
+    "ignorePatterns": ["src/client/static/*", "src/client/static/**/*", "src/shared/common/google-analytics.js"]
   }

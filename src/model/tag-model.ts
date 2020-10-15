@@ -41,7 +41,7 @@ export class TagModel {
 
   public TagTemplateModel: mongoose.Model<TTagTemplateDoc>;
 
-  constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
+  constructor({ mongoose: instance }: { mongoose: mongoose.Mongoose }) {
     TagSchema.index({ contactId: 1 });
     TagSchema.index({ templateId: 1 });
     TagSchema.virtual("id").get(function onId(): void {
@@ -55,8 +55,8 @@ export class TagModel {
       return this._id;
     });
 
-    this.TagModel = mongoose.model("tags_by_contacts", TagSchema);
-    this.TagTemplateModel = mongoose.model("tag_templates", TagTemplateSchema);
+    this.TagModel = instance.model("tags_by_contacts", TagSchema);
+    this.TagTemplateModel = instance.model("tag_templates", TagTemplateSchema);
   }
 
   public async createTemplate(

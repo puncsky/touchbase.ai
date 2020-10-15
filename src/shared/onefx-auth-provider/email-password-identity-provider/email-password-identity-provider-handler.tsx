@@ -69,7 +69,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "login",
     "/login",
     // server.auth.authOptionalContinue,
-    async (ctx: MyContext, _: Function) => {
+    async (ctx: MyContext) => {
       ctx.setState("base.next", ctx.query.next);
       ctx.setState("base.userId", ctx.state.userId);
       ctx.setState("base.isMobileWebView", isMobileWebView(ctx));
@@ -80,7 +80,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "sign-up",
     "/sign-up",
     // server.auth.authOptionalContinue,
-    async (ctx: MyContext, _: Function) => {
+    async (ctx: MyContext) => {
       ctx.setState("base.next", ctx.query.next);
       ctx.setState("base.userId", ctx.state.userId);
       return isoRender(ctx);
@@ -90,7 +90,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "forgot-password",
     "/forgot-password",
     // server.auth.authOptionalContinue,
-    async (ctx: MyContext, _: Function) => {
+    async (ctx: MyContext) => {
       ctx.setState("base.next", ctx.query.next);
       ctx.setState("base.userId", ctx.state.userId);
       return isoRender(ctx);
@@ -106,12 +106,13 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
   server.get(
     "email-token",
     "/email-token/:token",
-    async (ctx: MyContext, next: Function) => {
+    async (ctx: MyContext, next: () => unknown) => {
       const et = await server.auth.emailToken.findOneAndDelete(
         ctx.params.token
       );
       if (!et || !et.userId) {
-        return isoRender(ctx);
+        isoRender(ctx);
+        return undefined;
       }
 
       const newToken = await server.auth.emailToken.newAndSave(et.userId);
@@ -134,7 +135,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "/api/sign-up/",
     emailValidator(),
     passwordValidator(),
-    async (ctx: MyContext, next: Function) => {
+    async (ctx: MyContext, next: () => unknown) => {
       const { email, password } = ctx.request.body;
       try {
         const user = await server.auth.user.newAndSave({
@@ -163,7 +164,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "api-sign-in",
     "/api/sign-in/",
     emailValidator(),
-    async (ctx: MyContext, next: Function) => {
+    async (ctx: MyContext, next: () => unknown) => {
       const { email, password } = ctx.request.body;
       const user = await server.auth.user.getByMail(email);
       if (!user) {
@@ -223,9 +224,10 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
         );
       }
 
-      return (ctx.response.body = {
+      ctx.response.body = {
         ok: true
-      });
+      };
+      return undefined;
     }
   );
 
@@ -305,24 +307,26 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
           password
         );
         if (!verified) {
-          return (ctx.response.body = {
+          ctx.response.body = {
             ok: false,
             error: {
               code: "auth/wrong-password",
               message: ctx.t("auth/wrong-password")
             }
-          });
+          };
+          return undefined;
         }
       }
 
       if (newPassword.length < PASSWORD_MIN_LENGTH) {
-        return (ctx.response.body = {
+        ctx.response.body = {
           ok: false,
           error: {
             code: "auth/weak-password",
             message: ctx.t("auth/weak-password")
           }
-        });
+        };
+        return undefined;
       }
 
       await server.auth.user.updatePassword(ctx.state.userId, newPassword);
@@ -334,6 +338,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
         ctx.response.body = { ok: true };
       }
       await server.auth.emailToken.findOneAndDelete(token);
+      return undefined;
     }
   );
 }

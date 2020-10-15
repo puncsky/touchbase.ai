@@ -100,7 +100,7 @@ type TContactDoc = mongoose.Document &
 export class ContactModel {
   public Model: mongoose.Model<TContactDoc>;
 
-  constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
+  constructor({ mongoose: instance }: { mongoose: mongoose.Mongoose }) {
     ContactSchema.index({ name: "text" });
     ContactSchema.index({ ownerId: 1 });
     ContactSchema.index({ hmacs: 1 });
@@ -110,18 +110,18 @@ export class ContactModel {
       return this._id;
     });
 
-    ContactSchema.pre("save", function onSave(next: Function): void {
+    ContactSchema.pre("save", function onSave(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    ContactSchema.pre("find", function onFind(next: Function): void {
+    ContactSchema.pre("find", function onFind(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = mongoose.model("Contact", ContactSchema);
+    this.Model = instance.model("Contact", ContactSchema);
   }
 
   public async getByName(

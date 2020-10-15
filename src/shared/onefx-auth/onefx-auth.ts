@@ -79,7 +79,7 @@ export class OnefxAuth {
     });
   }
 
-  public authRequired = async (ctx: MyContext, next: Function) => {
+  public authRequired = async (ctx: MyContext, next: () => unknown) => {
     await this.authOptionalContinue(ctx, () => undefined);
     const { userId } = ctx.state;
     if (!userId) {
@@ -91,9 +91,10 @@ export class OnefxAuth {
 
     logger.debug(`user is authenticated ${userId}`);
     await next();
+    return undefined;
   };
 
-  public authOptionalContinue = async (ctx: MyContext, next: Function) => {
+  public authOptionalContinue = async (ctx: MyContext, next: () => unknown) => {
     const token = this.tokenFromCtx(ctx);
     if (!token) {
       return next();
@@ -102,9 +103,10 @@ export class OnefxAuth {
     ctx.state.userId = await this.jwt.verify(token);
     ctx.state.jwt = token;
     await next();
+    return undefined;
   };
 
-  public logout = async (ctx: MyContext, _: Function) => {
+  public logout = async (ctx: MyContext) => {
     ctx.cookies.set(this.config.cookieName, "", this.config.cookieOpts);
     const token = this.tokenFromCtx(ctx);
     if (token) {

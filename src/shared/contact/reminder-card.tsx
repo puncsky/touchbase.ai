@@ -75,13 +75,15 @@ function getRrule(frequency: string | undefined): string | undefined {
     case "WEEKLY":
     case "MONTHLY":
     case "YEARLY":
-      return `DTSTART=${dateToDT(d)} FREQ=${frequency};INTERVAL=1`;
+      `DTSTART=${dateToDT(d)} FREQ=${frequency};INTERVAL=1`;
+      break;
     case "BIWEEKLY":
-      return `DTSTART=${dateToDT(d)} FREQ=WEEKLY;INTERVAL=2`;
+      `DTSTART=${dateToDT(d)} FREQ=WEEKLY;INTERVAL=2`;
+      break;
     case "QUARTERLY":
-      return `DTSTART=${dateToDT(d)} FREQ=MONTHLY;INTERVAL=3`;
+      `DTSTART=${dateToDT(d)} FREQ=MONTHLY;INTERVAL=3`;
+      break;
     default:
-      return undefined;
   }
 }
 
@@ -95,8 +97,8 @@ const upsertTaskFn = ({
   taskId?: string;
   contactId?: string;
   frequency?: string;
-  doneFn?: Function;
-  delayedFn?: Function;
+  doneFn?: () => unknown;
+  delayedFn?: () => unknown;
 }) => async () => {
   await apolloClient.mutate({
     mutation: UPSERT_TASK,

@@ -23,7 +23,7 @@ type TPushTokenDoc = mongoose.Document &
 export class PushTokenModel {
   public Model: mongoose.Model<TPushTokenDoc>;
 
-  constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
+  constructor({ mongoose: instance }: { mongoose: mongoose.Mongoose }) {
     PushTokenSchema.index({ ownerId: 1 });
 
     PushTokenSchema.virtual("id").get(function onId(): void {
@@ -31,18 +31,18 @@ export class PushTokenModel {
       return this._id;
     });
 
-    PushTokenSchema.pre("save", function onSave(next: Function): void {
+    PushTokenSchema.pre("save", function onSave(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    PushTokenSchema.pre("find", function onFind(next: Function): void {
+    PushTokenSchema.pre("find", function onFind(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = mongoose.model("push_token", PushTokenSchema);
+    this.Model = instance.model("push_token", PushTokenSchema);
   }
 
   public async upsert(pushToken: TPushToken): Promise<TPushToken | null> {
