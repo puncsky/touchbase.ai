@@ -27,7 +27,6 @@ export class OnefxAuth {
   constructor(server: MyServer, config: AuthConfig) {
     this.config = config || authConfig;
     this.server = server;
-    // @ts-ignore
     const mongoose = server.gateways.mongoose;
     this.user = new UserModel({ mongoose });
     this.jwt = new JwtModel({
