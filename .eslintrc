@@ -3,5 +3,8 @@
       "@puncsky/eslint-config-onefx-react",
       "@puncsky/eslint-config-onefx"
     ],
+    "rules": {
+      "import/no-extraneous-dependencies": ["warn", {"devDependencies": false, "optionalDependencies": false, "peerDependencies": false}]
+    },
     "ignorePatterns": ["src/client/static/*", "src/client/static/**/*", "src/shared/common/google-analytics.js"]
   }
