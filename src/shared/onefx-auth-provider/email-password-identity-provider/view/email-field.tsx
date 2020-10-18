@@ -21,7 +21,7 @@ export function EmailField({ error, defaultValue }: Props): JSX.Element {
         name="email"
         placeholder="email@example.com"
         required={true}
-        error={error}
+        error={!!error}
       />
       <InputError>{error || "\u0020"}</InputError>
     </FieldMargin>

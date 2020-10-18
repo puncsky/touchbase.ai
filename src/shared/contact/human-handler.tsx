@@ -34,7 +34,8 @@ export function setHumanHandlers(server: MyServer): void {
     server.auth.authOptionalContinue,
     async (ctx: MyContext, next) => {
       if (!ctx.state.userId) {
-        return next();
+        next();
+        return;
       }
       const user = await server.auth.user.getById(ctx.state.userId);
       let selfProfile = await server.model.human.getById(
@@ -54,7 +55,6 @@ export function setHumanHandlers(server: MyServer): void {
         );
       }
       ctx.redirect(`/${selfProfile._id}/`);
-      return undefined;
     }
   );
   server.get(

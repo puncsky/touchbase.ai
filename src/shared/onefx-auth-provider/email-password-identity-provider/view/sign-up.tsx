@@ -99,7 +99,6 @@ export class SignUpInner extends Component<Props, State> {
       }
       this.setState(errorState);
     }
-    return undefined;
   }
 
   public render(): JSX.Element {

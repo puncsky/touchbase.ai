@@ -148,7 +148,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "/api/sign-up/",
     emailValidator(),
     passwordValidator(),
-    async (ctx: MyContext, next: () => unknown) => {
+    async (ctx: MyContext, next: koa.Next) => {
       const { email, password } = ctx.request.body;
       try {
         const user = await server.auth.user.newAndSave({
@@ -177,7 +177,7 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
     "api-sign-in",
     "/api/sign-in/",
     emailValidator(),
-    async (ctx: MyContext, next: () => unknown) => {
+    async (ctx: MyContext, next: koa.Next) => {
       const { email, password } = ctx.request.body;
       const user = await server.auth.user.getByMail(email);
       if (!user) {
@@ -240,7 +240,6 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
       ctx.response.body = {
         ok: true
       };
-      return undefined;
     }
   );
 
@@ -312,7 +311,8 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
       if (token) {
         const verified = Boolean(await server.auth.emailToken.findOne(token));
         if (!verified) {
-          return ctx.redirect(`${server.auth.config.emailTokenLink}invalid`);
+          ctx.redirect(`${server.auth.config.emailTokenLink}invalid`);
+          return;
         }
       } else {
         const verified = await server.auth.user.verifyPassword(
@@ -327,7 +327,6 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
               message: ctx.t("auth/wrong-password")
             }
           };
-          return undefined;
         }
       }
 
@@ -339,7 +338,6 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
             message: ctx.t("auth/weak-password")
           }
         };
-        return undefined;
       }
 
       await server.auth.user.updatePassword(ctx.state.userId, newPassword);
@@ -351,7 +349,6 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
         ctx.response.body = { ok: true };
       }
       await server.auth.emailToken.findOneAndDelete(token);
-      return undefined;
     }
   );
 }

@@ -1,15 +1,17 @@
 /* tslint:disable:typedef */
-import React from "react";
+import React, { ReactNode } from "react";
 import { connect } from "react-redux";
 
 type Props = {
-  children: Array<JSX.Element> | JSX.Element;
-  csrfToken: string;
-  qs: string;
-  csrfInQuery: string;
-  dispatch: string;
+  id: string;
+  children: ReactNode;
+  onSubmit?: ((event: any) => void) | undefined;
+  csrfToken?: string;
+  qs?: string;
+  csrfInQuery?: string;
+  dispatch?: string;
   // @ts-ignore
-  otherProps;
+  otherProps?;
 };
 
 function Form({

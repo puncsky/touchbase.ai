@@ -141,6 +141,7 @@ export function actionUpsertEvent(
           });
         }
       })
+      // @ts-ignore
       .then((resp: { data: { upsertInteraction: any } }) => {
         // TODO(tian): error handling
         dispatch({

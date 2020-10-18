@@ -402,6 +402,14 @@ export const GET_INTERACTIONS = gql`
 
 export const PAGE_SIZE = 5;
 
+const InteractionList = styled("div", {
+  width: "100%",
+  borderTop: LINE,
+  margin: "12px 0 12px 0",
+  padding: "12px 0 12px 0",
+  wordBreak: "break-word"
+});
+
 class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
   // tslint:disable-next-line:max-func-body-length
   public render(): JSX.Element {
@@ -434,17 +442,7 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
           return (
             <>
               {interactions.map((iter, i) => (
-                <div
-                  className="interactions-list"
-                  key={i}
-                  style={{
-                    width: "100%",
-                    borderTop: LINE,
-                    margin: "12px 0 12px 0",
-                    padding: "12px 0 12px 0",
-                    wordBreak: "break-word"
-                  }}
-                >
+                <InteractionList className="interactions-list" key={i}>
                   <Flex>
                     <span>
                       {dateFormat(iter.timestamp, "yyyy-mm-dd HH:MM")}{" "}
@@ -465,6 +463,7 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                       </UpsertEventContainer>
                       <CommonMargin />
                       <DeleteNotePopover
+                        // @ts-ignore
                         isSelf={isSelf}
                         noteId={iter.id}
                         contactId={contactId}
@@ -476,7 +475,7 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
                       __html: mdit.render(iter.content)
                     }}
                   />
-                </div>
+                </InteractionList>
               ))}
               {Boolean(interactions.length) && count > interactions.length && (
                 <Button

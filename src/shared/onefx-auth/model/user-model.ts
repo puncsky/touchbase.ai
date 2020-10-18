@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import koa from "koa";
 import tools from "../utils/tools";
 import { baseModel } from "./base-model";
 
@@ -76,12 +77,12 @@ export class UserModel {
     UserSchema.index({ did: 1 }, { unique: true, sparse: true });
 
     UserSchema.plugin(baseModel);
-    UserSchema.pre("save", function onSave(next: () => unknown): void {
+    UserSchema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    UserSchema.pre("find", function onFind(next: () => unknown): void {
+    UserSchema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();

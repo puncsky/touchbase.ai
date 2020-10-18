@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ts-node --transpile-only ./server.ts",
     "test": "npm run lint && npm run cover",
+    "tsc": "NODE_ENV=test tsc",
     "check-coverage": "nyc check-coverage --lines 65 --functions 60 --Statements 65",
     "ava": "NODE_ENV=test ava",
     "watch": "gulp watch",
@@ -209,7 +210,7 @@
     "styletron-standard": "^3.0.4",
     "ts-node": "8.6.2",
     "type-graphql": "0.17.6",
-    "typescript": "3.6.4",
+    "typescript": "4.0.3",
     "uuid": "3.4.0",
     "validator": "12.0.0",
     "web-push": "^3.4.3"

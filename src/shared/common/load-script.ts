@@ -5,15 +5,15 @@ import load from "load-script";
 
 export function loadScript(
   link: string,
-  cb: (...args: any[]) => unknown
+  cb?: (...args: any[]) => unknown
 ): void {
   window.loadScriptLoaded = window.loadScriptLoaded || {};
   if (window.loadScriptLoaded[link]) {
-    cb();
+    cb ? cb() : null;
     return;
   }
   load(link, (...args: Array<any>) => {
     window.loadScriptLoaded[link] = true;
-    cb(...args);
+    cb ? cb(...args) : null;
   });
 }

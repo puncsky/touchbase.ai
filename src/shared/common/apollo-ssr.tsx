@@ -42,7 +42,9 @@ export async function apolloSSR(
   });
 
   const state = ctx.getState();
+  // @ts-ignore
   initAssetURL(state.base.manifest);
+  // @ts-ignore
   const store = configureStore(state, noopReducer);
   const styletron = new engine.Server({ prefix: "_" });
 

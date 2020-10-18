@@ -10,5 +10,5 @@ test("populateTask", async t => {
     contacts: ["3e7d738c1c0d261142ad738a"]
   });
 
-  t.truthy(task.due);
+  t.truthy(task!.due);
 });

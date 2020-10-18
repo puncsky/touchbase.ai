@@ -14,12 +14,26 @@ export type MyServer = Server & {
   gateways: Gateways;
   model: Model;
   auth: OnefxAuth;
+  config: Config & {
+    gateways: {
+      mongoose: {
+        uri: string;
+      };
+      fullContactApiKey: string;
+      webPush: {
+        gcmApiKey: string;
+        mailto: string;
+        publicKey: string;
+        privateKey: string;
+      };
+    };
+  };
 };
 
 export async function startServer(): Promise<Server> {
   const server: MyServer = new Server((config as any) as Config) as MyServer;
   server.app.proxy = config.get("server.proxy");
-  setGateways(server);
+  await setGateways(server);
   server.auth = new OnefxAuth(server, authConfig);
   setMiddleware(server);
   setModel(server);

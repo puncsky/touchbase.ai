@@ -55,6 +55,23 @@ const DELETE_TASK = gql`
   }
 `;
 
+function pastDue(date?: Date): boolean {
+  if (!date) {
+    return true;
+  }
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  return new Date(date) < d;
+}
+
+function dateToDT(date: Date): string {
+  return date
+    .toISOString()
+    .replace(/\.\d+/g, "")
+    .replace(/[^A-Za-z0-9\s]/g, "")
+    .replace(/\s{2,}/g, " ");
+}
+
 const FREQ_TO_DAYS: Record<string, number> = {
   WEEKLY: 7,
   BIWEEKLY: 14,
@@ -63,9 +80,9 @@ const FREQ_TO_DAYS: Record<string, number> = {
   YEARLY: 365
 };
 
-function getRrule(frequency: string | undefined): string | undefined {
+function getRrule(frequency: string | undefined): string | null {
   if (!frequency) {
-    return;
+    return null;
   }
 
   const d = new Date();
@@ -75,16 +92,14 @@ function getRrule(frequency: string | undefined): string | undefined {
     case "WEEKLY":
     case "MONTHLY":
     case "YEARLY":
-      `DTSTART=${dateToDT(d)} FREQ=${frequency};INTERVAL=1`;
-      break;
+      return `DTSTART=${dateToDT(d)} FREQ=${frequency};INTERVAL=1`;
     case "BIWEEKLY":
-      `DTSTART=${dateToDT(d)} FREQ=WEEKLY;INTERVAL=2`;
-      break;
+      return `DTSTART=${dateToDT(d)} FREQ=WEEKLY;INTERVAL=2`;
     case "QUARTERLY":
-      `DTSTART=${dateToDT(d)} FREQ=MONTHLY;INTERVAL=3`;
-      break;
+      return `DTSTART=${dateToDT(d)} FREQ=MONTHLY;INTERVAL=3`;
     default:
   }
+  return null;
 }
 
 const upsertTaskFn = ({
@@ -259,21 +274,4 @@ export function ReminderCard({
       }}
     </Query>
   );
-}
-
-function pastDue(date?: Date): boolean {
-  if (!date) {
-    return true;
-  }
-  const d = new Date();
-  d.setDate(d.getDate() + 1);
-  return new Date(date) < d;
-}
-
-function dateToDT(date: Date): string {
-  return date
-    .toISOString()
-    .replace(/\.\d+/g, "")
-    .replace(/[^A-Za-z0-9\s]/g, "")
-    .replace(/\s{2,}/g, " ");
 }

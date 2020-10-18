@@ -1,4 +1,3 @@
-import config from "config";
 import mongoose from "mongoose";
 import { MyServer } from "../start-server";
 import { Fullcontact } from "./fullcontact";
@@ -13,19 +12,21 @@ export type Gateways = {
 export async function setGateways(server: MyServer): Promise<void> {
   server.gateways = server.gateways || {};
 
-  if (!config.get("gateways.mongoose.uri")) {
+  if (!server.config.gateways.mongoose.uri) {
     server.logger.warn(
-      "cannot start server without gateways.mongoose.uri provided in configuration"
+      "cannot connect to the database without gateways.mongoose.uri provided in configuration"
     );
   } else {
-    mongoose.connect(config.get("gateways.mongoose.uri")).catch(err => {
-      server.logger.warn(`failed to connect mongoose: ${err}`);
-    });
+    mongoose
+      .connect(server.config.gateways.mongoose.uri, { useNewUrlParser: true })
+      .catch(err => {
+        server.logger.warn(`failed to connect mongoose: ${err}`);
+      });
   }
   server.gateways.mongoose = mongoose;
   server.gateways.fullcontact = new Fullcontact(
-    config.get("gateways.fullContactApiKey")
+    server.config.gateways.fullContactApiKey
   );
 
-  server.gateways.webPush = new WebPush(config.get("gateways.webPush"));
+  server.gateways.webPush = new WebPush(server.config.gateways.webPush);
 }

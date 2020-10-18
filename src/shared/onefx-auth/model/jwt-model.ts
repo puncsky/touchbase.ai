@@ -88,10 +88,9 @@ export class JwtModel {
     try {
       decoded = (await verify(token, this.secret)) as AuthJwt;
     } catch (e) {
-      return undefined;
+      return;
     }
     await this.Model.deleteOne({ _id: decoded.jti });
-    return undefined;
   }
 
   public async verify(token: string): Promise<UserId> {

@@ -59,7 +59,7 @@ class LanguageSwitcher extends Component<Record<string, undefined>, State> {
         "google_translate_element"
       );
     }
-    return undefined;
+    return null;
   };
 
   public render(): JSX.Element {
@@ -122,7 +122,7 @@ class LanguageSwitcher extends Component<Record<string, undefined>, State> {
           {/*
           // @ts-ignore */}
           <LanguageSwitchButton
-            onclick={() =>
+            onClick={() =>
               this.setState({
                 displayTranslationMenu: !this.state.displayTranslationMenu
               })

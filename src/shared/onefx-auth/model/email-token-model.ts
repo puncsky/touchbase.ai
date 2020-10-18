@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import uuidV4 from "uuid/v4";
+import koa from "koa";
 import { baseModel } from "./base-model";
 
 const { Schema } = mongoose;
@@ -45,12 +46,12 @@ export class EmailTokenModel {
     EmailTokenSchema.index({ token: 1 });
 
     EmailTokenSchema.plugin(baseModel);
-    EmailTokenSchema.pre("save", function onSave(next: () => unknown): void {
+    EmailTokenSchema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    EmailTokenSchema.pre("find", function onFind(next: () => unknown): void {
+    EmailTokenSchema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();

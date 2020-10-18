@@ -106,6 +106,10 @@ export class TaskResolver {
       ...upsertTaskInput,
       ownerId: userId
     });
+    if (!populated) {
+      return null;
+    }
+
     if (!upsertTaskInput.id) {
       return model.task.createTask(populated);
     }

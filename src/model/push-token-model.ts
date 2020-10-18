@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import koa from "koa";
 import { TPushToken } from "../types/push-token";
 
 const { Schema } = mongoose;
@@ -31,12 +32,12 @@ export class PushTokenModel {
       return this._id;
     });
 
-    PushTokenSchema.pre("save", function onSave(next: () => unknown): void {
+    PushTokenSchema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    PushTokenSchema.pre("find", function onFind(next: () => unknown): void {
+    PushTokenSchema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();

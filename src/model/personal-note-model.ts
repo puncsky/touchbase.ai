@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
+import koa from "koa";
 import { TPersonalNote } from "../types/contact";
 
 const { Schema } = mongoose;
@@ -31,12 +32,12 @@ export class PersonalNoteModel {
     schema.index({ ownerId: 1 });
     schema.index({ relatedHumans: 1 });
 
-    schema.pre("save", function onSave(next: () => unknown): void {
+    schema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    schema.pre("find", function onFind(next: () => unknown): void {
+    schema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();

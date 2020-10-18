@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import koa from "koa";
 import { TContact } from "../types/contact";
 
 const { Schema } = mongoose;
@@ -110,12 +111,12 @@ export class ContactModel {
       return this._id;
     });
 
-    ContactSchema.pre("save", function onSave(next: () => unknown): void {
+    ContactSchema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    ContactSchema.pre("find", function onFind(next: () => unknown): void {
+    ContactSchema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();

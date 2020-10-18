@@ -255,6 +255,7 @@ export const ContactsTableContainer = withRouter(
                       columnDefs={columnDefs}
                       rowData={rows}
                       onCellValueChanged={this.onCellValueChanged}
+                      // @ts-ignore
                       modules={[ClientSideRowModelModule]}
                       defaultColDef={{ editable: true }}
                     />

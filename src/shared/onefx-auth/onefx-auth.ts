@@ -32,7 +32,6 @@ export class OnefxAuth {
   constructor(server: MyServer, config: AuthConfig) {
     this.config = config || authConfig;
     this.server = server;
-    // @ts-ignore
     const { mongoose } = server.gateways;
     this.user = new UserModel({ mongoose });
     this.jwt = new JwtModel({
@@ -79,37 +78,40 @@ export class OnefxAuth {
     });
   }
 
-  public authRequired = async (ctx: MyContext, next: () => unknown) => {
-    await this.authOptionalContinue(ctx, () => undefined);
+  public authRequired = async (
+    ctx: MyContext,
+    next: koa.Next
+  ): Promise<void> => {
+    await this.authOptionalContinue(ctx, async () => undefined);
     const { userId } = ctx.state;
     if (!userId) {
       logger.debug("user is not authenticated but auth is required");
-      return ctx.redirect(
+      ctx.redirect(
         `${this.config.loginUrl}?next=${encodeURIComponent(ctx.url)}`
       );
+      return;
     }
 
     logger.debug(`user is authenticated ${userId}`);
     await next();
-    return undefined;
   };
 
   public authOptionalContinue = async (
     ctx: MyContext,
-    next: () => unknown
-  ): Promise<unknown> => {
+    next: koa.Next
+  ): Promise<void> => {
     const token = this.tokenFromCtx(ctx);
     if (!token) {
-      return next();
+      next();
+      return;
     }
 
     ctx.state.userId = await this.jwt.verify(token);
     ctx.state.jwt = token;
     await next();
-    return undefined;
   };
 
-  public logout = async (ctx: MyContext) => {
+  public logout = async (ctx: MyContext): Promise<void> => {
     ctx.cookies.set(this.config.cookieName, "", this.config.cookieOpts);
     const token = this.tokenFromCtx(ctx);
     if (token) {
@@ -118,7 +120,7 @@ export class OnefxAuth {
     ctx.redirect(allowedLogoutNext(ctx.query.next));
   };
 
-  public postAuthentication = async (ctx: MyContext) => {
+  public postAuthentication = async (ctx: MyContext): Promise<void> => {
     if (!ctx.state.userId) {
       return;
     }
