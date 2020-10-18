@@ -2,7 +2,9 @@ import { makeDIDFromAddress, publicKeyToAddress } from "blockstack";
 import { logger } from "onefx/lib/integrated-gateways/logger";
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import * as React from "react";
+import koa from "koa";
 import { combineReducers } from "redux";
+import { Context } from "onefx/lib/types";
 import validator from "validator";
 import { MyServer } from "../../../server/start-server";
 import { MyContext } from "../../../types/global";
@@ -11,44 +13,56 @@ import { IdentityAppContainer } from "./view/identity-app-container";
 
 const PASSWORD_MIN_LENGTH = 6;
 
-type Handler = MyContext;
+type Handler = (ctx: Context, next: koa.Next) => Promise<void>;
+
+function isoRender(ctx: MyContext): void {
+  ctx.body = ctx.isoReactRender({
+    VDom: <IdentityAppContainer />,
+    reducer: combineReducers({
+      base: noopReducer
+    }),
+    clientScript: "/identity-provider-main.js"
+  });
+}
 
 export function emailValidator(): Handler {
-  return async (ctx: MyContext, next: Function) => {
+  return async (ctx: MyContext, next: koa.Next) => {
     let { email } = ctx.request.body;
     email = String(email).toLowerCase();
     email = validator.trim(email);
     if (!validator.isEmail(email)) {
-      return (ctx.response.body = {
+      ctx.response.body = {
         ok: false,
         error: {
           code: "auth/invalid-email",
           message: ctx.t("auth/invalid-email")
         }
-      });
+      };
+      return;
     }
 
     ctx.request.body.email = email;
-    return next(ctx);
+    await next();
   };
 }
 
 export function passwordValidator(): Handler {
-  return async (ctx: MyContext, next: Function) => {
+  return async (ctx: MyContext, next: koa.Next) => {
     let { password } = ctx.request.body;
     password = String(password);
     if (password.length < PASSWORD_MIN_LENGTH) {
-      return (ctx.response.body = {
+      ctx.response.body = {
         ok: false,
         error: {
           code: "auth/weak-password",
           message: ctx.t("auth/weak-password")
         }
-      });
+      };
+      return;
     }
 
     ctx.request.body.password = password;
-    return next(ctx);
+    await next();
   };
 }
 
@@ -62,7 +76,6 @@ function isMobileWebView(ctx: MyContext): boolean {
   return isMobile;
 }
 
-// tslint:disable-next-line
 export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
   // view routes
   server.get(
@@ -106,13 +119,13 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
   server.get(
     "email-token",
     "/email-token/:token",
-    async (ctx: MyContext, next: () => unknown) => {
+    async (ctx: MyContext, next: koa.Next): Promise<void> => {
       const et = await server.auth.emailToken.findOneAndDelete(
         ctx.params.token
       );
       if (!et || !et.userId) {
         isoRender(ctx);
-        return undefined;
+        return;
       }
 
       const newToken = await server.auth.emailToken.newAndSave(et.userId);
@@ -341,14 +354,4 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
       return undefined;
     }
   );
-}
-
-function isoRender(ctx: MyContext): void {
-  ctx.body = ctx.isoReactRender({
-    VDom: <IdentityAppContainer />,
-    reducer: combineReducers({
-      base: noopReducer
-    }),
-    clientScript: "/identity-provider-main.js"
-  });
 }

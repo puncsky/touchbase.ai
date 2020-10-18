@@ -3,6 +3,7 @@ import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import config from "config";
 import fetch from "isomorphic-unfetch";
+import { Reducer } from "redux";
 import { initAssetURL } from "onefx/lib/asset-url";
 import { logger } from "onefx/lib/integrated-gateways/logger";
 import { configureStore } from "onefx/lib/iso-react-render/root/configure-store";
@@ -17,7 +18,7 @@ import { MyContext } from "../../types/global";
 
 type Opts = {
   VDom: JSX.Element;
-  reducer: Function;
+  reducer: Reducer;
   clientScript: string;
 };
 

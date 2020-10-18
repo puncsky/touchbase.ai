@@ -122,7 +122,7 @@ class LanguageSwitcher extends Component<Record<string, undefined>, State> {
           {/*
           // @ts-ignore */}
           <LanguageSwitchButton
-            onClick={() =>
+            onclick={() =>
               this.setState({
                 displayTranslationMenu: !this.state.displayTranslationMenu
               })

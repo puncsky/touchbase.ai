@@ -36,6 +36,7 @@ export class Mailgun {
   public async sendMail(data: Mail): Promise<void> {
     for (let i = this.opts.retryLimit; i > 0; i -= 1) {
       try {
+        // eslint-disable-next-line no-await-in-loop
         return await this.transporter.sendMail(data);
       } catch (e) {
         logger.error(`failed to Mailgun.sendMail: ${e}`);

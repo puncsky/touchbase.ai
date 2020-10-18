@@ -145,6 +145,7 @@ type FormProps = {
   hide: any;
 };
 
+// eslint-disable-next-line react/display-name
 const DangerZoneForm = React.forwardRef(
   ({ modalShow, submit, hide }: FormProps, ref: any) => {
     return (

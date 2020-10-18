@@ -94,7 +94,10 @@ export class OnefxAuth {
     return undefined;
   };
 
-  public authOptionalContinue = async (ctx: MyContext, next: () => unknown) => {
+  public authOptionalContinue = async (
+    ctx: MyContext,
+    next: () => unknown
+  ): Promise<unknown> => {
     const token = this.tokenFromCtx(ctx);
     if (!token) {
       return next();

@@ -8,7 +8,7 @@ import { TextInput } from "./text-input";
 type Props = {
   defaultValue: string;
   error: string;
-  onChange?: Function;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export function PasswordField({
@@ -24,7 +24,7 @@ export function PasswordField({
       <TextInput
         defaultValue={defaultValue}
         onChange={onChange}
-        error={error}
+        error={!!error}
         type="password"
         aria-label="Password"
         id="email-login-password"

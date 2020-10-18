@@ -159,6 +159,7 @@ class ProfileEditorContainer extends Component<Props, State> {
 export { ProfileEditorContainer };
 export { ProfileEditorForm };
 
+// eslint-disable-next-line react/display-name
 const ProfileEditorForm = React.forwardRef(
   ({ human }: { human: TContact2 }, ref: any) => {
     return (
