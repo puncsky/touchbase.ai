@@ -85,7 +85,7 @@ export const SearchBox = withRouter(
     public render(): JSX.Element {
       const { searchResults } = this.state;
       const children = searchResults.map(res => (
-        <Option key={res.path} value={res.path}>
+        <Option key={res.path} value={res.name}>
           {res.name}
         </Option>
       ));
