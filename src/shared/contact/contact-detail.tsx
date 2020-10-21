@@ -1,5 +1,5 @@
-import { DownOutlined } from "@ant-design/icons";
-import { EditOutlined } from "@ant-design/icons";
+import { DownOutlined, EditOutlined } from "@ant-design/icons";
+
 import Button from "antd/lib/button";
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
@@ -129,9 +129,9 @@ export const ContactDetailContainer = withRouter<IProps>(
       }
 
       public render(): JSX.Element | null {
-        const props: Props = this.props;
+        const { props } = this;
         const id = props.match.params.nameDash;
-        const ownerHumanId = props.ownerHumanId;
+        const { ownerHumanId } = props;
         return (
           <ContentPadding>
             <Padding />
@@ -263,8 +263,8 @@ function Contact({
             {/*
             // @ts-ignore */}
             <UpsertEventContainer
-              eventId={""}
-              initialValue={""}
+              eventId=""
+              initialValue=""
               humanId={human._id || ""}
               public={false}
             >
@@ -400,7 +400,7 @@ export const GET_INTERACTIONS = gql`
   }
 `;
 
-export const PAGE_SIZE: number = 5;
+export const PAGE_SIZE = 5;
 
 const InteractionList = styled("div", {
   width: "100%",
@@ -432,14 +432,13 @@ class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
           data = { interactions: { interactions: [], count: 0 } },
           fetchMore
         }: QueryResult<{
-          interactions: { interactions: Array<TInteraction>; count: Number };
+          interactions: { interactions: Array<TInteraction>; count: number };
         }>) => {
           if (loading) {
             return <Preloader />;
           }
-          const interactions: Array<TInteraction> =
-            data.interactions.interactions;
-          const count: Number = data.interactions.count;
+          const { interactions } = data.interactions;
+          const { count } = data.interactions;
           return (
             <>
               {interactions.map((iter, i) => (

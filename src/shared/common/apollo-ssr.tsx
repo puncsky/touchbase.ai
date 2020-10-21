@@ -3,21 +3,22 @@ import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import config from "config";
 import fetch from "isomorphic-unfetch";
+import { Reducer } from "redux";
 import { initAssetURL } from "onefx/lib/asset-url";
 import { logger } from "onefx/lib/integrated-gateways/logger";
 import { configureStore } from "onefx/lib/iso-react-render/root/configure-store";
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import { RootServer } from "onefx/lib/iso-react-render/root/root-server";
 import React from "react";
-import { ApolloProvider } from "react-apollo";
-import { getDataFromTree } from "react-apollo";
+import { ApolloProvider, getDataFromTree } from "react-apollo";
+
 // @ts-ignore
 import * as engine from "styletron-engine-atomic";
 import { MyContext } from "../../types/global";
 
 type Opts = {
   VDom: JSX.Element;
-  reducer: Function;
+  reducer: Reducer;
   clientScript: string;
 };
 
@@ -41,7 +42,9 @@ export async function apolloSSR(
   });
 
   const state = ctx.getState();
+  // @ts-ignore
   initAssetURL(state.base.manifest);
+  // @ts-ignore
   const store = configureStore(state, noopReducer);
   const styletron = new engine.Server({ prefix: "_" });
 

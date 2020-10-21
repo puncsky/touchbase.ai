@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import koa from "koa";
 import { TContact } from "../types/contact";
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 const ContactSchema = new Schema({
   ownerId: { type: "ObjectId", ref: "User" },
 
@@ -100,7 +101,7 @@ type TContactDoc = mongoose.Document &
 export class ContactModel {
   public Model: mongoose.Model<TContactDoc>;
 
-  constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
+  constructor({ mongoose: instance }: { mongoose: mongoose.Mongoose }) {
     ContactSchema.index({ name: "text" });
     ContactSchema.index({ ownerId: 1 });
     ContactSchema.index({ hmacs: 1 });
@@ -110,18 +111,18 @@ export class ContactModel {
       return this._id;
     });
 
-    ContactSchema.pre("save", function onSave(next: Function): void {
+    ContactSchema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    ContactSchema.pre("find", function onFind(next: Function): void {
+    ContactSchema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = mongoose.model("Contact", ContactSchema);
+    this.Model = instance.model("Contact", ContactSchema);
   }
 
   public async getByName(
@@ -180,7 +181,7 @@ export class ContactModel {
   }: {
     _id: string;
     ownerId: string;
-  }): Promise<Boolean> {
+  }): Promise<boolean> {
     const resp = await this.Model.deleteOne({ _id, ownerId });
     return Boolean(resp && resp.ok);
   }
@@ -189,7 +190,7 @@ export class ContactModel {
     ownerId
   }: {
     ownerId: string;
-  }): Promise<Boolean> {
+  }): Promise<boolean> {
     const resp = await this.Model.deleteMany({ ownerId });
     return Boolean(resp && resp.ok);
   }

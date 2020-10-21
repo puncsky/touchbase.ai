@@ -9,8 +9,8 @@ import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import { PureComponent } from "react";
-import React from "react";
+import React, { PureComponent } from "react";
+
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { CommonMargin } from "../common/common-margin";

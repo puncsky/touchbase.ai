@@ -170,7 +170,7 @@ class Tags extends React.Component<Props, State> {
         .map(item => item.name);
     }
     this.setState({
-      dataSource: dataSource
+      dataSource
     });
   };
 

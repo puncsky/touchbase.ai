@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { RouterProps, withRouter } from "react-router";
 import { TContact2 } from "../../types/human";
 import { TOP_BAR_HEIGHT } from "../common/top-bar";
-import { actionCreateHuman } from "./human-reducer";
+import { actionCreateHuman as createHuman } from "./human-reducer";
 import { ProfileEditorForm } from "./profile-editor/profile-editor";
 
 export const EMPTY_HUMAN: TContact2 = {
@@ -66,12 +66,14 @@ export const ProfileCreatorContainer = withRouter(
     () => ({ human: EMPTY_HUMAN }),
     (dispatch: any) => ({
       actionCreateHuman: (payload: any, history: any) =>
-        dispatch(actionCreateHuman(payload, history))
+        dispatch(createHuman(payload, history))
     })
   )(
     class ProfileCreator extends Component<Props, State> {
       public props: Props;
+
       public state: State = { visible: false };
+
       public ref: any;
 
       formRef: React.RefObject<FormInstance> = React.createRef<FormInstance>();

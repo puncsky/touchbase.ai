@@ -12,7 +12,7 @@ import { TContact2 } from "../../../types/human";
 import { loadScript } from "../../common/load-script";
 import { MdEditor } from "../../common/md-editor";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";
-import { actionUpsertEvent } from "../human-reducer";
+import { actionUpsertEvent as upsertEvent } from "../human-reducer";
 
 type Props = {
   // container
@@ -40,12 +40,13 @@ export const UpsertEventContainer = connect(
   }),
   (dispatch: any) => ({
     actionUpsertEvent: (payload: any, contactId: string, isSelf: boolean) =>
-      dispatch(actionUpsertEvent(payload, contactId, isSelf))
+      dispatch(upsertEvent(payload, contactId, isSelf))
   })
 )(
   // @ts-ignore
   class Edit extends Component<Props, State> {
     public props: Props;
+
     public getSimpleMde: any = null;
 
     public state: State = {
@@ -64,9 +65,8 @@ export const UpsertEventContainer = connect(
     componentDidMount(): void {
       // after load css
       loadScript(
-        "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js",
+        "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"
         // tslint:disable-next-line: no-empty
-        () => {}
       );
     }
 
@@ -145,9 +145,9 @@ export const UpsertEventContainer = connect(
               </Form.Item>
               <MdEditor
                 initialValue={initialValue}
-                getSimpleMde={getSimpleMde =>
-                  (this.getSimpleMde = getSimpleMde)
-                }
+                getSimpleMde={getSimpleMde => {
+                  this.getSimpleMde = getSimpleMde;
+                }}
               />
               <Form.Item label={t("make_public")}>
                 <Form.Item name="public">

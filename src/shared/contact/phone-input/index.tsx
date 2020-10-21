@@ -11,7 +11,7 @@ import {
   guessCountry
 } from "./util";
 
-const Option = Select.Option;
+const { Option } = Select;
 
 const OptionContent = styled("div", {
   padding: "5px 12px",
@@ -42,6 +42,7 @@ interface DialCodeSelectProps {
 
 class DialCodeSelect extends React.Component<DialCodeSelectProps> {
   state: { open: boolean } = { open: false };
+
   render(): JSX.Element {
     return (
       <>
@@ -75,7 +76,7 @@ class DialCodeSelect extends React.Component<DialCodeSelectProps> {
                 key={iso2 + dialCode}
               >
                 <OptionContent className="option-content">
-                  {<span>{flag}</span>}
+                  <span>{flag}</span>
                   <CountryName>{name}</CountryName>
                   <span>(+{dialCode})</span>
                 </OptionContent>
@@ -103,6 +104,7 @@ interface PhoneInputState {
 
 class PhoneInput extends React.Component<PhoneInputProps, PhoneInputState> {
   defaultCountry: string;
+
   constructor(props: PhoneInputProps) {
     super(props);
     let value = "";

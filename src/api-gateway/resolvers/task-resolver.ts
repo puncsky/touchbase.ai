@@ -24,16 +24,22 @@ class DeleteTaskInput {
 class UpsertTaskInput {
   @Field(_ => String, { nullable: true })
   public id?: string;
+
   @Field(_ => String)
   public title: string;
+
   @Field(_ => Date, { nullable: true })
   public done: Date;
+
   @Field(_ => Date, { nullable: true })
   public delayed: Date;
+
   @Field(_ => String, { nullable: true })
   public rrule: string;
+
   @Field(_ => Date, { nullable: true })
   public due: Date;
+
   @Field(_ => [String], { nullable: true })
   public contacts: Array<string>;
 }
@@ -42,16 +48,22 @@ class UpsertTaskInput {
 class Task {
   @Field(_ => String)
   public id: string;
+
   @Field(_ => String)
   public title: string;
+
   @Field(_ => Date, { nullable: true })
   public done: Date;
+
   @Field(_ => [String], { nullable: true })
   public contacts: Array<string>;
+
   @Field(_ => String, { nullable: true })
   public rrule: string;
+
   @Field(_ => Date, { nullable: true })
   public due: Date;
+
   @Field(_ => String)
   public ownerId: string;
 }
@@ -80,7 +92,7 @@ export class TaskResolver {
   public async deleteTask(
     @Args() { id }: DeleteTaskInput,
     @Ctx() { model, userId }: Context
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     return model.task.deleteTask(id, userId);
   }
 
@@ -94,6 +106,10 @@ export class TaskResolver {
       ...upsertTaskInput,
       ownerId: userId
     });
+    if (!populated) {
+      return null;
+    }
+
     if (!upsertTaskInput.id) {
       return model.task.createTask(populated);
     }

@@ -32,14 +32,14 @@ import { Flex } from "../../common/flex";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";
 import { upload } from "../../common/upload";
 import { GET_CONTACTS } from "../../contacts/contacts-table";
-import { actionUpdateHuman } from "../human-reducer";
+import { actionUpdateHuman as uploadAction } from "../human-reducer";
 import PhoneInput from "../phone-input";
 import { formatToE164 } from "../phone-input/util";
 import DynamicFormItems from "./dynamic-form-items";
 import { ExperienceForm } from "./experience-form";
 import { ObservationForm } from "./observation-form";
 
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 
 export const formItemLayout = {
   labelCol: {
@@ -68,14 +68,16 @@ type State = { visible: boolean };
   () => ({}),
   (dispatch: any) => ({
     actionUpdateHuman: (payload: any, remoteOnly: boolean) =>
-      dispatch(actionUpdateHuman(payload, remoteOnly))
+      dispatch(uploadAction(payload, remoteOnly))
   })
 )
 class ProfileEditorContainer extends Component<Props, State> {
   public props: Props;
+
   public state: State = {
     visible: false
   };
+
   public ref: any;
 
   formRef: React.RefObject<FormInstance> = React.createRef<FormInstance>();
@@ -157,6 +159,7 @@ class ProfileEditorContainer extends Component<Props, State> {
 export { ProfileEditorContainer };
 export { ProfileEditorForm };
 
+// eslint-disable-next-line react/display-name
 const ProfileEditorForm = React.forwardRef(
   ({ human }: { human: TContact2 }, ref: any) => {
     return (
@@ -239,9 +242,8 @@ class PersonalForm extends Component<
             getValueFromEvent={event => {
               if (event.value === `+${event.callingCode}`) {
                 return "";
-              } else {
-                return event.value;
               }
+              return event.value;
             }}
             noStyle
           >

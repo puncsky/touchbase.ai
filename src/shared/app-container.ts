@@ -11,7 +11,7 @@ type Props = {
 export const AppContainer = withRouter(
   // @ts-ignore
   connect<Props>(
-    (state: object): Props => {
+    (state: Record<string, unknown>): Props => {
       return {
         // @ts-ignore
         googleTid: state.base.analytics.googleTid,

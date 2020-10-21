@@ -21,10 +21,12 @@ const NESTED_PII = ["emails", "phones"];
 const { privateKey, publicKey } = getLocalKeyPair();
 
 export class AdaptorDefault {
-  name: string = "default";
+  name = "default";
+
   forward(operation: Operation): Operation {
     return operation;
   }
+
   map(response: any): any {
     return response;
   }
@@ -104,7 +106,8 @@ function encryptContact(contact: any): any {
 }
 
 class AdaptorGeneral extends AdaptorDefault {
-  name: string = "";
+  name = "";
+
   forward(operation: Operation): Operation {
     let contact = dottie.get(operation, `variables.updateContactInput`) || {};
     contact = encryptContact(contact);
@@ -121,7 +124,8 @@ class AdaptorGeneral extends AdaptorDefault {
 }
 
 class AdaptorContacts extends AdaptorDefault {
-  name: string = "contacts";
+  name = "contacts";
+
   map(response: any): any {
     const contacts = dottie.get(response, `data.${this.name}`) || [];
     const dec = [];
@@ -135,21 +139,24 @@ class AdaptorContacts extends AdaptorDefault {
 }
 
 class AdaptorUpdateContact extends AdaptorGeneral {
-  name: string = "updateContact";
+  name = "updateContact";
+
   map(response: any): any {
     return response;
   }
 }
 
 class AdaptorContact extends AdaptorGeneral {
-  name: string = "contact";
+  name = "contact";
+
   forward(operation: Operation): Operation {
     return operation;
   }
 }
 
 class AdaptorCreateContact extends AdaptorGeneral {
-  name: string = "createContact";
+  name = "createContact";
+
   forward(operation: Operation): Operation {
     let contact = dottie.get(operation, `variables.createContactInput`) || {};
     contact = encryptContact(contact);
@@ -180,14 +187,16 @@ class AdaptorSearch extends AdaptorDefault {
     return search;
   }
 
-  name: string = "search";
+  name = "search";
+
   forward(operation: Operation): Operation {
     const search = operation.variables;
     search.hmacs = createHmacs(search.name, privateKey);
     return operation;
   }
+
   map(response: any): any {
-    const search = response.data.search;
+    const { search } = response.data;
     response.data.search = AdaptorSearch.decryptSearch(search);
     return response;
   }

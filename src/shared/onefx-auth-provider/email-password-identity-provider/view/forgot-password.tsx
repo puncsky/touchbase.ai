@@ -4,10 +4,10 @@ import { t } from "onefx/lib/iso-i18n";
 import Helmet from "onefx/lib/react-helmet";
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import { Component } from "react";
+import React, { Component } from "react";
 
 import Button from "antd/lib/button";
-import React from "react";
+
 import { Flex } from "../../../common/flex";
 import { fullOnPalm } from "../../../common/styles/style-media";
 import { ContentPadding } from "../../../common/styles/style-padding";
@@ -18,6 +18,7 @@ import { FormContainer } from "./form-container";
 import { StyleLink } from "./sign-up";
 
 const FORGOT_PASSWORD_FORM = "forgot_password";
+type Props = Record<string, unknown>;
 
 type State = {
   errorEmail: string;
@@ -26,10 +27,10 @@ type State = {
   disableButton: boolean;
 };
 
-export class ForgotPassword extends Component<{}, State> {
-  public email: string = "";
+export class ForgotPassword extends Component<Props, State> {
+  public email = "";
 
-  constructor(props: {}) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       errorEmail: "",
@@ -60,10 +61,8 @@ export class ForgotPassword extends Component<{}, State> {
       .then(r => {
         if (r.data.ok) {
           this.setState({ sent: true });
-
-          return;
         } else if (r.data.error) {
-          const error = r.data.error;
+          const { error } = r.data;
           const errorState = {
             valueEmail: email,
             errorEmail: "",

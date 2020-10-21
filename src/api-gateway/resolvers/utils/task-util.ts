@@ -3,9 +3,9 @@ import { TTask } from "../../../types/task";
 
 const EARLEST = new Date(-8640000000000000);
 
-export function populateTask(task: TTask | null): any {
+export function populateTask(task: TTask | null): TTask | null {
   if (!task) {
-    return;
+    return null;
   }
 
   if (task.rrule) {

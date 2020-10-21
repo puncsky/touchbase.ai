@@ -1,10 +1,12 @@
 import config from "config";
+import koa from "koa";
 import { Server } from "onefx";
 import { logger } from "onefx/lib/integrated-gateways/logger";
 import { MyContext } from "../../types/global";
 
-export function baseStateMiddleware(_: Server): Function {
-  return async (ctx: MyContext, next: Function) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function baseStateMiddleware(_: Server) {
+  return async (ctx: MyContext, next: koa.Next): Promise<void> => {
     let manifest = {};
     try {
       manifest = require("../../../dist/asset-manifest.json");

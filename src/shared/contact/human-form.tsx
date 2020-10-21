@@ -115,7 +115,7 @@ class HumanForm extends Component<Props, State> {
           prefix: "1"
         }}
       >
-        {/****************************************/}
+        {/** ************************************* */}
         <Divider orientation="left">Contact Card</Divider>
 
         <Form.Item {...formItemLayout} label="avatarUrl" name="avatarUrl">
@@ -181,7 +181,7 @@ class HumanForm extends Component<Props, State> {
           <DatePicker />
         </Form.Item>
 
-        {/****************************************/}
+        {/** ************************************* */}
         <Divider orientation="left">Bio</Divider>
         <Form.Item {...formItemLayout} label="blurb" name="blurb">
           <Input />
@@ -193,7 +193,7 @@ class HumanForm extends Component<Props, State> {
           <Input />
         </Form.Item>
 
-        {/****************************************/}
+        {/** ************************************* */}
         <Divider orientation="left">Personalities</Divider>
         <Form.Item
           {...formItemLayout}
@@ -240,7 +240,7 @@ class HumanForm extends Component<Props, State> {
         <Form.Item {...formItemLayout} label="Out-trust" name="outboundTrust">
           <Rate />
         </Form.Item>
-        {/****************************************/}
+        {/** ************************************* */}
         <Divider orientation="left">How do we meet?</Divider>
 
         <Form.Item
@@ -256,7 +256,7 @@ class HumanForm extends Component<Props, State> {
           <Input />
         </Form.Item>
 
-        {/****************************************/}
+        {/** ************************************* */}
         <Divider orientation="left">Social</Divider>
 
         <Form.Item {...formItemLayout} label="linkedin" name="linkedin">

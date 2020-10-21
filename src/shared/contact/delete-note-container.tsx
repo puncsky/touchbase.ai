@@ -100,6 +100,7 @@ export const DeleteNotePopover = withRouter(
                             this.setState({ visible: false });
                             notification.success({
                               message: t("field.delete_note.deleted", {
+                                // eslint-disable-next-line no-restricted-globals
                                 name
                               })
                             });

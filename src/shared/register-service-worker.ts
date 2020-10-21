@@ -89,9 +89,8 @@ async function isServiceWorkerValid(swUrl: string): Promise<boolean> {
       await registration.unregister();
       window.location.reload();
       return false;
-    } else {
-      return true;
     }
+    return true;
   } catch (e) {
     window.console.log(
       "No internet connection found. App is running in offline mode."

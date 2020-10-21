@@ -1,9 +1,9 @@
-import { TPersonalNote } from "../types/contact";
-
 import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
+import koa from "koa";
+import { TPersonalNote } from "../types/contact";
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 type TPersonalNoteDoc = mongoose.Document &
   TPersonalNote & {
@@ -15,7 +15,7 @@ type TPersonalNoteDoc = mongoose.Document &
 export class PersonalNoteModel {
   public Model: mongoose.Model<TPersonalNoteDoc>;
 
-  constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
+  constructor({ mongoose: instance }: { mongoose: mongoose.Mongoose }) {
     const schema = new Schema({
       ownerId: { type: "ObjectId", ref: "User" },
       relatedHumans: [{ type: "ObjectId", ref: "Contact" }],
@@ -32,18 +32,18 @@ export class PersonalNoteModel {
     schema.index({ ownerId: 1 });
     schema.index({ relatedHumans: 1 });
 
-    schema.pre("save", function onSave(next: Function): void {
+    schema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    schema.pre("find", function onFind(next: Function): void {
+    schema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = mongoose.model("personal_note", schema);
+    this.Model = instance.model("personal_note", schema);
   }
 
   public async getById(id: string): Promise<TPersonalNoteDoc | null> {
@@ -54,7 +54,7 @@ export class PersonalNoteModel {
     ownerId: string,
     id: string | null
   ): Promise<Array<{ date: string; count: number }>> {
-    const match: any = { ownerId };
+    const match: Record<string, unknown> = { ownerId };
     if (id) {
       match.relatedHumans = new ObjectId(id);
     }
@@ -179,7 +179,7 @@ export class PersonalNoteModel {
   }: {
     _id: string;
     ownerId: string;
-  }): Promise<Boolean> {
+  }): Promise<boolean> {
     const resp = await this.Model.deleteOne({ _id, ownerId });
     return Boolean(resp && resp.ok);
   }
@@ -188,7 +188,7 @@ export class PersonalNoteModel {
     ownerId
   }: {
     ownerId: string;
-  }): Promise<Boolean> {
+  }): Promise<boolean> {
     const resp = await this.Model.deleteMany({ ownerId });
     return Boolean(resp && resp.ok);
   }

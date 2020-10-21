@@ -18,16 +18,21 @@ import { getExpireEpochDays } from "./utils/expire-epoch";
 
 export class OnefxAuth {
   public config: AuthConfig;
+
   public server: Server;
+
   public user: UserModel;
+
   public jwt: JwtModel;
+
   public emailToken: EmailTokenModel;
+
   public mailgun: Mailgun;
 
   constructor(server: MyServer, config: AuthConfig) {
     this.config = config || authConfig;
     this.server = server;
-    const mongoose = server.gateways.mongoose;
+    const { mongoose } = server.gateways;
     this.user = new UserModel({ mongoose });
     this.jwt = new JwtModel({
       mongoose,
@@ -48,7 +53,7 @@ export class OnefxAuth {
   public async sendResetPasswordLink(
     userId: string,
     email: string,
-    t: Function,
+    t: (a: string) => string,
     origin: string
   ): Promise<void> {
     const { token } = await this.emailToken.newAndSave(userId);
@@ -73,24 +78,32 @@ export class OnefxAuth {
     });
   }
 
-  public authRequired = async (ctx: MyContext, next: Function) => {
-    await this.authOptionalContinue(ctx, () => undefined);
-    const userId = ctx.state.userId;
+  public authRequired = async (
+    ctx: MyContext,
+    next: koa.Next
+  ): Promise<void> => {
+    await this.authOptionalContinue(ctx, async () => undefined);
+    const { userId } = ctx.state;
     if (!userId) {
       logger.debug("user is not authenticated but auth is required");
-      return ctx.redirect(
+      ctx.redirect(
         `${this.config.loginUrl}?next=${encodeURIComponent(ctx.url)}`
       );
+      return;
     }
 
     logger.debug(`user is authenticated ${userId}`);
     await next();
   };
 
-  public authOptionalContinue = async (ctx: MyContext, next: Function) => {
+  public authOptionalContinue = async (
+    ctx: MyContext,
+    next: koa.Next
+  ): Promise<void> => {
     const token = this.tokenFromCtx(ctx);
     if (!token) {
-      return next();
+      next();
+      return;
     }
 
     ctx.state.userId = await this.jwt.verify(token);
@@ -98,7 +111,7 @@ export class OnefxAuth {
     await next();
   };
 
-  public logout = async (ctx: MyContext, _: Function) => {
+  public logout = async (ctx: MyContext): Promise<void> => {
     ctx.cookies.set(this.config.cookieName, "", this.config.cookieOpts);
     const token = this.tokenFromCtx(ctx);
     if (token) {
@@ -107,7 +120,7 @@ export class OnefxAuth {
     ctx.redirect(allowedLogoutNext(ctx.query.next));
   };
 
-  public postAuthentication = async (ctx: MyContext, _: Function) => {
+  public postAuthentication = async (ctx: MyContext): Promise<void> => {
     if (!ctx.state.userId) {
       return;
     }
@@ -121,7 +134,7 @@ export class OnefxAuth {
       ctx.query.next || (ctx.request.body && ctx.request.body.next)
     );
     if (ctx.is("json")) {
-      const isMobileWebView = ctx.session.isMobileWebView;
+      const { isMobileWebView } = ctx.session;
       ctx.body = {
         shouldRedirect: true,
         ok: true,

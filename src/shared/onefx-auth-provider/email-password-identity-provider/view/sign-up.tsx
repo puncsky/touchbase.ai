@@ -72,13 +72,14 @@ export class SignUpInner extends Component<Props, State> {
     });
     if (r.data.ok && r.data.shouldRedirect && !r.data.authToken) {
       await postSignUpLocal(password);
-      return (window.location.href = r.data.next);
-    } else if (r.data.ok && r.data.authToken) {
+      window.location.href = r.data.next;
+    }
+    if (r.data.ok && r.data.authToken) {
       // web view login in
       // @ts-ignore
       window.postMessage(JSON.stringify({ authToken: r.data.authToken }));
     } else if (r.data.error) {
-      const error = r.data.error;
+      const { error } = r.data;
       const errorState = {
         valueEmail: email,
         errorEmail: "",

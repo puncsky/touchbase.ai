@@ -1,7 +1,6 @@
 // @flow
 import { TContact } from "../../types/contact";
-import { TAction } from "../contact/human-reducer";
-import { CREATE_HUMAN } from "../contact/human-reducer";
+import { TAction, CREATE_HUMAN } from "../contact/human-reducer";
 
 // tslint:disable-next-line:no-any
 export function humansReducer(

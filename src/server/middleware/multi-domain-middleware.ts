@@ -1,8 +1,9 @@
 import { Server } from "onefx";
 import { MyContext } from "../../types/global";
 
-export function multiDomainMiddleware(_: Server): Function {
-  return async (ctx: MyContext, next: Function) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function multiDomainMiddleware(_: Server) {
+  return async (ctx: MyContext, next: () => Promise<void>): Promise<void> => {
     if (
       ctx.origin.endsWith("guanxi.io") ||
       ctx.header["x-app-id"] === "guanxi-io"

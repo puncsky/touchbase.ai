@@ -54,8 +54,7 @@ function FromNow({ dateString }: { dateString: Date }): JSX.Element {
   return (
     <div>
       <span style={fonts.h4}>{years} </span>
-      <sup style={{ fontSize: "12px" }}>{months}</sup>
-      {"/"}
+      <sup style={{ fontSize: "12px" }}>{months}</sup>/
       <sub style={{ fontSize: "12px" }}>12</sub>
     </div>
   );

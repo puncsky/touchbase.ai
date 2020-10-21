@@ -38,11 +38,7 @@ export function Flex({
     display: "flex",
     "-webkit-box-flex": 1,
     flexDirection: column ? "column" : "row",
-    justifyContent: justifyContent
-      ? justifyContent
-      : center
-      ? "center"
-      : "space-between",
+    justifyContent: justifyContent || (center ? "center" : "space-between"),
     "-webkit-justify-content": center ? "center" : "space-between",
     boxSizing: "border-box",
     flexWrap: nowrap ? "nowrap" : "wrap",

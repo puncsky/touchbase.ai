@@ -3,10 +3,10 @@ import { t } from "onefx/lib/iso-i18n";
 import Helmet from "onefx/lib/react-helmet";
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import { Component } from "react";
+import React, { Component } from "react";
 
 import Button from "antd/lib/button";
-import React from "react";
+
 import { connect } from "react-redux";
 import { Flex } from "../../../common/flex";
 import { colors } from "../../../common/styles/style-color";
@@ -93,12 +93,12 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
           disableButton: false
         });
         if (r.data.shouldRedirect) {
-          window.setInterval(() => (window.location.href = r.data.next), 3000);
-
-          return;
+          window.setInterval(() => {
+            window.location.href = r.data.next;
+          }, 3000);
         }
       } else if (r.data.error) {
-        const error = r.data.error;
+        const { error } = r.data;
         const errorState = {
           valuePassword: password,
           valueNewPassword: newPassword,
@@ -135,7 +135,7 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
               <Flex width="100%">
                 <span>{message}</span>
                 <i
-                  role={"button"}
+                  role="button"
                   style={{ color: colors.white, cursor: "pointer" }}
                   onClick={() => this.setState({ message: "" })}
                   className="fas fa-times"
@@ -145,7 +145,7 @@ export const ResetPasswordContainer = connect<ReduxProps>(state => ({
           )}
           {token ? (
             <input
-              placeholder={""}
+              placeholder=""
               name="token"
               hidden={true}
               defaultValue={token}

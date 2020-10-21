@@ -33,7 +33,7 @@ export function NoteFetcherInner(
             {/*
             // @ts-ignore */}
             <Article
-              title={"Shared Note"}
+              title="Shared Note"
               contentHTML={mdit.render(data.note.content)}
             />
           </>

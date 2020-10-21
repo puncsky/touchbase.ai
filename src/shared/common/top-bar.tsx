@@ -119,14 +119,14 @@ export const TopBar = connect((state: any) => ({
 
     public render(): JSX.Element {
       const { loggedIn } = this.props;
-      const displayMobileMenu = this.state.displayMobileMenu;
+      const { displayMobileMenu } = this.state;
 
       return (
         <div>
           <Bar>
             <Flex>
               {loggedIn ? (
-                <LinkLogoWrapper to={`/me/`}>
+                <LinkLogoWrapper to="/me/">
                   <Icon
                     width={`${TOP_BAR_HEIGHT}px`}
                     url={assetURL("./favicon.svg")}
@@ -215,7 +215,7 @@ function HamburgerBtn({
 }: {
   displayMobileMenu: boolean;
   children: Array<JSX.Element> | JSX.Element;
-  onClick: Function;
+  onClick: (e: Event) => unknown;
 }): JSX.Element {
   const Styled = styled("div", {
     ":hover": {

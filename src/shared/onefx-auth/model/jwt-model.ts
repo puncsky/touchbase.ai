@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { promisify } from "util";
-
-const Schema = mongoose.Schema;
 import { baseModel } from "./base-model";
+
+const { Schema } = mongoose;
 
 const sign = promisify(jwt.sign);
 const verify = promisify(jwt.verify);
@@ -33,9 +33,10 @@ type AuthJwtModel = mongoose.Document &
 
 export class JwtModel {
   public secret: string;
+
   public Model: mongoose.Model<AuthJwtModel>;
 
-  constructor({ secret, mongoose, expDays }: Opts) {
+  constructor({ secret, mongoose: instance, expDays }: Opts) {
     this.secret = secret;
 
     const JwtSchema = new Schema({
@@ -53,18 +54,18 @@ export class JwtModel {
     JwtSchema.index({ userId: 1 });
 
     JwtSchema.plugin(baseModel);
-    JwtSchema.pre("save", function onSave(next: Function): void {
+    JwtSchema.pre("save", function onSave(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    JwtSchema.pre("find", function onFind(next: Function): void {
+    JwtSchema.pre("find", function onFind(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = mongoose.model("Jwt", JwtSchema);
+    this.Model = instance.model("Jwt", JwtSchema);
   }
 
   public async create(userId: string): Promise<string> {
@@ -87,7 +88,7 @@ export class JwtModel {
     try {
       decoded = (await verify(token, this.secret)) as AuthJwt;
     } catch (e) {
-      return undefined;
+      return;
     }
     await this.Model.deleteOne({ _id: decoded.jti });
   }

@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+import koa from "koa";
 import tools from "../utils/tools";
 import { baseModel } from "./base-model";
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 type TNewUser = {
   password: string;
@@ -33,7 +34,7 @@ export type TUserDoc = mongoose.Document & TUser;
 export class UserModel {
   public Model: mongoose.Model<TUserDoc>;
 
-  constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
+  constructor({ mongoose: instance }: { mongoose: mongoose.Mongoose }) {
     const UserSchema = new Schema({
       password: { type: String },
       email: { type: String },
@@ -76,18 +77,18 @@ export class UserModel {
     UserSchema.index({ did: 1 }, { unique: true, sparse: true });
 
     UserSchema.plugin(baseModel);
-    UserSchema.pre("save", function onSave(next: Function): void {
+    UserSchema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-    UserSchema.pre("find", function onFind(next: Function): void {
+    UserSchema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = mongoose.model("User", UserSchema);
+    this.Model = instance.model("User", UserSchema);
   }
 
   public async getById(id: string): Promise<TUser | null> {

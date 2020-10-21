@@ -2,7 +2,6 @@ import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-mod
 import { AgGridReact } from "@ag-grid-community/react";
 
 import gql from "graphql-tag";
-import isBrowser = require("is-browser");
 // @ts-ignore
 import omitDeep from "omit-deep-lodash";
 import { assetURL } from "onefx/lib/asset-url";
@@ -18,6 +17,8 @@ import { Preloader } from "../common/preloader";
 import { colors } from "../common/styles/style-color";
 import { ContentPadding } from "../common/styles/style-padding";
 import { actionUpdateHuman } from "../contact/human-reducer";
+// eslint-disable-next-line import/order
+import isBrowser = require("is-browser");
 
 const PUSH_LINK_CLS = "push-link";
 
@@ -254,6 +255,7 @@ export const ContactsTableContainer = withRouter(
                       columnDefs={columnDefs}
                       rowData={rows}
                       onCellValueChanged={this.onCellValueChanged}
+                      // @ts-ignore
                       modules={[ClientSideRowModelModule]}
                       defaultColDef={{ editable: true }}
                     />

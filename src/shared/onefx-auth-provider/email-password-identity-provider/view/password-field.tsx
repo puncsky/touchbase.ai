@@ -8,7 +8,7 @@ import { TextInput } from "./text-input";
 type Props = {
   defaultValue: string;
   error: string;
-  onChange?(event: any): void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export function PasswordField({

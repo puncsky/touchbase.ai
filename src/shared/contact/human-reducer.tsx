@@ -1,8 +1,8 @@
 // @flow
 import axios from "axios";
 import gql from "graphql-tag";
-import { TInteraction } from "../../types/human";
-import { TContact2 } from "../../types/human";
+import { TInteraction, TContact2 } from "../../types/human";
+
 import { apolloClient } from "../common/apollo-client";
 import { csrfToken } from "../common/browser-state";
 import { GET_CONTACTS } from "../contacts/contacts-table";
@@ -66,7 +66,7 @@ const UPSERT_INTERACTION = gql`
 export function actionUpsertEvent(
   payload: any,
   contactId: string,
-  isSelf: boolean = true
+  isSelf = true
 ): any {
   return (dispatch: any) => {
     apolloClient
@@ -102,7 +102,7 @@ export function actionUpsertEvent(
                   __typename: "InteractionConnection"
                 }
               },
-              variables: variables
+              variables
             });
             return;
           }
@@ -137,7 +137,7 @@ export function actionUpsertEvent(
                 __typename: "InteractionConnection"
               }
             },
-            variables: variables
+            variables
           });
         }
       })
@@ -176,10 +176,7 @@ const UPDATE_CONTACT = gql`
   }
 `;
 
-export function actionUpdateHuman(
-  payload: any,
-  remoteOnly: boolean = false
-): any {
+export function actionUpdateHuman(payload: any, remoteOnly = false): any {
   return (dispatch: any) => {
     if (!remoteOnly) {
       dispatch({

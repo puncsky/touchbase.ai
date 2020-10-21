@@ -1,6 +1,6 @@
 self.addEventListener("push", (event) => {
   const icon = "/favicon.png";
-  let data = event.data;
+  let {data} = event;
   if (event.data) {
     data = data.json();
 
@@ -8,7 +8,7 @@ self.addEventListener("push", (event) => {
       // @ts-ignore
       self.registration.showNotification(data.text, {
         body: data.body,
-        icon: icon,
+        icon,
         data: {
           url: data.url
         }

@@ -2,7 +2,7 @@ import { State, Context } from "onefx/lib/types";
 import koa from "koa";
 
 type ReduxState = {
-  base: object;
+  base: Record<string, unknown>;
 };
 
-type MyContext = koa.ParameterizedContext<State, Context | any>;
+type MyContext = koa.ParameterizedContext<State, Context>;

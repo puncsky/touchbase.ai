@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import config from "config";
 import { logger } from "onefx/lib/integrated-gateways/logger";
 import { t } from "onefx/lib/iso-i18n";

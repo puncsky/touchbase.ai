@@ -1,7 +1,7 @@
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import { Component, FormEvent } from "react";
-import React from "react";
+import React, { Component, FormEvent } from "react";
+
 import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { Fa } from "./fa";
@@ -23,7 +23,7 @@ type State = {
   displayTranslationMenu: boolean;
 };
 
-class LanguageSwitcher extends Component<{}, State> {
+class LanguageSwitcher extends Component<Record<string, undefined>, State> {
   public state: State = {
     displayTranslationMenu: false
   };
@@ -52,14 +52,14 @@ class LanguageSwitcher extends Component<{}, State> {
 
   public googleTranslateElementInit = () => {
     // @ts-ignore
-    const google = window.google;
+    const { google } = window;
     if (google) {
       return new google.translate.TranslateElement(
         { autoDisplay: false },
         "google_translate_element"
       );
     }
-    return undefined;
+    return null;
   };
 
   public render(): JSX.Element {
@@ -120,7 +120,7 @@ class LanguageSwitcher extends Component<{}, State> {
       <Wrapper>
         <div>
           {/*
-          // @ts-ignore*/}
+          // @ts-ignore */}
           <LanguageSwitchButton
             onClick={() =>
               this.setState({

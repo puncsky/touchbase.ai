@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { TTag, TTagTemplate } from "../types/tag";
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 const TagTemplateSchema = new Schema({
   name: { type: String },
@@ -38,9 +38,10 @@ type TTagTemplateDoc = mongoose.Document &
 
 export class TagModel {
   public TagModel: mongoose.Model<TTagDoc>;
+
   public TagTemplateModel: mongoose.Model<TTagTemplateDoc>;
 
-  constructor({ mongoose }: { mongoose: mongoose.Mongoose }) {
+  constructor({ mongoose: instance }: { mongoose: mongoose.Mongoose }) {
     TagSchema.index({ contactId: 1 });
     TagSchema.index({ templateId: 1 });
     TagSchema.virtual("id").get(function onId(): void {
@@ -54,8 +55,8 @@ export class TagModel {
       return this._id;
     });
 
-    this.TagModel = mongoose.model("tags_by_contacts", TagSchema);
-    this.TagTemplateModel = mongoose.model("tag_templates", TagTemplateSchema);
+    this.TagModel = instance.model("tags_by_contacts", TagSchema);
+    this.TagTemplateModel = instance.model("tag_templates", TagTemplateSchema);
   }
 
   public async createTemplate(
@@ -78,12 +79,12 @@ export class TagModel {
     return this.TagModel.find({ contactId });
   }
 
-  public async deleteTag(id: string): Promise<Boolean> {
+  public async deleteTag(id: string): Promise<boolean> {
     const resp = await this.TagModel.deleteOne({ _id: id });
     return Boolean(resp && resp.ok);
   }
 
-  public async deleteTemplate(id: string): Promise<Boolean> {
+  public async deleteTemplate(id: string): Promise<boolean> {
     const resp = await this.TagTemplateModel.deleteOne({ _id: id });
     return Boolean(resp && resp.ok);
   }

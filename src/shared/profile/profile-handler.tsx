@@ -10,7 +10,7 @@ export function setProfileHandler(server: Server): void {
     "/profile/*",
     // @ts-ignore
     server.auth.authRequired,
-    async (ctx: MyContext, _: Function) => {
+    async (ctx: MyContext) => {
       ctx.setState("base.userId", ctx.state.userId);
       // @ts-ignore
       ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
