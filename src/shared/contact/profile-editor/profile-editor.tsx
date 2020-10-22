@@ -27,6 +27,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { RouterProps, withRouter } from "react-router";
 import { styled } from "styletron-react";
+// @ts-ignore
 import piexifjs from "piexifjs";
 import { TContact2 } from "../../../types/human";
 import { CommonMargin } from "../../common/common-margin";
@@ -40,7 +41,6 @@ import { formatToE164 } from "../phone-input/util";
 import DynamicFormItems from "./dynamic-form-items";
 import { ExperienceForm } from "./experience-form";
 import { ObservationForm } from "./observation-form";
-// @ts-ignore
 
 const { TabPane } = Tabs;
 
