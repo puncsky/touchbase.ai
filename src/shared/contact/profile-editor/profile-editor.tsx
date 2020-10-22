@@ -27,6 +27,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { RouterProps, withRouter } from "react-router";
 import { styled } from "styletron-react";
+import piexifjs from "piexifjs";
 import { TContact2 } from "../../../types/human";
 import { CommonMargin } from "../../common/common-margin";
 import { Flex } from "../../common/flex";
@@ -40,11 +41,10 @@ import DynamicFormItems from "./dynamic-form-items";
 import { ExperienceForm } from "./experience-form";
 import { ObservationForm } from "./observation-form";
 // @ts-ignore
-import piexifjs from "piexifjs";
 
 const { TabPane } = Tabs;
 
-const fileTypes = [".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff", ".gif"];
+const fileTypes = ["jpg", "jpeg", "png", "bmp", "tif", "tiff", "gif"];
 
 export const formItemLayout = {
   labelCol: {
@@ -223,7 +223,7 @@ class PersonalForm extends Component<
     formRef: any;
   },
   PersonalFormState
-  > {
+> {
   state: PersonalFormState = { avatarUrl: "" };
 
   renderPhoneNumbers(): JSX.Element | null {
@@ -259,35 +259,35 @@ class PersonalForm extends Component<
     );
   }
 
-  actionTryRemoveExif = async (file: File, cb: Function) => {
+  actionTryRemoveExif = async (file: File, cb: any) => {
     if (file && (file.type.includes("jpg") || file.type.includes("jpeg"))) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = async (e) => {
+      reader.onload = async e => {
         const base64 = e.target?.result;
         const newFile = piexifjs.remove(base64);
-        let fileArr = newFile.split(',');
-        let mime = fileArr[0].match(/:(.*?);/)[1]
-        let bstr = atob(fileArr[1])
-        let length = bstr.length;
-        let fileBits = new Uint8Array(length);
-        while (length--) {
+        const fileArr = newFile.split(",");
+        const mime = fileArr[0].match(/:(.*?);/)[1];
+        const bstr = atob(fileArr[1]);
+        const { length } = bstr;
+        const fileBits = new Uint8Array(length);
+        while (length - 1 > 0) {
           fileBits[length] = bstr.charCodeAt(length);
         }
-        await cb(new File([fileBits], file.name, { type: mime }))
-      }
+        await cb(new File([fileBits], file.name, { type: mime }));
+      };
     } else {
       await cb(file);
     }
-  }
+  };
 
   actionCheckFileType = (file: File) => {
-    const ext_name = file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 1);
-    if (!fileTypes.includes(ext_name)) {
+    const extName = file.name.split(".").slice(-1)[0];
+    if (extName && !fileTypes.includes(extName)) {
       return Promise.reject(message.error(t("profile_editor.upload.fileType")));
     }
     return Promise.resolve();
-  }
+  };
 
   actionBeforeUpload = async ({ file, onSuccess }: any) => {
     const { formRef } = this.props;
@@ -302,7 +302,8 @@ class PersonalForm extends Component<
         this.setState({ [fieldName]: data.secure_url });
         return Promise.resolve(onSuccess(data, newFile));
       }
-    })
+      return Promise.reject();
+    });
   };
 
   render(): JSX.Element | null {
@@ -345,11 +346,11 @@ class PersonalForm extends Component<
                 src={this.state.avatarUrl || human.avatarUrl}
               />
             ) : (
-                <Button>
-                  <UploadOutlined />
-                  <span>{t("profile_editor.upload")}</span>
-                </Button>
-              )}
+              <Button>
+                <UploadOutlined />
+                <span>{t("profile_editor.upload")}</span>
+              </Button>
+            )}
           </Upload>
         </Form.Item>
 
@@ -403,7 +404,7 @@ const DeleteContactPopover = withRouter(
   class DeleteContactPopoverInner extends Component<
     { name: string; contactId: string } & RouterProps,
     { visible: boolean }
-    > {
+  > {
     state: { visible: boolean } = { visible: false };
 
     render(): JSX.Element {

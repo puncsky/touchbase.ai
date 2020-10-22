@@ -149,9 +149,9 @@ const encodeHtmlSource = (source: string) => {
   source = source.replace(/</g, "&lt;");
   source = source.replace(/>/g, "&gt;");
   source = source.replace(/ /g, "&nbsp;");
-  source = source.replace(/\'/g, "&#39;");
-  source = source.replace(/\"/g, "&quot;");
-  
+  source = source.replace(/'/g, "&#39;");
+  source = source.replace(/"/g, "&quot;");
+
   return source;
 };
 
@@ -216,7 +216,9 @@ export const ContactsTableContainer = withRouter(
               data: { _id: string };
             }) =>
               `<span>
-                <a class=${PUSH_LINK_CLS} style="color: ${colors.primary};" href=${`"/${data._id}/"`} />
+                <a class=${PUSH_LINK_CLS} style="color: ${
+                colors.primary
+              };" href=${`"/${data._id}/"`} />
                 ${encodeHtmlSource(value)}
               </span>`
           },
