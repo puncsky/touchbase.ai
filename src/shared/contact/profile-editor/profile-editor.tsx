@@ -269,10 +269,11 @@ class PersonalForm extends Component<
         const fileArr = newFile.split(",");
         const mime = fileArr[0].match(/:(.*?);/)[1];
         const bstr = atob(fileArr[1]);
-        const { length } = bstr;
+        let { length } = bstr;
         const fileBits = new Uint8Array(length);
-        while (length - 1 > 0) {
+        while (length >= 0) {
           fileBits[length] = bstr.charCodeAt(length);
+          length -= 1;
         }
         await cb(new File([fileBits], file.name, { type: mime }));
       };
