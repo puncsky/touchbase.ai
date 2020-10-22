@@ -110,7 +110,8 @@ interface IProps extends RouteComponentProps<any> {
   isSelf: boolean;
 }
 
-export const ContactDetailContainer = withRouter<IProps, any>(
+// @ts-ignore
+export const ContactDetailContainer = withRouter<IProps>(
   // @ts-ignore
   connect((state: { base: { ownerHumanId: string } }) => ({
     ownerHumanId: state.base.ownerHumanId
