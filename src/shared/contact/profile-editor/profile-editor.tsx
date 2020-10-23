@@ -27,8 +27,6 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { RouterProps, withRouter } from "react-router";
 import { styled } from "styletron-react";
-// @ts-ignore
-import piexifjs from "piexifjs";
 import { TContact2 } from "../../../types/human";
 import { CommonMargin } from "../../common/common-margin";
 import { Flex } from "../../common/flex";
@@ -259,29 +257,6 @@ class PersonalForm extends Component<
     );
   }
 
-  actionTryRemoveExif = async (file: File, cb: any) => {
-    if (file && (file.type.includes("jpg") || file.type.includes("jpeg"))) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = async e => {
-        const base64 = e.target?.result;
-        const newFile = piexifjs.remove(base64);
-        const fileArr = newFile.split(",");
-        const mime = fileArr[0].match(/:(.*?);/)[1];
-        const bstr = atob(fileArr[1]);
-        let { length } = bstr;
-        const fileBits = new Uint8Array(length);
-        while (length >= 0) {
-          fileBits[length] = bstr.charCodeAt(length);
-          length -= 1;
-        }
-        await cb(new File([fileBits], file.name, { type: mime }));
-      };
-    } else {
-      await cb(file);
-    }
-  };
-
   actionCheckFileType = (file: File) => {
     const extName = file.name.split(".").slice(-1)[0];
     if (extName && !fileTypes.includes(extName)) {
@@ -290,21 +265,19 @@ class PersonalForm extends Component<
     return Promise.resolve();
   };
 
-  actionBeforeUpload = async ({ file, onSuccess }: any) => {
+  actionUploadImage = async ({ file, onSuccess }: any) => {
     const { formRef } = this.props;
 
     const fieldName = "avatarUrl";
-    return this.actionTryRemoveExif(file, async (newFile: File) => {
-      const data = await upload(newFile, fieldName);
-      if (formRef && formRef.current) {
-        formRef.current.setFieldsValue({
-          [fieldName]: data.secure_url
-        });
-        this.setState({ [fieldName]: data.secure_url });
-        return Promise.resolve(onSuccess(data, newFile));
-      }
-      return Promise.reject();
-    });
+    const data = await upload(file, fieldName);
+    if (formRef && formRef.current) {
+      formRef.current.setFieldsValue({
+        [fieldName]: data.secure_url
+      });
+      this.setState({ [fieldName]: data.secure_url });
+      return Promise.resolve(onSuccess(data, file));
+    }
+    return Promise.reject();
   };
 
   render(): JSX.Element | null {
@@ -338,7 +311,7 @@ class PersonalForm extends Component<
           </Form.Item>
           <Upload
             beforeUpload={this.actionCheckFileType}
-            customRequest={this.actionBeforeUpload}
+            customRequest={this.actionUploadImage}
           >
             {human.avatarUrl ? (
               <img
