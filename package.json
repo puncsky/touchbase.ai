@@ -203,7 +203,7 @@
     "web-push": "^3.4.3"
   },
   "engines": {
-    "node": "10.19.0",
+    "node": "10.23.0",
     "npm": "6.14.2"
   },
   "private": true
