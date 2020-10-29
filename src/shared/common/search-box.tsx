@@ -52,8 +52,8 @@ export const SearchBox = withRouter(
       this.setState({ searchResults: data.search });
     };
 
-    public handleSelect = (value: any) => {
-      this.props.history.push(value);
+    public handleSelect = (_: any, option: any) => {
+      this.props.history.push(option.key);
     };
 
     public inputRef: any;
@@ -85,7 +85,7 @@ export const SearchBox = withRouter(
     public render(): JSX.Element {
       const { searchResults } = this.state;
       const children = searchResults.map(res => (
-        <Option key={res.path} value={res.path}>
+        <Option key={res.path} value={res.name}>
           {res.name}
         </Option>
       ));
