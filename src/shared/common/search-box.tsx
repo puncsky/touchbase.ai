@@ -1,5 +1,6 @@
 import { SearchOutlined } from "@ant-design/icons";
 import AutoComplete from "antd/lib/auto-complete";
+import { OptionData, OptionGroupData } from "rc-select/lib/interface";
 import Input from "antd/lib/input";
 import gql from "graphql-tag";
 import { assetURL } from "onefx/lib/asset-url";
@@ -52,8 +53,10 @@ export const SearchBox = withRouter(
       this.setState({ searchResults: data.search });
     };
 
-    public handleSelect = (_: string, option: { key: string }) => {
-      this.props.history.push(option.key);
+    public handleSelect = (_: string, option: OptionData | OptionGroupData) => {
+      if (option.key) {
+        this.props.history.push(`${option.key}`);
+      }
     };
 
     public inputRef: any;
