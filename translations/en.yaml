@@ -250,6 +250,8 @@ profile_editor.pii: Personal
 
 profile_editor.upload: Click to Upload
 
+profile_editor.upload.fileType: Please select a picture file
+
 refiner: Refiner
 
 sensing: Sensing

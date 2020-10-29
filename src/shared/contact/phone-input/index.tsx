@@ -76,7 +76,7 @@ class DialCodeSelect extends React.Component<DialCodeSelectProps> {
                 key={iso2 + dialCode}
               >
                 <OptionContent className="option-content">
-                  <span>{flag}</span>
+                  <span>{flag}&nbsp;</span>
                   <CountryName>{name}</CountryName>
                   <span>(+{dialCode})</span>
                 </OptionContent>

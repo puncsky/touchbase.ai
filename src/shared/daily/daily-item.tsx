@@ -34,6 +34,7 @@ type GxArticle = {
   short: string;
 };
 
+// @ts-ignore
 export const DailyItem = withRouter<RouteComponentProps<{ id: string }>>(
   class DailyItemInner extends Component<RouteComponentProps<{ id: string }>> {
     public render(): JSX.Element {

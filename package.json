@@ -158,6 +158,7 @@
     "dottie": "2.0.2",
     "ellipsize": "0.1.0",
     "eslint": "^7.11.0",
+    "eslint-plugin-graphql": "^4.0.0",
     "eslint-plugin-react": "^7.21.4",
     "form-serialize": "0.7.2",
     "global": "4.4.0",

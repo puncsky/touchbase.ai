@@ -9,7 +9,8 @@ import {
   Modal,
   notification,
   Tabs,
-  Upload
+  Upload,
+  message
 } from "antd";
 import { FormInstance } from "antd/lib/form/Form";
 import Popover from "antd/lib/popover";
@@ -40,6 +41,8 @@ import { ExperienceForm } from "./experience-form";
 import { ObservationForm } from "./observation-form";
 
 const { TabPane } = Tabs;
+
+const fileTypes = ["jpg", "jpeg", "png", "bmp", "tif", "tiff", "gif"];
 
 export const formItemLayout = {
   labelCol: {
@@ -254,20 +257,31 @@ class PersonalForm extends Component<
     );
   }
 
-  render(): JSX.Element | null {
-    const { human, formRef } = this.props;
+  actionCheckFileType = (file: File) => {
+    const extName = file.name.split(".").slice(-1)[0];
+    if (extName && !fileTypes.includes(extName)) {
+      return Promise.reject(message.error(t("profile_editor.upload.fileType")));
+    }
+    return Promise.resolve();
+  };
 
-    const beforeUpload = async ({ file, onSuccess }: any) => {
-      const fieldName = "avatarUrl";
-      const data = await upload(file, fieldName);
-      if (formRef && formRef.current) {
-        formRef.current.setFieldsValue({
-          [fieldName]: data.secure_url
-        });
-        this.setState({ [fieldName]: data.secure_url });
-        onSuccess(data, file);
-      }
-    };
+  actionUploadImage = async ({ file, onSuccess }: any) => {
+    const { formRef } = this.props;
+
+    const fieldName = "avatarUrl";
+    const data = await upload(file, fieldName);
+    if (formRef && formRef.current) {
+      formRef.current.setFieldsValue({
+        [fieldName]: data.secure_url
+      });
+      this.setState({ [fieldName]: data.secure_url });
+      return Promise.resolve(onSuccess(data, file));
+    }
+    return Promise.reject();
+  };
+
+  render(): JSX.Element | null {
+    const { human } = this.props;
 
     return (
       <>
@@ -295,7 +309,10 @@ class PersonalForm extends Component<
           <Form.Item name="avatarUrl" noStyle>
             <Input hidden={true} />
           </Form.Item>
-          <Upload customRequest={beforeUpload}>
+          <Upload
+            beforeUpload={this.actionCheckFileType}
+            customRequest={this.actionUploadImage}
+          >
             {human.avatarUrl ? (
               <img
                 alt="avatar"
@@ -304,7 +321,8 @@ class PersonalForm extends Component<
               />
             ) : (
               <Button>
-                <UploadOutlined /> Click to Upload
+                <UploadOutlined />
+                <span>{t("profile_editor.upload")}</span>
               </Button>
             )}
           </Upload>

@@ -140,6 +140,21 @@ const updateHumanFromRow = (row: THumanRow, initialHuman: TContact2) => {
   return omitDeep(clone, "__typename");
 };
 
+const encodeHtmlSource = (source: string) => {
+  if (source.length === 0) {
+    return "";
+  }
+
+  source = source.replace(/&/g, "&amp;");
+  source = source.replace(/</g, "&lt;");
+  source = source.replace(/>/g, "&gt;");
+  source = source.replace(/ /g, "&nbsp;");
+  source = source.replace(/'/g, "&#39;");
+  source = source.replace(/"/g, "&quot;");
+
+  return source;
+};
+
 // @ts-ignore
 export const ContactsTableContainer = withRouter(
   // @ts-ignore
@@ -200,9 +215,12 @@ export const ContactsTableContainer = withRouter(
               value: string;
               data: { _id: string };
             }) =>
-              `<span><a class=${PUSH_LINK_CLS} style="color: ${
+              `<span>
+                <a class=${PUSH_LINK_CLS} style="color: ${
                 colors.primary
-              };" href=${`"/${data._id}/"`}/>${value}</span>`
+              };" href=${`"/${data._id}/"`} />
+                ${encodeHtmlSource(value)}
+              </span>`
           },
           { field: "experienceTitle", headerName: t("experience.title") },
           { field: "inboundTrust", headerName: t("field.inbound_trust") },

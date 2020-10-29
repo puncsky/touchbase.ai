@@ -246,7 +246,9 @@ profile_editor.observation: 观察
 
 profile_editor.pii: 个人
 
-profile_editor.upload: Click to Upload
+profile_editor.upload: 点击上传
+
+profile_editor.upload.fileType: 请选择正确的图片文件
 
 refiner: 优化者
 
