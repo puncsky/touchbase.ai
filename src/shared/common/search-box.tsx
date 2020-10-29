@@ -52,7 +52,7 @@ export const SearchBox = withRouter(
       this.setState({ searchResults: data.search });
     };
 
-    public handleSelect = (_: any, option: any) => {
+    public handleSelect = (_: string, option: { key: string }) => {
       this.props.history.push(option.key);
     };
 
