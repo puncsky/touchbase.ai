@@ -1,4 +1,4 @@
-import { Operation } from "apollo-link";
+import { Operation } from "@apollo/client";
 import { decryptECIES, encryptECIES } from "blockstack/lib/encryption";
 import dottie from "dottie";
 import { createHmacs } from "./get-hmac";

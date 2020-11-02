@@ -3,7 +3,8 @@ import Popover from "antd/lib/popover";
 import gql from "graphql-tag";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
-import { Mutation, MutationFn } from "react-apollo";
+import { Mutation } from "@apollo/client/react/components";
+import { MutationFunction } from "@apollo/client/react/types/types";
 import OutsideClickHandler from "react-outside-click-handler";
 import { RouterProps, withRouter } from "react-router";
 import { styled } from "styletron-react";
@@ -76,7 +77,7 @@ export const DeleteNotePopover = withRouter(
               <Flex justifyContent="flex-start">
                 <Mutation mutation={DELETE_NOTE}>
                   {(
-                    deleteContact: MutationFn<{ id: string }>,
+                    deleteContact: MutationFunction<{ id: string }>,
                     { loading }: { loading: boolean }
                   ) => {
                     return (

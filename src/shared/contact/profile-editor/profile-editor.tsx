@@ -22,7 +22,8 @@ import omitBy from "lodash.omitby";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
-import { Mutation, MutationFn } from "react-apollo";
+import { Mutation } from "@apollo/client/react/components";
+import { MutationFunction } from "@apollo/client/react/types/types";
 import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { RouterProps, withRouter } from "react-router";
@@ -395,7 +396,7 @@ const DeleteContactPopover = withRouter(
               <Flex justifyContent="flex-start">
                 <Mutation mutation={DELETE_CONTACT}>
                   {(
-                    deleteContact: MutationFn<{ id: string }>,
+                    deleteContact: MutationFunction<{ id: string }>,
                     { loading }: { loading: boolean }
                   ) => {
                     return (

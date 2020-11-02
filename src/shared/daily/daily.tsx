@@ -1,7 +1,8 @@
 import { Card } from "antd";
 import gql from "graphql-tag";
 import React, { Component } from "react";
-import { Query, QueryResult } from "react-apollo";
+import { Query } from "@apollo/client/react/components";
+import { QueryResult } from "@apollo/client/react/types/types";
 import { Link } from "react-router-dom";
 import { CommonMargin } from "../common/common-margin";
 import { Flex } from "../common/flex";

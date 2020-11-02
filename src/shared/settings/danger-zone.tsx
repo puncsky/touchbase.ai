@@ -8,7 +8,8 @@ import Typography from "antd/lib/typography";
 import gql from "graphql-tag";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
-import Mutation, { MutationFn } from "react-apollo/Mutation";
+import { Mutation } from "@apollo/client/react/components";
+import { MutationFunction } from "@apollo/client/react/types/types";
 import { Flex } from "../common/flex";
 
 const { Text } = Typography;
@@ -58,7 +59,7 @@ export class DangerZone extends Component<Props, State> {
     });
   };
 
-  public submit = async (func: MutationFn<{ email: string }>) => {
+  public submit = async (func: MutationFunction<{ email: string }>) => {
     if (!this.formRef.current) {
       return;
     }
@@ -127,7 +128,7 @@ export class DangerZone extends Component<Props, State> {
         <DangerZoneForm
           ref={this.formRef}
           modalShow={this.state.modalShow}
-          submit={(func: MutationFn) => {
+          submit={(func: MutationFunction) => {
             this.submit(func);
           }}
           hide={() => {
@@ -157,7 +158,7 @@ const DangerZoneForm = React.forwardRef(
       >
         <Mutation mutation={DELETE_ACCOUNT}>
           {(
-            deleteContact: MutationFn<{ email: string }>,
+            deleteContact: MutationFunction<{ email: string }>,
             { loading }: { loading: boolean }
           ) => {
             return (

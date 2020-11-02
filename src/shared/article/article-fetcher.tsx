@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 import React from "react";
-import { Query, QueryResult } from "react-apollo";
+import { Query } from "@apollo/client/react/components";
+import { QueryResult } from "@apollo/client/react/types/types";
 import { RouteComponentProps, withRouter } from "react-router";
 import { CommonMargin } from "../common/common-margin";
 import { NotFound } from "../common/not-found";
