@@ -4,6 +4,8 @@ touchbase.ai is the easy, open source way for everyone to smartly engage more in
 
 [![CircleCI](https://circleci.com/gh/puncsky/touchbase.ai/tree/master.svg?style=svg)](https://circleci.com/gh/puncsky/touchbase.ai/tree/master)
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/puncsky/touchbase.ai)
+
 ![touchbase.ai screenshot](https://res.cloudinary.com/dohtidfqh/image/upload/v1570181029/web-guiguio/guanxilab-screenshot.png)
 
 - [Documentation](https://onefx.js.org/doc.html?utm_source=github-iotex-explorer)
