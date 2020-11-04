@@ -1,0 +1,29 @@
+{
+  "name": "touchbase.ai",
+  "description": "Smartly engage more in meaningful relationships",
+  "website": "https://touchbase.ai",
+  "repository": "https://github.com/puncsky/touchbase.ai",
+  "logo": "https://touchbase.ai/favicon.svg",
+  "keywords": [
+    "touchbase.ai",
+    "crm",
+    "react",
+    "e2e-encryption",
+    "js",
+    "koa",
+    "blockstack"
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "addons": ["mongolab"],
+  "env": {
+    "MONGODB_URI": {
+      "description": "MongoDB Connection URI",
+      "generator": "mongodb://localhost:27017/touchbase"
+    }
+  }
+}
