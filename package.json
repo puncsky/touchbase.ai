@@ -139,7 +139,7 @@
     "@types/uuid": "3.4.8",
     "@types/validator": "10.11.3",
     "@types/web-push": "^3.3.0",
-    "antd": "^4.1.1",
+    "antd": "^4.8.0",
     "apollo-cache-inmemory": "1.6.5",
     "apollo-client": "2.6.8",
     "apollo-link-http": "1.5.16",

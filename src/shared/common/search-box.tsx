@@ -106,7 +106,6 @@ export const SearchBox = withRouter(
             style={{ width: "100%" }}
             // @ts-ignore
             dataSource={children}
-            placeholder={t("topbar.search_everything")}
             onSearch={this.handleSearch}
             onSelect={this.handleSelect}
           >
@@ -115,6 +114,7 @@ export const SearchBox = withRouter(
                 this.inputRef = ref;
               }}
               suffix={<SearchOutlined className="certain-category-icon" />}
+              placeholder={t("topbar.search_everything")}
             />
           </AutoComplete>
         </div>
