@@ -19,8 +19,6 @@ import { TopBar } from "./common/top-bar";
 import { ContactDetailContainer } from "./contact/contact-detail";
 import { ProfileCreatorContainer } from "./contact/profile-creator";
 import { ContactsTableContainer } from "./contacts/contacts-table";
-import { Daily } from "./daily/daily";
-import { DailyItem } from "./daily/daily-item";
 import { Home } from "./home/home";
 import { NoteFetcher } from "./note/note-fetcher";
 import { Onboard } from "./onboard";
@@ -48,8 +46,6 @@ export class App extends Component<Props> {
           <div style={FOOTER_ABOVE}>
             <ScrollToTop>
               <Switch>
-                <Route exact path="/ribao" component={Daily} />
-                <Route exact path="/ribao/:id" component={DailyItem} />
                 <Route exact path="/page/:id+" component={ArticleFetcher} />
                 <Route
                   exact
