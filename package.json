@@ -20,7 +20,8 @@
     "bp": "npm run build-production && npm run size",
     "kill": "lsof -n -i4TCP:4103 | grep LISTEN | awk '{ print $2 }' | xargs kill",
     "doc": "graphdoc --config ./package.json --force",
-    "format-i18n": "onefx-format-translations translations"
+    "format-i18n": "onefx-format-translations translations",
+    "schema:generate": "apollo client:codegen --no-addTypename --target=typescript --localSchemaFile=src/api-gateway/api-gateway.graphql"
   },
   "graphdoc": {
     "ga": "UA-XXXXXXXX",
@@ -73,6 +74,7 @@
     "@types/graphql": "14.5.0",
     "@types/highlight.js": "9.12.3",
     "@types/markdown-it": "0.0.9",
+    "apollo": "^2.31.1",
     "ava": "2.4.0",
     "awesome-typescript-loader": "5.2.1",
     "cache-loader": "2.0.1",
