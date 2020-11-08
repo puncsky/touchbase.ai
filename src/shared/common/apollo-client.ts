@@ -1,5 +1,9 @@
-import { InMemoryCache } from "@apollo/client/cache";
-import { ApolloClient, ApolloLink, HttpLink } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache
+} from "@apollo/client";
 
 import isBrowser from "is-browser";
 import fetch from "isomorphic-unfetch";

@@ -1,5 +1,9 @@
-import { InMemoryCache } from "@apollo/client/cache";
-import { ApolloClient, createHttpLink, ApolloProvider } from "@apollo/client";
+import {
+  ApolloClient,
+  createHttpLink,
+  ApolloProvider,
+  InMemoryCache
+} from "@apollo/client";
 import { getDataFromTree } from "@apollo/client/react/ssr";
 import config from "config";
 import fetch from "isomorphic-unfetch";
