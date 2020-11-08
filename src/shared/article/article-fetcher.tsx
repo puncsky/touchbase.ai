@@ -4,12 +4,14 @@ import { CommonMargin } from "../common/common-margin";
 import { NotFound } from "../common/not-found";
 import { Preloader } from "../common/preloader";
 import { Article } from "./article";
-import { useArticles } from "./hooks/useArticles";
+import { useGetArticles } from "./hooks/useGetArticles";
 
 export function ArticleFetcherInner(
   props: RouteComponentProps<{ id: string }>
 ): JSX.Element {
-  const { loading, error, data } = useArticles({ id: props.match.params.id });
+  const { loading, error, data } = useGetArticles({
+    id: props.match.params.id
+  });
   if (loading) {
     return <Preloader />;
   }

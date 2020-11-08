@@ -2,7 +2,7 @@ import { useQuery, ApolloError } from "@apollo/client";
 import { GetArticles } from "@/shared/article/data/__generated__/GetArticles";
 import { getArticles } from "@/shared/article/data/queries";
 
-export const useArticles = (
+export const useGetArticles = (
   variables: { id: string } | null
 ): {
   loading: boolean;
