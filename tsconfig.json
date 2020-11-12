@@ -33,11 +33,7 @@
     "resolveJsonModule": true,
     "types": ["node"],
     "typeRoots": ["node_modules/@types", "src/types"],
-    "skipLibCheck": true,
-    "baseUrl": "src",
-    "paths": {
-      "@/*": ["*"]
-    }
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules/**"],

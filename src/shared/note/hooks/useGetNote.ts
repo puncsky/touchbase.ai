@@ -1,6 +1,6 @@
 import { useQuery, ApolloError, ApolloQueryResult } from "@apollo/client";
-import { GetNote } from "@/shared/note/data/__generated__/GetNote";
-import { getNote } from "@/shared/note/data/queries";
+import { GetNote } from "../data/__generated__/GetNote";
+import { getNote } from "../data/queries";
 
 export const useGetNote = (
   variables: { id: string } | null

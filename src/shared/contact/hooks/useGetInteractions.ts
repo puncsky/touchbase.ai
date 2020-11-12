@@ -2,8 +2,8 @@ import { useQuery, ApolloError } from "@apollo/client";
 import {
   GetInteractions,
   GetInteractionsVariables
-} from "@/shared/contact/data/__generated__/GetInteractions";
-import { getInteractions } from "@/shared/contact/data/queries";
+} from "../data/__generated__/GetInteractions";
+import { getInteractions } from "../data/queries";
 
 export const useGetInteractions = (
   variables?: GetInteractionsVariables

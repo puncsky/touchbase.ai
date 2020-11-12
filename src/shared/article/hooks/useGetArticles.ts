@@ -2,8 +2,8 @@ import { useQuery, ApolloError } from "@apollo/client";
 import {
   GetArticles,
   GetArticlesVariables
-} from "@/shared/article/data/__generated__/GetArticles";
-import { getArticles } from "@/shared/article/data/queries";
+} from "../data/__generated__/GetArticles";
+import { getArticles } from "../data/queries";
 
 export const useGetArticles = (
   variables?: GetArticlesVariables
