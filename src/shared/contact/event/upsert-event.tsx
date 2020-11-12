@@ -5,7 +5,7 @@ import Switch from "antd/lib/switch";
 import ObjectID from "bson-objectid";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
-import Helmet from "onefx/lib/react-helmet";
+import { Helmet } from "onefx/lib/react-helmet";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { TContact2 } from "../../../types/human";

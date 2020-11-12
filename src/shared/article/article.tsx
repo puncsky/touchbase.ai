@@ -6,7 +6,7 @@ import loadScript from "load-script";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
 // @ts-ignore
-import Helmet from "onefx/lib/react-helmet";
+import { Helmet } from "onefx/lib/react-helmet";
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
 import React, { PureComponent } from "react";

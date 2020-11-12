@@ -1,7 +1,7 @@
 /* tslint:disable:no-non-null-assertion */
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import React from "react";
-import { combineReducers } from "redux";
+import { combineReducers, Reducer } from "redux";
 import { MyServer } from "../../server/start-server";
 import { MyContext } from "../../types/global";
 import { AppContainer } from "../app-container";
@@ -17,7 +17,7 @@ export function setHumanHandlers(server: MyServer): void {
     // @ts-ignore
     ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
       VDom: <AppContainer />,
-      reducer: combineReducers({
+      reducer: combineReducers<Reducer>({
         base: noopReducer,
         human: humanReducer,
         humans: humansReducer,
@@ -66,7 +66,7 @@ export function setHumanHandlers(server: MyServer): void {
       // @ts-ignore
       ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
         VDom: <AppContainer />,
-        reducer: combineReducers({
+        reducer: combineReducers<Reducer>({
           base: noopReducer,
           human: humanReducer,
           humans: humansReducer,
@@ -94,7 +94,7 @@ export function setHumanHandlers(server: MyServer): void {
       // @ts-ignore
       ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
         VDom: <AppContainer />,
-        reducer: combineReducers({
+        reducer: combineReducers<Reducer>({
           base: noopReducer,
           human: humanReducer,
           humans: humansReducer,
