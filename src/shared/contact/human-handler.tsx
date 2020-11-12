@@ -59,7 +59,7 @@ export function setHumanHandlers(server: MyServer): void {
   );
   server.get(
     "contacts",
-    "/contacts/*",
+    "/contacts/:contact*",
     server.auth.authRequired,
     async (ctx: MyContext) => {
       ctx.setState("base.userId", ctx.state.userId);

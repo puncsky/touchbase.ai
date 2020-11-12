@@ -18,7 +18,7 @@ export function setServerRoutes(server: MyServer): void {
     ctx.body = "OK";
   });
 
-  server.get("legal", "/page/*", async (ctx: MyContext) => {
+  server.get("legal", "/page/:page*", async (ctx: MyContext) => {
     ctx.body = await apolloSSR(ctx, "", {
       VDom: <AppContainer />,
       reducer: noopReducer,
