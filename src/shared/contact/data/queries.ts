@@ -64,3 +64,12 @@ export const getInteractions = gql`
     }
   }
 `;
+
+export const getInteractionCounts = gql`
+  query GetInteractionCounts($isSelf: Boolean, $contactId: String) {
+    interactionCounts(isSelf: $isSelf, contactId: $contactId) {
+      count
+      date
+    }
+  }
+`;

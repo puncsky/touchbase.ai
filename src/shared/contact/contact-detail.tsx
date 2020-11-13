@@ -13,7 +13,8 @@ import { Route, Link, useParams } from "react-router-dom";
 // @ts-ignore
 import ReactTooltip from "react-tooltip";
 import { useSelector } from "react-redux";
-import { TContact2, TExperience } from "../../types/human";
+import { TExperience } from "../../types/human";
+import { GetContacts_contacts as TContact2 } from "../contacts/data/__generated__/GetContacts";
 import { BOX_SHADOW, LINE } from "../common/box-shadow";
 import { CommonMargin } from "../common/common-margin";
 import { Flex } from "../common/flex";
@@ -37,17 +38,19 @@ import { getInteractions } from "./data/queries";
 
 function currentTitle(human: TContact2): string {
   return (
-    human.title ||
-    (human.experience[0] && human.experience[0].title) ||
-    (human.education[0] && human.education[0].title)
+    human?.title ||
+    human?.experience[0]?.title ||
+    human?.education[0]?.title ||
+    ""
   );
 }
 
 function currentOrg(human: TContact2): string {
   return (
-    human.title ||
-    (human.experience[0] && human.experience[0].name) ||
-    (human.education[0] && human.education[0].name)
+    human?.title ||
+    human?.experience[0]?.name ||
+    human?.education[0]?.name ||
+    ""
   );
 }
 
@@ -150,8 +153,8 @@ function Contact({
             metrics={{
               knownAt: human.knownAt,
 
-              inboundTrust: human.inboundTrust,
-              outboundTrust: human.outboundTrust
+              inboundTrust: human.inboundTrust || 0,
+              outboundTrust: human.outboundTrust || 0
             }}
           />
 
