@@ -110,7 +110,7 @@ const encodeHtmlSource = (source: string) => {
   return source;
 };
 
-export function ContactsTableContainer1(): JSX.Element {
+export function ContactsTableContainer(): JSX.Element {
   const { data, error, loading } = useGetContacts();
   const humans = data?.contacts || [];
   const history = useHistory();
@@ -199,7 +199,7 @@ export function ContactsTableContainer1(): JSX.Element {
         className="ag-theme-balham"
         style={{ width: "100%", height: FOOTER_ABOVE.minHeight }}
       >
-        {() => {
+        {(() => {
           if (loading || error || !data) {
             return <Preloader />;
           }
@@ -220,7 +220,7 @@ export function ContactsTableContainer1(): JSX.Element {
               defaultColDef={{ editable: true }}
             />
           );
-        }}
+        })()}
       </div>
     </ContentPadding>
   );

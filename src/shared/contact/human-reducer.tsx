@@ -5,7 +5,7 @@ import { TInteraction, TContact2 } from "../../types/human";
 
 import { apolloClient } from "../common/apollo-client";
 import { csrfToken } from "../common/browser-state";
-import { GET_CONTACTS } from "../contacts/contacts-table";
+import { getContacts } from "../contacts/data/queries";
 import { getContact, getInteractions } from "./data/queries";
 
 export const axiosInstance = axios.create({
@@ -217,7 +217,7 @@ export function actionCreateHuman(payload: TContact2, history: any): any {
         variables: { createContactInput: payload },
         refetchQueries: [
           {
-            query: GET_CONTACTS
+            query: getContacts
           }
         ]
       })

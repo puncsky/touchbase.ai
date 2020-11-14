@@ -3,7 +3,7 @@ import {
   GetInteractionCounts,
   GetInteractionCountsVariables
 } from "../data/__generated__/GetInteractionCounts";
-import { getInteractions } from "../data/queries";
+import { getInteractionCounts } from "../data/queries";
 
 export const useGetInteractionCounts = (
   variables?: GetInteractionCountsVariables
@@ -15,7 +15,7 @@ export const useGetInteractionCounts = (
   const { loading, error, data } = useQuery<
     GetInteractionCounts,
     GetInteractionCountsVariables
-  >(getInteractions, {
+  >(getInteractionCounts, {
     ssr: false,
     variables
   });

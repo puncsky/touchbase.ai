@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const getContact = gql`
-  query GetContact($id: String, $isSelf: Boolean) {
+  query contact($id: String, $isSelf: Boolean) {
     contact(id: $id, isSelf: $isSelf) {
       _id
       emails

@@ -351,7 +351,7 @@ export function DeleteContactPopover({
         <CommonMargin />
         <div>
           <Flex justifyContent="flex-start">
-            {() => {
+            {(() => {
               return (
                 // @ts-ignore
                 <Button
@@ -389,7 +389,7 @@ export function DeleteContactPopover({
                   {t("field.delete_contact.yes")}
                 </Button>
               );
-            }}
+            })()}
             <CommonMargin />
             <Button onClick={() => setVisible(false)}>
               {t("field.delete_contact.cancel")}

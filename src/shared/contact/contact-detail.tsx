@@ -253,7 +253,7 @@ export function ContactDetailContainer(props: {
     <ContentPadding>
       <Padding />
 
-      {() => {
+      {(() => {
         if (loading) {
           return <Preloader />;
         }
@@ -270,7 +270,7 @@ export function ContactDetailContainer(props: {
         return (
           <Contact human={human} isSelf={ownerHumanId === id || props.isSelf} />
         );
-      }}
+      })()}
       <Padding />
     </ContentPadding>
   );

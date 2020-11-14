@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const getContacts = gql`
-  query GetContacts($offset: Float, $limit: Float) {
+  query contacts($offset: Float, $limit: Float) {
     contacts(offset: $offset, limit: $limit) {
       _id
       emails

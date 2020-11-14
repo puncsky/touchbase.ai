@@ -18,7 +18,7 @@ export function HeatmapCalendar({ isSelf, contactId }: Props): JSX.Element {
   return (
     <div style={{ overflowX: "auto", direction: "rtl", overflowY: "hidden" }}>
       <div style={{ height: "100px", width: "620px" }}>
-        {() => {
+        {(() => {
           if (loading || error || !data) {
             return <Preloader />;
           }
@@ -27,7 +27,7 @@ export function HeatmapCalendar({ isSelf, contactId }: Props): JSX.Element {
             <CalendarHeatmap
               startDate={shiftDate(today, -365)}
               endDate={today}
-              values={data.interactionCounts}
+              values={data.interactionCounts || []}
               gutterSize={2}
               classForValue={(value: { count: number; date: string }) => {
                 if (!value) {
@@ -49,7 +49,7 @@ export function HeatmapCalendar({ isSelf, contactId }: Props): JSX.Element {
               showWeekdayLabels={true}
             />
           );
-        }}
+        })()}
       </div>
     </div>
   );
