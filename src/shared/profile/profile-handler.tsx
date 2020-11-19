@@ -16,7 +16,7 @@ export function setProfileHandler(server: Server): void {
       ctx.body = await apolloSSR(ctx, server.config.apiGatewayUrl, {
         VDom: <ProfileAppContainer />,
         reducer: noopReducer,
-        clientScript: "profile-main.js"
+        clientScript: "/profile-main.js"
       });
     }
   );

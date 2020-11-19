@@ -21,7 +21,7 @@ function isoRender(ctx: MyContext): void {
     reducer: combineReducers({
       base: noopReducer
     }),
-    clientScript: "identity-provider-main.js"
+    clientScript: "/identity-provider-main.js"
   });
 }
 
