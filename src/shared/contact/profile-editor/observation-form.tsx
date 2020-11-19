@@ -1,10 +1,7 @@
-import {
-  Divider,
-  Form,
-  Radio,
-  // @ts-ignore
-  Rate
-} from "antd";
+import Divider from "antd/lib/divider";
+import Form from "antd/lib/form";
+import Radio from "antd/lib/radio";
+import Rate from "antd/lib/rate";
 import { t } from "onefx/lib/iso-i18n";
 import React from "react";
 import { formItemLayout } from "./profile-editor";

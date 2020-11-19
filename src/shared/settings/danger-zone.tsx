@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { notification } from "antd";
+import notification from "antd/lib/notification";
 import Button from "antd/lib/button/button";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";

@@ -1,4 +1,5 @@
-import { Input, Select } from "antd";
+import Input from "antd/lib/input";
+import Select from "antd/lib/select";
 import React from "react";
 import Helmet from "react-helmet";
 import { connect } from "react-redux";

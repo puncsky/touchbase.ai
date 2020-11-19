@@ -1,4 +1,4 @@
-import { ConfigProvider } from "antd";
+import ConfigProvider from "antd/lib/config-provider";
 import enUS from "antd/lib/locale/en_US";
 import zhCN from "antd/lib/locale/zh_CN";
 import { styled } from "onefx/lib/styletron-react";

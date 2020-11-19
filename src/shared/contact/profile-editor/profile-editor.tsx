@@ -1,19 +1,15 @@
-// @flow
 import { UploadOutlined } from "@ant-design/icons";
-import {
-  Button,
-  DatePicker,
-  Divider,
-  Form,
-  Input,
-  Modal,
-  notification,
-  Tabs,
-  Upload,
-  Popover,
-  message
-} from "antd";
-import { FormInstance } from "antd/lib/form";
+import Button from "antd/lib/button";
+import DatePicker from "antd/lib/date-picker";
+import Divider from "antd/lib/divider";
+import Form, { FormInstance } from "antd/lib/form";
+import Input from "antd/lib/input";
+import Modal from "antd/lib/modal";
+import notification from "antd/lib/notification";
+import Tabs from "antd/lib/tabs";
+import Upload from "antd/lib/upload";
+import Popover from "antd/lib/popover";
+import message from "antd/lib/message";
 // @ts-ignore
 import window from "global/window";
 // @ts-ignore
@@ -25,7 +21,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { styled } from "styletron-react";
-import { GetContacts_contacts as TContact2 } from "../../contacts/data/__generated__/GetContacts";
+import { TContact2 } from "../../../types/human";
 import { CommonMargin } from "../../common/common-margin";
 import { Flex } from "../../common/flex";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";

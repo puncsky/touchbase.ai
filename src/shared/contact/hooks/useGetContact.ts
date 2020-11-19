@@ -1,18 +1,16 @@
-import { useQuery, ApolloError } from "@apollo/client";
-import {
-  GetContact,
-  GetContactVariables
-} from "../data/__generated__/GetContact";
+import { ApolloError, useQuery } from "@apollo/client";
+import { contact, contactVariables } from "../data/__generated__/contact";
+
 import { getContact } from "../data/queries";
 
 export const useGetContact = (
-  variables?: GetContactVariables
+  variables?: contactVariables
 ): {
   loading: boolean;
   error?: ApolloError;
-  data?: GetContact;
+  data?: contact;
 } => {
-  const { loading, error, data } = useQuery<GetContact, GetContactVariables>(
+  const { loading, error, data } = useQuery<contact, contactVariables>(
     getContact,
     {
       ssr: false,

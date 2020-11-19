@@ -1,4 +1,3 @@
-// @flow
 import axios from "axios";
 import gql from "graphql-tag";
 import { TInteraction, TContact2 } from "../../types/human";

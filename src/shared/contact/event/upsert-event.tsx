@@ -1,5 +1,6 @@
-// @flow
-import { DatePicker, Form, Modal } from "antd";
+import DatePicker from "antd/lib/date-picker";
+import Form from "antd/lib/form";
+import Modal from "antd/lib/modal";
 import { FormInstance } from "antd/lib/form/Form";
 import Switch from "antd/lib/switch";
 import ObjectID from "bson-objectid";

@@ -4,7 +4,7 @@ import {
   ClockCircleOutlined,
   EllipsisOutlined
 } from "@ant-design/icons";
-import { notification } from "antd";
+import notification from "antd/lib/notification";
 import Button from "antd/lib/button";
 import Card from "antd/lib/card";
 import Meta from "antd/lib/card/Meta";

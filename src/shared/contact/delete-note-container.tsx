@@ -1,4 +1,5 @@
-import { Button, notification } from "antd";
+import Button from "antd/lib/button";
+import notification from "antd/lib/notification";
 import Popover from "antd/lib/popover";
 import { t } from "onefx/lib/iso-i18n";
 import React, { useState } from "react";

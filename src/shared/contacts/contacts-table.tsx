@@ -8,15 +8,15 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { GetContacts_contacts as TContact2 } from "./data/__generated__/GetContacts";
+import { TContact2 } from "../../types/human";
 import { FOOTER_ABOVE } from "../common/footer";
 import { Preloader } from "../common/preloader";
 import { colors } from "../common/styles/style-color";
 import { ContentPadding } from "../common/styles/style-padding";
 import { actionUpdateHuman } from "../contact/human-reducer";
 import { useGetContacts } from "./hooks/useGetContacts";
-// eslint-disable-next-line import/order
-import isBrowser = require("is-browser");
+
+const isBrowser = require("is-browser");
 
 const PUSH_LINK_CLS = "push-link";
 
@@ -129,6 +129,7 @@ export function ContactsTableContainer(): JSX.Element {
       actionUpdateHuman(
         updateHumanFromRow(
           { ...cellData, [otherProps.colDef.field]: newValue },
+          // @ts-ignore
           humans[otherProps.rowIndex]
         ),
         true
@@ -204,6 +205,7 @@ export function ContactsTableContainer(): JSX.Element {
             return <Preloader />;
           }
 
+          // @ts-ignore
           const rows = humans.map(rowFromHuman);
 
           return (

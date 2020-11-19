@@ -13,8 +13,7 @@ import { Route, Link, useParams } from "react-router-dom";
 // @ts-ignore
 import ReactTooltip from "react-tooltip";
 import { useSelector } from "react-redux";
-import { TExperience } from "../../types/human";
-import { GetContacts_contacts as TContact2 } from "../contacts/data/__generated__/GetContacts";
+import { TContact2, TExperience } from "../../types/human";
 import { BOX_SHADOW, LINE } from "../common/box-shadow";
 import { CommonMargin } from "../common/common-margin";
 import { Flex } from "../common/flex";

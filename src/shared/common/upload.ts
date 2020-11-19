@@ -1,6 +1,4 @@
-// @flow
-// $FlowFixMe
-import { message } from "antd";
+import message from "antd/lib/message";
 import axios from "axios";
 // @ts-ignore
 import window from "global/window";

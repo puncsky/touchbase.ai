@@ -1,14 +1,12 @@
 import { PlusOutlined, StarFilled, StarOutlined } from "@ant-design/icons";
-import {
-  AutoComplete,
-  Button,
-  Dropdown,
-  Input,
-  Menu,
-  Modal,
-  Rate,
-  Tag
-} from "antd";
+import AutoComplete from "antd/lib/auto-complete";
+import Button from "antd/lib/button";
+import Dropdown from "antd/lib/dropdown";
+import Input from "antd/lib/input";
+import Menu from "antd/lib/menu";
+import Modal from "antd/lib/modal";
+import Rate from "antd/lib/rate";
+import Tag from "antd/lib/tag";
 import Divider from "antd/lib/divider";
 import { ApolloQueryResult, QueryResult } from "@apollo/client";
 import gql from "graphql-tag";

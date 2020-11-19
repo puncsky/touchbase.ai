@@ -1,4 +1,3 @@
-// @flow
 import { TContact } from "../../types/contact";
 import { TAction, CREATE_HUMAN } from "../contact/human-reducer";
 
