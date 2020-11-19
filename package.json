@@ -14,7 +14,7 @@
     "build-production": "cross-env NODE_ENV=production gulp build",
     "build-static-html": "cross-env NODE_ENV=production ts-node ./src/server/generate-static-html.ts",
     "lint": "git add . && pretty-quick --staged && eslint src --fix --ext .js,.tsx,.ts --quiet",
-    "postinstall": "npm run bp && npm run doc",
+    "postinstall": "npm run schema:generate",
     "cover": "cross-env NODE_ENV=test tsc && nyc npm run ava",
     "size": "ls -lh dist/",
     "bp": "npm run build-production && npm run size",
