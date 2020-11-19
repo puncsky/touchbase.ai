@@ -1,5 +1,4 @@
-// @ts-ignore
-import { SettingFilled } from "@ant-design/icons";
+import SettingFilled from "@ant-design/icons/lib/icons/SettingFilled";
 import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import { styled, StyleObject } from "onefx/lib/styletron-react";

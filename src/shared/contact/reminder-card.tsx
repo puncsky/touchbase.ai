@@ -1,9 +1,8 @@
-import {
-  BellOutlined,
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  EllipsisOutlined
-} from "@ant-design/icons";
+import BellOutlined from "@ant-design/icons/lib/icons/BellOutlined";
+import CheckCircleOutlined from "@ant-design/icons/lib/icons/CheckCircleOutlined";
+import ClockCircleOutlined from "@ant-design/icons/lib/icons/ClockCircleOutlined";
+import EllipsisOutlined from "@ant-design/icons/lib/icons/EllipsisOutlined";
+
 import notification from "antd/lib/notification";
 import Button from "antd/lib/button";
 import Card from "antd/lib/card";

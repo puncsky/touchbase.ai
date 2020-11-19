@@ -1,4 +1,6 @@
-import { PlusOutlined, StarFilled, StarOutlined } from "@ant-design/icons";
+import PlusOutlined from "@ant-design/icons/lib/icons/PlusOutlined";
+import StarFilled from "@ant-design/icons/lib/icons/StarFilled";
+import StarOutlined from "@ant-design/icons/lib/icons/StarOutlined";
 import AutoComplete from "antd/lib/auto-complete";
 import Button from "antd/lib/button";
 import Dropdown from "antd/lib/dropdown";

@@ -6,7 +6,7 @@ const glob = require("glob");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const process = require("global/process");
 
-const ANALYZE = false;
+const ANALYZE = true;
 const PROD = process.env.NODE_ENV === "production";
 const OUTPUT_DIR = "dist/";
 

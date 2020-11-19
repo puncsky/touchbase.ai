@@ -1,4 +1,4 @@
-import { UploadOutlined } from "@ant-design/icons";
+import UploadOutlined from "@ant-design/icons/lib/icons/UploadOutlined";
 import Button from "antd/lib/button";
 import DatePicker from "antd/lib/date-picker";
 import Divider from "antd/lib/divider";

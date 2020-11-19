@@ -1,4 +1,4 @@
-import { SearchOutlined } from "@ant-design/icons";
+import SearchOutlined from "@ant-design/icons/lib/icons/SearchOutlined";
 import AutoComplete from "antd/lib/auto-complete";
 import { OptionData, OptionGroupData } from "rc-select/lib/interface";
 import Input from "antd/lib/input";

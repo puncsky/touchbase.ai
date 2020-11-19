@@ -1,4 +1,5 @@
-import { DownOutlined, EditOutlined } from "@ant-design/icons";
+import DownOutlined from "@ant-design/icons/lib/icons/DownOutlined";
+import EditOutlined from "@ant-design/icons/lib/icons/EditOutlined";
 
 import Button from "antd/lib/button";
 import Col from "antd/lib/col";

@@ -1,4 +1,5 @@
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import DeleteOutlined from "@ant-design/icons/lib/icons/DeleteOutlined";
+import PlusOutlined from "@ant-design/icons/lib/icons/PlusOutlined";
 import Input from "antd/lib/input";
 import Form from "antd/lib/form";
 import Button from "antd/lib/button/button";
