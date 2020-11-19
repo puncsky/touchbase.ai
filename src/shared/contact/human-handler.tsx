@@ -24,7 +24,7 @@ export function setHumanHandlers(server: MyServer): void {
         interactions: interactionsReducer,
         apolloState: noopReducer
       }),
-      clientScript: "/main.js"
+      clientScript: "main.js"
     });
   });
 
@@ -73,7 +73,7 @@ export function setHumanHandlers(server: MyServer): void {
           interactions: interactionsReducer,
           apolloState: noopReducer
         }),
-        clientScript: "/main.js"
+        clientScript: "main.js"
       });
     }
   );
@@ -101,7 +101,7 @@ export function setHumanHandlers(server: MyServer): void {
           interactions: interactionsReducer,
           apolloState: noopReducer
         }),
-        clientScript: "/main.js"
+        clientScript: "main.js"
       });
     }
   );
