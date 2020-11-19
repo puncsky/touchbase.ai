@@ -1,4 +1,3 @@
-// @flow
 import { FormInstance } from "antd/lib/form/Form";
 import Modal from "antd/lib/modal";
 import notification from "antd/lib/notification";
@@ -134,6 +133,8 @@ export const ProfileCreatorContainer = withRouter(
             onCancel={() => this.close()}
             width={600}
           >
+            {/*
+            @ts-ignore */}
             <ProfileEditorForm human={human} ref={this.formRef} />
           </Modal>
         );
