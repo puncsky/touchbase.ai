@@ -2,7 +2,7 @@
 // @ts-ignore
 import window from "global/window";
 import { t } from "onefx/lib/iso-i18n";
-import Helmet from "onefx/lib/react-helmet";
+import { Helmet } from "onefx/lib/react-helmet";
 import React, { Component } from "react";
 import { loadScript } from "./load-script";
 

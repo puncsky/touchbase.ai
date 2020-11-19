@@ -1,22 +1,22 @@
-import { PlusOutlined, StarFilled, StarOutlined } from "@ant-design/icons";
-import {
-  AutoComplete,
-  Button,
-  Dropdown,
-  Input,
-  Menu,
-  Modal,
-  Rate,
-  Tag
-} from "antd";
+import PlusOutlined from "@ant-design/icons/lib/icons/PlusOutlined";
+import StarFilled from "@ant-design/icons/lib/icons/StarFilled";
+import StarOutlined from "@ant-design/icons/lib/icons/StarOutlined";
+import AutoComplete from "antd/lib/auto-complete";
+import Button from "antd/lib/button";
+import Dropdown from "antd/lib/dropdown";
+import Input from "antd/lib/input";
+import Menu from "antd/lib/menu";
+import Modal from "antd/lib/modal";
+import Rate from "antd/lib/rate";
+import Tag from "antd/lib/tag";
 import Divider from "antd/lib/divider";
-import { ApolloQueryResult } from "apollo-client";
+import { ApolloQueryResult, QueryResult } from "@apollo/client";
 import gql from "graphql-tag";
 import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
 import React from "react";
-import { Query, QueryResult } from "react-apollo";
-import Mutation, { MutationFn } from "react-apollo/Mutation";
+import { Query, Mutation } from "@apollo/client/react/components";
+import { MutationFunction } from "@apollo/client/react/types/types";
 import { TTag, TTagTemplate } from "../../types/tag";
 import { Flex } from "../common/flex";
 import { Preloader } from "../common/preloader";
@@ -126,7 +126,7 @@ class Tags extends React.Component<Props, State> {
   };
 
   onSelect = async (
-    createTag: MutationFn,
+    createTag: MutationFunction,
     value: string,
     unselected: Array<TTagTemplate>,
     refetch: RefetchTagType
@@ -175,8 +175,8 @@ class Tags extends React.Component<Props, State> {
   };
 
   createTemplateAndTag = async (
-    createTemplateTag: MutationFn,
-    createTag: MutationFn,
+    createTemplateTag: MutationFunction,
+    createTag: MutationFunction,
     refetch: RefetchTagType
   ) => {
     const template = (await createTemplateTag({
@@ -203,7 +203,7 @@ class Tags extends React.Component<Props, State> {
   };
 
   updateRate = async (
-    updateTag: MutationFn,
+    updateTag: MutationFunction,
     tag: TTag,
     value: number,
     refetch: RefetchTagType
@@ -219,7 +219,11 @@ class Tags extends React.Component<Props, State> {
     await refetch();
   };
 
-  deleteTag = (deleteTag: MutationFn, tag: TTag, refetch: RefetchTagType) => {
+  deleteTag = (
+    deleteTag: MutationFunction,
+    tag: TTag,
+    refetch: RefetchTagType
+  ) => {
     Modal.confirm({
       title: t("tag.delete_confirm"),
       okType: "danger",
@@ -252,9 +256,9 @@ class Tags extends React.Component<Props, State> {
     return (
       <Container>
         <Mutation mutation={DELETE_TAG}>
-          {(deleteTagFn: MutationFn) => (
+          {(deleteTagFn: MutationFunction) => (
             <Mutation mutation={UPDATE_TAG}>
-              {(updateTag: MutationFn) =>
+              {(updateTag: MutationFunction) =>
                 this.renderQuery(deleteTagFn, updateTag)
               }
             </Mutation>
@@ -264,7 +268,10 @@ class Tags extends React.Component<Props, State> {
     );
   }
 
-  renderQuery = (deleteTagFn: MutationFn, updateTag: MutationFn) => {
+  renderQuery = (
+    deleteTagFn: MutationFunction,
+    updateTag: MutationFunction
+  ) => {
     return (
       <Query
         query={QUERY_TEMPLATES}
@@ -309,8 +316,8 @@ class Tags extends React.Component<Props, State> {
   };
 
   renderTag = (
-    deleteTagFn: MutationFn,
-    updateTag: MutationFn,
+    deleteTagFn: MutationFunction,
+    updateTag: MutationFunction,
     item: TTag,
     refetch: RefetchTagType
   ) => {
@@ -369,9 +376,9 @@ class Tags extends React.Component<Props, State> {
       <>
         {this.state.showInput && (
           <Mutation mutation={CREATE_TAG}>
-            {(createTag: MutationFn) => (
+            {(createTag: MutationFunction) => (
               <Mutation mutation={CREATE_TEMPLATE_TAG}>
-                {(createTemplateTag: MutationFn) => (
+                {(createTemplateTag: MutationFunction) => (
                   <AutoComplete
                     value={inputValue}
                     autoFocus

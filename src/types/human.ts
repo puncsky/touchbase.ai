@@ -1,5 +1,3 @@
-// @flow
-
 import { TContact } from "./contact";
 
 export type TExperience = {

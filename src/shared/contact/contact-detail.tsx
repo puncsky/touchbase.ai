@@ -1,22 +1,20 @@
-import { DownOutlined, EditOutlined } from "@ant-design/icons";
+import DownOutlined from "@ant-design/icons/lib/icons/DownOutlined";
+import EditOutlined from "@ant-design/icons/lib/icons/EditOutlined";
 
 import Button from "antd/lib/button";
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
 import dateFormat from "dateformat";
-import gql from "graphql-tag";
 // @ts-ignore
 import omitDeep from "omit-deep-lodash";
 import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
-import React, { Component } from "react";
-import { Query, QueryResult } from "react-apollo";
-import { connect } from "react-redux";
-import { match, Route, RouteComponentProps, RouterProps } from "react-router";
-import { Link, withRouter } from "react-router-dom";
+import React from "react";
+import { Route, Link, useParams } from "react-router-dom";
 // @ts-ignore
 import ReactTooltip from "react-tooltip";
-import { TContact2, TExperience, TInteraction } from "../../types/human";
+import { useSelector } from "react-redux";
+import { TContact2, TExperience } from "../../types/human";
 import { BOX_SHADOW, LINE } from "../common/box-shadow";
 import { CommonMargin } from "../common/common-margin";
 import { Flex } from "../common/flex";
@@ -34,20 +32,25 @@ import { KeyMetrics } from "./key-metrics";
 import { ProfileEditorContainer } from "./profile-editor/profile-editor";
 import { ReminderCard } from "./reminder-card";
 import { TagsContainer } from "./tags";
+import { useGetContact } from "./hooks/useGetContact";
+import { useGetInteractions } from "./hooks/useGetInteractions";
+import { getInteractions } from "./data/queries";
 
 function currentTitle(human: TContact2): string {
   return (
-    human.title ||
-    (human.experience[0] && human.experience[0].title) ||
-    (human.education[0] && human.education[0].title)
+    human?.title ||
+    human?.experience[0]?.title ||
+    human?.education[0]?.title ||
+    ""
   );
 }
 
 function currentOrg(human: TContact2): string {
   return (
-    human.title ||
-    (human.experience[0] && human.experience[0].name) ||
-    (human.education[0] && human.education[0].name)
+    human?.title ||
+    human?.experience[0]?.name ||
+    human?.education[0]?.name ||
+    ""
   );
 }
 
@@ -59,125 +62,47 @@ const SECTION = {
   boxShadow: BOX_SHADOW
 };
 
-type Props = {
-  isSelf?: boolean;
-  ownerHumanId: string;
-  match: match<{ nameDash: string }>;
-} & RouterProps;
-
-export const GET_CONTACT = gql`
-  query contact($id: String, $isSelf: Boolean) {
-    contact(id: $id, isSelf: $isSelf) {
-      _id
-      emails
-      name
-      phones
-      avatarUrl
-      address
-      bornAt
-      bornAddress
-      knownAt
-      knownSource
-      extraversionIntroversion
-      intuitingSensing
-      thinkingFeeling
-      planingPerceiving
-      tdp
-      inboundTrust
-      outboundTrust
-      blurb
-      workingOn
-      desire
-      title
-      experience {
-        title
-        name
-      }
-      education {
-        title
-        name
-      }
-      linkedin
-      facebook
-      github
-      createAt
-      createAt
-    }
+function TitleContent({ title, human }: any): JSX.Element | null {
+  if (!human[title]) {
+    return null;
   }
-`;
 
-interface IProps extends RouteComponentProps<any> {
-  isSelf: boolean;
-}
-
-// @ts-ignore
-export const ContactDetailContainer = withRouter<IProps>(
-  // @ts-ignore
-  connect((state: { base: { ownerHumanId: string } }) => ({
-    ownerHumanId: state.base.ownerHumanId
-  }))(
-    // tslint:disable-next-line:max-func-body-length
-    class ContactFetcher extends Component<Props> {
-      public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
-        return (
-          this.props.match.params.nameDash !==
-            nextProps.match.params.nameDash ||
-          // @ts-ignore
-          this.props.match.params[0].startsWith("edit") ||
-          // @ts-ignore
-          nextProps.match.params[0].startsWith("edit")
-        );
-      }
-
-      public render(): JSX.Element | null {
-        const { props } = this;
-        const id = props.match.params.nameDash;
-        const { ownerHumanId } = props;
-        return (
-          <ContentPadding>
-            <Padding />
-
-            <Query
-              ssr={false}
-              query={GET_CONTACT}
-              variables={{
-                id: props.isSelf ? ownerHumanId : id,
-                isSelf: props.isSelf
-              }}
+  return (
+    <div style={{ width: "100%", margin: "8px 0 0 0" }}>
+      <div
+        style={{
+          color: colors.text01,
+          textTransform: "uppercase",
+          fontSize: "12px"
+        }}
+      >
+        {t(title)}
+      </div>
+      <div>
+        {Array.isArray(human[title]) ? (
+          human[title].map((h: TExperience, i: number) => (
+            <div
+              key={i}
+              style={{ marginLeft: "16px", textTransform: "capitalize" }}
             >
-              {({
-                data,
-                error,
-                loading
-              }: QueryResult<{ contact: Array<TContact2> }>) => {
-                if (loading) {
-                  return <Preloader />;
-                }
-                if (error || !data) {
-                  return <NotFound />;
-                }
-
-                const human = omitDeep(data.contact, "__typename");
-
-                if (!human) {
-                  return <NotFound />;
-                }
-
-                return (
-                  <Contact
-                    human={human}
-                    isSelf={ownerHumanId === id || props.isSelf}
-                  />
-                );
-              }}
-            </Query>
-            <Padding />
-          </ContentPadding>
-        );
-      }
-    }
-  )
-);
+              {h.name}
+            </div>
+          ))
+        ) : (
+          <div style={{ marginLeft: "16px" }}>
+            {(() => {
+              const item = human[title];
+              if (title === "bornAt") {
+                return dateFormat(item, "yyyy/mm/dd");
+              }
+              return item;
+            })()}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 // tslint:disable-next-line:max-func-body-length
 function Contact({
@@ -228,8 +153,8 @@ function Contact({
             metrics={{
               knownAt: human.knownAt,
 
-              inboundTrust: human.inboundTrust,
-              outboundTrust: human.outboundTrust
+              inboundTrust: human.inboundTrust || 0,
+              outboundTrust: human.outboundTrust || 0
             }}
           />
 
@@ -311,45 +236,43 @@ function Contact({
   );
 }
 
-function TitleContent({ title, human }: any): JSX.Element | null {
-  if (!human[title]) {
-    return null;
-  }
+export function ContactDetailContainer(props: {
+  isSelf?: boolean;
+}): JSX.Element {
+  const { nameDash: id } = useParams<{ nameDash: string }>();
+
+  const ownerHumanId = useSelector(
+    (state: { base: { ownerHumanId: string } }) => state.base.ownerHumanId
+  );
+  const { data, error, loading } = useGetContact({
+    id: props.isSelf ? ownerHumanId : id,
+    isSelf: props.isSelf
+  });
 
   return (
-    <div style={{ width: "100%", margin: "8px 0 0 0" }}>
-      <div
-        style={{
-          color: colors.text01,
-          textTransform: "uppercase",
-          fontSize: "12px"
-        }}
-      >
-        {t(title)}
-      </div>
-      <div>
-        {Array.isArray(human[title]) ? (
-          human[title].map((h: TExperience, i: number) => (
-            <div
-              key={i}
-              style={{ marginLeft: "16px", textTransform: "capitalize" }}
-            >
-              {h.name}
-            </div>
-          ))
-        ) : (
-          <div style={{ marginLeft: "16px" }}>
-            {(() => {
-              const item = human[title];
-              if (title === "bornAt") {
-                return dateFormat(item, "yyyy/mm/dd");
-              }
-              return item;
-            })()}
-          </div>
-        )}
-      </div>
-    </div>
+    <ContentPadding>
+      <Padding />
+
+      {(() => {
+        if (loading) {
+          return <Preloader />;
+        }
+        if (error || !data) {
+          return <NotFound />;
+        }
+
+        const human = omitDeep(data.contact, "__typename");
+
+        if (!human) {
+          return <NotFound />;
+        }
+
+        return (
+          <Contact human={human} isSelf={ownerHumanId === id || props.isSelf} />
+        );
+      })()}
+      <Padding />
+    </ContentPadding>
   );
 }
 
@@ -377,30 +300,6 @@ const Icon1 = styled(EditOutlined, {
   color: colors.white
 });
 
-export const GET_INTERACTIONS = gql`
-  query interactions(
-    $contactId: String
-    $offset: Float
-    $limit: Float
-    $isSelf: Boolean
-  ) {
-    interactions(
-      contactId: $contactId
-      offset: $offset
-      limit: $limit
-      isSelf: $isSelf
-    ) @connection(key: "event", filter: ["contactId", "isSelf"]) {
-      interactions {
-        id
-        content
-        public
-        timestamp
-      }
-      count
-    }
-  }
-`;
-
 export const PAGE_SIZE = 5;
 
 const InteractionList = styled("div", {
@@ -411,120 +310,113 @@ const InteractionList = styled("div", {
   wordBreak: "break-word"
 });
 
-class Interactions extends Component<{ contactId: string; isSelf?: boolean }> {
-  // tslint:disable-next-line:max-func-body-length
-  public render(): JSX.Element {
-    const { contactId, isSelf } = this.props;
+function Interactions(props: {
+  contactId: string;
+  isSelf?: boolean;
+}): JSX.Element {
+  const { contactId, isSelf } = props;
 
-    const query: Record<string, any> = {
-      offset: 0,
-      limit: PAGE_SIZE
-    };
-    if (isSelf) {
-      query.isSelf = true;
-    } else {
-      query.contactId = contactId;
-    }
-
-    return (
-      <Query query={GET_INTERACTIONS} variables={query}>
-        {({
-          loading,
-          data = { interactions: { interactions: [], count: 0 } },
-          fetchMore
-        }: QueryResult<{
-          interactions: { interactions: Array<TInteraction>; count: number };
-        }>) => {
-          if (loading) {
-            return <Preloader />;
-          }
-          const { interactions } = data.interactions;
-          const { count } = data.interactions;
-          return (
-            <>
-              {interactions.map((iter, i) => (
-                <InteractionList className="interactions-list" key={i}>
-                  <Flex>
-                    <span>
-                      {dateFormat(iter.timestamp, "yyyy-mm-dd HH:MM")}{" "}
-                    </span>
-                    <Flex>
-                      {/*
-            // @ts-ignore */}
-                      <UpsertEventContainer
-                        eventId={iter.id}
-                        initialValue={iter.content}
-                        humanId={contactId}
-                        timestamp={iter.timestamp}
-                        public={iter.public}
-                      >
-                        <Button type="link" size="small">
-                          {t("edit")}
-                        </Button>
-                      </UpsertEventContainer>
-                      <CommonMargin />
-                      <DeleteNotePopover
-                        // @ts-ignore
-                        isSelf={isSelf}
-                        noteId={iter.id}
-                        contactId={contactId}
-                      />
-                    </Flex>
-                  </Flex>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: mdit.render(iter.content)
-                    }}
-                  />
-                </InteractionList>
-              ))}
-              {Boolean(interactions.length) && count > interactions.length && (
-                <Button
-                  onClick={() => {
-                    fetchMore({
-                      query: GET_INTERACTIONS,
-                      variables: {
-                        contactId,
-                        offset: interactions.length,
-                        limit: PAGE_SIZE
-                      },
-                      updateQuery: (prev, { fetchMoreResult }) => {
-                        if (!fetchMoreResult) {
-                          return prev;
-                        }
-                        window.console.log(
-                          JSON.stringify({
-                            prev,
-                            fetchMoreResult
-                          })
-                        );
-                        return {
-                          ...prev,
-                          interactions: {
-                            ...prev.interactions,
-                            interactions: [
-                              ...prev.interactions.interactions,
-                              ...fetchMoreResult.interactions.interactions
-                            ],
-                            count: fetchMoreResult.interactions.count
-                          }
-                        };
-                      }
-                    }).catch(err => {
-                      window.console.error(
-                        `failed fetchMore for interactions: ${err}`
-                      );
-                    });
-                  }}
-                >
-                  <DownOutlined />
-                  {t("fetch_more")}
-                </Button>
-              )}
-            </>
-          );
-        }}
-      </Query>
-    );
+  const query: Record<string, any> = {
+    offset: 0,
+    limit: PAGE_SIZE
+  };
+  if (isSelf) {
+    query.isSelf = true;
+  } else {
+    query.contactId = contactId;
   }
+
+  const {
+    loading,
+    data = { interactions: { interactions: [], count: 0 } },
+    fetchMore
+  } = useGetInteractions(query);
+
+  if (loading) {
+    return <Preloader />;
+  }
+
+  const loadMore = () => () => {
+    fetchMore({
+      query: getInteractions,
+      variables: {
+        contactId,
+        offset: (data.interactions.interactions || []).length,
+        limit: PAGE_SIZE
+      },
+      // TODO: updateQuery is deprecated, use cache merge instead
+      updateQuery: (
+        prev: any,
+        { fetchMoreResult }: { fetchMoreResult: any }
+      ) => {
+        if (!fetchMoreResult) {
+          return prev;
+        }
+        window.console.log(
+          JSON.stringify({
+            prev,
+            fetchMoreResult
+          })
+        );
+        return {
+          ...prev,
+          interactions: {
+            ...prev.interactions,
+            interactions: [
+              ...prev.interactions.interactions,
+              ...fetchMoreResult.interactions.interactions
+            ],
+            count: fetchMoreResult.interactions.count
+          }
+        };
+      }
+    }).catch((err: Error) => {
+      window.console.error(`failed fetchMore for interactions: ${err}`);
+    });
+  };
+
+  return (
+    <>
+      {(data.interactions.interactions || []).map((iter, i) => (
+        <InteractionList className="interactions-list" key={i}>
+          <Flex>
+            <span>{dateFormat(iter.timestamp, "yyyy-mm-dd HH:MM")} </span>
+            <Flex>
+              <UpsertEventContainer
+                eventId={iter.id}
+                initialValue={iter.content}
+                humanId={contactId}
+                timestamp={iter.timestamp}
+                public={iter.public || false}
+              >
+                <Button type="link" size="small">
+                  {t("edit")}
+                </Button>
+              </UpsertEventContainer>
+              <CommonMargin />
+              <DeleteNotePopover
+                // @ts-ignore
+                isSelf={isSelf}
+                noteId={iter.id}
+                contactId={contactId}
+              />
+            </Flex>
+          </Flex>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: mdit.render(iter.content)
+            }}
+          />
+        </InteractionList>
+      ))}
+      {!!data.interactions.interactions &&
+        data.interactions.interactions.length > 0 &&
+        data.interactions.count > data.interactions.interactions.length && (
+          <Button onClick={loadMore}>
+            <DownOutlined />
+            {t("fetch_more")}
+          </Button>
+        )}
+    </>
+  );
 }

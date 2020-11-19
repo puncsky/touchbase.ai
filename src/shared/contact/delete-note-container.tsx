@@ -1,22 +1,16 @@
-import { Button, notification } from "antd";
+import Button from "antd/lib/button";
+import notification from "antd/lib/notification";
 import Popover from "antd/lib/popover";
-import gql from "graphql-tag";
 import { t } from "onefx/lib/iso-i18n";
-import React, { Component } from "react";
-import { Mutation, MutationFn } from "react-apollo";
+import React, { useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
-import { RouterProps, withRouter } from "react-router";
 import { styled } from "styletron-react";
 import { TInteraction } from "../../types/human";
 import { CommonMargin } from "../common/common-margin";
 import { Flex } from "../common/flex";
-import { GET_INTERACTIONS } from "./contact-detail";
+import { getInteractions } from "./data/queries";
+import { useDeleteNote } from "./hooks/useDeleteNote";
 
-const DELETE_NOTE = gql`
-  mutation deleteNote($id: String!) {
-    deleteNote(deleteNoteInput: { _id: $id })
-  }
-`;
 function updateStore(
   store: any,
   { data: { deleteNote } }: any,
@@ -34,7 +28,7 @@ function updateStore(
       __typename: string;
     };
   } | null = store.readQuery({
-    query: GET_INTERACTIONS,
+    query: getInteractions,
     variables: isSelf ? { isSelf } : { contactId }
   });
   if (!results) {
@@ -43,7 +37,7 @@ function updateStore(
   const { __typename, count, interactions } = results.interactions;
   const filteredArray = interactions.filter(item => item.id !== noteId);
   store.writeQuery({
-    query: GET_INTERACTIONS,
+    query: getInteractions,
     data: {
       interactions: {
         interactions: filteredArray,
@@ -55,101 +49,76 @@ function updateStore(
   });
 }
 
-export const DeleteNotePopover = withRouter(
-  // @ts-ignore
-  class DeleteNotePopoverInner extends Component<
-    { noteId: string; contactId: string; isSelf: boolean } & RouterProps,
-    { visible: boolean }
-  > {
-    state: { visible: boolean } = { visible: false };
+export function DeleteNotePopover(props: {
+  noteId: string;
+  contactId: string;
+  isSelf: boolean;
+}): JSX.Element {
+  const { noteId, contactId, isSelf } = props;
+  const [visible, setVisible] = useState(false);
+  const [deleteNote, { loading }] = useDeleteNote();
 
-    render(): JSX.Element {
-      const { noteId, contactId, isSelf } = this.props;
-      const content = (
-        <OutsideClickHandler
-          onOutsideClick={() => this.setState({ visible: false })}
-        >
-          <PopoverContent>
-            <div>{t(t("field.delete_note.content"))}</div>
+  const content = (
+    <OutsideClickHandler onOutsideClick={() => setVisible(false)}>
+      <PopoverContent>
+        <div>{t("field.delete_note.content")}</div>
+        <CommonMargin />
+        <div>
+          <Flex justifyContent="flex-start">
+            <Button
+              danger
+              loading={loading}
+              onClick={async () => {
+                try {
+                  await deleteNote({
+                    variables: { id: noteId },
+                    update: (store, data) =>
+                      updateStore(store, data, isSelf, contactId, noteId)
+                  });
+                  setVisible(false);
+                  notification.success({
+                    message: t("field.delete_note.deleted", {
+                      // eslint-disable-next-line no-restricted-globals
+                      name
+                    })
+                  });
+                } catch (e) {
+                  const filtered = String(e).replace(
+                    "Error: GraphQL error:",
+                    ""
+                  );
+                  notification.error({
+                    message: t("field.delete_note.failed", {
+                      e: filtered
+                    })
+                  });
+                }
+              }}
+            >
+              {t("field.delete_note.yes")}
+            </Button>
             <CommonMargin />
-            <div>
-              <Flex justifyContent="flex-start">
-                <Mutation mutation={DELETE_NOTE}>
-                  {(
-                    deleteContact: MutationFn<{ id: string }>,
-                    { loading }: { loading: boolean }
-                  ) => {
-                    return (
-                      // @ts-ignore
-                      <Button
-                        danger
-                        loading={loading}
-                        onClick={async () => {
-                          try {
-                            await deleteContact({
-                              variables: { id: noteId },
-                              update: (store, data) =>
-                                updateStore(
-                                  store,
-                                  data,
-                                  isSelf,
-                                  contactId,
-                                  noteId
-                                )
-                            });
-                            this.setState({ visible: false });
-                            notification.success({
-                              message: t("field.delete_note.deleted", {
-                                // eslint-disable-next-line no-restricted-globals
-                                name
-                              })
-                            });
-                          } catch (e) {
-                            const filtered = String(e).replace(
-                              "Error: GraphQL error:",
-                              ""
-                            );
-                            notification.error({
-                              message: t("field.delete_note.failed", {
-                                e: filtered
-                              })
-                            });
-                          }
-                        }}
-                      >
-                        {t("field.delete_note.yes")}
-                      </Button>
-                    );
-                  }}
-                </Mutation>
-                <CommonMargin />
-                <Button onClick={() => this.setState({ visible: false })}>
-                  {t("field.delete_note.cancel")}
-                </Button>
-              </Flex>
-            </div>
-          </PopoverContent>
-        </OutsideClickHandler>
-      );
-      return (
-        <Popover
-          visible={this.state.visible}
-          trigger="click"
-          content={content}
-          title={t("field.delete_note.title")}
-        >
-          <Button
-            size="small"
-            type="link"
-            onClick={() => this.setState({ visible: true })}
-          >
-            {t("delete")}
-          </Button>
-        </Popover>
-      );
-    }
-  }
-);
+            <Button onClick={() => setVisible(false)}>
+              {t("field.delete_note.cancel")}
+            </Button>
+          </Flex>
+        </div>
+      </PopoverContent>
+    </OutsideClickHandler>
+  );
+  return (
+    <Popover
+      visible={visible}
+      trigger="click"
+      content={content}
+      title={t("field.delete_note.title")}
+    >
+      <Button size="small" type="link" onClick={() => setVisible(true)}>
+        {t("delete")}
+      </Button>
+    </Popover>
+  );
+}
 
 const PopoverContent = styled("div", {
   maxWidth: "350px"

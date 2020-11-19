@@ -109,12 +109,16 @@ export function setEmailPasswordIdentityProviderRoutes(server: MyServer): void {
       return isoRender(ctx);
     }
   );
-  server.get("reset-password", "/reset-password/*", async (ctx: MyContext) => {
-    const { token } = ctx.query;
-    const found = await server.auth.emailToken.findOne(token);
-    ctx.setState("base.token", found && found.token);
-    return isoRender(ctx);
-  });
+  server.get(
+    "reset-password",
+    "/reset-password/:action*",
+    async (ctx: MyContext) => {
+      const { token } = ctx.query;
+      const found = await server.auth.emailToken.findOne(token);
+      ctx.setState("base.token", found && found.token);
+      return isoRender(ctx);
+    }
+  );
   server.get("logout", "/logout", server.auth.logout);
   server.get(
     "email-token",

@@ -1,14 +1,12 @@
-import {
-  Button,
-  Col,
-  DatePicker,
-  Divider,
-  Form,
-  Input,
-  Rate,
-  Row,
-  Select
-} from "antd";
+import Button from "antd/lib/button";
+import Col from "antd/lib/col";
+import DatePicker from "antd/lib/date-picker";
+import Divider from "antd/lib/divider";
+import Form from "antd/lib/form";
+import Input from "antd/lib/input";
+import Rate from "antd/lib/rate";
+import Row from "antd/lib/row";
+import Select from "antd/lib/select";
 import { FormInstance } from "antd/lib/form/Form";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";

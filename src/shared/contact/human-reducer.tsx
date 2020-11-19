@@ -1,12 +1,11 @@
-// @flow
 import axios from "axios";
 import gql from "graphql-tag";
 import { TInteraction, TContact2 } from "../../types/human";
 
 import { apolloClient } from "../common/apollo-client";
 import { csrfToken } from "../common/browser-state";
-import { GET_CONTACTS } from "../contacts/contacts-table";
-import { GET_CONTACT, GET_INTERACTIONS } from "./contact-detail";
+import { getContacts } from "../contacts/data/queries";
+import { getContact, getInteractions } from "./data/queries";
 
 export const axiosInstance = axios.create({
   timeout: 10000,
@@ -88,13 +87,13 @@ export function actionUpsertEvent(
               count: number;
             };
           } | null = store.readQuery({
-            query: GET_INTERACTIONS,
+            query: getInteractions,
             variables
           });
 
           if (!results) {
             store.writeQuery({
-              query: GET_INTERACTIONS,
+              query: getInteractions,
               data: {
                 interactions: {
                   interactions: [upsertInteraction],
@@ -129,7 +128,7 @@ export function actionUpsertEvent(
           }
 
           store.writeQuery({
-            query: GET_INTERACTIONS,
+            query: getInteractions,
             data: {
               interactions: {
                 interactions: newInteractions,
@@ -188,7 +187,7 @@ export function actionUpdateHuman(payload: any, remoteOnly = false): any {
     apolloClient.mutate<{ updateContact: { _id: string } }>({
       mutation: UPDATE_CONTACT,
       variables: { updateContactInput: payload },
-      refetchQueries: [{ query: GET_CONTACT, variables: { id: payload._id } }]
+      refetchQueries: [{ query: getContact, variables: { id: payload._id } }]
     });
   };
 }
@@ -217,7 +216,7 @@ export function actionCreateHuman(payload: TContact2, history: any): any {
         variables: { createContactInput: payload },
         refetchQueries: [
           {
-            query: GET_CONTACTS
+            query: getContacts
           }
         ]
       })

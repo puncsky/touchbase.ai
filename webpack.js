@@ -3,8 +3,7 @@ const UglifyJSPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const glob = require("glob");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const process = require("global/process");
 
 const ANALYZE = false;
@@ -48,6 +47,11 @@ module.exports = {
           loader: "babel-loader",
           options: require("./babel.config")
         }
+      },
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: "javascript/auto"
       }
     ]
   },
@@ -56,7 +60,7 @@ module.exports = {
     // (does not apply to resolving to loaders)
     modules: ["node_modules", path.resolve(__dirname, "src")],
     // directories where to look for modules
-    extensions: [".js", ".json", ".jsx", ".ts", ".tsx"],
+    extensions: [".js", ".json", ".jsx", ".ts", ".tsx", ".mjs"],
     // extensions that are used
     alias: {}
     /* Alternative alias syntax (click to show) */

@@ -1,10 +1,9 @@
-import {
-  BellOutlined,
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  EllipsisOutlined
-} from "@ant-design/icons";
-import { notification } from "antd";
+import BellOutlined from "@ant-design/icons/lib/icons/BellOutlined";
+import CheckCircleOutlined from "@ant-design/icons/lib/icons/CheckCircleOutlined";
+import ClockCircleOutlined from "@ant-design/icons/lib/icons/ClockCircleOutlined";
+import EllipsisOutlined from "@ant-design/icons/lib/icons/EllipsisOutlined";
+
+import notification from "antd/lib/notification";
 import Button from "antd/lib/button";
 import Card from "antd/lib/card";
 import Meta from "antd/lib/card/Meta";
@@ -14,7 +13,8 @@ import Skeleton from "antd/lib/skeleton";
 import gql from "graphql-tag";
 import moment from "moment";
 import React from "react";
-import { Query, QueryResult } from "react-apollo";
+import { Query } from "@apollo/client/react/components";
+import { QueryResult } from "@apollo/client/react/types/types";
 import { TTask } from "../../types/task";
 import { apolloClient } from "../common/apollo-client";
 import { Preloader } from "../common/preloader";

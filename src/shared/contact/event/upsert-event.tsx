@@ -1,11 +1,12 @@
-// @flow
-import { DatePicker, Form, Modal } from "antd";
+import DatePicker from "antd/lib/date-picker";
+import Form from "antd/lib/form";
+import Modal from "antd/lib/modal";
 import { FormInstance } from "antd/lib/form/Form";
 import Switch from "antd/lib/switch";
 import ObjectID from "bson-objectid";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
-import Helmet from "onefx/lib/react-helmet";
+import { Helmet } from "onefx/lib/react-helmet";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { TContact2 } from "../../../types/human";

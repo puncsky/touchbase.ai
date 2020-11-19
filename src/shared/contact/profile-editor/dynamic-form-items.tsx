@@ -1,5 +1,7 @@
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Form } from "antd";
+import DeleteOutlined from "@ant-design/icons/lib/icons/DeleteOutlined";
+import PlusOutlined from "@ant-design/icons/lib/icons/PlusOutlined";
+import Button from "antd/lib/button";
+import Form from "antd/lib/form";
 import React from "react";
 import { styled } from "styletron-react";
 

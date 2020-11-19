@@ -1,6 +1,10 @@
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloClient } from "apollo-client";
-import { createHttpLink } from "apollo-link-http";
+import {
+  ApolloClient,
+  createHttpLink,
+  ApolloProvider,
+  InMemoryCache
+} from "@apollo/client";
+import { getDataFromTree } from "@apollo/client/react/ssr";
 import config from "config";
 import fetch from "isomorphic-unfetch";
 import { Reducer } from "redux";
@@ -10,7 +14,6 @@ import { configureStore } from "onefx/lib/iso-react-render/root/configure-store"
 import { noopReducer } from "onefx/lib/iso-react-render/root/root-reducer";
 import { RootServer } from "onefx/lib/iso-react-render/root/root-server";
 import React from "react";
-import { ApolloProvider, getDataFromTree } from "react-apollo";
 
 // @ts-ignore
 import * as engine from "styletron-engine-atomic";

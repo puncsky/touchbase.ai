@@ -1,5 +1,6 @@
 module.exports = {
   server: {
+    cdnBase: "https://touchbase.ai/",
     proxy: true,
     cookie: {
       secrets: JSON.parse(

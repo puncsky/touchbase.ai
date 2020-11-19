@@ -1,4 +1,4 @@
-import { ArrowRightOutlined } from "@ant-design/icons";
+import ArrowRightOutlined from "@ant-design/icons/lib/icons/ArrowRightOutlined";
 import Button from "antd/lib/button";
 import Col from "antd/lib/grid/col";
 import Row from "antd/lib/grid/row";

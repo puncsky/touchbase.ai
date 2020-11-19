@@ -1,44 +1,39 @@
-// @flow
-import { UploadOutlined } from "@ant-design/icons";
-import {
-  Button,
-  DatePicker,
-  Divider,
-  Form,
-  Input,
-  Modal,
-  notification,
-  Tabs,
-  Upload,
-  message
-} from "antd";
-import { FormInstance } from "antd/lib/form/Form";
+import UploadOutlined from "@ant-design/icons/lib/icons/UploadOutlined";
+import Button from "antd/lib/button";
+import DatePicker from "antd/lib/date-picker";
+import Divider from "antd/lib/divider";
+import Form, { FormInstance } from "antd/lib/form";
+import Input from "antd/lib/input";
+import Modal from "antd/lib/modal";
+import notification from "antd/lib/notification";
+import Tabs from "antd/lib/tabs";
+import Upload from "antd/lib/upload";
 import Popover from "antd/lib/popover";
+import message from "antd/lib/message";
 // @ts-ignore
 import window from "global/window";
-import gql from "graphql-tag";
 // @ts-ignore
 import omitBy from "lodash.omitby";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
-import React, { Component } from "react";
-import { Mutation, MutationFn } from "react-apollo";
+import React, { Component, useState, useEffect, useRef } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
-import { connect } from "react-redux";
-import { RouterProps, withRouter } from "react-router";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { styled } from "styletron-react";
 import { TContact2 } from "../../../types/human";
 import { CommonMargin } from "../../common/common-margin";
 import { Flex } from "../../common/flex";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";
 import { upload } from "../../common/upload";
-import { GET_CONTACTS } from "../../contacts/contacts-table";
-import { actionUpdateHuman as uploadAction } from "../human-reducer";
+import { getContacts } from "../../contacts/data/queries";
+import { actionUpdateHuman } from "../human-reducer";
 import PhoneInput from "../phone-input";
 import { formatToE164 } from "../phone-input/util";
 import DynamicFormItems from "./dynamic-form-items";
 import { ExperienceForm } from "./experience-form";
 import { ObservationForm } from "./observation-form";
+import { useDeleteContact } from "./hooks/useDeleteContact";
 
 const { TabPane } = Tabs;
 
@@ -56,54 +51,34 @@ export const formItemLayout = {
   colon: false
 };
 
-type Props = {
+export function ProfileEditorContainer({
+  human
+}: {
   human: TContact2;
-  actionUpdateHuman?(payload: any, remoteOnly: boolean): void;
-  history?: any;
-};
+}): JSX.Element {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [visible, setVisible] = useState(false);
+  const formRef = useRef<FormInstance>();
+  useEffect(() => {
+    setVisible(history.location.pathname.endsWith("/edit/"));
+  }, []);
 
-type State = { visible: boolean };
-
-// @ts-ignore
-@withRouter
-// @ts-ignore
-@connect(
-  () => ({}),
-  (dispatch: any) => ({
-    actionUpdateHuman: (payload: any, remoteOnly: boolean) =>
-      dispatch(uploadAction(payload, remoteOnly))
-  })
-)
-class ProfileEditorContainer extends Component<Props, State> {
-  public props: Props;
-
-  public state: State = {
-    visible: false
+  const close = (): void => {
+    setVisible(false);
+    window.setTimeout(() => history.push("../"), 200);
   };
 
-  public ref: any;
-
-  formRef: React.RefObject<FormInstance> = React.createRef<FormInstance>();
-
-  public close(): void {
-    const { history } = this.props;
-
-    this.setState({ visible: false });
-    window.setTimeout(() => history.push("../"), 200);
-  }
-
-  public onOk(): void {
-    const { human, actionUpdateHuman } = this.props;
-
+  const onOk = (): void => {
     if (!actionUpdateHuman) {
       return;
     }
 
-    if (!this.formRef.current) {
+    if (!formRef.current) {
       return;
     }
 
-    this.formRef.current
+    formRef.current
       .validateFields()
       .then(result => {
         const clone = {
@@ -119,51 +94,38 @@ class ProfileEditorContainer extends Component<Props, State> {
           phones: (result.phones || []).filter((e: any) => e)
         };
         window.console.log(clone);
-        actionUpdateHuman(
-          omitBy(clone, (val: any) => val === null),
-          false
+        dispatch(
+          actionUpdateHuman(
+            omitBy(clone, (val: any) => val === null),
+            false
+          )
         );
 
-        this.close();
+        close();
       })
-      .catch(({ errorFields }) => {
-        if (this.formRef.current) {
-          this.formRef.current.scrollToField(errorFields[0].name);
+      .catch(({ errorFields }: { errorFields: any }) => {
+        if (formRef.current) {
+          formRef.current.scrollToField(errorFields[0].name);
         }
       });
-  }
+  };
 
-  public componentDidMount(): void {
-    const { history } = this.props;
-    this.setState({
-      visible: history.location.pathname.endsWith("/edit/")
-    });
-  }
-
-  public render(): JSX.Element {
-    const { human } = this.props;
-    const { visible } = this.state;
-
-    return (
-      <Modal
-        style={{ top: TOP_BAR_HEIGHT }}
-        title={t("edit")}
-        visible={visible}
-        onOk={() => this.onOk()}
-        onCancel={() => this.close()}
-        width={600}
-      >
-        <ProfileEditorForm human={human} ref={this.formRef} />
-      </Modal>
-    );
-  }
+  return (
+    <Modal
+      style={{ top: TOP_BAR_HEIGHT }}
+      title={t("edit")}
+      visible={visible}
+      onOk={onOk}
+      onCancel={close}
+      width={600}
+    >
+      <ProfileEditorForm human={human} ref={formRef} />
+    </Modal>
+  );
 }
 
-export { ProfileEditorContainer };
-export { ProfileEditorForm };
-
 // eslint-disable-next-line react/display-name
-const ProfileEditorForm = React.forwardRef(
+export const ProfileEditorForm = React.forwardRef(
   ({ human }: { human: TContact2 }, ref: any) => {
     return (
       <Form
@@ -171,7 +133,7 @@ const ProfileEditorForm = React.forwardRef(
         initialValues={{
           phones: human.phones,
           name: human.name,
-          emails: human.emails.join(", "),
+          emails: (human.emails || []).join(", "),
           avatarUrl: human.avatarUrl,
           address: human.address,
           bornAt: human.bornAt && moment(human.bornAt),
@@ -367,100 +329,83 @@ class PersonalForm extends Component<
   }
 }
 
-const DELETE_CONTACT = gql`
-  mutation deleteContact($id: String!) {
-    deleteContact(deleteContactInput: { _id: $id })
-  }
-`;
+export function DeleteContactPopover({
+  name,
+  contactId
+}: {
+  name: string;
+  contactId: string;
+}): JSX.Element {
+  const [visible, setVisible] = useState(false);
+  const history = useHistory();
+  const [deleteContact, { loading }] = useDeleteContact();
 
-const DeleteContactPopover = withRouter(
-  // @ts-ignore
-  class DeleteContactPopoverInner extends Component<
-    { name: string; contactId: string } & RouterProps,
-    { visible: boolean }
-  > {
-    state: { visible: boolean } = { visible: false };
-
-    render(): JSX.Element {
-      const { name, contactId, history } = this.props;
-
-      const content = (
-        <OutsideClickHandler
-          onOutsideClick={() => this.setState({ visible: false })}
-        >
-          <PopoverContent>
-            <div>{t(t("field.delete_contact.content"), { name })}</div>
-            <CommonMargin />
-            <div>
-              <Flex justifyContent="flex-start">
-                <Mutation mutation={DELETE_CONTACT}>
-                  {(
-                    deleteContact: MutationFn<{ id: string }>,
-                    { loading }: { loading: boolean }
-                  ) => {
-                    return (
-                      // @ts-ignore
-                      <Button
-                        danger
-                        loading={loading}
-                        onClick={async () => {
-                          try {
-                            await deleteContact({
-                              refetchQueries: [
-                                {
-                                  query: GET_CONTACTS
-                                }
-                              ],
-                              variables: { id: contactId }
-                            });
-                            history.push("/contacts/");
-                            notification.success({
-                              message: t("field.delete_contact.deleted", {
-                                name
-                              })
-                            });
-                          } catch (e) {
-                            const filtered = String(e).replace(
-                              "Error: GraphQL error:",
-                              ""
-                            );
-                            notification.error({
-                              message: t("field.delete_contact.failed", {
-                                e: filtered
-                              })
-                            });
+  const content = (
+    <OutsideClickHandler onOutsideClick={() => setVisible(false)}>
+      <PopoverContent>
+        <div>{t(t("field.delete_contact.content"), { name })}</div>
+        <CommonMargin />
+        <div>
+          <Flex justifyContent="flex-start">
+            {(() => {
+              return (
+                // @ts-ignore
+                <Button
+                  danger
+                  loading={loading}
+                  onClick={async () => {
+                    try {
+                      await deleteContact({
+                        refetchQueries: [
+                          {
+                            query: getContacts
                           }
-                        }}
-                      >
-                        {t("field.delete_contact.yes")}
-                      </Button>
-                    );
+                        ],
+                        variables: { id: contactId }
+                      });
+                      history.push("/contacts/");
+                      notification.success({
+                        message: t("field.delete_contact.deleted", {
+                          name
+                        })
+                      });
+                    } catch (e) {
+                      const filtered = String(e).replace(
+                        "Error: GraphQL error:",
+                        ""
+                      );
+                      notification.error({
+                        message: t("field.delete_contact.failed", {
+                          e: filtered
+                        })
+                      });
+                    }
                   }}
-                </Mutation>
-                <CommonMargin />
-                <Button onClick={() => this.setState({ visible: false })}>
-                  {t("field.delete_contact.cancel")}
+                >
+                  {t("field.delete_contact.yes")}
                 </Button>
-              </Flex>
-            </div>
-          </PopoverContent>
-        </OutsideClickHandler>
-      );
-      return (
-        <Popover
-          visible={this.state.visible}
-          trigger="click"
-          content={content}
-          title={t("field.delete_contact.title")}
-        >
-          <Button onClick={() => this.setState({ visible: true })}>
-            {t("delete")}
-          </Button>
-        </Popover>
-      );
-    }
-  }
-);
+              );
+            })()}
+            <CommonMargin />
+            <Button onClick={() => setVisible(false)}>
+              {t("field.delete_contact.cancel")}
+            </Button>
+          </Flex>
+        </div>
+      </PopoverContent>
+    </OutsideClickHandler>
+  );
+  return (
+    <Popover
+      visible={visible}
+      trigger="click"
+      content={content}
+      title={t("field.delete_contact.title")}
+    >
+      <Button onClick={() => setVisible(true)}>{t("delete")}</Button>
+    </Popover>
+  );
+}
 
 const PopoverContent = styled("div", {
   maxWidth: "350px"

@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import Button from "antd/lib/button";
 import blockstack from "blockstack";
 import { t } from "onefx/lib/iso-i18n";
 import React, { PureComponent } from "react";

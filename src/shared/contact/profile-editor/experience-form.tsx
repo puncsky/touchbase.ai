@@ -1,5 +1,7 @@
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Form, Input } from "antd";
+import DeleteOutlined from "@ant-design/icons/lib/icons/DeleteOutlined";
+import PlusOutlined from "@ant-design/icons/lib/icons/PlusOutlined";
+import Input from "antd/lib/input";
+import Form from "antd/lib/form";
 import Button from "antd/lib/button/button";
 import { t } from "onefx/lib/iso-i18n";
 import React, { PureComponent } from "react";

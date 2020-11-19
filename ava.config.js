@@ -1,12 +1,6 @@
 export default {
-  require: [
-    'ts-node/register',
-  ],
-  files: [
-    'src/**/*.test.ts',
-  ],
+  require: ["tsconfig-paths/register", "ts-node/register"],
+  files: ["src/**/*.test.ts"],
   compileEnhancements: false,
-  extensions: [
-    'ts',
-  ],
+  extensions: ["ts"]
 };
