@@ -3,15 +3,18 @@ import Form from "antd/lib/form";
 import Modal from "antd/lib/modal";
 import { FormInstance } from "antd/lib/form/Form";
 import Switch from "antd/lib/switch";
+import Editor from "rich-markdown-editor";
 import ObjectID from "bson-objectid";
+import styled from "styled-components";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
 import { Helmet } from "onefx/lib/react-helmet";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { TContact2 } from "../../../types/human";
-import { loadScript } from "../../common/load-script";
-import { MdEditor } from "../../common/md-editor";
+// import { loadScript } from "../../common/load-script";
+// import { MdEditor } from "../../common/md-editor";
+import { debounce } from "./util";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";
 import { actionUpsertEvent as upsertEvent } from "../human-reducer";
 
@@ -32,8 +35,23 @@ type Props = {
 type State = {
   isVisible: boolean;
   public?: boolean;
+  content: string;
   id: string;
+  _isFocus: boolean;
 };
+
+const EditorWrapper = styled.div`
+  padding: 8px 3em;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: scroll;
+  height: 50vh;
+
+  &.focus {
+    border-color: #cd96e3;
+  }
+`;
 
 export const UpsertEventContainer = connect(
   (state: { base: { ownerHumanId: string }; human: TContact2 }) => ({
@@ -48,13 +66,15 @@ export const UpsertEventContainer = connect(
   class Edit extends Component<Props, State> {
     public props: Props;
 
-    public getSimpleMde: any = null;
-
     public state: State = {
       isVisible: false,
       public: false,
+      content: "",
+      _isFocus: false,
       id: ""
     };
+
+    editorRef: any = React.createRef<any>();
 
     formRef: React.RefObject<FormInstance> = React.createRef<FormInstance>();
 
@@ -65,11 +85,18 @@ export const UpsertEventContainer = connect(
 
     componentDidMount(): void {
       // after load css
-      loadScript(
-        "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"
-        // tslint:disable-next-line: no-empty
-      );
+      // loadScript(
+      // "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"
+      // tslint:disable-next-line: no-empty
+      // );
     }
+
+    handleEditorChange = debounce(value => {
+      const text = value();
+      console.log(text);
+      localStorage.setItem("event-editor", text);
+      return text;
+    });
 
     // tslint:disable-next-line: max-func-body-length
     public render(): JSX.Element | null {
@@ -96,41 +123,50 @@ export const UpsertEventContainer = connect(
             style={{ top: TOP_BAR_HEIGHT }}
             title={eventId ? t("edit_event") : t("add_event")}
             onCancel={() => {
-              this.setState({ isVisible: false });
-              if (!initialValue) {
-                this.getSimpleMde().value("");
-              }
+              this.setState({
+                isVisible: false,
+                content: !initialValue ? "" : this.state?.content
+              });
             }}
             onOk={() => {
               if (!this.formRef.current) {
                 return;
               }
-              this.formRef.current
-                .validateFields()
-                .then(values => {
-                  actionUpsertEvent(
-                    {
-                      id: eventId || String(this.state.id),
-                      content: this.getSimpleMde().value(),
-                      relatedHumans: [ownerHumanId, humanId],
-                      public: this.state.public,
-                      timestamp:
-                        (values.timestamp && values.timestamp.toDate()) ||
-                        new Date()
-                    },
-                    humanId,
-                    ownerHumanId === humanId
-                  );
-                  if (!initialValue) {
-                    this.getSimpleMde().value("");
-                  }
-                  this.setState({ isVisible: false });
-                })
-                .catch(({ errorFields }) => {
-                  if (this.formRef.current) {
-                    this.formRef.current.scrollToField(errorFields[0].name);
-                  }
-                });
+              this.setState(
+                {
+                  content: localStorage.getItem("event-editor") || ""
+                },
+                () => {
+                  this.formRef.current
+                    ?.validateFields()
+                    .then(values => {
+                      actionUpsertEvent(
+                        {
+                          id: eventId || String(this.state.id),
+                          content: this.state.content,
+                          relatedHumans: [ownerHumanId, humanId],
+                          public: this.state.public,
+                          timestamp:
+                            (values.timestamp && values.timestamp.toDate()) ||
+                            new Date()
+                        },
+                        humanId,
+                        ownerHumanId === humanId
+                      );
+                      if (!initialValue) {
+                        this.setState({
+                          content: ""
+                        });
+                      }
+                      this.setState({ isVisible: false });
+                    })
+                    .catch(({ errorFields }) => {
+                      if (this.formRef.current) {
+                        this.formRef.current.scrollToField(errorFields[0].name);
+                      }
+                    });
+                }
+              );
             }}
             destroyOnClose
           >
@@ -144,12 +180,41 @@ export const UpsertEventContainer = connect(
               <Form.Item name="timestamp">
                 <DatePicker showTime allowClear={false} />
               </Form.Item>
-              <MdEditor
-                initialValue={initialValue}
-                getSimpleMde={getSimpleMde => {
-                  this.getSimpleMde = getSimpleMde;
+              <EditorWrapper
+                className={this.state._isFocus ? "focus" : ""}
+                onClick={() => {
+                  if (this.editorRef && !this.state._isFocus) {
+                    this.editorRef.current.focusAtEnd();
+                  }
                 }}
-              />
+              >
+                <Editor
+                  ref={this.editorRef}
+                  defaultValue={initialValue}
+                  value={this.state.content}
+                  onChange={this.handleEditorChange}
+                  handleDOMEvents={{
+                    focus: (_views, _event) => {
+                      this.setState({
+                        _isFocus: true
+                      });
+                      return true;
+                    },
+                    blur: (_views, _event) => {
+                      this.setState({
+                        _isFocus: false
+                      });
+                      return true;
+                    }
+                  }}
+                  theme={
+                    {
+                      zIndex: 1001,
+                      blockToolbarBackground: "white"
+                    } as any
+                  }
+                />
+              </EditorWrapper>
               <Form.Item label={t("make_public")}>
                 <Form.Item name="public">
                   <Switch
