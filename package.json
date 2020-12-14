@@ -161,7 +161,7 @@
     "graphql": "14.6.0",
     "graphql-iso-date": "3.6.1",
     "graphql-tag": "2.10.3",
-    "graphql-type-json": "0.3.1",
+    "graphql-type-json": "0.3.2",
     "highlight.js": "9.18.1",
     "is-browser": "2.1.0",
     "isomorphic-unfetch": "3.1.0",
