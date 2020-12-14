@@ -158,7 +158,7 @@
     "eslint-plugin-react": "7.21.5",
     "form-serialize": "0.7.2",
     "global": "4.4.0",
-    "graphql": "14.6.0",
+    "graphql": "14.7.0",
     "graphql-iso-date": "3.6.1",
     "graphql-tag": "2.10.3",
     "graphql-type-json": "0.3.1",
