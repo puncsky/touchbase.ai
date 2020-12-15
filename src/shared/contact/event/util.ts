@@ -1,6 +1,6 @@
 export const debounce = <F extends (...args: any[]) => any>(
   func: F,
-  waitFor: number = 250
+  waitFor = 250
 ) => {
   let timeout: NodeJS.Timeout;
 

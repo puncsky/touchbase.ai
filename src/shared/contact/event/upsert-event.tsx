@@ -12,8 +12,6 @@ import { Helmet } from "onefx/lib/react-helmet";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { TContact2 } from "../../../types/human";
-// import { loadScript } from "../../common/load-script";
-// import { MdEditor } from "../../common/md-editor";
 import { debounce } from "./util";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";
 import { actionUpsertEvent as upsertEvent } from "../human-reducer";
@@ -47,9 +45,11 @@ const EditorWrapper = styled.div`
   border-radius: 4px;
   overflow: scroll;
   height: 50vh;
+  transition: border-color 0.3s;
 
   &.focus {
     border-color: #cd96e3;
+    box-shadow: 0 0 0 2px #cd96e3;
   }
 `;
 
@@ -83,17 +83,8 @@ export const UpsertEventContainer = connect(
       this.state.public = props.public;
     }
 
-    componentDidMount(): void {
-      // after load css
-      // loadScript(
-      // "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"
-      // tslint:disable-next-line: no-empty
-      // );
-    }
-
     handleEditorChange = debounce(value => {
       const text = value();
-      console.log(text);
       localStorage.setItem("event-editor", text);
       return text;
     });
