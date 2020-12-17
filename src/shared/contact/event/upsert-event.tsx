@@ -1,18 +1,19 @@
+import React, { Component } from "react";
 import DatePicker from "antd/lib/date-picker";
 import Form from "antd/lib/form";
 import Modal from "antd/lib/modal";
 import { FormInstance } from "antd/lib/form/Form";
 import Switch from "antd/lib/switch";
-import Editor from "rich-markdown-editor";
 import ObjectID from "bson-objectid";
-import styled from "styled-components";
 import moment from "moment";
 import { t } from "onefx/lib/iso-i18n";
 import { Helmet } from "onefx/lib/react-helmet";
-import React, { Component } from "react";
 import { connect } from "react-redux";
+import {
+  RichMdEditor as Editor,
+  EDITOR_BLOCK_MENU_ITEM_HEIGHT
+} from "../../common/rich-md-editor";
 import { TContact2 } from "../../../types/human";
-import { debounce } from "./util";
 import { TOP_BAR_HEIGHT } from "../../common/top-bar";
 import { actionUpsertEvent as upsertEvent } from "../human-reducer";
 
@@ -35,23 +36,7 @@ type State = {
   public?: boolean;
   content: string;
   id: string;
-  _isFocus: boolean;
 };
-
-const EditorWrapper = styled.div`
-  padding: 8px 3em;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  overflow: scroll;
-  height: 50vh;
-  transition: border-color 0.3s;
-
-  &.focus {
-    border-color: #cd96e3;
-    box-shadow: 0 0 0 2px #cd96e3;
-  }
-`;
 
 export const UpsertEventContainer = connect(
   (state: { base: { ownerHumanId: string }; human: TContact2 }) => ({
@@ -70,11 +55,8 @@ export const UpsertEventContainer = connect(
       isVisible: false,
       public: false,
       content: "",
-      _isFocus: false,
       id: ""
     };
-
-    editorRef: any = React.createRef<any>();
 
     formRef: React.RefObject<FormInstance> = React.createRef<FormInstance>();
 
@@ -82,12 +64,6 @@ export const UpsertEventContainer = connect(
       super(props);
       this.state.public = props.public;
     }
-
-    handleEditorChange = debounce(value => {
-      const text = value();
-      localStorage.setItem("event-editor", text);
-      return text;
-    });
 
     // tslint:disable-next-line: max-func-body-length
     public render(): JSX.Element | null {
@@ -111,7 +87,7 @@ export const UpsertEventContainer = connect(
           </Helmet>
           <Modal
             visible={this.state.isVisible}
-            style={{ top: TOP_BAR_HEIGHT }}
+            style={{ top: TOP_BAR_HEIGHT + EDITOR_BLOCK_MENU_ITEM_HEIGHT }}
             title={eventId ? t("edit_event") : t("add_event")}
             onCancel={() => {
               this.setState({
@@ -171,41 +147,14 @@ export const UpsertEventContainer = connect(
               <Form.Item name="timestamp">
                 <DatePicker showTime allowClear={false} />
               </Form.Item>
-              <EditorWrapper
-                className={this.state._isFocus ? "focus" : ""}
-                onClick={() => {
-                  if (this.editorRef && !this.state._isFocus) {
-                    this.editorRef.current.focusAtEnd();
-                  }
+              <Editor
+                initialValue={initialValue}
+                onChange={value => {
+                  this.setState({
+                    content: value || ""
+                  });
                 }}
-              >
-                <Editor
-                  ref={this.editorRef}
-                  defaultValue={initialValue}
-                  value={this.state.content}
-                  onChange={this.handleEditorChange}
-                  handleDOMEvents={{
-                    focus: (_views, _event) => {
-                      this.setState({
-                        _isFocus: true
-                      });
-                      return true;
-                    },
-                    blur: (_views, _event) => {
-                      this.setState({
-                        _isFocus: false
-                      });
-                      return true;
-                    }
-                  }}
-                  theme={
-                    {
-                      zIndex: 1001,
-                      blockToolbarBackground: "white"
-                    } as any
-                  }
-                />
-              </EditorWrapper>
+              />
               <Form.Item label={t("make_public")}>
                 <Form.Item name="public">
                   <Switch

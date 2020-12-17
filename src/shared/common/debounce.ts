@@ -13,7 +13,3 @@ export const debounce = <F extends (...args: any[]) => any>(
       timeout = setTimeout(() => resolve(func(...args)), waitFor);
     });
 };
-
-export default {
-  debounce
-};
