@@ -5,6 +5,7 @@ import Button from "antd/lib/button";
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
 import dateFormat from "dateformat";
+import Editor from "rich-markdown-editor";
 // @ts-ignore
 import omitDeep from "omit-deep-lodash";
 import { t } from "onefx/lib/iso-i18n";
@@ -18,7 +19,7 @@ import { TContact2, TExperience } from "../../types/human";
 import { BOX_SHADOW, LINE } from "../common/box-shadow";
 import { CommonMargin } from "../common/common-margin";
 import { Flex } from "../common/flex";
-import { mdit } from "../common/markdownit";
+// import { mdit } from "../common/markdownit";
 import { NotFound } from "../common/not-found";
 import { Preloader } from "../common/preloader";
 import { shade } from "../common/styles/shade";
@@ -310,6 +311,10 @@ const InteractionList = styled("div", {
   wordBreak: "break-word"
 });
 
+const ContentWrapper = styled("div", {
+  padding: "4px 3em"
+});
+
 function Interactions(props: {
   contactId: string;
   isSelf?: boolean;
@@ -402,11 +407,14 @@ function Interactions(props: {
               />
             </Flex>
           </Flex>
-          <div
+          {/* <div
             dangerouslySetInnerHTML={{
               __html: mdit.render(iter.content)
             }}
-          />
+          /> */}
+          <ContentWrapper>
+            <Editor defaultValue={iter.content} readOnly onChange={() => ""} />
+          </ContentWrapper>
         </InteractionList>
       ))}
       {!!data.interactions.interactions &&
