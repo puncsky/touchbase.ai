@@ -1,7 +1,7 @@
 const path = require("path");
 const UglifyJSPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
-const ManifestPlugin = require("webpack-manifest-plugin");
+const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 const glob = require("glob");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const process = require("global/process");
@@ -62,12 +62,24 @@ module.exports = {
     // directories where to look for modules
     extensions: [".js", ".json", ".jsx", ".ts", ".tsx", ".mjs"],
     // extensions that are used
-    alias: {}
+    alias: {},
+    fallback: {
+      fs: false,
+      tls: false,
+      net: false,
+      path: false,
+      zlib: false,
+      http: false,
+      https: false,
+      stream: false,
+      crypto: false,
+      util: false
+    }
     /* Alternative alias syntax (click to show) */
     /* Advanced resolve configuration (click to show) */
   },
   plugins: [
-    new ManifestPlugin({
+    new WebpackManifestPlugin({
       basePath: "/",
       fileName: "asset-manifest.json"
     }),
