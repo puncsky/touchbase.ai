@@ -140,7 +140,7 @@
     "@types/web-push": "3.3.0",
     "antd": "4.9.2",
     "apollo-server-koa": "2.16.0",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "babel-loader": "8.1.0",
     "babel-plugin-module-resolver": "3.2.0",
     "babel-plugin-react-require": "3.1.3",
