@@ -4,101 +4,101 @@
 # -----------------------------------------------
 
 type ArticleResponse {
-  contentHTML: String!
-  id: String!
-  published: Boolean!
-  title: String!
-  date: String!
-  references: [String!]!
   abstract: String!
-  language: String!
+  contentHTML: String!
+  date: String!
   filename: String!
+  id: String!
+  language: String!
+  published: Boolean!
+  references: [String!]!
+  title: String!
 }
 
 type Contact {
   _id: String!
-  emails: [String!]
-  name: String
-  phones: [String!]
-  avatarUrl: String
   address: String
-  bornAt: String
-  bornAddress: String
-  knownAt: DateTime
-  knownSource: String
-  extraversionIntroversion: String
-  intuitingSensing: String
-  thinkingFeeling: String
-  planingPerceiving: String
-  tdp: String
-  inboundTrust: Float
-  outboundTrust: Float
+  avatarUrl: String
   blurb: String
-  workingOn: String
+  bornAddress: String
+  bornAt: String
+  createAt: DateTime
   desire: String
-  title: String
-  experience: [Experience!]!
   education: [Experience!]!
-  linkedin: String
+  emails: String
+  experience: [Experience!]!
+  extraversionIntroversion: String
   facebook: String
   github: String
-  createAt: DateTime
+  inboundTrust: Float
+  intuitingSensing: String
+  knownAt: DateTime
+  knownSource: String
+  linkedin: String
+  name: String
+  outboundTrust: Float
+  phones: String
+  planingPerceiving: String
+  tdp: String
+  thinkingFeeling: String
+  title: String
   updateAt: DateTime
+  workingOn: String
 }
 
 type ContactTag {
+  contactId: String!
+  createAt: DateTime!
+  hasRate: Boolean!
   id: String!
   name: String!
-  templateId: String!
   ownerId: String!
   rate: Float!
-  contactId: String!
-  hasRate: Boolean!
-  createAt: DateTime!
+  templateId: String!
   updateAt: DateTime!
 }
 
 input CreateContactInput {
   _id: String
-  emails: [String!]
-  name: String
-  phones: [String!]
-  avatarUrl: String
   address: String
-  bornAt: String
-  bornAddress: String
-  knownAt: DateTime
-  knownSource: String
-  extraversionIntroversion: String
-  intuitingSensing: String
-  thinkingFeeling: String
-  planingPerceiving: String
-  tdp: String
-  inboundTrust: Float
-  outboundTrust: Float
+  avatarUrl: String
   blurb: String
-  workingOn: String
+  bornAddress: String
+  bornAt: String
+  createAt: DateTime
   desire: String
-  title: String
-  experience: [ExperienceInput!]
   education: [ExperienceInput!]
-  linkedin: String
+  emails: String
+  experience: [ExperienceInput!]
+  extraversionIntroversion: String
   facebook: String
   github: String
   hmacs: [String!]
-  createAt: DateTime
+  inboundTrust: Float
+  intuitingSensing: String
+  knownAt: DateTime
+  knownSource: String
+  linkedin: String
+  name: String
+  outboundTrust: Float
+  phones: String
+  planingPerceiving: String
+  tdp: String
+  thinkingFeeling: String
+  title: String
   updateAt: DateTime
+  workingOn: String
 }
 
 input CreateTagInput {
-  templateId: String!
   contactId: String!
   rate: Float!
+  templateId: String!
 }
 
 input CreateTagTemplateInput {
-  name: String!
   hasRate: Boolean!
+  name: String!
 }
 
 # The javascript `Date` as string. Type represents date and time as the ISO Date string.
@@ -125,101 +125,101 @@ input DeleteTagTemplateInput {
 }
 
 type Experience {
-  title: String
   name: String
+  title: String
 }
 
 input ExperienceInput {
-  title: String
   name: String
+  title: String
 }
 
 type Interaction {
-  id: String!
-  timestamp: DateTime!
   content: String!
-  relatedHumans: [String!]!
+  id: String!
   public: Boolean
+  relatedHumans: [String!]!
+  timestamp: DateTime!
 }
 
 type InteractionConnection {
-  interactions: [Interaction!]!
   count: Float!
+  interactions: [Interaction!]!
 }
 
 type InteractionCount {
-  date: String!
   count: Float!
+  date: String!
 }
 
 type Mutation {
-  deleteAccount(deleteAccountInput: DeleteAccountInput!): Boolean!
   createContact(createContactInput: CreateContactInput!): Contact!
-  updateContact(updateContactInput: UpdateContactInput!): Contact!
-  deleteNote(deleteNoteInput: DeleteNoteInput!): Boolean!
-  upsertInteraction(upsertInteraction: UpsertInteraction!): Interaction!
-  deleteContact(deleteContactInput: DeleteContactInput!): Boolean!
+  createTag(createTagInput: CreateTagInput!): ContactTag!
   createTagTemplate(
     createTagTemplateInput: CreateTagTemplateInput!
   ): TagTemplate!
-  createTag(createTagInput: CreateTagInput!): ContactTag!
+  deleteAccount(deleteAccountInput: DeleteAccountInput!): Boolean!
+  deleteContact(deleteContactInput: DeleteContactInput!): Boolean!
+  deleteNote(deleteNoteInput: DeleteNoteInput!): Boolean!
   deleteTag(deleteTagInput: DeleteTagInput!): Boolean!
   deleteTagTemplate(deleteTagTemplateInput: DeleteTagTemplateInput!): Boolean!
-  rateTag(rateTagInput: RateTagInput!): ContactTag!
   deleteTask(id: String!): Boolean!
+  rateTag(rateTagInput: RateTagInput!): ContactTag!
+  updateContact(updateContactInput: UpdateContactInput!): Contact!
+  upsertInteraction(upsertInteraction: UpsertInteraction!): Interaction!
   upsertTask(upsertTaskInput: UpsertTaskInput!): Task!
 }
 
 type PlayBook {
-  id: String!
-  url: String!
-  isFave: Boolean!
-  description: String!
-  title: String!
   content: String!
-  forwardedFor: String!
-  date: DateTime!
-  visitorCount: Float!
-  tags: [String!]!
   contentHTML: String!
+  date: DateTime!
+  description: String!
+  forwardedFor: String!
+  id: String!
+  isFave: Boolean!
   language: String!
+  tags: [String!]!
+  title: String!
+  url: String!
+  visitorCount: Float!
 }
 
 type Query {
   # get the article
   articles(id: String): [ArticleResponse!]
-
-  # get the user
-  userProfile(userId: String!): UserProfileResponse
-  interactions(
-    contactId: String
-    isSelf: Boolean
-    offset: Float
-    limit: Float
-  ): InteractionConnection!
-  note(id: String!): Interaction
-  search(name: String!, hmacs: [String!]): [SearchResult!]!
-  contacts(offset: Float, limit: Float): [Contact!]
-  contact(id: String, userId: String, isSelf: Boolean): Contact
-  interactionCounts(isSelf: Boolean, contactId: String): [InteractionCount!]
-
-  # is the server healthy?
-  health: String!
+  contact(id: String, isSelf: Boolean, userId: String): Contact
+  contacts(limit: Float, offset: Float): [Contact!]
   fullContact(
     email: String
     emailHash: String
-    twitter: String
     phone: String
+    twitter: String
   ): String!
-  playbookArticles(
-    skip: Float!
-    limit: Float!
-    tag: String
-    locale: String
-  ): [PlayBook!]!
-  getUserTagTemplates: [TagTemplate!]!
   getContactTags(contactId: String!): [ContactTag!]!
+  getUserTagTemplates: [TagTemplate!]!
   getUserTasks(contactId: String): [Task!]!
+
+  # is the server healthy?
+  health: String!
+  interactionCounts(contactId: String, isSelf: Boolean): [InteractionCount!]
+  interactions(
+    contactId: String
+    isSelf: Boolean
+    limit: Float
+    offset: Float
+  ): InteractionConnection!
+  note(id: String!): Interaction
+  playbookArticles(
+    limit: Float!
+    locale: String
+    skip: Float!
+    tag: String
+  ): [PlayBook!]!
+  search(hmacs: [String!], name: String!): [SearchResult!]!
+
+  # get the user
+  userProfile(userId: String!): UserProfileResponse
 }
 
 input RateTagInput {
@@ -233,72 +233,72 @@ type SearchResult {
 }
 
 type TagTemplate {
+  createAt: DateTime!
+  hasRate: Boolean!
   id: String!
   name: String!
   ownerId: String!
-  hasRate: Boolean!
-  createAt: DateTime!
   updateAt: DateTime!
 }
 
 type Task {
-  id: String!
-  title: String!
-  done: DateTime
   contacts: [String!]
-  rrule: String
+  done: DateTime
   due: DateTime
+  id: String!
   ownerId: String!
+  rrule: String
+  title: String!
 }
 
 input UpdateContactInput {
   _id: String!
-  emails: [String!]
-  name: String
-  phones: [String!]
-  avatarUrl: String
   address: String
-  bornAt: String
-  bornAddress: String
-  knownAt: DateTime
-  knownSource: String
-  extraversionIntroversion: String
-  intuitingSensing: String
-  thinkingFeeling: String
-  planingPerceiving: String
-  tdp: String
-  inboundTrust: Float
-  outboundTrust: Float
+  avatarUrl: String
   blurb: String
-  workingOn: String
+  bornAddress: String
+  bornAt: String
+  createAt: DateTime
   desire: String
-  title: String
-  experience: [ExperienceInput!]!
   education: [ExperienceInput!]!
-  linkedin: String
+  emails: String
+  experience: [ExperienceInput!]!
+  extraversionIntroversion: String
   facebook: String
   github: String
   hmacs: [String!]
-  createAt: DateTime
+  inboundTrust: Float
+  intuitingSensing: String
+  knownAt: DateTime
+  knownSource: String
+  linkedin: String
+  name: String
+  outboundTrust: Float
+  phones: String
+  planingPerceiving: String
+  tdp: String
+  thinkingFeeling: String
+  title: String
   updateAt: DateTime
+  workingOn: String
 }
 
 input UpsertInteraction {
-  id: String!
-  timestamp: DateTime!
   content: String!
-  relatedHumans: [String!]!
+  id: String!
   public: Boolean
+  relatedHumans: [String!]!
+  timestamp: DateTime!
 }
 
 input UpsertTaskInput {
-  id: String
-  title: String!
-  done: DateTime
-  delayed: DateTime
-  rrule: String
-  due: DateTime
   contacts: [String!]
+  delayed: DateTime
+  done: DateTime
+  due: DateTime
+  id: String
+  rrule: String
+  title: String!
 }
 
 type UserProfileResponse {
