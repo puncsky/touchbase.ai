@@ -59,13 +59,14 @@ export class JwtModel {
       this.updateAt = new Date();
       next();
     });
+    // @ts-ignore
     JwtSchema.pre("find", function onFind(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = instance.model("Jwt", JwtSchema);
+    this.Model = instance.model<AuthJwtModel>("Jwt", JwtSchema);
   }
 
   public async create(userId: string): Promise<string> {
@@ -86,7 +87,8 @@ export class JwtModel {
   public async revoke(token: string): Promise<void> {
     let decoded;
     try {
-      decoded = (await verify(token, this.secret)) as AuthJwt;
+      // @ts-ignore
+      decoded = ((await verify(token, this.secret)) as unknown) as AuthJwt;
     } catch (e) {
       return;
     }
@@ -96,7 +98,8 @@ export class JwtModel {
   public async verify(token: string): Promise<UserId> {
     let decoded: AuthJwt;
     try {
-      decoded = (await verify(token, this.secret)) as AuthJwt;
+      // @ts-ignore
+      decoded = ((await verify(token, this.secret)) as unknown) as AuthJwt;
     } catch (e) {
       return "";
     }

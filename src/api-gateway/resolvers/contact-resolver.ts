@@ -219,7 +219,7 @@ class UpdateContactInput implements TContact2 {
 class Contact implements TContact2 {
   @Field(_ => String)
   // tslint:disable-next-line:variable-name
-  public _id: string;
+  public _id?: string;
 
   @Field(_ => String, { nullable: true })
   public emails: Array<string>;

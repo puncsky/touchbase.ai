@@ -39,13 +39,14 @@ export class TaskModel {
       this.updateAt = new Date();
       next();
     });
+    // @ts-ignore
     TaskSchema.pre("find", function onFind(next: () => unknown): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = instance.model("Task", TaskSchema);
+    this.Model = instance.model<TTaskDoc>("Task", TaskSchema);
   }
 
   public async getTaskByUser(userId: string): Promise<Array<TTask>> {

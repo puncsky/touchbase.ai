@@ -33,7 +33,7 @@ function Empty(): JSX.Element {
   return <div />;
 }
 
-export const RootStyle = styled("div", (_: React.CSSProperties) => ({
+export const RootStyle = styled("div", () => ({
   ...fonts.body,
   backgroundColor: colors.black10,
   color: colors.text01,

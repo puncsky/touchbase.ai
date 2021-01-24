@@ -49,7 +49,7 @@ export function Footer(): JSX.Element {
   );
 }
 
-const Align = styled("div", (_: React.CSSProperties) => ({
+const Align = styled("div", () => ({
   ...contentPadding,
   borderTop: LINE,
   display: "flex",

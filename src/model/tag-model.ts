@@ -55,8 +55,11 @@ export class TagModel {
       return this._id;
     });
 
-    this.TagModel = instance.model("tags_by_contacts", TagSchema);
-    this.TagTemplateModel = instance.model("tag_templates", TagTemplateSchema);
+    this.TagModel = instance.model<TTagDoc>("tags_by_contacts", TagSchema);
+    this.TagTemplateModel = instance.model<TTagTemplateDoc>(
+      "tag_templates",
+      TagTemplateSchema
+    );
   }
 
   public async createTemplate(

@@ -46,18 +46,23 @@ export class EmailTokenModel {
     EmailTokenSchema.index({ token: 1 });
 
     EmailTokenSchema.plugin(baseModel);
+    // @ts-ignore
     EmailTokenSchema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
+    // @ts-ignore
     EmailTokenSchema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = instance.model("email_tokens", EmailTokenSchema);
+    this.Model = instance.model<EmailTokenModelType>(
+      "email_tokens",
+      EmailTokenSchema
+    );
   }
 
   public async newAndSave(userId: string): Promise<EmailToken> {

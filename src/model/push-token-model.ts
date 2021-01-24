@@ -32,18 +32,20 @@ export class PushTokenModel {
       return this._id;
     });
 
+    // @ts-ignore
     PushTokenSchema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
+    // @ts-ignore
     PushTokenSchema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = instance.model("push_token", PushTokenSchema);
+    this.Model = instance.model<TPushTokenDoc>("push_token", PushTokenSchema);
   }
 
   public async upsert(pushToken: TPushToken): Promise<TPushToken | null> {

@@ -111,18 +111,19 @@ export class ContactModel {
       return this._id;
     });
 
+    // @ts-ignore
     ContactSchema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
+    // @ts-ignore
     ContactSchema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
-
-    this.Model = instance.model("Contact", ContactSchema);
+    this.Model = instance.model<TContactDoc>("Contact", ContactSchema);
   }
 
   public async getByName(

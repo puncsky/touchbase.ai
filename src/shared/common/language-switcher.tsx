@@ -139,7 +139,7 @@ class LanguageSwitcher extends Component<Record<string, undefined>, State> {
   }
 }
 
-const Wrapper = styled("div", (_: React.CSSProperties) => ({
+const Wrapper = styled("div", () => ({
   display: "flex",
   alignSelf: "center",
   [MEDIA_DROPDOWN_MENU]: {
@@ -153,7 +153,7 @@ const Wrapper = styled("div", (_: React.CSSProperties) => ({
   }
 }));
 
-const Icon = styled(Fa, (_: React.CSSProperties) => ({
+const Icon = styled(Fa, () => ({
   padding: "13px 5px 13px 20px",
   color: colors.white,
   [MEDIA_DROPDOWN_MENU]: {

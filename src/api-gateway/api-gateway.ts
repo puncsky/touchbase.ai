@@ -38,6 +38,7 @@ export async function setApiGateway(server: MyServer): Promise<void> {
 
   const sdlPath = path.resolve(__dirname, "api-gateway.graphql");
   const localSchema = await buildSchema({
+    // @ts-ignore
     resolvers,
     emitSchemaFile: {
       path: sdlPath,

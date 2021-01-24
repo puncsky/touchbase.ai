@@ -198,7 +198,7 @@ const Bar = styled("div", {
   boxShadow: "0 0 4px 0 #c6c6c6ba!important"
 });
 
-const BarPlaceholder = styled("div", (_: React.CSSProperties) => {
+const BarPlaceholder = styled("div", () => {
   const height = TOP_BAR_HEIGHT / 2;
   return {
     display: "block",
@@ -301,7 +301,7 @@ const BrandLink = styled(Link, {
 // @ts-ignore
 const StyledLink = styled(Link, menuItem);
 
-const Flex = styled("div", (_: React.CSSProperties) => ({
+const Flex = styled("div", () => ({
   flexDirection: "row",
   display: "flex",
   boxSizing: "border-box"

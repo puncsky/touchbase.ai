@@ -4,12 +4,12 @@ import tools from "../utils/tools";
 
 export function baseModel(schema: mongoose.Schema): void {
   schema.methods.createAtAgo = function createAtAgo(): string {
-    // tslint:disable-next-line
+    // @ts-ignore
     return tools.formatDate(this.createAt, true);
   };
 
   schema.methods.updateAtAgo = function updateAtAgo(): string {
-    // tslint:disable-next-line
+    // @ts-ignore
     return tools.formatDate(this.updateAt, true);
   };
 }

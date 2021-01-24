@@ -32,18 +32,20 @@ export class PersonalNoteModel {
     schema.index({ ownerId: 1 });
     schema.index({ relatedHumans: 1 });
 
+    // @ts-ignore
     schema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
+    // @ts-ignore
     schema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = instance.model("personal_note", schema);
+    this.Model = instance.model<TPersonalNoteDoc>("personal_note", schema);
   }
 
   public async getById(id: string): Promise<TPersonalNoteDoc | null> {

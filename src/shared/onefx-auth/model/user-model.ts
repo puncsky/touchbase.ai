@@ -77,18 +77,20 @@ export class UserModel {
     UserSchema.index({ did: 1 }, { unique: true, sparse: true });
 
     UserSchema.plugin(baseModel);
+    // @ts-ignore
     UserSchema.pre("save", function onSave(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
+    // @ts-ignore
     UserSchema.pre("find", function onFind(next: koa.Next): void {
       // @ts-ignore
       this.updateAt = new Date();
       next();
     });
 
-    this.Model = instance.model("User", UserSchema);
+    this.Model = instance.model<TUserDoc>("User", UserSchema);
   }
 
   public async getById(id: string): Promise<TUser | null> {

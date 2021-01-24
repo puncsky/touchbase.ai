@@ -77,10 +77,7 @@ export function DeleteNotePopover(props: {
                   });
                   setVisible(false);
                   notification.success({
-                    message: t("field.delete_note.deleted", {
-                      // eslint-disable-next-line no-restricted-globals
-                      name
-                    })
+                    message: t("field.delete_note.deleted")
                   });
                 } catch (e) {
                   const filtered = String(e).replace(

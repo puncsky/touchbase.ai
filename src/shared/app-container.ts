@@ -11,6 +11,7 @@ type Props = {
 export const AppContainer = withRouter(
   // @ts-ignore
   connect<Props>(
+    // @ts-ignore
     (state: Record<string, unknown>): Props => {
       return {
         // @ts-ignore
